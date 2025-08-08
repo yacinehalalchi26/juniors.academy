@@ -1,24 +1,38 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-<link rel="icon" href="favicon.png" type="image/png">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
-<title>Juniors Academy | Séjours Linguistiques &amp; Stages Sportifs</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<style>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <title>Juniors Academy | Séjours Linguistiques & Stages Sportifs</title>
+    
+    <!-- Preconnect for critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.png" type="image/png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    
+    <style>
         :root {
             --primary: #dc143c;
             --primary-dark: #a00000;
+            --primary-light: rgba(220, 20, 60, 0.15);
             --dark: #121212;
             --light: #f9f9f9;
             --gray: #8a8a8e;
             --card-bg: rgba(255, 255, 255, 0.08);
             --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.2);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         * {
@@ -45,6 +59,20 @@
             background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
         }
 
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
         /* Top Banner */
         .top-banner {
             text-align: center;
@@ -52,7 +80,8 @@
             padding: 12px 0;
             position: relative;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-sm);
+            animation: fadeInDown 0.8s ease-out;
         }
 
         .top-banner p {
@@ -74,6 +103,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: fadeIn 0.8s ease-out 0.2s both;
         }
 
         .phone-link {
@@ -89,7 +119,7 @@
             border-radius: 50px;
             backdrop-filter: blur(10px);
             transition: var(--transition);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-md);
         }
 
         .phone-link:hover {
@@ -102,7 +132,7 @@
             padding: 15px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-md);
             transition: var(--transition);
         }
 
@@ -138,12 +168,14 @@
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
                         url('https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/ben_5311-1.jpg') no-repeat center center / cover;
             z-index: -1;
+            animation: zoomOut 20s ease-in-out infinite alternate;
         }
 
         .hero-content {
             text-align: center;
             max-width: 900px;
             padding-top: 80px;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
         }
 
         .hero-headline {
@@ -165,6 +197,7 @@
             margin: 0 auto 40px;
             line-height: 1.6;
             font-weight: 400;
+            opacity: 0.9;
         }
 
         .cta-button {
@@ -187,10 +220,11 @@
             overflow: hidden;
             border: none;
             cursor: pointer;
+            transform: translateZ(0);
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.03);
             box-shadow: 0 15px 40px rgba(220, 20, 60, 0.4);
         }
 
@@ -249,18 +283,7 @@
 
         .services-grid {
             display: grid;
-            .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-}
-
-@media (max-width: 768px) {
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
 
@@ -274,12 +297,22 @@
             overflow: hidden;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
         }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
 
         .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-lg);
             border-color: rgba(255,255,255,0.1);
         }
 
@@ -288,10 +321,11 @@
             margin-bottom: 20px;
             color: var(--primary);
             transition: var(--transition);
+            display: inline-block;
         }
 
         .service-card:hover .service-icon {
-            transform: scale(1.1);
+            transform: scale(1.1) translateY(-5px);
         }
 
         .service-card h3 {
@@ -345,6 +379,96 @@
             border-radius: 10px;
             margin: 5px 0;
             line-height: 1.3;
+            transition: var(--transition);
+        }
+
+        .cta-content h2 span:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* About Toggle Section */
+        .about-toggle-section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        #toggleAbout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 0 auto 30px;
+            background: var(--primary-light);
+            border: none;
+            color: white;
+            padding: 16px 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+
+        #toggleAbout:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        #aboutContent {
+            max-height: 0;
+            overflow: hidden;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.8;
+            transition: max-height 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 0 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        #aboutContent.expanded {
+            max-height: 2000px;
+            padding: 30px;
+        }
+
+        #aboutContent h1, #aboutContent h2 {
+            margin-bottom: 20px;
+        }
+
+        #aboutContent h1 {
+            font-size: 2rem;
+            color: white;
+        }
+
+        #aboutContent h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 30px;
+        }
+
+        #aboutContent p {
+            margin-bottom: 20px;
+        }
+
+        #aboutContent ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        #aboutContent li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        #aboutContent li::before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
         }
 
         /* Partner Section */
@@ -395,7 +519,7 @@
             transform: scale(1.05);
         }
 
-        /* Contact Section */
+        /* Contact Section with Google Maps */
         .contact-section {
             padding: 80px 20px;
             position: relative;
@@ -415,6 +539,9 @@
             padding: 30px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.05);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.1s forwards;
         }
 
         .contact-header {
@@ -473,6 +600,9 @@
             border: 1px solid rgba(255,255,255,0.05);
             position: relative;
             min-height: 400px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.2s forwards;
         }
 
         .map-container {
@@ -532,16 +662,112 @@
             color: var(--gray);
             text-decoration: none;
             transition: var(--transition);
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: var(--transition);
         }
 
         .footer-links a:hover {
             color: #fff;
         }
 
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background: #25d366;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: var(--transition);
+            animation: pulse-green 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes pulse {
@@ -549,8 +775,15 @@
             100% { box-shadow: 0 5px 25px rgba(220, 20, 60, 0.4); }
         }
 
-        .animate {
-            animation: fadeIn 0.8s ease-out forwards;
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        @keyframes zoomOut {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         /* Responsive Design */
@@ -597,7 +830,8 @@
             .services-section, 
             .cta-section, 
             .partner-section, 
-            .contact-section {
+            .contact-section,
+            .about-toggle-section {
                 padding: 70px 20px;
             }
             
@@ -617,6 +851,21 @@
             
             .contact-info {
                 padding: 25px;
+            }
+            
+            .whatsapp-float {
+                width: 55px;
+                height: 55px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 24px;
+            }
+            
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                bottom: 85px;
+                right: 20px;
             }
         }
 
@@ -691,6 +940,22 @@
                 font-size: 14px;
                 padding: 10px;
             }
+            
+            #aboutContent {
+                padding: 20px;
+            }
+            
+            #aboutContent.expanded {
+                padding: 20px;
+            }
+            
+            #aboutContent h1 {
+                font-size: 1.7rem;
+            }
+            
+            #aboutContent h2 {
+                font-size: 1.3rem;
+            }
         }
 
         @media (max-width: 380px) {
@@ -719,220 +984,293 @@
 <body>
 <!-- Top Banner -->
 <div class="top-banner">
-<p>Official Partner of Liverpool FC International Academy</p>
+    <p>Official Partner of Liverpool FC International Academy</p>
 </div>
 <!-- Navigation -->
 <nav class="navigation" style="top: 80px;">
-<div class="logo-container">
-<a href="https://www.instagram.com/juniors.academy.dz" target="_blank">
-<img alt="Juniors Academy Logo" src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/juniors-academy-05-1.png"/>
-</a>
-</div>
-<a class="phone-link" href="tel:+213549657829">
-<i class="fas fa-phone"></i>
-<span>0549657829</span>
-</a>
+    <div class="logo-container">
+        <a href="https://www.instagram.com/juniors.academy.dz" target="_blank">
+            <img alt="Juniors Academy Logo" src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/juniors-academy-05-1.png" loading="lazy"/>
+        </a>
+    </div>
+    <a class="phone-link" href="tel:+213549657829">
+        <i class="fas fa-phone"></i>
+        <span>0549657829</span>
+    </a>
 </nav>
 <!-- Hero Section -->
 <section class="hero-section">
-<div class="hero-background"></div>
-<div class="hero-content">
-<h1 class="hero-headline">Excellence Linguistique &amp; Performance Sportive</h1>
-<p class="hero-subhead">Juniors Academy offre des expériences éducatives et sportives exceptionnelles pour les 9-17 ans, en partenariat avec Liverpool FC International Academy.</p>
-<a class="cta-button" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank">
-<span>Inscriptions ouvertes</span>
-<i class="fas fa-arrow-right"></i>
-</a>
-</div>
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <h1 class="hero-headline">Excellence Linguistique &amp; Performance Sportive</h1>
+        <p class="hero-subhead">Juniors Academy offre des expériences éducatives et sportives exceptionnelles pour les 9-17 ans, en partenariat avec Liverpool FC International Academy.</p>
+        <a class="cta-button" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank">
+            <span>Inscriptions ouvertes</span>
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
 </section>
 <!-- Services Section -->
 <section class="services-section">
-<div class="section-header">
-<h2 class="section-title">Prise En Charge Totale</h2>
-<p class="section-subtitle">Un programme complet conçu pour l'épanouissement et le développement des jeunes talents</p>
-</div>
-<div class="services-grid">
-<div class="service-card animate">
-<div class="service-icon">🎓</div>
-<h3>Formation linguistique</h3>
-<p>Cours d'anglais immersifs à Oxford pour développer les compétences linguistiques avec des professeurs natifs.</p>
-</div>
-<div class="service-card animate">
-<div class="service-icon">⚽</div>
-<h3>Coaching sportif</h3>
-<p>Entraînement professionnel avec les coaches de Liverpool FC sur des installations de haut niveau.</p>
-</div>
-<div class="service-card animate">
-<div class="service-icon">🚐</div>
-<h3>Transport &amp; Sécurité</h3>
-<p>Transferts organisés et encadrement 24/7 avec assurance médicale et voyage inclus.</p>
-</div>
-<div class="service-card animate">
-<div class="service-icon">🏡</div>
-<h3>Hébergement &amp; Repas</h3>
-<p>Chambres individuelles sur campus universitaire avec trois repas équilibrés quotidiens.</p>
-</div>
-<div class="service-card animate">
-<div class="service-icon">🎟️</div>
-<h3>Excursions culturelles</h3>
-<p>Visites de Londres, Liverpool City, stade d'Anfield, et sites culturels majeurs.</p>
-</div>
-<div class="service-card animate">
-<div class="service-icon">📄</div>
-<h3>Certification</h3>
-<p>Certificat officiel Liverpool FC et rapport de progression personnalisé.</p>
-</div>
-</div>
+    <div class="section-header">
+        <h2 class="section-title">Prise En Charge Totale</h2>
+        <p class="section-subtitle">Un programme complet conçu pour l'épanouissement et le développement des jeunes talents</p>
+    </div>
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="service-icon">🎓</div>
+            <h3>Formation linguistique</h3>
+            <p>Cours d'anglais immersifs à Oxford pour développer les compétences linguistiques avec des professeurs natifs.</p>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">⚽</div>
+            <h3>Coaching sportif</h3>
+            <p>Entraînement professionnel avec les coaches de Liverpool FC sur des installations de haut niveau.</p>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">🚐</div>
+            <h3>Transport &amp; Sécurité</h3>
+            <p>Transferts organisés et encadrement 24/7 avec assurance médicale et voyage inclus.</p>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">🏡</div>
+            <h3>Hébergement &amp; Repas</h3>
+            <p>Chambres individuelles sur campus universitaire avec trois repas équilibrés quotidiens.</p>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">🎟️</div>
+            <h3>Excursions culturelles</h3>
+            <p>Visites de Londres, Liverpool City, stade d'Anfield, et sites culturels majeurs.</p>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">📄</div>
+            <h3>Certification</h3>
+            <p>Certificat officiel Liverpool FC et rapport de progression personnalisé.</p>
+        </div>
+    </div>
 </section>
-<!-- Collapsible About Section Below 'Prise en charge totale' -->
-<section class="about-toggle-section" style="padding: 80px 20px; max-width: 900px; margin: 0 auto;">
-<div style="text-align: center;">
-<button class="cta-button" id="toggleAbout" style="margin-bottom: 30px;">
-<i class="fas fa-chevron-down"></i>
-<span>En savoir plus sur Juniors Academy</span>
-</button>
-</div>
-<div id="aboutContent" style="display: none; color: rgba(255,255,255,0.85); line-height: 1.8;">
-<h1>À propos de Juniors Academy</h1>
-<p style="margin-bottom: 20px;">Juniors Academy est le premier choix des parents algériens pour les <strong>camps linguistiques en Angleterre</strong> combinés à des <strong>stages sportifs d'excellence</strong>. Notre programme exclusif, en partenariat avec Liverpool FC International Academy, offre une expérience éducative et sportive inégalée pour les jeunes de 9 à 17 ans.</p>
-<h2 style="color: var(--primary); margin-top: 40px;">Pourquoi choisir nos camps en Angleterre ?</h2>
-<p style="margin-bottom: 20px;">Nos <strong>séjours linguistiques en Angleterre</strong> sont spécialement conçus pour les jeunes Algériens désireux d'améliorer leur anglais tout en pratiquant leur sport favori. Basés à Oxford, berceau de l'éducation britannique, nos programmes combinent :</p>
-<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; margin-top: 20px;"><div style="flex: 0 0 calc(33.333% - 10px); min-width: 200px;"></div><div style="flex: 0 0 calc(33.333% - 10px); min-width: 200px;"></div><div style="flex: 0 0 calc(33.333% - 10px); min-width: 200px;"></div><div style="flex: 0 0 calc(33.333% - 10px); min-width: 200px;"></div><div style="flex: 0 0 calc(33.333% - 10px); min-width: 200px;"></div><div style="flex: 0 0 calc(33.333% - 10px); min-width: 200px;"></div></div>
-<h2 style="color: var(--primary); margin-top: 40px;">Le programme linguistique</h2>
-<p style="margin-bottom: 20px;">Notre <strong>camp linguistique en Angleterre</strong> offre 15 heures de cours d'anglais par semaine dans des classes de niveau homogène. Les méthodes pédagogiques modernes et interactives garantissent des progrès rapides en compréhension et expression orale.</p>
-<h2 style="color: var(--primary); margin-top: 40px;">Le programme sportif</h2>
-<p style="margin-bottom: 20px;">Le <strong>stage football en Angleterre</strong> est encadré par des coaches certifiés de Liverpool FC. Les jeunes bénéficient d'un entraînement professionnel sur des installations de haut niveau, incluant :</p>
-<ul>
-<li>Préparation physique</li>
-<li>Matchs amicaux</li>
-</ul>
-<h2 style="color: var(--primary); margin-top: 40px;">Une expérience complète</h2>
-<p style="margin-bottom: 20px;">Au-delà de l'apprentissage linguistique et sportif, nos camps en Angleterre offrent une expérience culturelle enrichissante :</p>
-<ul>
-<li>Visite du stade d'Anfield, temple du football anglais</li>
-<li>Découverte de Londres et ses monuments historiques</li>
-<li>Excursion à Oxford et ses célèbres universités</li>
-<li>Activités sociales et jeux collectifs</li>
-</ul>
-<h2 style="color: var(--primary); margin-top: 40px;">Pour les parents algériens</h2>
-<p style="margin-bottom: 20px;">Nous comprenons les préoccupations des parents concernant la sécurité et l'encadrement de leurs enfants. C'est pourquoi Juniors Academy offre :</p>
-<ul>
-<li>Encadrement 24h/24 par notre équipe franco-arabophone</li>
-<li>Transferts sécurisés depuis l'Algérie</li>
-<li>Assurance médicale complète</li>
-<li>Communication régulière avec les parents</li>
-</ul>
-<p style="margin-bottom: 20px;">Choisir Juniors Academy pour un <strong>camp d'été en Angleterre</strong>, c'est offrir à votre enfant une expérience transformatrice qui allie apprentissage de l'anglais, perfectionnement sportif et épanouissement personnel.</p>
-</div>
+<!-- Collapsible About Section -->
+<section class="about-toggle-section">
+    <div style="text-align: center;">
+        <button class="cta-button" id="toggleAbout">
+            <i class="fas fa-chevron-down"></i>
+            <span>En savoir plus sur Juniors Academy</span>
+        </button>
+    </div>
+    <div id="aboutContent">
+        <h1>À propos de Juniors Academy</h1>
+        <p>Juniors Academy est le premier choix des parents algériens pour les <strong>camps linguistiques en Angleterre</strong> combinés à des <strong>stages sportifs d'excellence</strong>. Notre programme exclusif, en partenariat avec Liverpool FC International Academy, offre une expérience éducative et sportive inégalée pour les jeunes de 9 à 17 ans.</p>
+        
+        <h2>Pourquoi choisir nos camps en Angleterre ?</h2>
+        <p>Nos <strong>séjours linguistiques en Angleterre</strong> sont spécialement conçus pour les jeunes Algériens désireux d'améliorer leur anglais tout en pratiquant leur sport favori. Basés à Oxford, berceau de l'éducation britannique, nos programmes combinent :</p>
+        
+        <h2>Le programme linguistique</h2>
+        <p>Notre <strong>camp linguistique en Angleterre</strong> offre 15 heures de cours d'anglais par semaine dans des classes de niveau homogène. Les méthodes pédagogiques modernes et interactives garantissent des progrès rapides en compréhension et expression orale.</p>
+        
+        <h2>Le programme sportif</h2>
+        <p>Le <strong>stage football en Angleterre</strong> est encadré par des coaches certifiés de Liverpool FC. Les jeunes bénéficient d'un entraînement professionnel sur des installations de haut niveau, incluant :</p>
+        <ul>
+            <li>Préparation physique</li>
+            <li>Matchs amicaux</li>
+        </ul>
+        
+        <h2>Une expérience complète</h2>
+        <p>Au-delà de l'apprentissage linguistique et sportif, nos camps en Angleterre offrent une expérience culturelle enrichissante :</p>
+        <ul>
+            <li>Visite du stade d'Anfield, temple du football anglais</li>
+            <li>Découverte de Londres et ses monuments historiques</li>
+            <li>Excursion à Oxford et ses célèbres universités</li>
+            <li>Activités sociales et jeux collectifs</li>
+        </ul>
+        
+        <h2>Pour les parents algériens</h2>
+        <p>Nous comprenons les préoccupations des parents concernant la sécurité et l'encadrement de leurs enfants. C'est pourquoi Juniors Academy offre :</p>
+        <ul>
+            <li>Encadrement 24h/24 par notre équipe franco-arabophone</li>
+            <li>Transferts sécurisés depuis l'Algérie</li>
+            <li>Assurance médicale complète</li>
+            <li>Communication régulière avec les parents</li>
+        </ul>
+        <p>Choisir Juniors Academy pour un <strong>camp d'été en Angleterre</strong>, c'est offrir à votre enfant une expérience transformatrice qui allie apprentissage de l'anglais, perfectionnement sportif et épanouissement personnel.</p>
+    </div>
 </section>
-<script>
-    const toggleBtn = document.getElementById('toggleAbout');
-    const aboutContent = document.getElementById('aboutContent');
-
-    toggleBtn.addEventListener('click', () => {
-        const isVisible = aboutContent.style.display === 'block';
-        aboutContent.style.display = isVisible ? 'none' : 'block';
-        toggleBtn.innerHTML = isVisible 
-            ? '<i class="fas fa-chevron-down"></i> <span>En savoir plus sur Juniors Academy</span>' 
-            : '<i class="fas fa-chevron-up"></i> <span>Masquer les détails</span>';
-    });
-</script>
 <!-- CTA Section -->
 <section class="cta-section">
-<div class="cta-content">
-<h2>PRÊT À <span>INSCRIRE VOTRE ENFANT</span> À L'AVENTURE ?</h2>
-<a class="cta-button" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank">
-                S'inscrire maintenant
-            </a>
-</div>
+    <div class="cta-content">
+        <h2>PRÊT À <span>INSCRIRE VOTRE ENFANT</span> À L'AVENTURE ?</h2>
+        <a class="cta-button" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank">
+            S'inscrire maintenant
+        </a>
+    </div>
 </section>
 <!-- Partner Section -->
 <section class="partner-section">
-<div class="partner-content">
-<h3 class="partner-title">PARTENAIRE OFFICIEL</h3>
-<div>
-<img alt="Liverpool FC" class="partner-logo" src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/lfc-logo-horizontal-white-1.png" style="height: 100px; filter: none;"/>
-</div>
-</div>
+    <div class="partner-content">
+        <h3 class="partner-title">PARTENAIRE OFFICIEL</h3>
+        <div>
+            <img alt="Liverpool FC" class="partner-logo" src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/lfc-logo-horizontal-white-1.png" loading="lazy" style="height: 100px; filter: none;"/>
+        </div>
+    </div>
 </section>
 <!-- Contact Section with Google Maps -->
 <section class="contact-section">
-<div class="contact-grid">
-<div class="contact-info">
-<div class="contact-header">
-<h3 class="contact-title">Contactez-nous</h3>
-<p class="contact-subtitle">Notre équipe est à votre disposition pour répondre à toutes vos questions</p>
-</div>
-<div class="contact-details">
-<div class="contact-item">
-<i class="fas fa-map-marker-alt"></i>
-<span>25 Rue Rabah Bourbia, El Biar, Alger, 16003</span>
-</div>
-<div class="contact-item">
-<i class="fas fa-phone"></i>
-<a href="tel:+213549657829">+213 (0) 549 657 829</a>
-</div>
-<div class="contact-item">
-<i class="fas fa-envelope"></i>
-<a href="mailto:juniors.academy.dz@outlook.com">
-                            juniors.academy.dz@outlook.com
-                        </a>
-</div>
-<div class="contact-item">
-<i class="fab fa-instagram"></i>
-<a href="https://www.instagram.com/juniors.academy.dz" target="_blank">
-                            @juniors.academy.dz
-                        </a>
-</div>
-</div>
-</div>
-<div class="contact-map">
-<div class="map-container"><iframe allowfullscreen="" height="400" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.3898086509636!2d3.028938275730759!3d36.767964772238456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fadf991f0a52d%3A0xcda7db93a7a6b8a9!2s25%20Rue%20Rabah%20Bourbia%2C%20Alger!5e0!3m2!1sfr!2sdz!4v1690000000000!5m2!1sfr!2sdz" style="border:0; border-radius: 12px;" width="100%"></iframe></div>
-<div class="map-overlay">
-<a href="https://goo.gl/maps/3jJk7YHw9aE2" target="_blank">
-                        Ouvrir dans Google Maps
+    <div class="contact-grid">
+        <div class="contact-info">
+            <div class="contact-header">
+                <h3 class="contact-title">Contactez-nous</h3>
+                <p class="contact-subtitle">Notre équipe est à votre disposition pour répondre à toutes vos questions</p>
+            </div>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>25 Rue Rabah Bourbia, El Biar, Alger, 16003</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+213549657829">+213 (0) 549 657 829</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:juniors.academy.dz@outlook.com">
+                        juniors.academy.dz@outlook.com
                     </a>
-</div>
-</div>
-</div>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-instagram"></i>
+                    <a href="https://www.instagram.com/juniors.academy.dz" target="_blank">
+                        @juniors.academy.dz
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="contact-map">
+            <div class="map-container">
+                <iframe allowfullscreen="" height="400" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.3898086509636!2d3.028938275730759!3d36.767964772238456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fadf991f0a52d%3A0xcda7db93a7a6b8a9!2s25%20Rue%20Rabah%20Bourbia%2C%20Alger!5e0!3m2!1sfr!2sdz!4v1690000000000!5m2!1sfr!2sdz" style="border:0;" width="100%"></iframe>
+            </div>
+            <div class="map-overlay">
+                <a href="https://goo.gl/maps/3jJk7YHw9aE2" target="_blank">
+                    Ouvrir dans Google Maps
+                </a>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- Footer -->
 <footer class="footer">
-<div class="footer-content">
-<div class="footer-links">
-<a href="#">À propos</a>
-<a href="#">Programmes</a>
-<a href="#">FAQ</a>
-<a href="#">Mentions légales</a>
-<a href="#">Politique de confidentialité</a>
-</div>
-<p>© 2025 Juniors Academy. Tous droits réservés.</p>
-</div>
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="#">À propos</a>
+            <a href="#">Programmes</a>
+            <a href="#">FAQ</a>
+            <a href="#">Mentions légales</a>
+            <a href="#">Politique de confidentialité</a>
+        </div>
+        <p>© 2025 Juniors Academy. Tous droits réservés.</p>
+    </div>
 </footer>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/213549657829" class="whatsapp-float" target="_blank" aria-label="Contact via WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
 <script>
-        // Animation on scroll
-        const observer = new IntersectionObserver((entries) => {
+    // Toggle About Section
+    const toggleBtn = document.getElementById('toggleAbout');
+    const aboutContent = document.getElementById('aboutContent');
+    const chevronIcon = toggleBtn.querySelector('i');
+
+    toggleBtn.addEventListener('click', () => {
+        aboutContent.classList.toggle('expanded');
+        
+        if (aboutContent.classList.contains('expanded')) {
+            chevronIcon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            toggleBtn.querySelector('span').textContent = 'Masquer les détails';
+        } else {
+            chevronIcon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            toggleBtn.querySelector('span').textContent = 'En savoir plus sur Juniors Academy';
+        }
+    });
+
+    // Back to Top Button
+    const backToTopBtn = document.querySelector('.back-to-top');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Animation on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    // Observe service cards
+    document.querySelectorAll('.service-card').forEach(card => {
+        observer.observe(card);
+    });
+    
+    // Observe contact elements
+    document.querySelectorAll('.contact-info, .contact-map').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Phone link animation
+    const phoneLink = document.querySelector('.phone-link');
+    if(phoneLink) {
+        phoneLink.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 300);
+        });
+    }
+
+    // Lazy load images
+    const lazyLoadImages = () => {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        
+        const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    observer.unobserve(img);
                 }
             });
-        }, { threshold: 0.1 });
-        
-        document.querySelectorAll('.service-card').forEach(card => {
-            observer.observe(card);
         });
         
-        // Phone link focus
-        const phoneLink = document.querySelector('.phone-link');
-        if(phoneLink) {
-            phoneLink.addEventListener('click', function() {
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 300);
-            });
-        }
-    </script>
+        images.forEach(img => {
+            img.dataset.src = img.src;
+            img.src = '';
+            observer.observe(img);
+        });
+    };
+    
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        lazyLoadImages();
+    });
+</script>
 </body>
 </html>
