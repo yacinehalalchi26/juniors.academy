@@ -11,15 +11,10 @@
   <meta name="description" content="Juniors Academy | Séjours linguistiques à Oxford et stages sportifs d'élite avec Liverpool FC International Academy pour les 9-17 ans. Inscriptions ouvertes." />
   <title>Juniors Academy | Séjours Linguistiques &amp; Stages Sportifs</title>
 
-  <!-- Favicons -->
   <link rel="icon" href="favicon.png" type="image/png" />
-
-  <!-- Performance: preconnects & fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
   <style>
@@ -41,13 +36,12 @@
     html,body{width:100%;overflow-x:hidden;touch-action:manipulation}
     html{scroll-behavior:smooth}
     body{
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol", "Noto Color Emoji";
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
       line-height:1.6;background:#000;color:#fff;
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
       background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
     }
 
-    /* Skip link for a11y */
     .skip-link{
       position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;
     }
@@ -60,32 +54,62 @@
     }
     .top-banner p{font-style:italic;font-size:14px;color:#fff;letter-spacing:.5px}
 
-    /* Header (NOT fixed — it scrolls, as requested) */
+    /* Fixed centered Juniors Academy logo (use your NEW logo URL) */
+    .junior-logo-fixed{
+      position:fixed;left:50%;transform:translateX(-50%);
+      top:108px; /* just under the red banner line */
+      z-index:95;pointer-events:none;
+    }
+    .junior-logo-fixed img{
+      max-height:92px;width:auto;object-fit:contain;filter:drop-shadow(0 8px 30px rgba(0,0,0,.35));
+    }
+
+    /* Header (scrolls with the page). No center logo here anymore. */
     header.site-header{
       position:absolute;inset:auto 20px auto 20px;top:72px;z-index:90;display:flex;justify-content:space-between;align-items:center;gap:12px;
       transition:transform .4s var(--t), opacity .4s var(--t);
     }
 
-    /* Burger */
+    /* Sophisticated burger button */
     .burger{
-      display:flex;align-items:center;justify-content:center;
-      width:46px;height:46px;border-radius:12px;cursor:pointer;
-      background:rgba(255,255,255,.12);backdrop-filter:blur(10px);
-      box-shadow:0 4px 20px rgba(0,0,0,.2);
-      transition:transform .2s var(--t), background .3s var(--t);
+      --size:48px;
+      --bar-h:2px;
+      --bar-r:6px;
+      width:var(--size);height:var(--size);
+      display:grid;place-items:center;cursor:pointer;border:none;background:transparent;
+      border-radius:14px;position:relative;
+      transition:transform .18s var(--t), box-shadow .28s var(--t), background .28s var(--t);
+      box-shadow:0 6px 22px rgba(0,0,0,.25);
+      background:rgba(255,255,255,.10);backdrop-filter:blur(10px);
     }
-    .burger:active{transform:scale(.97)}
-    .burger i{font-size:18px}
-
-    /* Logo in header (Instagram link) */
-    .logo-container{
-      background:rgba(255,255,255,.1);padding:10px 14px;border-radius:16px;backdrop-filter:blur(10px);
-      box-shadow:0 4px 20px rgba(0,0,0,.2);transition:transform .2s var(--t)
+    .burger:hover{transform:translateY(-1px)}
+    .burger:active{transform:scale(.96)}
+    .burger .bars{
+      position:relative;width:24px;height:18px;
     }
-    .logo-container:hover{transform:scale(1.03)}
-    .logo-container img{width:120px;height:auto;display:block;object-fit:contain}
+    .burger .bars span{
+      position:absolute;left:0;right:0;height:var(--bar-h);border-radius:var(--bar-r);
+      background:#fff;display:block;transform-origin:center;transition:transform .35s var(--t), opacity .25s var(--t), top .35s var(--t);
+    }
+    .burger .bars span:nth-child(1){top:0}
+    .burger .bars span:nth-child(2){top:8px}
+    .burger .bars span:nth-child(3){top:16px}
 
-    /* Phone link (this is the only element meant to “go down” with content) */
+    /* "Gleam" accent */
+    .burger::after{
+      content:"";position:absolute;inset:auto 6px 6px auto;width:18px;height:18px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), rgba(255,255,255,0));
+      opacity:.4;filter:blur(1px);pointer-events:none;
+      transition:opacity .3s var(--t), transform .35s var(--t);
+    }
+    .burger:hover::after{opacity:.7;transform:translateY(-1px)}
+
+    /* Active (morph to X) */
+    .burger.active .bars span:nth-child(1){top:8px;transform:rotate(45deg)}
+    .burger.active .bars span:nth-child(2){opacity:0}
+    .burger.active .bars span:nth-child(3){top:8px;transform:rotate(-45deg)}
+
+    /* Phone link */
     .phone-link{
       display:flex;align-items:center;gap:8px;text-decoration:none;color:#fff;font-weight:600;font-size:16px;
       background:rgba(255,255,255,.12);padding:12px 18px;border-radius:999px;backdrop-filter:blur(10px);
@@ -103,7 +127,7 @@
     .mobile-menu.open{left:0}
     .mobile-menu header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
     .mobile-menu h4{font-size:14px;text-transform:uppercase;letter-spacing:.12em;color:#bbb}
-    .close-menu{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.08);cursor:pointer}
+    .close-menu{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.08);cursor:pointer;border:none;color:#fff}
     .mobile-menu a{
       display:block;padding:14px 12px;margin-top:10px;border-radius:12px;text-decoration:none;color:#fff;font-weight:700;
       background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
@@ -113,16 +137,6 @@
       opacity:0;pointer-events:none;transition:opacity .3s var(--t);z-index:999;
     }
     .scrim.show{opacity:1;pointer-events:auto}
-
-    /* Fixed Juniors Academy logo under the red line of the top banner */
-    .junior-logo-fixed{
-      position:fixed;left:50%;transform:translateX(-50%);
-      top:110px; /* slightly below the red partner line */
-      z-index:95;pointer-events:none; /* non-interactive */
-    }
-    .junior-logo-fixed img{
-      max-height:90px;width:auto;object-fit:contain;filter:drop-shadow(0 8px 30px rgba(0,0,0,.35));
-    }
 
     /* Hero */
     .hero{
@@ -191,7 +205,7 @@
     .about-toggle-section{padding:80px 20px;max-width:900px;margin:0 auto}
     #aboutContent{display:none;color:rgba(255,255,255,.9);line-height:1.8}
     #aboutContent h1{font-size:1.6rem;margin:.3rem 0 1rem}
-    /* tightened spacing on headings & paragraphs */
+    /* tightened spacing */
     #aboutContent h2{color:var(--primary);margin:18px 0 10px;font-size:1.2rem}
     #aboutContent p{margin:0 0 14px}
     #aboutContent ul{margin:8px 0 12px 1.1rem}
@@ -244,11 +258,11 @@
     .map-overlay a{color:var(--primary);text-decoration:none;font-weight:700}
     .map-overlay a:hover{text-decoration:underline}
 
-    /* Footer (links removed) */
+    /* Footer (only copyright) */
     footer.footer{background:rgba(0,0,0,.85);color:var(--gray);text-align:center;padding:35px 20px;font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
     .footer-content{max-width:800px;margin:0 auto}
 
-    /* Reveal animations (GPU-friendly) */
+    /* Reveal animations */
     @keyframes sectionPulse{0%{box-shadow:0 6px 16px rgba(0,0,0,.15)}100%{box-shadow:0 8px 30px rgba(220,20,60,.42)}}
     .reveal{opacity:0;transform:translateY(18px);will-change:transform,opacity}
     .inview{opacity:1;transform:none;transition:opacity var(--dur) var(--t), transform var(--dur) var(--t)}
@@ -263,7 +277,7 @@
       .cta-button::before{display:none}
     }
 
-    /* Responsive */
+    /* Responsive tweaks */
     @media (max-width:1024px){
       header.site-header{top:30px;left:20px;right:20px}
       .phone-link{font-size:0;padding:12px;width:48px;height:48px;justify-content:center}
@@ -272,17 +286,15 @@
     @media (max-width:768px){
       .hero{padding-top:80px}
       header.site-header{top:20px;left:14px;right:14px}
-      .logo-container img{width:100px}
       .services,.cta-section,.partner-section,.contact-section{padding:72px 20px}
       .contact-grid{grid-template-columns:1fr}
       .section-title{font-size:22px;padding:10px 24px;margin-bottom:24px}
       .cta-content h2{font-size:26px}
       .contact-info{padding:24px}
-      .junior-logo-fixed img{max-height:72px}
-      .junior-logo-fixed{top:100px}
+      .junior-logo-fixed img{max-height:74px}
+      .junior-logo-fixed{top:98px}
     }
     @media (max-width:480px){
-      .logo-container img{width:86px}
       .hero-content{padding-top:68px}
       .hero-headline{font-size:28px;margin-bottom:14px}
       .hero-subhead{font-size:16px;margin-bottom:26px}
@@ -306,26 +318,18 @@
     <p>Official Partner of Liverpool FC International Academy</p>
   </div>
 
-  <!-- Fixed centered Juniors Academy logo (under the red line) -->
+  <!-- Fixed NEW Juniors Academy logo (centered, does not scroll). Replace src with your new logo URL -->
   <div class="junior-logo-fixed" aria-hidden="true">
-    <img src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/juniors-academy-05-1.png"
-         alt="" />
+    <img src="YOUR_NEW_LOGO_URL_HERE.png" alt="" />
   </div>
 
-  <!-- Header (scrolls with page). Only the phone “goes down” as you scroll; the fixed center logo stays put. -->
+  <!-- Header: burger (left) + phone (right). No header logo. -->
   <header class="site-header" role="banner" aria-label="Barre de navigation">
     <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu" aria-controls="mobileMenu" aria-expanded="false">
-      <i class="fas fa-bars" aria-hidden="true"></i>
+      <span class="bars" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
     </button>
-
-    <div class="logo-container">
-      <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Instagram Juniors Academy (nouvelle fenêtre)">
-        <img src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/juniors-academy-05-1.png"
-             alt="Juniors Academy"
-             width="240" height="80"
-             loading="eager" decoding="async" />
-      </a>
-    </div>
 
     <a class="phone-link" href="tel:+213549657829" aria-label="Appeler 0549657829">
       <i class="fas fa-phone" aria-hidden="true"></i>
@@ -513,7 +517,7 @@
     </section>
   </main>
 
-  <!-- Footer (only copyright kept) -->
+  <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="footer-content">
       <p>© 2025 Juniors Academy. Tous droits réservés.</p>
@@ -525,10 +529,9 @@
   </noscript>
 
   <script defer>
-    // ===== Utility: Reduced motion check =====
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ===== Intersection reveals =====
+    // Reveal animations
     const io = new IntersectionObserver((entries)=>{
       for(const e of entries){
         if(e.isIntersecting){
@@ -549,7 +552,7 @@
       io.observe(el);
     });
 
-    // ===== Parallax on hero background =====
+    // Parallax hero background
     if(!prefersReduced){
       const bg = document.querySelector('.hero-background');
       let ticking = false;
@@ -566,14 +569,14 @@
       window.addEventListener('scroll', onScroll, {passive:true});
     }
 
-    // ===== Phone link micro-feedback =====
+    // Phone link micro-feedback
     const phoneLink = document.querySelector('.phone-link');
     phoneLink?.addEventListener('click', ()=>{
       phoneLink.style.transform = 'scale(0.97)';
       setTimeout(()=> phoneLink.style.transform = '', 220);
     });
 
-    // ===== About toggle (ARIA) =====
+    // About toggle (ARIA)
     const toggleBtn = document.getElementById('toggleAbout');
     const aboutContent = document.getElementById('aboutContent');
     function openAbout(){
@@ -599,13 +602,15 @@
       }
     });
 
-    // ===== Mobile menu =====
+    // Mobile menu controls + burger animation
     const burgerBtn = document.getElementById('burgerBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     const closeMenuBtn = document.getElementById('closeMenuBtn');
     const scrim = document.getElementById('scrim');
+
     function openMenu(){
       mobileMenu.classList.add('open');
+      burgerBtn.classList.add('active');
       burgerBtn.setAttribute('aria-expanded','true');
       mobileMenu.setAttribute('aria-hidden','false');
       scrim.classList.add('show');
@@ -613,17 +618,20 @@
     }
     function closeMenu(){
       mobileMenu.classList.remove('open');
+      burgerBtn.classList.remove('active');
       burgerBtn.setAttribute('aria-expanded','false');
       mobileMenu.setAttribute('aria-hidden','true');
       scrim.classList.remove('show');
       document.body.style.overflow='';
     }
-    burgerBtn?.addEventListener('click', openMenu);
+    burgerBtn?.addEventListener('click', ()=>{
+      if(mobileMenu.classList.contains('open')) closeMenu(); else openMenu();
+    });
     closeMenuBtn?.addEventListener('click', closeMenu);
     scrim?.addEventListener('click', closeMenu);
     window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
 
-    // “About us” item in menu: open content + smooth scroll
+    // Menu "About us" opens content + scrolls down
     document.getElementById('menuAbout')?.addEventListener('click', (e)=>{
       e.preventDefault();
       closeMenu();
