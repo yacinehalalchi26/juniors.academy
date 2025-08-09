@@ -44,20 +44,7 @@
     }
     .top-banner p{font-style:italic;font-size:14px;color:#fff;letter-spacing:.5px}
 
-    /* Center logo (scrolls with page) — expects transparent PNG */
-    .center-logo-wrap{
-      display:flex;justify-content:center;align-items:center;padding:14px 16px 8px;
-    }
-    .center-logo-wrap img{
-      height:auto;max-height:96px;width:auto;object-fit:contain;
-      filter:drop-shadow(0 8px 30px rgba(0,0,0,.35));
-    }
-    @media (max-width:768px){
-      .center-logo-wrap{padding:12px 12px 6px}
-      .center-logo-wrap img{max-height:82px}
-    }
-
-    /* Floating Call Button (bottom-right): red circle + white icon */
+    /* Floating Call Button (bottom-right): red circle + white SVG icon */
     .call-fab{
       position:fixed;right:16px;bottom:16px;z-index:9999;
       width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
@@ -77,7 +64,22 @@
         url('https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/ben_5311-1.jpg')
         no-repeat center center / cover;
     }
-    .hero-content{text-align:center;max-width:940px;margin:0 auto}
+    /* Logo sits ON the hero image (transparent PNG) */
+    .hero-logo{
+      position:absolute;left:50%;transform:translateX(-50%);top:14px;z-index:2;
+      pointer-events:none; /* decorative */
+    }
+    .hero-logo img{
+      height:auto;max-height:96px;width:auto;object-fit:contain;
+      /* no background here; PNG transparency will blend with the photo */
+    }
+    @media (max-width:768px){
+      .hero-logo img{max-height:82px}
+    }
+
+    .hero-content{text-align:center;max-width:940px;margin:0 auto;padding-top:90px}
+    @media (max-width:480px){ .hero-content{padding-top:80px} }
+
     .hero-headline{
       font-size:clamp(22px, 6vw, 44px);font-weight:800;line-height:1.08;margin:6px auto 14px;
       background:linear-gradient(to right,#fff,#f0f0f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
@@ -86,15 +88,15 @@
       font-size:clamp(14px, 3.6vw, 18px);color:rgba(255,255,255,.9);max-width:720px;margin:0 auto 18px;line-height:1.6
     }
 
-    /* One-line CTA heading — tuned to fit iPhone widths */
+    /* One-line CTA headings — tuned for iPhones */
     .one-line{
       white-space:nowrap;overflow:hidden;text-overflow:clip;
       font-weight:900;margin:0 auto 12px;
-      font-size:clamp(12px, 3.8vw, 28px); /* shrinks more on small screens */
+      font-size:clamp(12px, 3.6vw, 26px); /* shrinks more on small screens */
       letter-spacing:-0.2px;
     }
     @media (max-width:360px){
-      .one-line{font-size:clamp(12px, 3.6vw, 22px)}
+      .one-line{font-size:clamp(12px, 3.4vw, 22px)}
     }
 
     .cta-button{
@@ -109,11 +111,8 @@
       border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.04)
     }
-    .carousel-viewport{position:relative;width:100%;height:clamp(200px, 50vw, 360px);overflow:hidden}
-    /* Make it smaller on phones */
-    @media (max-width:480px){
-      .carousel-viewport{height:clamp(170px, 42vw, 260px)}
-    }
+    .carousel-viewport{position:relative;width:100%;height:clamp(190px, 44vw, 340px);overflow:hidden}
+    @media (max-width:480px){ .carousel-viewport{height:clamp(160px, 38vw, 240px)} } /* smaller on phones */
     .carousel-track{display:flex;width:100%;height:100%;will-change:transform;transition:transform .6s var(--t)}
     .carousel-slide{flex:0 0 100%;width:100%;height:100%;background:#0a0a0a}
     .carousel-slide img{width:100%;height:100%;object-fit:cover;display:block}
@@ -172,7 +171,7 @@
     .contact-title{font-size:20px;font-weight:900;margin-bottom:6px}
     .contact-subtitle{color:var(--gray);font-size:15px;margin-bottom:10px}
     .contact-item{margin:10px 0;font-size:15px;display:flex;align-items:flex-start;gap:10px}
-    .contact-item i{color:var(--primary);font-size:18px;min-width:24px;padding-top:2px}
+    .contact-item svg{width:20px;height:20px;min-width:20px;fill:var(--primary);margin-top:2px}
     .contact-item a{color:var(--primary);text-decoration:none;border-bottom:1px solid rgba(220,20,60,.3)}
     .contact-item a:hover{color:#fff;border-bottom-color:#fff}
 
@@ -190,15 +189,16 @@
     <p>Official Partner of Liverpool FC International Academy</p>
   </div>
 
-  <!-- Centered Juniors Academy logo (transparent PNG recommended) -->
-  <div class="center-logo-wrap">
-    <img src="Juniors%20Academy-05.png" alt="Juniors Academy" />
-  </div>
-
   <main id="main">
     <!-- Hero -->
     <section class="hero" aria-label="Introduction">
       <div class="hero-bg" aria-hidden="true"></div>
+
+      <!-- Transparent PNG logo overlayed on the hero image -->
+      <div class="hero-logo">
+        <img src="Juniors%20Academy-05.png" alt="Juniors Academy" />
+      </div>
+
       <div class="hero-content">
         <h1 class="hero-headline">Excellence Linguistique &amp; Performance Sportive</h1>
         <p class="hero-subhead">Juniors Academy offre des expériences éducatives et sportives exceptionnelles pour les 9-17 ans, en partenariat avec Liverpool FC International Academy.</p>
@@ -266,7 +266,44 @@
       </div>
     </section>
 
-    <!-- CTA section (same one-line heading style) -->
+    <!-- En savoir plus (restored) -->
+    <section class="services" aria-labelledby="about-title">
+      <div style="text-align:center;margin-top:-8px;margin-bottom:8px">
+        <button class="cta-button" id="toggleAbout" aria-expanded="false" aria-controls="aboutContent" style="margin-bottom:18px">
+          <span>En savoir plus sur Juniors Academy</span>
+        </button>
+      </div>
+      <div id="aboutContent" style="display:none;max-width:900px;margin:0 auto;color:rgba(255,255,255,.9);line-height:1.75">
+        <h1 id="about-title" style="font-size:1.6rem;margin:.3rem 0 1rem">À propos de Juniors Academy</h1>
+        <p>Juniors Academy est le premier choix des parents algériens pour les <strong>camps linguistiques en Angleterre</strong> combinés à des <strong>stages sportifs d'excellence</strong>. Notre programme exclusif, en partenariat avec Liverpool FC International Academy, offre une expérience éducative et sportive inégalée pour les jeunes de 9 à 17 ans.</p>
+
+        <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Pourquoi choisir nos camps en Angleterre ?</h2>
+        <ul style="margin:8px 0 12px 1.1rem">
+          <li>Immersion linguistique encadrée par des professeurs natifs</li>
+          <li>Entraînements football de haut niveau</li>
+          <li>Encadrement 24/7 et sécurité</li>
+        </ul>
+
+        <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Le programme linguistique</h2>
+        <p>15 heures de cours d'anglais par semaine dans des classes de niveau homogène. Méthodes interactives axées sur l'oral.</p>
+
+        <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Le programme sportif</h2>
+        <ul style="margin:8px 0 12px 1.1rem">
+          <li>Préparation physique</li>
+          <li>Matchs amicaux</li>
+        </ul>
+
+        <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Une expérience complète</h2>
+        <ul style="margin:8px 0 12px 1.1rem">
+          <li>Visite d'Anfield</li>
+          <li>Découverte de Londres</li>
+          <li>Excursion à Oxford</li>
+          <li>Activités sociales et jeux collectifs</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA section -->
     <section class="cta-section" aria-label="Inscription">
       <div class="cta-content">
         <h2 class="one-line">PRÊT À <span>INSCRIRE VOTRE ENFANT</span> À L'AVENTURE ?</h2>
@@ -296,11 +333,23 @@
         <div class="contact-info">
           <h3 class="contact-title" id="contact-title">Contactez-nous</h3>
           <p class="contact-subtitle">Notre équipe est à votre disposition pour répondre à toutes vos questions</p>
-          <div class="contact-details">
-            <div class="contact-item"><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>25 Rue Rabah Bourbia, El Biar, Alger, 16003</span></div>
-            <div class="contact-item"><i class="fas fa-phone" aria-hidden="true"></i><a href="tel:+213549657829">+213 (0) 549 657 829</a></div>
-            <div class="contact-item"><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:juniors.academy.dz@outlook.com">juniors.academy.dz@outlook.com</a></div>
-            <div class="contact-item"><i class="fab fa-instagram" aria-hidden="true"></i><a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener">@juniors.academy.dz</a></div>
+
+          <div class="contact-item">
+            <!-- Address icon -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z"/></svg>
+            <span>25 Rue Rabah Bourbia, El Biar, Alger, 16003</span>
+          </div>
+
+          <div class="contact-item">
+            <!-- Phone icon -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
+            <a href="tel:+213549657829">+213 (0) 549 657 829</a>
+          </div>
+
+          <div class="contact-item">
+            <!-- Email icon -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-.4 3.25l-6.91 5.18a2 2 0 01-2.38 0L3.4 7.25A1 1 0 014 6h16a1 1 0 01.6 1.25z"/></svg>
+            <a href="mailto:juniors.academy.dz@outlook.com">juniors.academy.dz@outlook.com</a>
           </div>
         </div>
 
@@ -322,14 +371,28 @@
 
   <!-- Floating call button (red circle + white icon) -->
   <a class="call-fab" href="tel:+213549657829" aria-label="Appeler Juniors Academy">
-    <!-- White phone SVG -->
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/>
-    </svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
   </a>
 
   <script>
-    // ===== Auto Carousel (3s) - images must be in same folder: "Liverpool 1.jpg" ... "Liverpool 21.jpg"
+    // ===== Toggle "En savoir plus" =====
+    (function(){
+      const btn = document.getElementById('toggleAbout');
+      const content = document.getElementById('aboutContent');
+      if(!btn || !content) return;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      btn.addEventListener('click', ()=>{
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        content.style.display = expanded ? 'none' : 'block';
+        if(!expanded && !prefersReduced){
+          content.animate([{opacity:0, transform:'translateY(-8px)'},{opacity:1, transform:'none'}], {duration:300, easing:'cubic-bezier(.23,1,.32,1)'});
+        }
+      });
+    })();
+
+    // ===== Auto Carousel (3s) - images in same folder: "Liverpool 1.jpg" … "Liverpool 21.jpg"
     (function(){
       const track = document.getElementById('carouselTrack');
       const dots = document.getElementById('carouselDots');
