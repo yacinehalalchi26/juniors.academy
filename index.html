@@ -23,7 +23,7 @@
       --t:cubic-bezier(.23,1,.32,1);
       --radius-xl:22px;
 
-      /* HERO LOGO (large, as requested) */
+      /* HERO LOGO */
       --hero-logo-h:200px;     /* desktop */
       --hero-logo-h-sm:150px;  /* phone */
     }
@@ -44,7 +44,7 @@
     }
     .top-banner p{font-style:italic;font-size:14px;color:#fff;letter-spacing:.5px}
 
-    /* Floating Call Button (bottom-right): red circle + white icon) */
+    /* Floating Call Button (bottom-right) */
     .call-fab{
       position:fixed;right:16px;bottom:16px;z-index:9999;
       width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
@@ -64,7 +64,7 @@
         url('https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/ben_5311-1.jpg')
         no-repeat center center / cover;
     }
-    /* Bigger clickable logo; tighter to headline on phones */
+    /* Centered logo */
     .hero-logo{
       position:absolute;left:50%;transform:translateX(-50%);top:8px;z-index:2;
     }
@@ -75,77 +75,68 @@
       transition:transform .25s var(--t);
     }
     .hero-logo a:hover img{transform:scale(1.04)}
-    .hero-content{text-align:center;max-width:940px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 0.7)}
+
+    /* >>> FIX: push content lower on desktop so headline never overlaps the logo */
+    .hero-content{text-align:center;max-width:1100px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 1.08)}
+    @media (min-width:1200px){ .hero-content{padding-top:calc(var(--hero-logo-h) * 1.15)} } /* extra safety on very wide screens */
+
+    /* Keep phone spacing tight */
     @media (max-width:768px){
       .hero-logo img{max-height:var(--hero-logo-h-sm)}
-      .hero-content{padding-top:calc(var(--hero-logo-h-sm) * 0.48)}
+      .hero-content{padding-top:calc(var(--hero-logo-h-sm) * 0.50)}
     }
 
     .hero-headline{
-      font-size:clamp(22px, 6vw, 44px);font-weight:800;line-height:1.08;margin:2px auto 10px;
+      font-size:clamp(28px, 6vw, 64px);font-weight:800;line-height:1.06;margin:6px auto 12px;
       background:linear-gradient(to right,#fff,#f0f0f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
     .hero-subhead{
-      font-size:clamp(14px, 3.6vw, 18px);color:rgba(255,255,255,.9);max-width:720px;margin:0 auto 10px;line-height:1.6
+      font-size:clamp(14px, 3.6vw, 22px);color:rgba(255,255,255,.9);max-width:920px;margin:0 auto 10px;line-height:1.55
     }
 
-    /* One-line headings tuned for iPhones */
+    /* One-line headings tuned for phones */
     .one-line{
       white-space:nowrap;overflow:hidden;text-overflow:clip;
-      font-weight:900;margin:4px auto 12px;
+      font-weight:900;margin:6px auto 12px;
       font-size:clamp(12px, 3.6vw, 26px);
       letter-spacing:-0.2px;
     }
     @media (max-width:360px){ .one-line{font-size:clamp(12px, 3.4vw, 22px)} }
 
-    /* DISTINCT HERO CTA (more space + premium animation) */
+    /* DISTINCT HERO CTA */
     .hero-cta{
       --glow: 0 16px 44px rgba(220,20,60,.55);
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      font-weight:900;letter-spacing:.3px;
-      color:#fff;text-decoration:none;border:none;cursor:pointer;
-      padding:18px 40px; /* bigger */
-      font-size:clamp(15px,4.5vw,20px);
-      border-radius:999px;
-      background:linear-gradient(135deg,#ff3555,#dc143c,#a00000);
+      font-weight:900;letter-spacing:.3px;color:#fff;text-decoration:none;border:none;cursor:pointer;
+      padding:18px 40px;font-size:clamp(15px,4.5vw,20px);
+      border-radius:999px;background:linear-gradient(135deg,#ff3555,#dc143c,#a00000);
       box-shadow:var(--glow);
       position:relative;overflow:hidden;
-      margin:24px auto 44px; /* <-- breathing space from text above & carousel below */
+      margin:26px auto 48px; /* breathing room from text & carousel */
       isolation:isolate;
       transition:transform .2s var(--t), box-shadow .25s var(--t), filter .25s var(--t);
       will-change:transform, box-shadow;
     }
-    /* subtle shimmer */
     .hero-cta::after{
       content:"";position:absolute;inset:-2px;transform:translateX(-130%);
       background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-      mix-blend-mode:screen;opacity:.9;animation:shimmer 2.8s linear infinite;
-      pointer-events:none;z-index:-1;
+      mix-blend-mode:screen;opacity:.9;animation:shimmer 2.8s linear infinite;pointer-events:none;z-index:-1;
     }
-    /* pulse halo ring (tasteful) */
     .hero-cta::before{
       content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(220,20,60,.35);
-      animation:pulse 2.6s ease-in-out infinite;
-      pointer-events:none;
+      animation:pulse 2.6s ease-in-out infinite;pointer-events:none;
     }
     .hero-cta:hover{transform:translateY(-3px);box-shadow:0 22px 60px rgba(220,20,60,.65)}
     .hero-cta:active{transform:translateY(-1px) scale(.99)}
-
     @keyframes shimmer{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
     @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,20,60,.35)}50%{box-shadow:0 0 0 12px rgba(220,20,60,0)}}
+    @media (max-width:768px){ .hero-cta{padding:16px 30px;margin:18px auto 52px} }
+    @media (prefers-reduced-motion:reduce){ .hero-cta::after,.hero-cta::before{animation:none} .hero-cta{transition:none} }
 
-    @media (max-width:768px){
-      .hero-cta{padding:16px 30px;margin:18px auto 48px; /* a hair more bottom gap on phones for comfort */ }
-    }
-    @media (prefers-reduced-motion:reduce){
-      .hero-cta::after,.hero-cta::before{animation:none}
-      .hero-cta{transition:none}
-    }
-
-    /* Carousel (keeps original 4945x3295 look; phone-friendly height) */
-    .hero-carousel{margin:0 auto;max-width:760px;width:100%;
+    /* Carousel */
+    .hero-carousel{margin:0 auto;max-width:900px;width:100%;
       border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04)}
-    .carousel-viewport{position:relative;width:100%;aspect-ratio:4945/3295;max-height:340px;overflow:hidden}
+    .carousel-viewport{position:relative;width:100%;aspect-ratio:4945/3295;max-height:380px;overflow:hidden}
     @media (max-width:480px){ .carousel-viewport{max-height:220px} }
     .carousel-track{display:flex;width:100%;height:100%;will-change:transform;transition:transform .6s var(--t)}
     .carousel-slide{flex:0 0 100%;width:100%;height:100%;background:#0a0a0a}
@@ -179,7 +170,7 @@
     .service-card h3{color:#fff;font-weight:800;font-size:16px;margin:0 0 8px;text-transform:uppercase}
     .service-card p{color:rgba(255,255,255,.78);margin:0;font-size:14px;line-height:1.6}
 
-    /* En savoir plus (dark, NOT red) */
+    /* En savoir plus (dark style) */
     .cta-dark{
       display:inline-flex;align-items:center;gap:10px;white-space:nowrap;
       background:linear-gradient(135deg,#1b1b1b,#0f0f10);
@@ -233,7 +224,7 @@
     <section class="hero" aria-label="Introduction">
       <div class="hero-bg" aria-hidden="true"></div>
 
-      <!-- Large logo linking to Instagram -->
+      <!-- Center logo linking to Instagram -->
       <div class="hero-logo">
         <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Ouvrir Instagram Juniors Academy (nouvelle fenêtre)">
           <img src="Juniors%20Academy-05.png" alt="Juniors Academy" />
@@ -342,7 +333,7 @@
     <p>© 2025 Juniors Academy. Tous droits réservés.</p>
   </footer>
 
-  <!-- Floating call button (bottom-right) -->
+  <!-- Floating call button -->
   <a class="call-fab" href="tel:+213549657829" aria-label="Appeler Juniors Academy">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
   </a>
