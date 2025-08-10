@@ -13,8 +13,6 @@
 
   <!-- Primary Meta -->
   <meta name="description" content="Séjours linguistiques à Oxford et stages sportifs de haut niveau pour les 9-17 ans. Stage de football en partenariat avec Liverpool FC International Academy, hébergement, sécurité 24/7, excursions et coaching pro.">
-  <!-- (Google ignores keywords, but some engines still read them) -->
-  <meta name="keywords" content="séjours linguistiques Angleterre, séjour linguistique Oxford, stage football Liverpool, camp junior Algérie, camp d'été Angleterre, formation anglais jeunes, stage sportif Angleterre, Juniors Academy Algérie, Liverpool FC International Academy, séjour étudiant mineur UK, camp de foot pro, séjour anglais et sport, excursion Londres, excursion Anfield, hébergement campus, assurance voyage, formation sportive haut niveau">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -31,96 +29,13 @@
   <meta name="twitter:description" content="Anglais + football pro pour les 9-17 ans à Oxford, avec Liverpool FC IA. Sécurité 24/7, excursions, certificat.">
   <meta name="twitter:image" content="https://juniors.academy/Liverpool%201.jpg">
 
-  <!-- Favicons (optional: add your own files) -->
+  <!-- Favicons -->
   <link rel="icon" href="Juniors%20Academy-05.png" type="image/png">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Structured Data: Organization/EducationalOrganization -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "Juniors Academy",
-    "url": "https://juniors.academy/",
-    "logo": "https://juniors.academy/Juniors%20Academy-05.png",
-    "description": "Séjours linguistiques à Oxford et stages de football de haut niveau pour les 9-17 ans, en partenariat avec Liverpool FC International Academy.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "25 Rue Rabah Bourbia",
-      "addressLocality": "El Biar",
-      "addressRegion": "Alger",
-      "postalCode": "16003",
-      "addressCountry": "DZ"
-    },
-    "contactPoint": [{
-      "@type": "ContactPoint",
-      "telephone": "+213549657829",
-      "contactType": "customer service",
-      "areaServed": "DZ",
-      "availableLanguage": ["fr","ar","en"]
-    }],
-    "sameAs": ["https://www.instagram.com/juniors.academy.dz"]
-  }
-  </script>
-
-  <!-- Structured Data: Course/Program (Stage de football) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    "name": "Stage de football Liverpool FC International Academy (9-17 ans) – Oxford",
-    "description": "Programme intensif de football pour juniors, coaching pro, matchs, nutrition et psychologie du sport. Inclut hébergement, repas, sécurité 24/7 et excursions.",
-    "provider": {
-      "@type": "Organization",
-      "name": "Juniors Academy",
-      "sameAs": "https://juniors.academy/"
-    },
-    "hasCourseInstance": {
-      "@type": "CourseInstance",
-      "courseMode": "OnSite",
-      "location": {
-        "@type": "Place",
-        "name": "Oxford, Royaume-Uni"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": "https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform",
-        "price": "0",
-        "priceCurrency": "DZD",
-        "availability": "https://schema.org/InStock"
-      }
-    }
-  }
-  </script>
-
-  <!-- Structured Data: FAQ (eligible for rich results) -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"Quel âge pour participer au programme ?",
-        "acceptedAnswer":{"@type":"Answer","text":"Nos séjours et stages sont ouverts aux juniors de 9 à 17 ans avec regroupement par niveaux d'âge et de compétences."}
-      },
-      {
-        "@type":"Question",
-        "name":"Où se déroulent les cours d'anglais et les entraînements ?",
-        "acceptedAnswer":{"@type":"Answer","text":"Les cours d'anglais ont lieu à Oxford et les entraînements se déroulent sur des installations partenaires de Liverpool FC International Academy."}
-      },
-      {
-        "@type":"Question",
-        "name":"La sécurité et l'hébergement sont-ils inclus ?",
-        "acceptedAnswer":{"@type":"Answer","text":"Oui. Encadrement 24/7, chambre individuelle en campus, assurance médicale et transferts aéroport aller-retour inclus selon le programme."}
-      }
-    ]
-  }
-  </script>
 
   <style>
     :root{
@@ -133,7 +48,6 @@
       --t:cubic-bezier(.23,1,.32,1);
       --radius-xl:22px;
 
-      /* Hero logo sizing */
       --hero-logo-h:200px;     /* desktop */
       --hero-logo-h-sm:150px;  /* phone */
     }
@@ -141,31 +55,39 @@
     html,body{width:100%;overflow-x:hidden;touch-action:manipulation}
     html{scroll-behavior:smooth}
     body{
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";
       line-height:1.6;background:#000;color:#fff;
       background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     }
 
+    /* Top banner */
     .top-banner{
       text-align:center;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
       padding:12px 0;position:relative;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.25)
     }
     .top-banner p{font-style:italic;font-size:14px;color:#fff;letter-spacing:.5px}
 
-    /* Floating call button */
+    /* Floating Call Button (bottom-right) — lightweight */
     .call-fab{
       position:fixed;right:16px;bottom:16px;z-index:9999;
       width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
       background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      box-shadow:0 14px 40px rgba(220,20,60,.45);
-      text-decoration:none;
+      box-shadow:0 12px 30px rgba(220,20,60,.4);
+      text-decoration:none;transition:transform .18s var(--t), box-shadow .18s var(--t);
     }
     .call-fab svg{width:26px;height:26px;display:block;fill:#fff}
-    .call-fab:active{transform:scale(.97)}
+    @media (hover:hover){
+      .call-fab:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(220,20,60,.5)}
+    }
+    .call-fab:active{transform:scale(.98)}
 
     /* Hero */
-    .hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:0 16px}
+    .hero{
+      position:relative;
+      min-height:100dvh; /* smoother on iOS */
+      display:grid;place-items:center;overflow:hidden;padding:0 16px
+    }
     .hero-bg{
       position:absolute;inset:0;z-index:-1;
       background:
@@ -180,11 +102,11 @@
     .hero-logo img{
       height:auto;max-height:var(--hero-logo-h);width:auto;object-fit:contain;
       filter:drop-shadow(0 10px 28px rgba(0,0,0,.5));
-      transition:transform .25s var(--t);
+      transition:transform .2s var(--t);
     }
-    .hero-logo a:hover img{transform:scale(1.04)}
+    @media (hover:hover){ .hero-logo a:hover img{transform:scale(1.03)} }
 
-    /* Push content low enough on desktop so logo never overlaps */
+    /* Ensure headline never overlaps logo on desktop; tighter on phones */
     .hero-content{text-align:center;max-width:1100px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 1.1)}
     @media (min-width:1200px){ .hero-content{padding-top:calc(var(--hero-logo-h) * 1.18)} }
     @media (max-width:768px){
@@ -202,41 +124,37 @@
 
     .one-line{
       white-space:nowrap;overflow:hidden;text-overflow:clip;
-      font-weight:900;margin:6px auto 12px;font-size:clamp(12px, 3.6vw, 26px);letter-spacing:-0.2px;
+      font-weight:900;margin:8px auto 14px;font-size:clamp(12px, 3.6vw, 26px);letter-spacing:-0.2px;
     }
-    @media (max-width:360px){ .one-line{font-size:clamp(12px, 3.4vw, 22px)} }
 
-    /* Highlighted hero CTA */
+    /* Lightweight CTA (no idle animations) */
     .hero-cta{
-      --glow: 0 16px 44px rgba(220,20,60,.55);
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       font-weight:900;letter-spacing:.3px;color:#fff;text-decoration:none;border:none;cursor:pointer;
-      padding:18px 40px;font-size:clamp(15px,4.5vw,20px);
-      border-radius:999px;background:linear-gradient(135deg,#ff3555,#dc143c,#a00000);
-      box-shadow:var(--glow);position:relative;overflow:hidden;margin:26px auto 48px;isolation:isolate;
-      transition:transform .2s var(--t), box-shadow .25s var(--t), filter .25s var(--t);
+      padding:16px 36px;font-size:clamp(15px,4.5vw,20px);
+      border-radius:999px;
+      background-image:linear-gradient(135deg,#ff3555,#dc143c,#a00000);
+      background-size:200% 100%; /* for subtle hover shift */
+      box-shadow:0 12px 34px rgba(220,20,60,.45);
+      will-change:transform;
+      transition:transform .18s var(--t), box-shadow .18s var(--t), background-position .25s var(--t);
+      margin:22px auto 44px;
     }
-    .hero-cta::after{
-      content:"";position:absolute;inset:-2px;transform:translateX(-130%);
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-      mix-blend-mode:screen;opacity:.9;animation:shimmer 2.8s linear infinite;pointer-events:none;z-index:-1;
+    @media (hover:hover){
+      .hero-cta:hover{
+        transform:translateY(-2px);
+        box-shadow:0 18px 46px rgba(220,20,60,.55);
+        background-position:100% 0; /* smooth slide */
+      }
     }
-    .hero-cta::before{
-      content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(220,20,60,.35);
-      animation:pulse 2.6s ease-in-out infinite;pointer-events:none;
-    }
-    .hero-cta:hover{transform:translateY(-3px);box-shadow:0 22px 60px rgba(220,20,60,.65)}
-    .hero-cta:active{transform:translateY(-1px) scale(.99)}
-    @keyframes shimmer{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
-    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,20,60,.35)}50%{box-shadow:0 0 0 12px rgba(220,20,60,0)}}
-    @media (max-width:768px){ .hero-cta{padding:16px 30px;margin:18px auto 52px} }
-    @media (prefers-reduced-motion:reduce){ .hero-cta::after,.hero-cta::before{animation:none} .hero-cta{transition:none} }
+    .hero-cta:active{transform:scale(.99)}
 
-    /* Carousel (3s) */
-    .hero-carousel{margin:0 auto;max-width:900px;width:100%;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04)}
+    /* Carousel — efficient */
+    .hero-carousel{margin:0 auto;max-width:900px;width:100%;
+      border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04)}
     .carousel-viewport{position:relative;width:100%;aspect-ratio:4945/3295;max-height:380px;overflow:hidden}
     @media (max-width:480px){ .carousel-viewport{max-height:220px} }
-    .carousel-track{display:flex;width:100%;height:100%;will-change:transform;transition:transform .6s var(--t)}
+    .carousel-track{display:flex;width:100%;height:100%;transition:transform .5s var(--t)}
     .carousel-slide{flex:0 0 100%;width:100%;height:100%;background:#0a0a0a}
     .carousel-slide img{width:100%;height:100%;object-fit:cover;display:block}
     .carousel-dots{display:flex;gap:8px;justify-content:center;padding:10px}
@@ -254,19 +172,21 @@
       letter-spacing:.6px;box-shadow:0 5px 15px rgba(0,0,0,.18)
     }
     .section-subtitle{font-size:clamp(13px,3.4vw,16px);color:var(--gray);max-width:740px;margin:8px auto 0;line-height:1.7}
+
     .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
     @media (max-width:992px){.services-grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:640px){.services-grid{grid-template-columns:1fr}}
+
     .service-card{
       background:var(--card-bg);border-radius:var(--radius-xl);padding:22px 18px;text-align:center;border:1px solid rgba(255,255,255,.06);
-      box-shadow:var(--elev);backdrop-filter:blur(10px);transition:transform .3s var(--t), box-shadow .3s var(--t)
+      box-shadow:var(--elev);backdrop-filter:blur(10px);transition:transform .2s var(--t), box-shadow .2s var(--t)
     }
-    .service-card:hover{transform:translateY(-6px);box-shadow:var(--elev-2)}
+    @media (hover:hover){ .service-card:hover{transform:translateY(-4px);box-shadow:var(--elev-2)} }
     .service-icon{font-size:36px;margin-bottom:12px;color:var(--primary)}
     .service-card h3{color:#fff;font-weight:800;font-size:16px;margin:0 0 8px;text-transform:uppercase}
     .service-card p{color:rgba(255,255,255,.78);margin:0;font-size:14px;line-height:1.6}
 
-    /* Dark CTA */
+    /* Dark CTA for About */
     .cta-dark{
       display:inline-flex;align-items:center;gap:10px;white-space:nowrap;
       background:linear-gradient(135deg,#1b1b1b,#0f0f10);
@@ -274,12 +194,13 @@
       padding:12px 18px;border-radius:999px;font-weight:700;
       box-shadow:0 10px 24px rgba(0,0,0,.35);
       text-decoration:none;cursor:pointer;
-      transition:transform .2s var(--t), box-shadow .25s var(--t), background .25s var(--t);
+      transition:transform .18s var(--t), box-shadow .18s var(--t), background .18s var(--t);
       font-size:clamp(13px,3.6vw,16px);
     }
-    .cta-dark:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.5);background:linear-gradient(135deg,#1e1e20,#121214)}
-    .cta-dark svg{transition:transform .25s var(--t)}
+    @media (hover:hover){ .cta-dark:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.5)} }
+    .cta-dark svg{transition:transform .18s var(--t)}
 
+    /* Partner */
     .partner-section{padding:60px 16px;text-align:center}
     .partner-content{max-width:800px;margin:0 auto}
     .partner-title{
@@ -288,10 +209,11 @@
     .partner-title::after{content:"";position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:70px;height:3px;background:var(--primary);border-radius:2px}
     .partner-logo{
       width:auto;max-width:100%;height:auto;max-height:100px;object-fit:contain;
-      filter:grayscale(100%) brightness(150%);opacity:.9;transition:filter .3s var(--t), opacity .3s var(--t), transform .3s var(--t)
+      filter:grayscale(100%) brightness(150%);opacity:.9;transition:filter .2s var(--t), opacity .2s var(--t), transform .2s var(--t)
     }
-    .partner-logo:hover{filter:grayscale(0%) brightness(100%);opacity:1;transform:translateY(-4px)}
+    @media (hover:hover){ .partner-logo:hover{filter:grayscale(0%) brightness(100%);opacity:1;transform:translateY(-3px)} }
 
+    /* Contact */
     .contact-section{padding:64px 16px;max-width:1000px;margin:0 auto}
     .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
     .contact-info{background:var(--card-bg);border-radius:var(--radius-xl);padding:22px;border:1px solid rgba(255,255,255,.06)}
@@ -304,9 +226,15 @@
     .contact-map{background:var(--card-bg);border-radius:var(--radius-xl);overflow:hidden;min-height:320px;border:1px solid rgba(255,255,255,.06);position:relative}
 
     footer.footer{background:rgba(0,0,0,.85);color:var(--gray);text-align:center;padding:30px 16px;font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
+
+    /* Reduce motion: disable transitions to be extra smooth for sensitive devices */
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
   </style>
 </head>
 <body>
+  <!-- Top Banner -->
   <div class="top-banner" role="note" aria-live="polite">
     <p>Official Partner of Liverpool FC International Academy</p>
   </div>
@@ -319,7 +247,7 @@
       <!-- Centered logo linking to Instagram -->
       <div class="hero-logo">
         <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Instagram Juniors Academy (nouvelle fenêtre)">
-          <img src="Juniors%20Academy-05.png" alt="Logo Juniors Academy (programme linguistique & stage de football)" />
+          <img src="Juniors%20Academy-05.png" alt="Logo Juniors Academy" />
         </a>
       </div>
 
@@ -327,8 +255,11 @@
         <h1 class="hero-headline">Excellence Linguistique &amp; Performance Sportive</h1>
         <p class="hero-subhead">Juniors Academy propose des <strong>séjours linguistiques en Angleterre</strong> et un <strong>stage de football Liverpool FC</strong> pour les 9-17 ans : anglais à Oxford, coaching pro, sécurité 24/7, hébergement et excursions.</p>
 
+        <!-- RESTORED one-line heading + CTA just below -->
         <h2 class="one-line">PRÊT À INSCRIRE VOTRE ENFANT À L'AVENTURE ?</h2>
-        <a class="hero-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener">Inscriptions ouvertes</a>
+        <a class="hero-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener">
+          Inscriptions ouvertes
+        </a>
 
         <!-- Carousel -->
         <div class="hero-carousel" aria-label="Galerie photos du stage Liverpool FC">
@@ -349,15 +280,15 @@
 
       <div class="services-grid">
         <article class="service-card"><div class="service-icon" aria-hidden="true">🎓</div><h3>Formation linguistique</h3><p>Cours d’anglais immersifs à Oxford, classes de niveau, progrès rapides en compréhension et expression orale.</p></article>
-        <article class="service-card"><div class="service-icon" aria-hidden="true">⚽</div><h3>Coaching sportif</h3><p>Entraînements encadrés avec Liverpool FC International Academy : technique, tactique, matchs et préparation physique.</p></article>
-        <article class="service-card"><div class="service-icon" aria-hidden="true">🚐</div><h3>Transferts &amp; Sécurité</h3><p>Transport aéroport A/R, assurance médicale & voyage, encadrement 24/7, communication régulière avec les parents.</p></article>
-        <article class="service-card"><div class="service-icon" aria-hidden="true">🏡</div><h3>Hébergement &amp; Repas</h3><p>Chambres individuelles en campus, 3 repas équilibrés/jour, commodités sportives sur place.</p></article>
-        <article class="service-card"><div class="service-icon" aria-hidden="true">🎟️</div><h3>Excursions</h3><p>Londres, Liverpool City, <strong>Anfield Stadium</strong>, parcs à thèmes et musées pour une expérience culturelle riche.</p></article>
-        <article class="service-card"><div class="service-icon" aria-hidden="true">📄</div><h3>Certification</h3><p>Rapport de coaching personnalisé et <strong>certificat officiel Liverpool FC International Academy</strong>.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">⚽</div><h3>Coaching sportif</h3><p>Encadrement Liverpool FC International Academy : technique, tactique, matchs et préparation physique.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">🚐</div><h3>Transferts &amp; Sécurité</h3><p>Transport aéroport A/R, assurance médicale & voyage, encadrement 24/7.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">🏡</div><h3>Hébergement &amp; Repas</h3><p>Chambres individuelles en campus, 3 repas équilibrés/jour, commodités sportives.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">🎟️</div><h3>Excursions</h3><p>Londres, Liverpool City, <strong>Anfield Stadium</strong>, parcs & musées.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">📄</div><h3>Certification</h3><p>Rapport de coaching + <strong>certificat officiel Liverpool FC International Academy</strong>.</p></article>
       </div>
     </section>
 
-    <!-- En savoir plus (SEO-rich) -->
+    <!-- En savoir plus -->
     <section class="services" aria-labelledby="about-title">
       <div style="text-align:center;margin-top:-8px;margin-bottom:8px">
         <button class="cta-dark" id="toggleAbout" aria-expanded="false" aria-controls="aboutContent">
@@ -369,14 +300,14 @@
       <div id="aboutContent" style="display:none;max-width:900px;margin:0 auto;color:rgba(255,255,255,.92);line-height:1.75">
         <h1 id="about-title" style="font-size:1.6rem;margin:.3rem 0 1rem">À propos de Juniors Academy</h1>
 
-        <p><strong>Juniors Academy</strong> est une entreprise spécialisée dans les <strong>séjours linguistiques en Angleterre</strong> et les <strong>stages sportifs</strong> à destination des jeunes de <strong>9 à 17 ans</strong>. Avec plus de <strong>28 ans d’expertise cumulée</strong> via nos partenaires de camps juniors, nous proposons un <strong>stage de football en partenariat avec Liverpool FC International Academy</strong> et une formation d’anglais à <strong>Oxford</strong>.</p>
+        <p><strong>Juniors Academy</strong> est spécialisée dans les <strong>séjours linguistiques en Angleterre</strong> et les <strong>stages sportifs</strong> pour les jeunes de <strong>9 à 17 ans</strong>. Avec plus de <strong>28 ans d’expertise cumulée</strong> via nos partenaires, nous proposons un <strong>stage de football en partenariat avec Liverpool FC International Academy</strong> et une formation d’anglais à <strong>Oxford</strong>.</p>
 
         <p>Notre approche vise un <strong>développement complet</strong> : technique, tactique et condition physique optimale, encadrés par d’anciens athlètes et joueurs professionnels. Les juniors évoluent sur des <strong>terrains d’entraînement de haut niveau</strong>, participent à des <strong>matchs compétitifs</strong> et suivent des <strong>séminaires de nutrition et de psychologie du sport</strong>.</p>
 
         <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Ce qui est inclus</h2>
         <ul style="margin:8px 0 12px 1.1rem">
           <li>Formation de haut niveau (<em>Play like Liverpool</em>) + <strong>15h d’anglais immersifs</strong> par semaine</li>
-          <li><strong>Prise en charge totale</strong> : assurance médicale & de voyage, <strong>support 24/7</strong>, transferts aéroport A/R</li>
+          <li><strong>Prise en charge totale</strong> : assurance médicale & voyage, <strong>support 24/7</strong>, transferts aéroport A/R</li>
           <li><strong>Hébergement en campus</strong> (chambre single) et <strong>3 repas équilibrés</strong> par jour</li>
           <li><strong>4 excursions</strong> : Londres, Liverpool City, <strong>Anfield Stadium</strong>, parcs & musées</li>
           <li>Équipements Adidas exclusifs LFC, accès aux infrastructures et <strong>certificat officiel</strong></li>
@@ -434,7 +365,7 @@
   </a>
 
   <script>
-    // Toggle "En savoir plus"
+    // Toggle "En savoir plus" — lightweight
     (function(){
       const btn = document.getElementById('toggleAbout');
       const arrow = document.getElementById('aboutArrow');
@@ -445,14 +376,14 @@
         const expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
         content.style.display = expanded ? 'none' : 'block';
-        if(arrow) arrow.style.transform = expanded ? 'rotate(0deg)' : 'rotate(180deg)';
+        if(arrow){ arrow.style.transform = expanded ? 'rotate(0deg)' : 'rotate(180deg)'; }
         if(!expanded && !prefersReduced){
-          content.animate([{opacity:0, transform:'translateY(-8px)'},{opacity:1, transform:'none'}], {duration:300, easing:'cubic-bezier(.23,1,.32,1)'});
+          content.animate([{opacity:0, transform:'translateY(-6px)'},{opacity:1, transform:'none'}], {duration:220, easing:'cubic-bezier(.23,1,.32,1)'});
         }
       });
     })();
 
-    // Carousel (3s) — files "Liverpool 1.jpg" … "Liverpool 21.jpg" in repo root
+    // Carousel (3s) — efficient & smooth
     (function(){
       const track = document.getElementById('carouselTrack');
       const dots = document.getElementById('carouselDots');
@@ -467,14 +398,14 @@
         const img = document.createElement('img');
         img.src = encodeURI(name);
         img.alt = `Stage de football Liverpool FC – photo ${idx+1}`;
-        img.loading = idx===0?'eager':'lazy'; img.decoding='async';
+        img.loading = idx<2 ? 'eager':'lazy'; img.decoding='async';
         slide.appendChild(img); track.appendChild(slide); slides.push(slide);
 
         const dot = document.createElement('button'); dot.type='button'; dot.setAttribute('aria-label',`Aller à l'image ${idx+1}`);
         dot.addEventListener('click', ()=>goTo(idx, true)); dots.appendChild(dot); dotBtns.push(dot);
       });
 
-      let idx = 0, timer;
+      let idx = 0, timer=null;
       function update(){ track.style.transform=`translateX(-${idx*100}%)`; dotBtns.forEach((d,i)=>d.setAttribute('aria-current', i===idx?'true':'false')); }
       function goTo(n, restart){ idx=(n+slides.length)%slides.length; update(); if(restart){restartTimer();} }
       function next(){ goTo(idx+1); }
@@ -482,7 +413,7 @@
       function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
       function restartTimer(){ stopTimer(); startTimer(); }
 
-      // Touch swipe
+      // Touch swipe — passive & light
       let startX=0, dx=0, dragging=false;
       track.addEventListener('touchstart', e=>{ dragging=true; startX=e.touches[0].clientX; dx=0; stopTimer(); }, {passive:true});
       track.addEventListener('touchmove', e=>{
@@ -491,11 +422,14 @@
       track.addEventListener('touchend', ()=>{
         track.style.transition=''; if(Math.abs(dx)>50){ goTo(idx+(dx<0?1:-1), true);} else { update(); restartTimer(); }
         dragging=false; dx=0;
-      });
+      }, {passive:true});
 
-      // Desktop hover pause
+      // Desktop hover pause (also passive feeling)
       const viewport=document.querySelector('.carousel-viewport');
-      if(viewport){ viewport.addEventListener('mouseenter', stopTimer); viewport.addEventListener('mouseleave', startTimer); }
+      if(viewport){
+        viewport.addEventListener('mouseenter', stopTimer, {passive:true});
+        viewport.addEventListener('mouseleave', startTimer, {passive:true});
+      }
 
       update(); startTimer();
     })();
