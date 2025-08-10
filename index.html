@@ -24,9 +24,9 @@
       --t:cubic-bezier(.23,1,.32,1);
       --radius-xl:22px;
 
-      /* easy logo sizing */
-      --hero-logo-h:150px;     /* desktop */
-      --hero-logo-h-sm:122px;  /* phones */
+      /* HERO LOGO — bigger */
+      --hero-logo-h:200px;     /* desktop */
+      --hero-logo-h-sm:150px;  /* phones */
     }
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{width:100%;overflow-x:hidden;touch-action:manipulation}
@@ -38,9 +38,6 @@
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     }
 
-    .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip-link:focus{position:fixed;left:12px;top:12px;width:auto;height:auto;padding:10px 14px;background:#000;border:2px solid #fff;border-radius:10px;z-index:10000}
-
     /* Top banner */
     .top-banner{
       text-align:center;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
@@ -48,7 +45,7 @@
     }
     .top-banner p{font-style:italic;font-size:14px;color:#fff;letter-spacing:.5px}
 
-    /* Floating Call Button (bottom-right): red circle + white SVG icon */
+    /* Floating Call Button (bottom-right) */
     .call-fab{
       position:fixed;right:16px;bottom:16px;z-index:9999;
       width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
@@ -68,66 +65,86 @@
         url('https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/ben_5311-1.jpg')
         no-repeat center center / cover;
     }
-    /* Bigger, clickable logo; closer to the headline */
+    /* Bigger clickable logo; tighter space to headline */
     .hero-logo{
-      position:absolute;left:50%;transform:translateX(-50%);top:14px;z-index:2;
+      position:absolute;left:50%;transform:translateX(-50%);top:8px;z-index:2;
     }
     .hero-logo a{display:inline-block;line-height:0}
     .hero-logo img{
       height:auto;max-height:var(--hero-logo-h);width:auto;object-fit:contain;
-      filter:drop-shadow(0 8px 26px rgba(0,0,0,.45));
+      filter:drop-shadow(0 10px 28px rgba(0,0,0,.5));
       transition:transform .25s var(--t);
     }
     .hero-logo a:hover img{transform:scale(1.04)}
-    .hero-content{text-align:center;max-width:940px;margin:0 auto;padding-top:calc(var(--hero-logo-h) + 4px)}
+    .hero-content{text-align:center;max-width:940px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 0.7)}
     @media (max-width:768px){
       .hero-logo img{max-height:var(--hero-logo-h-sm)}
-      .hero-content{padding-top:calc(var(--hero-logo-h-sm) + 2px)}
+      /* MUCH tighter on phones */
+      .hero-content{padding-top:calc(var(--hero-logo-h-sm) * 0.48)}
     }
 
     .hero-headline{
-      font-size:clamp(22px, 6vw, 44px);font-weight:800;line-height:1.08;margin:4px auto 12px;
+      font-size:clamp(22px, 6vw, 44px);font-weight:800;line-height:1.08;margin:2px auto 10px;
       background:linear-gradient(to right,#fff,#f0f0f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
     .hero-subhead{
-      font-size:clamp(14px, 3.6vw, 18px);color:rgba(255,255,255,.9);max-width:720px;margin:0 auto 16px;line-height:1.6
+      font-size:clamp(14px, 3.6vw, 18px);color:rgba(255,255,255,.9);max-width:720px;margin:0 auto 14px;line-height:1.6
     }
 
-    /* One-line CTA headings — tuned for iPhones */
+    /* One-line headings tuned for iPhones */
     .one-line{
       white-space:nowrap;overflow:hidden;text-overflow:clip;
       font-weight:900;margin:0 auto 12px;
       font-size:clamp(12px, 3.6vw, 26px);
       letter-spacing:-0.2px;
     }
-    @media (max-width:360px){
-      .one-line{font-size:clamp(12px, 3.4vw, 22px)}
-    }
+    @media (max-width:360px){ .one-line{font-size:clamp(12px, 3.4vw, 22px)} }
 
+    /* CTA base */
     .cta-button{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(90deg,var(--primary),var(--primary-dark));
       color:#fff;padding:14px 28px;font-weight:800;font-size:clamp(14px,4.2vw,18px);border-radius:999px;text-decoration:none;border:none;cursor:pointer;
       letter-spacing:.5px;box-shadow:0 10px 30px rgba(220,20,60,.35);
+      position:relative;overflow:hidden;
+    }
+    /* shimmer line */
+    .cta-button::after{
+      content:""; position:absolute; inset:0; transform:translateX(-130%);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      opacity:.9;
     }
 
-    /* Carousel (under CTA) — 4945x3295 aspect ratio preserved */
+    /* Attract animations for first CTA */
+    .cta-animated{
+      animation:ctaPulse 2.8s ease-in-out infinite alternate;
+    }
+    .cta-animated::after{
+      animation:shimmer 2.8s linear infinite;
+    }
+    @keyframes ctaPulse{
+      0%   { transform:translateZ(0) scale(1); box-shadow:0 10px 30px rgba(220,20,60,.35); }
+      100% { transform:translateZ(0) scale(1.03); box-shadow:0 16px 42px rgba(220,20,60,.48); }
+    }
+    @keyframes shimmer{
+      0% { transform:translateX(-130%); }
+      100% { transform:translateX(130%); }
+    }
+    @media (prefers-reduced-motion:reduce){
+      .cta-animated{animation:none}
+      .cta-animated::after{animation:none}
+    }
+
+    /* Carousel — keep 4945x3295 look; height capped */
     .hero-carousel{
       margin:16px auto 0;max-width:760px;width:100%;
       border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.04)
     }
-    .carousel-viewport{
-      position:relative;width:100%;aspect-ratio:4945/3295; /* original ratio */
-      max-height:340px; /* keep it phone-friendly */
-      overflow:hidden;
-    }
-    @media (max-width:480px){ .carousel-viewport{max-height:240px} }
+    .carousel-viewport{position:relative;width:100%;aspect-ratio:4945/3295;max-height:340px;overflow:hidden}
+    @media (max-width:480px){ .carousel-viewport{max-height:220px} }
     .carousel-track{display:flex;width:100%;height:100%;will-change:transform;transition:transform .6s var(--t)}
     .carousel-slide{flex:0 0 100%;width:100%;height:100%;background:#0a0a0a}
-    .carousel-slide img{
-      width:100%;height:100%;object-fit:cover;display:block;
-      image-rendering:auto;
-    }
+    .carousel-slide img{width:100%;height:100%;object-fit:cover;display:block}
     .carousel-dots{display:flex;gap:8px;justify-content:center;padding:10px}
     .carousel-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.35);cursor:pointer}
     .carousel-dots button[aria-current="true"]{background:#fff}
@@ -192,7 +209,7 @@
     /* Footer */
     footer.footer{background:rgba(0,0,0,.85);color:var(--gray);text-align:center;padding:30px 16px;font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
 
-    /* Dark “En savoir plus” button (NOT red), one line on phone) */
+    /* Dark “En savoir plus” (not red) */
     .cta-dark{
       display:inline-flex;align-items:center;gap:10px;white-space:nowrap;
       background:linear-gradient(135deg,#1b1b1b,#0f0f10);
@@ -208,8 +225,6 @@
   </style>
 </head>
 <body>
-  <a href="#main" class="skip-link">Aller au contenu principal</a>
-
   <!-- Top Banner -->
   <div class="top-banner" role="note" aria-live="polite">
     <p>Official Partner of Liverpool FC International Academy</p>
@@ -220,7 +235,7 @@
     <section class="hero" aria-label="Introduction">
       <div class="hero-bg" aria-hidden="true"></div>
 
-      <!-- Bigger logo, links to Instagram -->
+      <!-- Bigger logo linking to Instagram -->
       <div class="hero-logo">
         <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Ouvrir Instagram Juniors Academy (nouvelle fenêtre)">
           <img src="Juniors%20Academy-05.png" alt="Juniors Academy" />
@@ -231,14 +246,14 @@
         <h1 class="hero-headline">Excellence Linguistique &amp; Performance Sportive</h1>
         <p class="hero-subhead">Juniors Academy offre des expériences éducatives et sportives exceptionnelles pour les 9-17 ans, en partenariat avec Liverpool FC International Academy.</p>
 
-        <!-- One-line CTA heading (fits iPhones) -->
         <h2 class="one-line">PRÊT À INSCRIRE VOTRE ENFANT À L'AVENTURE ?</h2>
 
-        <a class="cta-button" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener">
+        <!-- Animated CTA -->
+        <a class="cta-button cta-animated" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener">
           Inscriptions ouvertes
         </a>
 
-        <!-- Carousel (exact original aspect ratio) -->
+        <!-- Carousel -->
         <div class="hero-carousel" aria-label="Galerie de photos Liverpool">
           <div class="carousel-viewport">
             <div class="carousel-track" id="carouselTrack" role="list"></div>
@@ -256,45 +271,16 @@
       </div>
 
       <div class="services-grid">
-        <article class="service-card">
-          <div class="service-icon" aria-hidden="true">🎓</div>
-          <h3>Formation linguistique</h3>
-          <p>Cours d'anglais immersifs à Oxford pour développer les compétences linguistiques avec des professeurs natifs.</p>
-        </article>
-
-        <article class="service-card">
-          <div class="service-icon" aria-hidden="true">⚽</div>
-          <h3>Coaching sportif</h3>
-          <p>Entraînement professionnel avec les coaches de Liverpool FC sur des installations de haut niveau.</p>
-        </article>
-
-        <article class="service-card">
-          <div class="service-icon" aria-hidden="true">🚐</div>
-          <h3>Transport &amp; Sécurité</h3>
-          <p>Transferts organisés et encadrement 24/7 avec assurance médicale et voyage inclus.</p>
-        </article>
-
-        <article class="service-card">
-          <div class="service-icon" aria-hidden="true">🏡</div>
-          <h3>Hébergement &amp; Repas</h3>
-          <p>Chambres individuelles sur campus universitaire avec trois repas équilibrés quotidiens.</p>
-        </article>
-
-        <article class="service-card">
-          <div class="service-icon" aria-hidden="true">🎟️</div>
-          <h3>Excursions culturelles</h3>
-          <p>Visites de Londres, Liverpool City, stade d'Anfield, et sites culturels majeurs.</p>
-        </article>
-
-        <article class="service-card">
-          <div class="service-icon" aria-hidden="true">📄</div>
-          <h3>Certification</h3>
-          <p>Certificat officiel Liverpool FC et rapport de progression personnalisé.</p>
-        </article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">🎓</div><h3>Formation linguistique</h3><p>Cours d'anglais immersifs à Oxford pour développer les compétences linguistiques avec des professeurs natifs.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">⚽</div><h3>Coaching sportif</h3><p>Entraînement professionnel avec les coaches de Liverpool FC sur des installations de haut niveau.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">🚐</div><h3>Transport &amp; Sécurité</h3><p>Transferts organisés et encadrement 24/7 avec assurance médicale et voyage inclus.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">🏡</div><h3>Hébergement &amp; Repas</h3><p>Chambres individuelles sur campus universitaire avec trois repas équilibrés quotidiens.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">🎟️</div><h3>Excursions culturelles</h3><p>Visites de Londres, Liverpool City, stade d'Anfield, et sites culturels majeurs.</p></article>
+        <article class="service-card"><div class="service-icon" aria-hidden="true">📄</div><h3>Certification</h3><p>Certificat officiel Liverpool FC et rapport de progression personnalisé.</p></article>
       </div>
     </section>
 
-    <!-- En savoir plus (dark button, arrow, one line on phone) -->
+    <!-- En savoir plus -->
     <section class="services" aria-labelledby="about-title">
       <div style="text-align:center;margin-top:-8px;margin-bottom:8px">
         <button class="cta-dark" id="toggleAbout" aria-expanded="false" aria-controls="aboutContent">
@@ -305,30 +291,14 @@
       <div id="aboutContent" style="display:none;max-width:900px;margin:0 auto;color:rgba(255,255,255,.9);line-height:1.75">
         <h1 id="about-title" style="font-size:1.6rem;margin:.3rem 0 1rem">À propos de Juniors Academy</h1>
         <p>Juniors Academy est le premier choix des parents algériens pour les <strong>camps linguistiques en Angleterre</strong> combinés à des <strong>stages sportifs d'excellence</strong>. Notre programme exclusif, en partenariat avec Liverpool FC International Academy, offre une expérience éducative et sportive inégalée pour les jeunes de 9 à 17 ans.</p>
-
         <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Pourquoi choisir nos camps en Angleterre ?</h2>
-        <ul style="margin:8px 0 12px 1.1rem">
-          <li>Immersion linguistique encadrée par des professeurs natifs</li>
-          <li>Entraînements football de haut niveau</li>
-          <li>Encadrement 24/7 et sécurité</li>
-        </ul>
-
+        <ul style="margin:8px 0 12px 1.1rem"><li>Immersion linguistique encadrée par des professeurs natifs</li><li>Entraînements football de haut niveau</li><li>Encadrement 24/7 et sécurité</li></ul>
         <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Le programme linguistique</h2>
         <p>15 heures de cours d'anglais par semaine dans des classes de niveau homogène. Méthodes interactives axées sur l'oral.</p>
-
         <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Le programme sportif</h2>
-        <ul style="margin:8px 0 12px 1.1rem">
-          <li>Préparation physique</li>
-          <li>Matchs amicaux</li>
-        </ul>
-
+        <ul style="margin:8px 0 12px 1.1rem"><li>Préparation physique</li><li>Matchs amicaux</li></ul>
         <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Une expérience complète</h2>
-        <ul style="margin:8px 0 12px 1.1rem">
-          <li>Visite d'Anfield</li>
-          <li>Découverte de Londres</li>
-          <li>Excursion à Oxford</li>
-          <li>Activités sociales et jeux collectifs</li>
-        </ul>
+        <ul style="margin:8px 0 12px 1.1rem"><li>Visite d'Anfield</li><li>Découverte de Londres</li><li>Excursion à Oxford</li><li>Activités sociales et jeux collectifs</li></ul>
       </div>
     </section>
 
@@ -347,11 +317,7 @@
       <div class="partner-content">
         <h3 class="partner-title">PARTENAIRE OFFICIEL</h3>
         <div>
-          <img class="partner-logo"
-               src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/lfc-logo-horizontal-white-1.png"
-               alt="Liverpool FC"
-               width="660" height="100"
-               loading="lazy" decoding="async" />
+          <img class="partner-logo" src="https://juniorsacademydz.wordpress.com/wp-content/uploads/2025/08/lfc-logo-horizontal-white-1.png" alt="Liverpool FC" width="660" height="100" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>
@@ -364,54 +330,43 @@
           <p class="contact-subtitle">Notre équipe est à votre disposition pour répondre à toutes vos questions</p>
 
           <div class="contact-item">
-            <!-- Address icon -->
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z"/></svg>
             <span>25 Rue Rabah Bourbia, El Biar, Alger, 16003</span>
           </div>
-
           <div class="contact-item">
-            <!-- Phone icon -->
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
             <a href="tel:+213549657829">+213 (0) 549 657 829</a>
           </div>
-
           <div class="contact-item">
-            <!-- Email icon -->
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-.4 3.25l-6.91 5.18a2 2 0 01-2.38 0L3.4 7.25A1 1 0 014 6h16a1 1 0 01.6 1.25z"/></svg>
             <a href="mailto:juniors.academy.dz@outlook.com">juniors.academy.dz@outlook.com</a>
           </div>
         </div>
 
         <div class="contact-map" aria-label="Carte">
-          <iframe
-              title="Localisation Juniors Academy"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.3898086509636!2d3.028938275730759!3d36.767964972238456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fadf991f0a52d%3A0xcda7db93a7a6b8a9!2s25%20Rue%20Rabah%20Bourbia%2C%20Alger!5e0!3m2!1sfr!2sdz!4v1690000000000!5m2!1sfr!2sdz"
-              width="100%" height="320" style="border:0;border-radius:12px" allowfullscreen=""
-              loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <iframe title="Localisation Juniors Academy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.3898086509636!2d3.028938275730759!3d36.767964972238456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fadf991f0a52d%3A0xcda7db93a7a6b8a9!2s25%20Rue%20Rabah%20Bourbia%2C%20Alger!5e0!3m2!1sfr!2sdz!4v1690000000000!5m2!1sfr!2sdz" width="100%" height="320" style="border:0;border-radius:12px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <p>© 2025 Juniors Academy. Tous droits réservés.</p>
   </footer>
 
-  <!-- Floating call button (red circle + white icon) -->
+  <!-- Call FAB -->
   <a class="call-fab" href="tel:+213549657829" aria-label="Appeler Juniors Academy">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
   </a>
 
   <script>
-    // ===== Toggle "En savoir plus" (dark button + arrow rotation) =====
+    // Toggle "En savoir plus"
     (function(){
       const btn = document.getElementById('toggleAbout');
       const arrow = document.getElementById('aboutArrow');
       const content = document.getElementById('aboutContent');
       if(!btn || !content) return;
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
       btn.addEventListener('click', ()=>{
         const expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
@@ -423,82 +378,49 @@
       });
     })();
 
-    // ===== Auto Carousel (3s) - images in same folder: "Liverpool 1.jpg" … "Liverpool 21.jpg"
+    // Carousel (3s) - "Liverpool 1.jpg" … "Liverpool 21.jpg"
     (function(){
       const track = document.getElementById('carouselTrack');
       const dots = document.getElementById('carouselDots');
       if(!track) return;
 
-      const COUNT = 21;
-      const INTERVAL = 3000; // 3s
-      const EXT = 'jpg';
-
+      const COUNT = 21, INTERVAL = 3000, EXT = 'jpg';
       const files = Array.from({length:COUNT}, (_,i)=> `Liverpool ${i+1}.${EXT}`);
 
-      // Build slides + dots
-      const slides = [];
-      const dotBtns = [];
+      const slides = [], dotBtns = [];
       files.forEach((name, idx)=>{
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        slide.setAttribute('role','listitem');
-
-        const img = document.createElement('img');
-        img.src = encodeURI(name); // handles the space
-        img.alt = `Liverpool ${idx+1}`;
-        img.loading = idx === 0 ? 'eager' : 'lazy';
-        img.decoding = 'async';
-
-        slide.appendChild(img);
-        track.appendChild(slide);
-        slides.push(slide);
-
-        const dot = document.createElement('button');
-        dot.type = 'button';
-        dot.setAttribute('aria-label', `Aller à l'image ${idx+1}`);
-        dot.addEventListener('click', ()=> goTo(idx, true));
-        dots.appendChild(dot);
-        dotBtns.push(dot);
+        const slide = document.createElement('div'); slide.className='carousel-slide'; slide.setAttribute('role','listitem');
+        const img = document.createElement('img'); img.src = encodeURI(name); img.alt = `Liverpool ${idx+1}`; img.loading = idx===0?'eager':'lazy'; img.decoding='async';
+        slide.appendChild(img); track.appendChild(slide); slides.push(slide);
+        const dot = document.createElement('button'); dot.type='button'; dot.setAttribute('aria-label',`Aller à l'image ${idx+1}`);
+        dot.addEventListener('click', ()=>goTo(idx, true)); dots.appendChild(dot); dotBtns.push(dot);
       });
 
       let idx = 0, timer;
-      function update(){
-        track.style.transform = `translateX(-${idx*100}%)`;
-        dotBtns.forEach((d,i)=> d.setAttribute('aria-current', i===idx ? 'true':'false'));
-      }
-      function goTo(n, restart){
-        idx = (n + slides.length) % slides.length;
-        update();
-        if(restart){ restartTimer(); }
-      }
+      function update(){ track.style.transform=`translateX(-${idx*100}%)`; dotBtns.forEach((d,i)=>d.setAttribute('aria-current', i===idx?'true':'false')); }
+      function goTo(n, restart){ idx=(n+slides.length)%slides.length; update(); if(restart){restartTimer();} }
       function next(){ goTo(idx+1); }
-
-      function startTimer(){ if(!timer) timer = setInterval(next, INTERVAL); }
-      function stopTimer(){ if(timer){ clearInterval(timer); timer = null; } }
+      function startTimer(){ if(!timer) timer=setInterval(next, INTERVAL); }
+      function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
       function restartTimer(){ stopTimer(); startTimer(); }
 
-      // Touch swipe (phone)
+      // touch swipe
       let startX=0, dx=0, dragging=false;
-      track.addEventListener('touchstart', (e)=>{ dragging=true; startX=e.touches[0].clientX; dx=0; stopTimer(); }, {passive:true});
-      track.addEventListener('touchmove', (e)=>{
-        if(!dragging) return;
-        dx = e.touches[0].clientX - startX;
-        track.style.transition='none';
-        track.style.transform = `translateX(calc(-${idx*100}% + ${dx}px))`;
+      track.addEventListener('touchstart', e=>{ dragging=true; startX=e.touches[0].clientX; dx=0; stopTimer(); }, {passive:true});
+      track.addEventListener('touchmove', e=>{
+        if(!dragging)return; dx=e.touches[0].clientX-startX; track.style.transition='none'; track.style.transform=`translateX(calc(-${idx*100}% + ${dx}px))`;
       }, {passive:true});
       track.addEventListener('touchend', ()=>{
-        track.style.transition='';
-        if(Math.abs(dx) > 50){ goTo(idx + (dx<0?1:-1), true); } else { update(); restartTimer(); }
+        track.style.transition=''; if(Math.abs(dx)>50){ goTo(idx+(dx<0?1:-1), true);} else { update(); restartTimer(); }
         dragging=false; dx=0;
       });
 
-      // Pause on hover (desktop)
-      const viewport = document.querySelector('.carousel-viewport');
+      // desktop hover pause
+      const viewport=document.querySelector('.carousel-viewport');
       viewport.addEventListener('mouseenter', stopTimer);
       viewport.addEventListener('mouseleave', startTimer);
 
-      update();
-      startTimer();
+      update(); startTimer();
     })();
   </script>
 </body>
