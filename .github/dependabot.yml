@@ -1,0 +1,9 @@
+version: 2
+updates:
+  # Keep GitHub Actions up to date (works for any repo)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"        # or "daily" / "monthly"
+    open-pull-requests-limit: 5
+    labels: ["deps", "github-actions"]
