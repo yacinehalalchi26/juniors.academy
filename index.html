@@ -8,7 +8,7 @@
   <title>Juniors Academy | Séjours linguistiques & Stages de football avec Liverpool FC (9-17 ans)</title>
 
   <!-- Google site verification -->
-<meta name="google-site-verification" content="GczBFYrZRp2YEdTQbVL4euIJ-O8d3bm9rdFrreEDQiw" />
+  <meta name="google-site-verification" content="GczBFYrZRp2YEdTQbVL4euIJ-O8d3bm9rdFrreEDQiw" />
 
   <!-- Canonical / Robots -->
   <link rel="canonical" href="https://juniors.academy/">
@@ -307,6 +307,27 @@
 
     footer.footer{background:rgba(0,0,0,.85);color:var(--gray);text-align:center;padding:30px 16px;font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
 
+    /* Blog link top-right */
+    .top-nav{
+      position:fixed; /* stays top-right on scroll */
+      top:calc(env(safe-area-inset-top, 0px) + 12px);
+      right:calc(env(safe-area-inset-right, 0px) + 16px);
+      z-index:1001;
+    }
+    .top-nav a{
+      color:#fff;
+      font-weight:700;
+      text-decoration:none;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      padding:8px 16px;
+      border-radius:999px;
+      box-shadow:0 4px 12px rgba(220,20,60,.4);
+      transition:transform .18s var(--t), box-shadow .18s var(--t);
+    }
+    @media (hover:hover){
+      .top-nav a:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(220,20,60,.5); }
+    }
+
     /* Accessibility: reduce motion preference */
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -314,6 +335,11 @@
   </style>
 </head>
 <body>
+  <!-- Blog Link (top-right) -->
+  <nav class="top-nav" aria-label="navigation rapide">
+    <a href="https://www.juniors.academy/blog" target="_blank" rel="noopener">Blog</a>
+  </nav>
+
   <!-- Top Banner -->
   <div class="top-banner" role="note" aria-live="polite">
     <p>Official Partner of Liverpool FC International Academy</p>
