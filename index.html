@@ -36,8 +36,6 @@
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
-  <!-- Optional: ICO for legacy browsers -->
-  <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> -->
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -155,7 +153,6 @@
     /* Hero */
     .hero{
       position:relative;
-      /* Use small viewport unit to avoid iOS chrome jumps */
       min-height:100svh;
       display:grid;place-items:center;overflow:hidden;padding:0 16px
     }
@@ -166,9 +163,27 @@
         url('https://juniors.academy/Liverpool%201.jpg')
         no-repeat center center / cover;
     }
+
+    /* BLOG BUTTON — inside hero, top-left, not sticky */
+    .blog-pill{
+      position:absolute;
+      top:16px;
+      left:16px; /* keeps it below the red banner because it's inside .hero */
+      z-index:3;
+    }
+    .blog-pill a{
+      color:#fff;font-weight:700;text-decoration:none;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      padding:8px 16px;border-radius:999px;
+      box-shadow:0 4px 12px rgba(220,20,60,.4);
+      transition:transform .18s var(--t), box-shadow .18s var(--t);
+    }
+    @media (hover:hover){
+      .blog-pill a:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(220,20,60,.5)}
+    }
+
     .hero-logo{
       position:absolute;left:50%;transform:translateX(-50%);
-      /* Keep clear of the notch/safe-area on phones */
       top:calc(env(safe-area-inset-top, 0px) + 8px);
       z-index:2;
     }
@@ -183,12 +198,9 @@
     /* Make sure headline never overlaps the logo */
     .hero-content{text-align:center;max-width:1100px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 1.1)}
     @media (min-width:1200px){ .hero-content{padding-top:calc(var(--hero-logo-h) * 1.18)} }
-
-    /* Mobile: increase top padding & account for safe area so text never sits under the logo when scrolling */
     @media (max-width:768px){
       .hero-logo img{max-height:var(--hero-logo-h-sm)}
       .hero-content{
-        /* logo height + extra space + safe area */
         padding-top:calc(var(--hero-logo-h-sm) + 28px + env(safe-area-inset-top, 0px));
       }
     }
@@ -201,13 +213,11 @@
       font-size:clamp(14px, 3.6vw, 22px);color:rgba(255,255,255,.9);max-width:920px;margin:0 auto 10px;line-height:1.55
     }
 
-    /* One-line heading for phone */
     .one-line{
       white-space:nowrap;overflow:hidden;text-overflow:clip;
       font-weight:900;margin:8px auto 14px;font-size:clamp(12px, 3.6vw, 26px);letter-spacing:-0.2px;
     }
 
-    /* CTA — lightweight hover-only effect (no idle loops) */
     .hero-cta{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       font-weight:900;letter-spacing:.3px;color:#fff;text-decoration:none;border:none;cursor:pointer;
@@ -307,27 +317,6 @@
 
     footer.footer{background:rgba(0,0,0,.85);color:var(--gray);text-align:center;padding:30px 16px;font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
 
-    /* Blog link top-right */
-    .top-nav{
-      position:fixed; /* stays top-right on scroll */
-      top:calc(env(safe-area-inset-top, 0px) + 12px);
-      right:calc(env(safe-area-inset-right, 0px) + 16px);
-      z-index:1001;
-    }
-    .top-nav a{
-      color:#fff;
-      font-weight:700;
-      text-decoration:none;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      padding:8px 16px;
-      border-radius:999px;
-      box-shadow:0 4px 12px rgba(220,20,60,.4);
-      transition:transform .18s var(--t), box-shadow .18s var(--t);
-    }
-    @media (hover:hover){
-      .top-nav a:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(220,20,60,.5); }
-    }
-
     /* Accessibility: reduce motion preference */
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -335,12 +324,7 @@
   </style>
 </head>
 <body>
-  <!-- Blog Link (top-right) -->
-  <nav class="top-nav" aria-label="navigation rapide">
-    <a href="https://www.juniors.academy/blog" target="_blank" rel="noopener">Blog</a>
-  </nav>
-
-  <!-- Top Banner -->
+  <!-- Top Banner (header) -->
   <div class="top-banner" role="note" aria-live="polite">
     <p>Official Partner of Liverpool FC International Academy</p>
   </div>
@@ -349,6 +333,11 @@
     <!-- HERO -->
     <section class="hero" aria-label="Introduction">
       <div class="hero-bg" aria-hidden="true"></div>
+
+      <!-- Blog button (below header, top-left; not sticky) -->
+      <nav class="blog-pill" aria-label="Accès blog">
+        <a href="https://www.juniors.academy/blog" target="_blank" rel="noopener">Blog</a>
+      </nav>
 
       <!-- Centered logo linking to Instagram -->
       <div class="hero-logo">
@@ -495,7 +484,7 @@
       });
     })();
 
-    // Carousel (3s) — files "Liverpool 1.jpg" … "Liverpool 21.jpg" in same folder
+    // Carousel (3s) — files "Liverpool 1.jpg" … "Liverpool 21.jpg"
     (function(){
       const track = document.getElementById('carouselTrack');
       const dots = document.getElementById('carouselDots');
