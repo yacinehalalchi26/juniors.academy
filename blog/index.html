@@ -4,31 +4,173 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog | Juniors Academy</title>
-  <link rel="stylesheet" href="../style.css"> <!-- reuse your main CSS if you want -->
+
+  <!-- Brand & SEO basics (optional but recommended) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://juniors.academy/blog" />
+  <meta name="description" content="Conseils, actualités et coulisses des séjours linguistiques et stages de football Juniors Academy." />
+  <meta name="robots" content="index,follow" />
+
+  <!-- Open Graph / Twitter (optional) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Juniors Academy">
+  <meta property="og:url" content="https://juniors.academy/blog">
+  <meta property="og:title" content="Blog | Juniors Academy">
+  <meta property="og:description" content="Conseils, actualités et coulisses des séjours linguistiques et stages de football Juniors Academy.">
+  <meta property="og:image" content="https://juniors.academy/Liverpool%201.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    :root{
+      --primary:#dc143c;
+      --primary-dark:#a00000;
+      --gray:#8a8a8e;
+      --card-bg:rgba(255,255,255,.08);
+      --radius-xl:22px;
+      --t:cubic-bezier(.23,1,.32,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;overflow-x:hidden}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";
+      line-height:1.6;background:#000;color:#fff;
+      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Top-right nav (same vibe as home) */
+    .top-nav{
+      position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);
+      right:calc(env(safe-area-inset-right,0px) + 16px);z-index:1000;
+      display:flex;gap:8px
+    }
+    .top-nav a{
+      display:inline-block;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      color:#fff;text-decoration:none;font-weight:700;padding:8px 14px;border-radius:999px;
+      box-shadow:0 4px 12px rgba(220,20,60,.4);
+      transition:transform .18s var(--t), box-shadow .18s var(--t);
+    }
+    @media (hover:hover){
+      .top-nav a:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(220,20,60,.5)}
+    }
+
+    header.blog-header{
+      max-width:1080px;margin:84px auto 18px;padding:0 16px;text-align:center;
+    }
+    .brand{
+      display:inline-flex;align-items:center;gap:12px;margin-bottom:8px;text-decoration:none;color:#fff;
+    }
+    .brand img{height:48px;width:auto;object-fit:contain;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45))}
+    .blog-title{font-size:clamp(28px,6vw,46px);font-weight:800;line-height:1.1;margin:4px 0 6px}
+    .blog-sub{color:rgba(255,255,255,.85);font-size:clamp(14px,3.2vw,18px)}
+
+    main{max-width:1080px;margin:18px auto 60px;padding:0 16px}
+    .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media (max-width:992px){.posts{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.posts{grid-template-columns:1fr}}
+
+    .post{
+      background:var(--card-bg);border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius-xl);padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.18);
+      transition:transform .18s var(--t), box-shadow .18s var(--t);
+    }
+    @media (hover:hover){ .post:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(0,0,0,.35)} }
+    .post h2{font-size:18px;margin:0 0 6px;font-weight:800}
+    .meta{font-size:13px;color:var(--gray);margin-bottom:8px}
+    .post p{font-size:14px;color:rgba(255,255,255,.9);margin:0 0 10px}
+    .readmore{
+      display:inline-block;color:#fff;text-decoration:none;font-weight:700;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      padding:8px 14px;border-radius:999px;border:0
+    }
+
+    footer{color:#8a8a8e;text-align:center;padding:28px 16px;border-top:1px solid rgba(255,255,255,.06)}
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Blog Juniors Academy</h1>
-    <nav>
-      <a href="/">Accueil</a> |
-      <a href="https://juniors.academy/blog">Blog</a>
-    </nav>
+  <!-- Top-right nav -->
+  <nav class="top-nav" aria-label="navigation">
+    <a href="/">Accueil</a>
+    <a href="/blog">Blog</a>
+  </nav>
+
+  <header class="blog-header">
+    <a href="/" class="brand">
+      <img src="../Juniors%20Academy-05.png" alt="Logo Juniors Academy">
+      <span style="font-weight:800;letter-spacing:.2px">Juniors Academy</span>
+    </a>
+    <h1 class="blog-title">Blog</h1>
+    <p class="blog-sub">Conseils, actualités et coulisses de nos séjours linguistiques & stages de football.</p>
   </header>
 
   <main>
-    <article>
-      <h2>Premier article de blog</h2>
-      <p>Bienvenue sur notre nouveau blog ! Ici, nous partagerons des conseils, des actualités et des infos sur nos séjours et stages de football.</p>
-    </article>
+    <section class="posts" aria-label="articles">
+      <!-- Example Post 1 (list item) -->
+      <article class="post">
+        <h2>Premier article de blog</h2>
+        <div class="meta">Publié le <time datetime="2025-09-23">23 septembre 2025</time> • 2 min</div>
+        <p>Bienvenue sur notre nouveau blog ! Ici, nous partagerons des conseils, des actualités et des infos sur nos séjours et stages de football.</p>
+        <!-- If you later create a standalone page, change href to "/blog/premier-article/" -->
+        <a class="readmore" href="#">Lire</a>
+      </article>
 
-    <article>
-      <h2>Deuxième article</h2>
-      <p>Un autre exemple d’article que vous pouvez développer.</p>
-    </article>
+      <!-- Example Post 2 -->
+      <article class="post">
+        <h2>5 conseils pour réussir un stage de foot</h2>
+        <div class="meta">Publié le <time datetime="2025-09-23">23 septembre 2025</time> • 3 min</div>
+        <p>Préparation physique, hydratation, sommeil et mental : nos recommandations clés pour tirer le maximum de l’expérience.</p>
+        <a class="readmore" href="#">Lire</a>
+      </article>
+
+      <!-- Example Post 3 -->
+      <article class="post">
+        <h2>Pourquoi Radley College est idéal pour l’anglais</h2>
+        <div class="meta">Publié le <time datetime="2025-09-23">23 septembre 2025</time> • 4 min</div>
+        <p>Un campus sécurisé, des professeurs expérimentés et une immersion qui accélère la progression linguistique.</p>
+        <a class="readmore" href="#">Lire</a>
+      </article>
+    </section>
   </main>
 
   <footer>
     <p>© 2025 Juniors Academy. Tous droits réservés.</p>
   </footer>
+
+  <!-- (Optional) JSON-LD for a basic blog listing -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Juniors Academy Blog",
+    "url": "https://juniors.academy/blog",
+    "blogPost": [
+      {
+        "@type": "BlogPosting",
+        "headline": "Premier article de blog",
+        "datePublished": "2025-09-23",
+        "author": {"@type":"Organization","name":"Juniors Academy"},
+        "url": "https://juniors.academy/blog"
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "5 conseils pour réussir un stage de foot",
+        "datePublished": "2025-09-23",
+        "author": {"@type":"Organization","name":"Juniors Academy"},
+        "url": "https://juniors.academy/blog"
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Pourquoi Radley College est idéal pour l’anglais",
+        "datePublished": "2025-09-23",
+        "author": {"@type":"Organization","name":"Juniors Academy"},
+        "url": "https://juniors.academy/blog"
+      }
+    ]
+  }
+  </script>
 </body>
 </html>
