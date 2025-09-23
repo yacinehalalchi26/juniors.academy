@@ -21,7 +21,7 @@
   <meta property="og:url" content="https://juniors.academy/blog">
   <meta property="og:title" content="Blog | Juniors Academy">
   <meta property="og:description" content="Conseils, actualités et coulisses des séjours linguistiques et stages de football Juniors Academy.">
-  <meta property="og:image" content="https://juniors.academy/Liverpool%201.jpg">
+  <meta property="og:image" content="https://juniors.academy/Liverpool%2010.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
   <style>
@@ -42,16 +42,19 @@
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     }
 
-    /* Toolbar (buttons only) */
+    /* Toolbar (ACCUEIL / INSCRIPTION) */
     .toolbar{
-      max-width:1100px;margin:12px auto 2px;padding:0 16px;
+      max-width:1100px;margin:12px auto 0;padding:0 16px;
       display:grid;grid-template-columns:1fr 1fr;align-items:start;
     }
     .pill{
       display:inline-block;
       background:linear-gradient(135deg,var(--primary),var(--primary-dark));
       color:#fff;text-decoration:none;font-weight:800;
-      padding:8px 16px;border-radius:999px; /* match Accueil pill from home */
+      /* match homepage BLOG pill sizing, responsive */
+      font-size:clamp(12px,2.6vw,14px);
+      padding:clamp(6px,1.2vw,8px) clamp(12px,2.2vw,16px);
+      border-radius:999px;
       box-shadow:0 6px 16px rgba(220,20,60,.35);
       transition:transform .18s var(--t), box-shadow .18s var(--t);
       text-transform:uppercase;letter-spacing:.4px;
@@ -62,12 +65,12 @@
       .pill:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(220,20,60,.45)}
     }
 
-    /* Big headline below the buttons */
+    /* Big headline below the buttons with extra spacing */
     .page-title{
-      max-width:1100px;margin:10px auto 18px;padding:0 16px;text-align:center;
+      max-width:1100px;margin:28px auto 20px;padding:0 16px;text-align:center;
     }
     .page-title h1{
-      font-size:clamp(32px, 6.4vw, 64px);
+      font-size:clamp(34px, 6.6vw, 66px);
       font-weight:900;letter-spacing:1px;line-height:1.06;margin:0;
       background:linear-gradient(90deg,#cfcfcf,#ffffff,#d6d6d6);
       background-size:200% 100%;
@@ -79,6 +82,9 @@
     @keyframes shine{
       from{background-position:0% 50%}
       to{background-position:100% 50%}
+    }
+    @media (max-width:640px){
+      .page-title{ margin-top:34px; } /* more air on phones */
     }
 
     /* Posts (centered) */
@@ -108,7 +114,7 @@
     }
     .read-toggle svg{width:14px;height:14px;fill:#fff;transition:transform .18s var(--t)}
     .read-toggle.is-open{
-      background:linear-gradient(135deg,#a00000,#6e0000); /* darker when open */
+      background:linear-gradient(135deg,#a00000,#6e0000);
       filter:saturate(1.05);
     }
 
@@ -150,7 +156,7 @@
     .contact-map{background:var(--card-bg);border-radius:var(--radius-xl);overflow:hidden;min-height:320px;border:1px solid rgba(255,255,255,.06);position:relative}
 
     footer{color:#8a8a8e;text-align:center;padding:28px 16px;border-top:1px solid rgba(255,255,255,.06)}
-    footer p{white-space:nowrap} /* one line on phones */
+    footer p{white-space:nowrap}
     .vh{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
   </style>
 </head>
@@ -162,7 +168,7 @@
     <a class="pill pill-right" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform">Inscription</a>
   </div>
 
-  <!-- Big headline under buttons -->
+  <!-- Big headline under buttons (with more space) -->
   <header class="page-title">
     <h1>JA BLOGS</h1>
   </header>
