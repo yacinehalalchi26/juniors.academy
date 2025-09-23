@@ -42,16 +42,16 @@
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     }
 
-    /* Minimal toolbar (no banner, no logo) */
+    /* Toolbar (buttons only) */
     .toolbar{
-      max-width:1100px;margin:12px auto 8px;padding:0 16px;
-      display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:12px;
+      max-width:1100px;margin:12px auto 2px;padding:0 16px;
+      display:grid;grid-template-columns:1fr 1fr;align-items:start;
     }
     .pill{
       display:inline-block;
       background:linear-gradient(135deg,var(--primary),var(--primary-dark));
       color:#fff;text-decoration:none;font-weight:800;
-      padding:8px 16px;border-radius:999px; /* same as Accueil blog pill on home */
+      padding:8px 16px;border-radius:999px; /* match Accueil pill from home */
       box-shadow:0 6px 16px rgba(220,20,60,.35);
       transition:transform .18s var(--t), box-shadow .18s var(--t);
       text-transform:uppercase;letter-spacing:.4px;
@@ -61,13 +61,28 @@
     @media (hover:hover){
       .pill:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(220,20,60,.45)}
     }
-    .toolbar-title{
-      font-weight:900;letter-spacing:.6px;white-space:nowrap;text-align:center;
-      user-select:none;transform:translateY(6px); /* a bit lower than the buttons */
+
+    /* Big headline below the buttons */
+    .page-title{
+      max-width:1100px;margin:10px auto 18px;padding:0 16px;text-align:center;
+    }
+    .page-title h1{
+      font-size:clamp(32px, 6.4vw, 64px);
+      font-weight:900;letter-spacing:1px;line-height:1.06;margin:0;
+      background:linear-gradient(90deg,#cfcfcf,#ffffff,#d6d6d6);
+      background-size:200% 100%;
+      -webkit-background-clip:text;background-clip:text;
+      color:transparent;
+      filter:drop-shadow(0 10px 26px rgba(0,0,0,.5));
+      animation:shine 1.2s ease-out .15s 1 forwards;
+    }
+    @keyframes shine{
+      from{background-position:0% 50%}
+      to{background-position:100% 50%}
     }
 
-    /* Posts (centered column) */
-    main{max-width:1100px;margin:18px auto 60px;padding:0 16px}
+    /* Posts (centered) */
+    main{max-width:1100px;margin:8px auto 60px;padding:0 16px}
     .posts{display:block}
     .post{
       max-width:820px;margin:0 auto 18px;
@@ -97,10 +112,8 @@
       filter:saturate(1.05);
     }
 
-    /* Collapsible details (hidden by default) */
-    .details{
-      display:none;padding:0 18px 18px;
-    }
+    /* Collapsible details */
+    .details{display:none;padding:0 18px 18px}
     .details-inner{
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.06);
@@ -110,7 +123,7 @@
     .details p, .details li{color:rgba(255,255,255,.92)}
     .details ul{padding-left:1.1rem}
 
-    /* Partner section (before contact) */
+    /* Partner section */
     .partner-section{padding:60px 16px;text-align:center}
     .partner-content{max-width:800px;margin:0 auto}
     .partner-title{
@@ -124,7 +137,7 @@
     }
     @media (hover:hover){ .partner-logo:hover{filter:grayscale(0%) brightness(100%);opacity:1;transform:translateY(-3px)} }
 
-    /* Contact (same vibe as home) */
+    /* Contact section */
     .contact-section{padding:32px 16px 64px;max-width:1000px;margin:0 auto}
     .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
     .contact-info{background:var(--card-bg);border-radius:var(--radius-xl);padding:22px;border:1px solid rgba(255,255,255,.06)}
@@ -143,22 +156,26 @@
 </head>
 <body>
 
-  <!-- Toolbar -->
+  <!-- Buttons row -->
   <div class="toolbar" role="navigation" aria-label="Barre principale">
     <a class="pill" href="/">Accueil</a>
-    <div class="toolbar-title">JA BLOGS</div>
     <a class="pill pill-right" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform">Inscription</a>
   </div>
 
+  <!-- Big headline under buttons -->
+  <header class="page-title">
+    <h1>JA BLOGS</h1>
+  </header>
+
   <!-- Hidden H1 for SEO/accessibility -->
-  <h1 class="vh">JA BLOGS – Juniors Academy</h1>
+  <h2 class="vh">JA BLOGS – Juniors Academy</h2>
 
   <main>
     <section class="posts" aria-label="Articles">
       <!-- Single centered blog card with inline expandable content -->
       <article class="post" id="post1">
         <div class="post-hero">
-          <img src="../Liverpool%201.jpg" alt="Séance d’entraînement Liverpool FC International Academy">
+          <img src="../Liverpool%2010.jpg" alt="Salle de repas à Radley College pendant le camp — Liverpool FC International Academy">
         </div>
         <div class="post-body">
           <h2>5 conseils pour réussir son stage de foot</h2>
@@ -171,7 +188,7 @@
           </button>
         </div>
 
-        <!-- Collapsible details (opens below like your “En savoir plus”) -->
+        <!-- Collapsible details (opens below) -->
         <div class="details" id="post1Details">
           <div class="details-inner">
             <h3>La checklist gagnante</h3>
@@ -305,7 +322,7 @@
         "headline": "5 conseils pour réussir son stage de foot",
         "datePublished": "2025-09-23",
         "author": {"@type":"Organization","name":"Juniors Academy"},
-        "image": "https://juniors.academy/Liverpool%201.jpg",
+        "image": "https://juniors.academy/Liverpool%2010.jpg",
         "url": "https://juniors.academy/blog"
       }
     ]
