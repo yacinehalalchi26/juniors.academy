@@ -251,6 +251,22 @@
     .carousel-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.35);cursor:pointer}
     .carousel-dots button[aria-current="true"]{background:#fff}
 
+    /* New: prev/next arrow controls */
+    .carousel-nav{
+      position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;pointer-events:none;
+      padding:0 6px;
+    }
+    .carousel-btn{
+      pointer-events:auto;border:none;border-radius:999px;display:grid;place-items:center;cursor:pointer;
+      width:38px;height:38px;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);
+      transition:transform .18s var(--t), background .18s var(--t), box-shadow .18s var(--t);
+      box-shadow:0 6px 18px rgba(0,0,0,.35)
+    }
+    .carousel-btn svg{width:18px;height:18px;fill:#fff}
+    @media(hover:hover){
+      .carousel-btn:hover{transform:translateY(-1px);background:rgba(0,0,0,.6)}
+    }
+
     /* Sections */
     section{content-visibility:auto;contain-intrinsic-size:600px}
     .services{padding:64px 16px;max-width:1200px;margin:0 auto}
@@ -358,8 +374,18 @@
 
         <!-- Carousel -->
         <div class="hero-carousel" aria-label="Galerie photos du stage Arsenal Football Development">
-          <div class="carousel-viewport">
+          <div class="carousel-viewport" id="carouselViewport" tabindex="0" aria-roledescription="carousel" aria-live="off">
             <div class="carousel-track" id="carouselTrack" role="list"></div>
+
+            <!-- New: arrow buttons -->
+            <div class="carousel-nav" aria-hidden="false">
+              <button class="carousel-btn" id="prevBtn" type="button" aria-label="Image précédente">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+              <button class="carousel-btn" id="nextBtn" type="button" aria-label="Image suivante">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+              </button>
+            </div>
           </div>
           <div class="carousel-dots" id="carouselDots" aria-hidden="true"></div>
         </div>
@@ -444,7 +470,7 @@
             <a href="tel:+213550527722" aria-label="Appeler Juniors Academy">+213 (0) 550 52 77 22</a>
           </div>
           <div class="contact-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-.4 3.25l-6.91 5.18a2 2 0 01-2.38 0L3.4 7.25A1 1 0 014 6h16a1 1 0 01.6 1.25z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 01-2-2zm-.4 3.25l-6.91 5.18a2 2 0 01-2.38 0L3.4 7.25A1 1 0 014 6h16a1 1 0 01.6 1.25z"/></svg>
             <a href="mailto:juniors.academy.dz@outlook.com">juniors.academy.dz@outlook.com</a>
           </div>
         </div>
@@ -488,6 +514,9 @@
     (function(){
       const track = document.getElementById('carouselTrack');
       const dots = document.getElementById('carouselDots');
+      const viewport = document.getElementById('carouselViewport');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
       if(!track) return;
 
       const COUNT = 21, INTERVAL = 3000, EXT = 'png';
@@ -506,29 +535,75 @@
         dot.addEventListener('click', ()=>goTo(idx, true)); dots.appendChild(dot); dotBtns.push(dot);
       });
 
-      let idx = 0, timer=null;
-      function update(){ track.style.transform=`translateX(-${idx*100}%)`; dotBtns.forEach((d,i)=>d.setAttribute('aria-current', i===idx?'true':'false')); }
-      function goTo(n, restart){ idx=(n+slides.length)%slides.length; update(); if(restart){restartTimer();} }
+      let idx = 0, timer=null, dragging=false, startX=0, dx=0;
+
+      function update(){
+        track.style.transform=`translateX(-${idx*100}%)`;
+        dotBtns.forEach((d,i)=>d.setAttribute('aria-current', i===idx?'true':'false'));
+      }
+      function goTo(n, restart){
+        idx=(n+slides.length)%slides.length;
+        update();
+        if(restart){ restartTimer(); }
+      }
       function next(){ goTo(idx+1); }
+      function prev(){ goTo(idx-1); }
       function startTimer(){ if(!timer) timer=setInterval(next, INTERVAL); }
       function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
       function restartTimer(){ stopTimer(); startTimer(); }
 
-      // Touch swipe — passive & light
-      let startX=0, dx=0, dragging=false;
-      track.addEventListener('touchstart', e=>{ dragging=true; startX=e.touches[0].clientX; dx=0; stopTimer(); }, {passive:true});
-      track.addEventListener('touchmove', e=>{
-        if(!dragging)return; dx=e.touches[0].clientX-startX; track.style.transition='none'; track.style.transform=`translateX(calc(-${idx*100}% + ${dx}px))`;
-      }, {passive:true});
-      track.addEventListener('touchend', ()=>{
+      // Existing touch swipe (kept) + upgraded to Pointer Events for mouse/pen/touch
+      function onPointerDown(e){
+        dragging = true;
+        startX = e.clientX ?? (e.touches && e.touches[0].clientX) ?? 0;
+        dx = 0;
+        stopTimer();
+        track.style.transition='none';
+      }
+      function onPointerMove(e){
+        if(!dragging) return;
+        const x = e.clientX ?? (e.touches && e.touches[0].clientX) ?? 0;
+        dx = x - startX;
+        track.style.transform=`translateX(calc(-${idx*100}% + ${dx}px))`;
+      }
+      function onPointerUp(){
+        if(!dragging) return;
+        dragging = false;
         track.style.transition='';
-        if(Math.abs(dx)>50){ goTo(idx+(dx<0?1:-1), true);} else { update(); restartTimer(); }
-        dragging=false; dx=0;
-      }, {passive:true});
+        if(Math.abs(dx) > 50){
+          dx < 0 ? next() : prev();
+          restartTimer();
+        }else{
+          update();
+          startTimer();
+        }
+        dx = 0;
+      }
 
-      // Desktop hover pause
-      const viewport=document.querySelector('.carousel-viewport');
+      // Pointer Events (covers mouse/touch/pen)
+      if(window.PointerEvent){
+        viewport.addEventListener('pointerdown', onPointerDown, {passive:true});
+        window.addEventListener('pointermove', onPointerMove, {passive:true});
+        window.addEventListener('pointerup', onPointerUp, {passive:true});
+        window.addEventListener('pointercancel', onPointerUp, {passive:true});
+      }else{
+        // Fallback touch (kept from previous)
+        track.addEventListener('touchstart', e=>onPointerDown(e), {passive:true});
+        track.addEventListener('touchmove', e=>onPointerMove(e), {passive:true});
+        track.addEventListener('touchend', onPointerUp, {passive:true});
+      }
+
+      // Buttons
+      if(prevBtn) prevBtn.addEventListener('click', ()=>{ prev(); restartTimer(); });
+      if(nextBtn) nextBtn.addEventListener('click', ()=>{ next(); restartTimer(); });
+
+      // Keyboard arrows when viewport focused
       if(viewport){
+        viewport.addEventListener('keydown', (e)=>{
+          if(e.key === 'ArrowLeft'){ e.preventDefault(); prev(); restartTimer(); }
+          if(e.key === 'ArrowRight'){ e.preventDefault(); next(); restartTimer(); }
+        });
+        // Desktop hover pause
         viewport.addEventListener('mouseenter', stopTimer, {passive:true});
         viewport.addEventListener('mouseleave', startTimer, {passive:true});
       }
