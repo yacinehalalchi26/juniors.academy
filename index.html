@@ -16,21 +16,21 @@
 
   <!-- Primary Meta -->
   <meta name="description" content="Séjours linguistiques et stages sportifs de haut niveau pour les 9-17 ans. Stage de football en partenariat avec Arsenal Football Development, hébergement, sécurité 24/7, excursions et coaching pro.">
-  <meta name="keywords" content="séjours linguistiques Angleterre, séjour linguistique à Radley College, stage football avec Arsenal Football Development, camp junior Algérie, camp d'été Angleterre, formation anglais jeunes, stage sportif Angleterre, Juniors Academy Algérie, Arsenal Football Development, séjour étudiant mineur UK, camp de foot pro, séjour anglais et sport, excursion Londres, excursion Emirates Stadium, hébergement campus, assurance voyage, formation sportive haut niveau">
+  <meta name="keywords" content="séjours linguistiques Angleterre, séjour linguistique à Oundle School, stage football avec Arsenal Football Development, camp junior Algérie, camp d'été Angleterre, formation anglais jeunes, stage sportif Angleterre, Juniors Academy Algérie, Arsenal Football Development, séjour étudiant mineur UK, camp de foot pro, séjour anglais et sport, excursion Londres, excursion Emirates Stadium, hébergement campus, assurance voyage, formation sportive haut niveau">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Juniors Academy">
   <meta property="og:url" content="https://juniors.academy/">
   <meta property="og:title" content="Juniors Academy – Séjours linguistiques & Stage de football Arsenal Football Development">
-  <meta property="og:description" content="Programmes 9-17 ans : anglais à Radley College + stage de foot pro avec Arsenal Football Development. Hébergement, sécurité 24/7, excursions, certificat officiel.">
+  <meta property="og:description" content="Programmes 9-17 ans : anglais à Oundle School + stage de foot pro avec Arsenal Football Development. Hébergement, sécurité 24/7, excursions, certificat officiel.">
   <meta property="og:image" content="https://juniors.academy/Arsenal%201.png">
   <meta property="og:locale" content="fr_DZ">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Juniors Academy – Séjours linguistiques & Stage de football Arsenal Football Development">
-  <meta name="twitter:description" content="Anglais + football pro pour les 9-17 ans à Radley College, avec Arsenal Football Development. Sécurité 24/7, excursions, certificat.">
+  <meta name="twitter:description" content="Anglais + football pro pour les 9-17 ans à Oundle School, avec Arsenal Football Development. Sécurité 24/7, excursions, certificat.">
   <meta name="twitter:image" content="https://juniors.academy/Arsenal%201.png">
 
   <!-- Favicons -->
@@ -50,7 +50,7 @@
     "name": "Juniors Academy",
     "url": "https://juniors.academy/",
     "logo": "https://juniors.academy/Juniors%20Academy-05.png",
-    "description": "Séjours linguistiques à Radley College et stages de football de haut niveau pour les 9-17 ans, en partenariat avec Arsenal Football Development.",
+    "description": "Séjours linguistiques à Oundle School et stages de football de haut niveau pour les 9-17 ans, en partenariat avec Arsenal Football Development.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "25 Rue Rabah Bourbia",
@@ -75,13 +75,13 @@
   {
     "@context": "https://schema.org",
     "@type": "Course",
-    "name": "Stage de football Arsenal Football Development (9-17 ans) – Radley College",
+    "name": "Stage de football Arsenal Football Development (9-17 ans) – Oundle School",
     "description": "Programme intensif de football pour juniors, coaching pro, matchs, nutrition et psychologie du sport. Inclut hébergement, repas, sécurité 24/7 et excursions.",
     "provider": { "@type": "Organization", "name": "Juniors Academy", "sameAs": "https://juniors.academy/" },
     "hasCourseInstance": {
       "@type": "CourseInstance",
       "courseMode": "OnSite",
-      "location": { "@type": "Place", "name": "Radley College, Royaume-Uni" },
+      "location": { "@type": "Place", "name": "Oundle School, Royaume-Uni" },
       "offers": {
         "@type": "Offer",
         "url": "https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform",
@@ -100,7 +100,7 @@
     "@type":"FAQPage",
     "mainEntity":[
       {"@type":"Question","name":"Quel âge pour participer au programme ?","acceptedAnswer":{"@type":"Answer","text":"Nos séjours et stages sont ouverts aux juniors de 9 à 17 ans avec regroupement par niveaux d'âge et de compétences."}},
-      {"@type":"Question","name":"Où se déroulent les cours d'anglais et les entraînements ?","acceptedAnswer":{"@type":"Answer","text":"Les cours d'anglais ont lieu à Oxford et les entraînements se déroulent sur des installations partenaires d'Arsenal Football Development."}},
+      {"@type":"Question","name":"Où se déroulent les cours d'anglais et les entraînements ?","acceptedAnswer":{"@type":"Answer","text":"Les cours d'anglais et les entraînements se déroulent à Oundle School, sur des installations partenaires d'Arsenal Football Development."}},
       {"@type":"Question","name":"La sécurité et l'hébergement sont-ils inclus ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Encadrement 24/7, chambre individuelle en campus, assurance médicale et transferts aéroport aller-retour inclus selon le programme."}}
     ]
   }
@@ -168,7 +168,7 @@
     .blog-pill{
       position:absolute;
       top:16px;
-      left:16px; /* below the red banner because it's inside .hero */
+      left:16px;
       z-index:3;
     }
     .blog-pill a{
@@ -195,14 +195,11 @@
     }
     @media (hover:hover){ .hero-logo a:hover img{transform:scale(1.03)} }
 
-    /* Make sure headline never overlaps the logo */
     .hero-content{text-align:center;max-width:1100px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 1.1)}
     @media (min-width:1200px){ .hero-content{padding-top:calc(var(--hero-logo-h) * 1.18)} }
     @media (max-width:768px){
       .hero-logo img{max-height:var(--hero-logo-h-sm)}
-      .hero-content{
-        padding-top:calc(var(--hero-logo-h-sm) + 28px + env(safe-area-inset-top, 0px));
-      }
+      .hero-content{padding-top:calc(var(--hero-logo-h-sm) + 28px + env(safe-area-inset-top, 0px));}
     }
 
     .hero-headline{
@@ -251,7 +248,7 @@
     .carousel-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.35);cursor:pointer}
     .carousel-dots button[aria-current="true"]{background:#fff}
 
-    /* New: prev/next arrow controls */
+    /* Nav arrows */
     .carousel-nav{
       position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;pointer-events:none;
       padding:0 6px;
@@ -267,7 +264,6 @@
       .carousel-btn:hover{transform:translateY(-1px);background:rgba(0,0,0,.6)}
     }
 
-    /* Sections */
     section{content-visibility:auto;contain-intrinsic-size:600px}
     .services{padding:64px 16px;max-width:1200px;margin:0 auto}
     .section-header{text-align:center;margin-bottom:28px}
@@ -292,7 +288,6 @@
     .service-card h3{color:#fff;font-weight:800;font-size:16px;margin:0 0 8px;text-transform:uppercase}
     .service-card p{color:rgba(255,255,255,.78);margin:0;font-size:14px;line-height:1.6}
 
-    /* Dark CTA for About */
     .cta-dark{
       display:inline-flex;align-items:center;gap:10px;white-space:nowrap;
       background:linear-gradient(135deg,#1b1b1b,#0f0f10);
@@ -306,7 +301,6 @@
     @media (hover:hover){ .cta-dark:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.5)} }
     .cta-dark svg{transition:transform .18s var(--t)}
 
-    /* Partner */
     .partner-section{padding:60px 16px;text-align:center}
     .partner-content{max-width:800px;margin:0 auto}
     .partner-title{
@@ -319,7 +313,6 @@
     }
     @media (hover:hover){ .partner-logo:hover{filter:grayscale(0%) brightness(100%);opacity:1;transform:translateY(-3px)} }
 
-    /* Contact */
     .contact-section{padding:64px 16px;max-width:1000px;margin:0 auto}
     .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
     .contact-info{background:var(--card-bg);border-radius:var(--radius-xl);padding:22px;border:1px solid rgba(255,255,255,.06)}
@@ -333,29 +326,24 @@
 
     footer.footer{background:rgba(0,0,0,.85);color:var(--gray);text-align:center;padding:30px 16px;font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
 
-    /* Accessibility: reduce motion preference */
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
     }
   </style>
 </head>
 <body>
-  <!-- Top Banner (header) -->
   <div class="top-banner" role="note" aria-live="polite">
     <p>Official Partner of Arsenal Football Development</p>
   </div>
 
   <main id="main">
-    <!-- HERO -->
     <section class="hero" aria-label="Introduction">
       <div class="hero-bg" aria-hidden="true"></div>
 
-      <!-- Blog button (below header, top-left; not sticky, same tab) -->
       <nav class="blog-pill" aria-label="Accès blog">
         <a href="/blog/">BLOGS</a>
       </nav>
 
-      <!-- Centered logo linking to Instagram -->
       <div class="hero-logo">
         <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Instagram Juniors Academy (nouvelle fenêtre)">
           <img src="Juniors%20Academy-05.png" alt="Logo Juniors Academy" />
@@ -366,7 +354,6 @@
         <h1 class="hero-headline">WELCOME TO EXCELLENCE.</h1>
         <p class="hero-subhead">Juniors Academy propose des <strong>séjours linguistiques </strong> et un <strong>stage de football avec Arsenal Football Development en Angleterre</strong> pour les 9-17 ans : Anglais & Coaching, sécurité 24/7, hébergement et excursions.</p>
 
-        <!-- One-line heading + CTA directly below -->
         <h2 class="one-line">PRÊT À INSCRIRE VOTRE ENFANT À L'AVENTURE ?</h2>
         <a class="hero-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener">
           INSCRIPTIONS OUVERTES!
@@ -377,7 +364,7 @@
           <div class="carousel-viewport" id="carouselViewport" tabindex="0" aria-roledescription="carousel" aria-live="off">
             <div class="carousel-track" id="carouselTrack" role="list"></div>
 
-            <!-- New: arrow buttons -->
+            <!-- Nav arrows -->
             <div class="carousel-nav" aria-hidden="false">
               <button class="carousel-btn" id="prevBtn" type="button" aria-label="Image précédente">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
@@ -406,35 +393,6 @@
         <article class="service-card"><div class="service-icon" aria-hidden="true">🏡</div><h3>Hébergement &amp; Repas</h3><p>Chambres individuelles en campus, 3 repas équilibrés/jour, commodités sportives.</p></article>
         <article class="service-card"><div class="service-icon" aria-hidden="true">🎟️</div><h3>Excursions</h3><p>London City, <strong>Emirates Stadium</strong>, Parcs & Musées.</p></article>
         <article class="service-card"><div class="service-icon" aria-hidden="true">📄</div><h3>Certification</h3><p>Rapport de coaching + <strong>certificat officiel Arsenal Football Development</strong>.</p></article>
-      </div>
-    </section>
-
-    <!-- En savoir plus -->
-    <section class="services" aria-labelledby="about-title">
-      <div style="text-align:center;margin-top:-8px;margin-bottom:8px">
-        <button class="cta-dark" id="toggleAbout" aria-expanded="false" aria-controls="aboutContent">
-          <span>En savoir plus sur Juniors Academy</span>
-          <svg id="aboutArrow" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#fff" d="M7 10l5 5 5-5z"/></svg>
-        </button>
-      </div>
-
-      <div id="aboutContent" style="display:none;max-width:900px;margin:0 auto;color:rgba(255,255,255,.92);line-height:1.75">
-        <h1 id="about-title" style="font-size:1.6rem;margin:.3rem 0 1rem">À propos de Juniors Academy</h1>
-
-        <p><strong>Juniors Academy</strong> est spécialisée dans les <strong>séjours linguistiques en Angleterre</strong> et les <strong>stages sportifs</strong> pour les jeunes de <strong>9 à 17 ans</strong>. Avec plus de <strong>28 ans d’expertise cumulée</strong> via nos partenaires, nous proposons un <strong>stage de football en partenariat avec Arsenal Football Development</strong> et une formation d’anglais à <strong>Radley College</strong>.</p>
-
-        <p>Notre approche vise un <strong>développement complet</strong> : technique, tactique et condition physique optimale, encadrés par d’anciens athlètes et joueurs professionnels. Les juniors évoluent sur des <strong>terrains d’entraînement de haut niveau</strong>, participent à des <strong>matchs compétitifs</strong> et suivent des <strong>séminaires de nutrition et de psychologie du sport</strong>.</p>
-
-        <h2 style="color:var(--primary);margin:16px 0 8px;font-size:1.15rem">Ce qui est inclus</h2>
-        <ul style="margin:8px 0 12px 1.1rem">
-          <li>Formation de haut niveau (<em>Play like Arsenal</em>) + <strong>15h d’anglais immersifs</strong> par semaine</li>
-          <li><strong>Prise en charge totale</strong> : assurance médicale & voyage, <strong>support 24/7</strong>, transferts aéroport A/R</li>
-          <li><strong>Hébergement en campus</strong> (chambre single) et <strong>3 repas équilibrés</strong> par jour</li>
-          <li><strong>4 excursions</strong> : London City Tour, London City Tour, <strong>Emirates Stadium</strong>, Parcs & Musées</li>
-          <li>Équipements Adidas officiels Arsenal, accès aux infrastructures et <strong>certificat officiel</strong></li>
-        </ul>
-
-        <p>Vous recherchez un <strong>camp d’été en Angleterre</strong>, un <strong>stage de foot pro</strong> ou une <strong>immersion linguistique</strong> pour un junior en Algérie ? Juniors Academy offre la <strong>référence qualité</strong> : sécurité, excellence académique et sportive, et un réseau international reconnu.</p>
       </div>
     </section>
 
@@ -510,7 +468,7 @@
       });
     })();
 
-    // Carousel (3s) — files "Arsenal 1.png" … "Arsenal 21.png"
+    // Carousel (3s) — files "Arsenal 1.png" … "Arsenal 9.png"
     (function(){
       const track = document.getElementById('carouselTrack');
       const dots = document.getElementById('carouselDots');
@@ -519,7 +477,7 @@
       const nextBtn = document.getElementById('nextBtn');
       if(!track) return;
 
-      const COUNT = 21, INTERVAL = 3000, EXT = 'png';
+      const COUNT = 9, INTERVAL = 3000, EXT = 'png';
       const files = Array.from({length:COUNT}, (_,i)=> `Arsenal ${i+1}.${EXT}`);
 
       const slides = [], dotBtns = [];
@@ -552,7 +510,7 @@
       function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
       function restartTimer(){ stopTimer(); startTimer(); }
 
-      // Existing touch swipe (kept) + upgraded to Pointer Events for mouse/pen/touch
+      // Pointer Events for drag/swipe
       function onPointerDown(e){
         dragging = true;
         startX = e.clientX ?? (e.touches && e.touches[0].clientX) ?? 0;
@@ -580,30 +538,25 @@
         dx = 0;
       }
 
-      // Pointer Events (covers mouse/touch/pen)
       if(window.PointerEvent){
         viewport.addEventListener('pointerdown', onPointerDown, {passive:true});
         window.addEventListener('pointermove', onPointerMove, {passive:true});
         window.addEventListener('pointerup', onPointerUp, {passive:true});
         window.addEventListener('pointercancel', onPointerUp, {passive:true});
       }else{
-        // Fallback touch (kept from previous)
         track.addEventListener('touchstart', e=>onPointerDown(e), {passive:true});
         track.addEventListener('touchmove', e=>onPointerMove(e), {passive:true});
         track.addEventListener('touchend', onPointerUp, {passive:true});
       }
 
-      // Buttons
       if(prevBtn) prevBtn.addEventListener('click', ()=>{ prev(); restartTimer(); });
       if(nextBtn) nextBtn.addEventListener('click', ()=>{ next(); restartTimer(); });
 
-      // Keyboard arrows when viewport focused
       if(viewport){
         viewport.addEventListener('keydown', (e)=>{
           if(e.key === 'ArrowLeft'){ e.preventDefault(); prev(); restartTimer(); }
           if(e.key === 'ArrowRight'){ e.preventDefault(); next(); restartTimer(); }
         });
-        // Desktop hover pause
         viewport.addEventListener('mouseenter', stopTimer, {passive:true});
         viewport.addEventListener('mouseleave', startTimer, {passive:true});
       }
