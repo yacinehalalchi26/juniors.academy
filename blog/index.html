@@ -137,11 +137,12 @@
       letter-spacing:1px;position:relative;display:inline-block;text-transform:uppercase
     }
     .partner-title::after{content:"";position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:90px;height:3px;background:var(--primary);border-radius:2px}
+    /* Keep Arsenal logo in original red */
     .partner-logo{
       width:auto;max-width:100%;height:auto;max-height:100px;object-fit:contain;
-      filter:grayscale(100%) brightness(150%);opacity:.9;transition:filter .2s var(--t), opacity .2s var(--t), transform .2s var(--t)
+      filter:none;opacity:1;transition:transform .2s var(--t)
     }
-    @media (hover:hover){ .partner-logo:hover{filter:grayscale(0%) brightness(100%);opacity:1;transform:translateY(-3px)} }
+    @media (hover:hover){ .partner-logo:hover{transform:translateY(-3px)} }
 
     /* Contact section */
     .contact-section{padding:32px 16px 64px;max-width:1000px;margin:0 auto}
@@ -181,7 +182,7 @@
       <!-- Single centered blog card with inline expandable content -->
       <article class="post" id="post1">
         <div class="post-hero">
-          <img src="../Arsenal%205.png" alt="Salle de repas à Radley College pendant le camp — Arsenal Football Development">
+          <img src="../Arsenal%205.png" alt="Salle de repas à Oundle School pendant le camp — Arsenal Football Development">
         </div>
         <div class="post-body">
           <h2>5 conseils pour réussir mon stage de foot</h2>
@@ -270,7 +271,7 @@
       </div>
 
       <div class="contact-map" aria-label="Carte">
-        <iframe title="Localisation Juniors Academy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.3898086509636!2d3.028938275730759!3d36.767964972238456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fadf991f0a52d%3A0xcda7db93a7a6b8a9!2s25%20Rue%20Rabah%20Bourbia%2C%20Alger!5e0!3m2!1sfr!2sdz!4v1690000000000!5m2!1sfr!2sdz" width="100%" height="320" style="border:0;border-radius:12px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe title="Localisation Juniors Academy" src="https://maps.app.goo.gl/JbqLZSGa4TSaosRG8" width="100%" height="320" style="border:0;border-radius:12px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </section>
