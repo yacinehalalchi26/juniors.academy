@@ -33,51 +33,16 @@
       --radius-xl:22px;
       --t:cubic-bezier(.23,1,.32,1);
     }
-
-    /* Reset / base */
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{width:100%;height:100%;min-height:100dvh;overflow-x:hidden}
+    html,body{width:100%;overflow-x:hidden}
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";
-      line-height:1.6;
-      color:#fff;
+      line-height:1.6;background:#000;color:#fff;
       background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     }
 
-    /* ===== Background FX (minimal, CSS-only, no JS) ===== */
-    .bgfx{
-      position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
-    }
-    /* Soft brand glow + soft white vignette */
-    .bgfx::before{
-      content:"";position:absolute;inset:-20%;
-      background:
-        radial-gradient(40% 60% at 75% 20%, rgba(220,20,60,.16) 0%, rgba(220,20,60,0) 60%),
-        radial-gradient(60% 80% at 30% 85%, rgba(255,255,255,.06) 0%, rgba(255,255,255,0) 60%);
-      filter:blur(28px);
-      opacity:.55;
-      animation:bgfloat 18s var(--t) infinite alternate;
-      will-change:transform;
-    }
-    /* Faint grid for structure */
-    .bgfx::after{
-      content:"";position:absolute;inset:-1px; /* prevent 1px seam on some DPRs */
-      background:
-        linear-gradient(transparent 97%, rgba(255,255,255,.04) 98%) 0 0 / 34px 34px,
-        linear-gradient(90deg, transparent 97%, rgba(255,255,255,.04) 98%) 0 0 / 34px 34px;
-      opacity:.08;
-      mix-blend-mode:screen;
-    }
-    @keyframes bgfloat{
-      0%   { transform:translate3d(0,0,0) scale(1); }
-      100% { transform:translate3d(-3%,3%,0) scale(1.05); }
-    }
-    @media (prefers-reduced-motion: reduce){
-      .bgfx::before{ animation:none; }
-    }
-
-    /* Toolbar */
+    /* Toolbar (ACCUEIL / INSCRIPTION) */
     .toolbar{
       max-width:1100px;margin:12px auto 0;padding:0 16px;
       display:grid;grid-template-columns:1fr 1fr;align-items:start;
@@ -99,26 +64,29 @@
       .pill:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(220,20,60,.45)}
     }
 
-    /* Title */
+    /* Big headline below the buttons with extra spacing */
     .page-title{
       max-width:1100px;margin:28px auto 20px;padding:0 16px;text-align:center;
     }
     .page-title h1{
       font-size:clamp(34px, 6.6vw, 66px);
-      font-weight:900;letter-spacing:1px;line-height:1.06;
+      font-weight:900;letter-spacing:1px;line-height:1.06;margin:0;
       background:linear-gradient(90deg,#cfcfcf,#ffffff,#d6d6d6);
       background-size:200% 100%;
-      -webkit-background-clip:text;background-clip:text;color:transparent;
+      -webkit-background-clip:text;background-clip:text;
+      color:transparent;
       filter:drop-shadow(0 10px 26px rgba(0,0,0,.5));
       animation:shine 1.2s ease-out .15s 1 forwards;
-      white-space:normal;
     }
-    @keyframes shine{from{background-position:0% 50%}to{background-position:100% 50%}}
+    @keyframes shine{
+      from{background-position:0% 50%}
+      to{background-position:100% 50%}
+    }
     @media (max-width:640px){
       .page-title{ margin-top:34px; }
     }
 
-    /* Posts */
+    /* Posts (centered) */
     main{max-width:1100px;margin:8px auto 60px;padding:0 16px}
     .posts{display:block}
     .post{
@@ -127,11 +95,9 @@
       border-radius:var(--radius-xl);overflow:hidden;
       box-shadow:0 10px 30px rgba(0,0,0,.18);
       transition:transform .18s var(--t), box-shadow .18s var(--t);
-      backdrop-filter:saturate(110%) blur(0.5px);
     }
-    @media (hover:hover){
-      .post:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(0,0,0,.32)}
-    }
+    @media (hover:hover){ .post:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(0,0,0,.32)} }
+
     .post-hero{width:100%;aspect-ratio:16/9;background:#0a0a0a;overflow:hidden}
     .post-hero img{width:100%;height:100%;object-fit:cover;display:block}
     .post-body{padding:18px}
@@ -162,7 +128,7 @@
     .details p, .details li{color:rgba(255,255,255,.92)}
     .details ul{padding-left:1.1rem}
 
-    /* Partners */
+    /* Partner section */
     .partner-section{padding:60px 16px;text-align:center}
     .partner-content{max-width:800px;margin:0 auto}
     .partner-title{
@@ -170,23 +136,13 @@
       letter-spacing:1px;position:relative;display:inline-block;text-transform:uppercase
     }
     .partner-title::after{content:"";position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:90px;height:3px;background:var(--primary);border-radius:2px}
-    .partner-logo-wrap{
-      display:flex;align-items:center;justify-content:center;
-      padding:10px 14px;margin:0 auto;max-width:min(660px,90vw);
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:16px;
-    }
     .partner-logo{
-      display:block;
-      width:auto; height:auto;
-      max-width:100%;
-      max-height:100px;
-      object-fit:contain;
-      image-rendering:auto;
+      width:auto;max-width:100%;height:auto;max-height:100px;object-fit:contain;
+      filter:none;opacity:1;transition:transform .2s var(--t)
     }
+    @media (hover:hover){ .partner-logo:hover{transform:translateY(-3px)} }
 
-    /* Contact */
+    /* Contact section */
     .contact-section{padding:32px 16px 64px;max-width:1000px;margin:0 auto}
     .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
     .contact-info{background:var(--card-bg);border-radius:var(--radius-xl);padding:22px;border:1px solid rgba(255,255,255,.06)}
@@ -196,23 +152,14 @@
     .contact-item svg{width:20px;height:20px;min-width:20px;fill:var(--primary);margin-top:2px}
     .contact-item a{color:var(--primary);text-decoration:none;border-bottom:1px solid rgba(220,20,60,.3)}
     .contact-item a:hover{color:#fff;border-bottom-color:#fff}
-    .contact-map{
-      background:var(--card-bg);border-radius:var(--radius-xl);overflow:hidden;
-      min-height:320px;border:1px solid rgba(255,255,255,.06);position:relative
-    }
-    .contact-map iframe{display:block;width:100%;height:320px;border:0}
+    .contact-map{background:var(--card-bg);border-radius:var(--radius-xl);overflow:hidden;min-height:320px;border:1px solid rgba(255,255,255,.06);position:relative}
 
     footer{color:#8a8a8e;text-align:center;padding:28px 16px;border-top:1px solid rgba(255,255,255,.06)}
     footer p{white-space:nowrap}
-
-    /* A11y helper */
     .vh{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
   </style>
 </head>
 <body>
-
-  <!-- Minimal animated brand background (CSS-only) -->
-  <div class="bgfx" aria-hidden="true"></div>
 
   <!-- Buttons row -->
   <div class="toolbar" role="navigation" aria-label="Barre principale">
@@ -220,7 +167,7 @@
     <a class="pill pill-right" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform">Inscription</a>
   </div>
 
-  <!-- Big headline -->
+  <!-- Big headline under buttons (with more space) -->
   <header class="page-title">
     <h1>JA BLOGS</h1>
   </header>
@@ -246,7 +193,7 @@
           </button>
         </div>
 
-        <!-- Collapsible details -->
+        <!-- Collapsible details (opens below) -->
         <div class="details" id="post1Details">
           <div class="details-inner">
             <h3>La checklist gagnante</h3>
@@ -288,7 +235,7 @@
   <section class="partner-section" aria-label="Partenaires">
     <div class="partner-content">
       <h3 class="partner-title">PARTENAIRES</h3>
-      <div class="partner-logo-wrap">
+      <div>
         <a href="https://www.arsenal.com/arsenalfootballdevelopment-1"
            target="_blank" rel="noopener"
            aria-label="Site officiel Arsenal Football Development (nouvelle fenêtre)">
@@ -330,6 +277,10 @@
         <iframe
           title="Localisation Juniors Academy"
           src="https://www.google.com/maps?q=Q29P%2B3W%20El%20Biar&z=16&output=embed"
+          width="100%"
+          height="320"
+          style="border:0;border-radius:12px"
+          allowfullscreen
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade">
         </iframe>
@@ -354,11 +305,8 @@
 
       function openPanel(){
         panel.style.display = 'block';
-        if(!prefersReduced && panel.animate){
-          panel.animate(
-            [{opacity:0, transform:'translateY(-6px)'},{opacity:1, transform:'none'}],
-            {duration:220, easing:'cubic-bezier(.23,1,.32,1)'}
-          );
+        if(!prefersReduced){
+          panel.animate([{opacity:0, transform:'translateY(-6px)'},{opacity:1, transform:'none'}], {duration:220, easing:'cubic-bezier(.23,1,.32,1)'});
         }
         btn.setAttribute('aria-expanded','true');
         if(chevron) chevron.style.transform = 'rotate(180deg)';
