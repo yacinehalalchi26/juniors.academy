@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>Juniors Academy | Choisissez votre programme</title>
 
@@ -13,98 +13,218 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    :root {
+    :root{
       --primary:#dc143c;
       --primary-dark:#a00000;
       --gray:#bfbfbf;
     }
 
-    * {
+    *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family:Inter, sans-serif;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
 
-    body {
+    html,body{
+      height:100%;
+    }
+
+    body{
+      position:relative;
       min-height:100vh;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      background:
-        linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.88)),
-        url('Arsenal 4.png')
-        no-repeat center/cover;
+      padding:10px 16px 16px;
       color:#fff;
+      text-align:center;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(220,20,60,.35) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(0,0,0,.7) 0, transparent 60%),
+        linear-gradient(135deg, #050308 0%, #060309 35%, #050106 100%);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
     }
 
-    /* Logo Positioned Top */
-    .logo-box {
-      width:100%;
-      text-align:center;
-      padding-top:10px;
-      flex-shrink:0;
-    }
-    .logo-box img {
-      width:150px;
-      height:auto;
-      filter:drop-shadow(0 6px 20px rgba(0,0,0,0.7));
+    /* Background image layer with animation */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.9)),
+        url("Arsenal%204.png") center center / cover no-repeat;
+      opacity:0;
+      transform:scale(1.06);
+      animation:bgIn 900ms cubic-bezier(.23,1,.32,1) forwards;
     }
 
-    /* Main Wrapper */
-    .wrapper {
-      flex-grow:1;
+    @keyframes bgIn{
+      0%{opacity:0;transform:scale(1.06);}
+      100%{opacity:1;transform:scale(1);}
+    }
+
+    /* Logo */
+    .logo-box{
+      width:100%;
+      text-align:center;
+      padding-top:6px;
+      flex-shrink:0;
+    }
+    .logo-box img{
+      width:150px;
+      height:auto;
+      filter:drop-shadow(0 8px 26px rgba(0,0,0,.85));
+    }
+
+    /* Main content */
+    .wrapper{
+      flex:1;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding:20px;
-      text-align:center;
+      padding:18px 8px 12px;
     }
 
-    /* Title */
-    h1 {
-      font-size:clamp(26px, 6vw, 48px);
+    h1{
+      font-size:clamp(26px, 6vw, 44px);
       font-weight:800;
-      margin-bottom:20px;
-      line-height:1.2;
-      text-shadow:0 6px 30px rgba(0,0,0,0.6);
+      line-height:1.18;
+      margin-bottom:18px;
+      text-shadow:0 8px 30px rgba(0,0,0,.9);
     }
 
-    .mobile-break { display:none; }
-    @media (max-width:480px) {
-      .mobile-break { display:block; }
+    /* controlled mobile break */
+    .mobile-break{display:none;}
+    @media (max-width:480px){
+      .mobile-break{display:block;}
     }
 
-    /* Buttons */
-    .options {
+    /* Buttons group */
+    .options{
       display:flex;
       flex-direction:column;
-      gap:18px;
+      gap:14px;
       width:100%;
       max-width:380px;
-      margin-top:20px;
+      margin:0 auto 10px;
     }
 
-    .option-btn {
-      padding:18px;
-      border-radius:14px;
-      font-size:clamp(18px, 4.5vw, 24px);
+    .option-btn{
+      display:block;
+      padding:16px 18px;
+      border-radius:16px;
+      font-size:clamp(18px, 4.5vw, 22px);
       font-weight:700;
-      cursor:pointer;
       text-decoration:none;
       color:#fff;
-      transition:0.25s ease;
-      background:rgba(0,0,0,0.55);
-      border:1px solid rgba(255,255,255,0.14);
-      display:block;
-      backdrop-filter:blur(6px);
+      background:rgba(0,0,0,.58);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 10px 28px rgba(0,0,0,.85);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      transition:
+        background .22s cubic-bezier(.23,1,.32,1),
+        box-shadow .22s cubic-bezier(.23,1,.32,1),
+        transform .18s cubic-bezier(.23,1,.32,1),
+        border-color .22s cubic-bezier(.23,1,.32,1),
+        opacity .18s ease-out;
       user-select:none;
     }
 
-    .option-btn:hover {
-      background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+    /* Hover dynamic: dim the rest, highlight hovered one in red */
+    .options:hover .option-btn{
+      background:rgba(0,0,0,.4);
+      opacity:.75;
+    }
+    .options:hover .option-btn:hover{
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      border-color:rgba(255,255,255,.34);
+      opacity:1;
       transform:translateY(-3px);
-      b
+      box-shadow:0 18px 46px rgba(220,20,60,.7);
+    }
+
+    /* Mobile tap feedback */
+    .option-btn:active{
+      transform:scale(.98);
+      box-shadow:0 6px 18px rgba(0,0,0,.85);
+    }
+
+    footer{
+      flex-shrink:0;
+      font-size:12px;
+      color:var(--gray);
+      text-align:center;
+      padding-top:4px;
+      text-shadow:0 4px 20px rgba(0,0,0,.9);
+    }
+
+    /* Floating red phone button */
+    .call-fab{
+      position:fixed;
+      right:16px;
+      bottom:18px;
+      z-index:999;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      box-shadow:0 14px 34px rgba(220,20,60,.55);
+      text-decoration:none;
+      transition:transform .18s cubic-bezier(.23,1,.32,1),
+                 box-shadow .18s cubic-bezier(.23,1,.32,1);
+    }
+    .call-fab svg{
+      width:26px;
+      height:26px;
+      fill:#fff;
+    }
+    @media (hover:hover){
+      .call-fab:hover{
+        transform:translateY(-2px);
+        box-shadow:0 22px 50px rgba(220,20,60,.7);
+      }
+    }
+    .call-fab:active{
+      transform:scale(.96);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Logo -->
+  <div class="logo-box">
+    <img src="Juniors Academy-05.png" alt="Juniors Academy">
+  </div>
+
+  <!-- Main content -->
+  <div class="wrapper">
+    <h1>
+      Bienvenue à <br class="mobile-break"> Juniors Academy
+    </h1>
+
+    <div class="options">
+      <a href="/football" class="option-btn">Football Camps</a>
+      <a href="/cultural-exchange" class="option-btn">Cultural Exchange Programs</a>
+    </div>
+  </div>
+
+  <!-- Floating Call Button -->
+  <a class="call-fab" href="tel:+213550527722" aria-label="Appeler Juniors Academy">
+    <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
+  </a>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Juniors Academy. Tous droits réservés.
+  </footer>
+
+</body>
+</html>
