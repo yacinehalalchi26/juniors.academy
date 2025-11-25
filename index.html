@@ -559,25 +559,25 @@
       if(!track) return;
 
       const COUNT = 9, INTERVAL = 3000, EXT = 'png';
-      const files = Array.from({length:COUNT}, (_,i)=> Arsenal ${i+1}.${EXT});
+      const files = Array.from({length:COUNT}, (_,i)=> `Arsenal ${i+1}.${EXT}`);
 
       const slides = [], dotBtns = [];
       files.forEach((name, idx)=>{
         const slide = document.createElement('div'); slide.className='carousel-slide'; slide.setAttribute('role','listitem');
         const img = document.createElement('img');
         img.src = encodeURI(name);
-        img.alt = Stage de football Arsenal Football Development – photo ${idx+1};
+        img.alt = `Stage de football Arsenal Football Development – photo ${idx+1}`;
         img.loading = idx<2 ? 'eager':'lazy'; img.decoding='async';
         slide.appendChild(img); track.appendChild(slide); slides.push(slide);
 
-        const dot = document.createElement('button'); dot.type='button'; dot.setAttribute('aria-label',Aller à l'image ${idx+1});
+        const dot = document.createElement('button'); dot.type='button'; dot.setAttribute('aria-label',`Aller à l'image ${idx+1}`);
         dot.addEventListener('click', ()=>goTo(idx, true)); dots.appendChild(dot); dotBtns.push(dot);
       });
 
       let idx = 0, timer=null, dragging=false, startX=0, dx=0;
 
       function update(){
-        track.style.transform=translateX(-${idx*100}%);
+        track.style.transform=`translateX(-${idx*100}%)`;
         dotBtns.forEach((d,i)=>d.setAttribute('aria-current', i===idx?'true':'false'));
       }
       function goTo(n, restart){
@@ -603,7 +603,7 @@
         if(!dragging) return;
         const x = e.clientX ?? (e.touches && e.touches[0].clientX) ?? 0;
         dx = x - startX;
-        track.style.transform=translateX(calc(-${idx*100}% + ${dx}px));
+        track.style.transform=`translateX(calc(-${idx*100}% + ${dx}px))`;
       }
       function onPointerUp(){
         if(!dragging) return;
