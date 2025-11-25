@@ -16,7 +16,8 @@
     :root{
       --primary:#dc143c;
       --primary-dark:#a00000;
-      --gray:#bfbfbf;
+      --bg:#050308;
+      --gray:#c5c5c9;
     }
 
     *{
@@ -31,139 +32,229 @@
     }
 
     body{
-      position:relative;
       min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      padding:10px 16px 16px;
-      color:#fff;
-      text-align:center;
       background:
-        radial-gradient(circle at 10% 0%, rgba(220,20,60,.35) 0, transparent 55%),
+        radial-gradient(circle at 0% 0%, rgba(220,20,60,.35) 0, transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(0,0,0,.7) 0, transparent 60%),
-        linear-gradient(135deg, #050308 0%, #060309 35%, #050106 100%);
+        linear-gradient(135deg,#050308 0%,#08030e 40%,#060208 100%);
+      color:#fff;
       -webkit-font-smoothing:antialiased;
+      display:flex;
+      justify-content:center;
+      padding:10px 12px 16px;
       overflow-x:hidden;
     }
 
-    /* Background image layer with animation */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index:-1;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.9)),
-        url("Arsenal%204.png") center center / cover no-repeat;
-      opacity:0;
-      transform:scale(1.06);
-      animation:bgIn 900ms cubic-bezier(.23,1,.32,1) forwards;
-    }
-
-    @keyframes bgIn{
-      0%{opacity:0;transform:scale(1.06);}
-      100%{opacity:1;transform:scale(1);}
-    }
-
-    /* Logo */
-    .logo-box{
+    .page{
       width:100%;
-      text-align:center;
-      padding-top:6px;
-      flex-shrink:0;
+      max-width:1100px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:10px;
     }
+
+    /* TOP: logo + tagline */
+    .top{
+      text-align:center;
+      padding-top:4px;
+      animation:fadeDown .7s cubic-bezier(.23,1,.32,1) both;
+    }
+
     .logo-box img{
       width:150px;
       height:auto;
-      filter:drop-shadow(0 8px 26px rgba(0,0,0,.85));
+      filter:drop-shadow(0 10px 26px rgba(0,0,0,.9));
     }
 
-    /* Main content */
-    .wrapper{
+    .tagline{
+      margin-top:8px;
+      font-size:13px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:rgba(230,230,235,.9);
+    }
+
+    /* MAIN SPLIT */
+    .split{
       flex:1;
       display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      padding:18px 8px 12px;
-    }
-
-    h1{
-      font-size:clamp(26px, 6vw, 44px);
-      font-weight:800;
-      line-height:1.18;
-      margin-bottom:18px;
-      text-shadow:0 8px 30px rgba(0,0,0,.9);
-    }
-
-    /* controlled mobile break */
-    .mobile-break{display:none;}
-    @media (max-width:480px){
-      .mobile-break{display:block;}
-    }
-
-    /* Buttons group */
-    .options{
-      display:flex;
-      flex-direction:column;
+      flex-direction:column;        /* phone: vertical (up/down) */
       gap:14px;
-      width:100%;
-      max-width:380px;
-      margin:0 auto 10px;
+      margin:14px 0 8px;
     }
 
-    .option-btn{
-      display:block;
-      padding:16px 18px;
-      border-radius:16px;
-      font-size:clamp(18px, 4.5vw, 22px);
-      font-weight:700;
+    @media (min-width:768px){
+      .split{
+        flex-direction:row;         /* laptop: horizontal (left/right) */
+        gap:18px;
+        margin:18px 0 10px;
+      }
+    }
+
+    .panel{
+      position:relative;
+      flex:1;
+      border-radius:22px;
+      overflow:hidden;
       text-decoration:none;
       color:#fff;
-      background:rgba(0,0,0,.58);
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow:0 10px 28px rgba(0,0,0,.85);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      transition:
-        background .22s cubic-bezier(.23,1,.32,1),
-        box-shadow .22s cubic-bezier(.23,1,.32,1),
-        transform .18s cubic-bezier(.23,1,.32,1),
-        border-color .22s cubic-bezier(.23,1,.32,1),
-        opacity .18s ease-out;
-      user-select:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      isolation:isolate;
+      box-shadow:0 18px 48px rgba(0,0,0,.85);
+      transform:translateY(4px);
+      opacity:0;
+      animation:panelIn .9s cubic-bezier(.23,1,.32,1) forwards;
     }
 
-    /* Hover dynamic: dim the rest, highlight hovered one in red */
-    .options:hover .option-btn{
-      background:rgba(0,0,0,.4);
-      opacity:.75;
-    }
-    .options:hover .option-btn:hover{
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      border-color:rgba(255,255,255,.34);
-      opacity:1;
-      transform:translateY(-3px);
-      box-shadow:0 18px 46px rgba(220,20,60,.7);
+    .panel--football{animation-delay:.08s;}
+    .panel--exchange{animation-delay:.18s;}
+
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
     }
 
-    /* Mobile tap feedback */
-    .option-btn:active{
-      transform:scale(.98);
-      box-shadow:0 6px 18px rgba(0,0,0,.85);
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:radial-gradient(circle at 50% 0%, rgba(255,255,255,.18) 0, transparent 55%);
+      mix-blend-mode:soft-light;
+      opacity:.6;
     }
 
+    /* FOOTBALL SIDE — uses Arsenal 4.png */
+    .panel--football::before{
+      background:
+        linear-gradient(135deg, rgba(0,0,0,.82), rgba(0,0,0,.9)),
+        url("Arsenal%204.png") center center / cover no-repeat;
+    }
+
+    /* CULTURAL EXCHANGE SIDE — deep gradient, no image (for now) */
+    .panel--exchange::before{
+      background:
+        radial-gradient(circle at 0% 0%, rgba(220,20,60,.55) 0, transparent 55%),
+        linear-gradient(145deg, #090310 0%, #141424 40%, #060208 100%);
+    }
+
+    .panel-inner{
+      padding:26px 18px 24px;
+      max-width:420px;
+      background:linear-gradient(135deg, rgba(0,0,0,.65), rgba(0,0,0,.45));
+      border-radius:18px;
+      box-shadow:0 14px 40px rgba(0,0,0,.9);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    @media (min-width:768px){
+      .panel-inner{
+        padding:30px 26px 26px;
+        max-width:360px;
+      }
+    }
+
+    .panel-label{
+      font-size:11px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:rgba(220,220,230,.82);
+      margin-bottom:10px;
+    }
+
+    .panel--football .panel-label::before{
+      content:"FOOTBALL";
+    }
+    .panel--exchange .panel-label::before{
+      content:"CULTURAL";
+    }
+
+    .panel-title{
+      font-size:clamp(22px, 4.8vw, 30px);
+      font-weight:800;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+
+    .panel-sub{
+      font-size:13px;
+      color:var(--gray);
+      line-height:1.7;
+      margin-bottom:18px;
+    }
+
+    .panel-cta{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 18px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.2);
+      font-size:13px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      background:rgba(0,0,0,.55);
+    }
+
+    .panel-cta svg{
+      width:14px;
+      height:14px;
+      fill:#fff;
+    }
+
+    /* HOVER / FOCUS DYNAMICS */
+    .split:hover .panel{
+      filter:grayscale(.3) brightness(.78);
+      transform:translateY(6px);
+    }
+    .split:hover .panel:hover{
+      filter:none;
+      transform:translateY(0);
+    }
+
+    @media (hover:hover){
+      .panel{
+        transition:
+          transform .26s cubic-bezier(.23,1,.32,1),
+          filter .26s cubic-bezier(.23,1,.32,1),
+          box-shadow .26s cubic-bezier(.23,1,.32,1),
+          flex .32s cubic-bezier(.23,1,.32,1);
+      }
+      .split:hover .panel{
+        flex:.9;
+        box-shadow:0 10px 34px rgba(0,0,0,.9);
+      }
+      .split:hover .panel:hover{
+        flex:1.1;
+        box-shadow:0 22px 60px rgba(0,0,0,.95);
+      }
+    }
+
+    .panel:focus-visible{
+      outline:2px solid #fff;
+      outline-offset:4px;
+    }
+
+    /* FOOTER */
     footer{
-      flex-shrink:0;
+      text-align:center;
       font-size:12px;
       color:var(--gray);
-      text-align:center;
-      padding-top:4px;
-      text-shadow:0 4px 20px rgba(0,0,0,.9);
+      text-shadow:0 3px 18px rgba(0,0,0,.95);
+      padding-bottom:2px;
     }
 
-    /* Floating red phone button */
+    /* FLOATING CALL BUTTON */
     .call-fab{
       position:fixed;
       right:16px;
@@ -175,10 +266,9 @@
       display:grid;
       place-items:center;
       background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      box-shadow:0 14px 34px rgba(220,20,60,.55);
+      box-shadow:0 16px 40px rgba(220,20,60,.65);
       text-decoration:none;
-      transition:transform .18s cubic-bezier(.23,1,.32,1),
-                 box-shadow .18s cubic-bezier(.23,1,.32,1);
+      transition:transform .18s cubic-bezier(.23,1,.32,1), box-shadow .18s cubic-bezier(.23,1,.32,1);
     }
     .call-fab svg{
       width:26px;
@@ -188,43 +278,89 @@
     @media (hover:hover){
       .call-fab:hover{
         transform:translateY(-2px);
-        box-shadow:0 22px 50px rgba(220,20,60,.7);
+        box-shadow:0 22px 60px rgba(220,20,60,.8);
       }
     }
     .call-fab:active{
       transform:scale(.96);
     }
+
+    /* ANIMATIONS */
+    @keyframes fadeDown{
+      from{opacity:0;transform:translateY(-10px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    @keyframes panelIn{
+      0%{opacity:0;transform:translateY(18px);}
+      100%{opacity:1;transform:translateY(4px);}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        animation:none!important;
+        transition:none!important;
+      }
+      .panel{transform:none;opacity:1;}
+    }
   </style>
 </head>
 
 <body>
+  <div class="page">
+    <!-- TOP: Logo + tagline -->
+    <header class="top">
+      <div class="logo-box">
+        <img src="Juniors Academy-05.png" alt="Juniors Academy">
+      </div>
+      <p class="tagline">Programmes internationaux pour les jeunes de 6 à 18 ans</p>
+    </header>
 
-  <!-- Logo -->
-  <div class="logo-box">
-    <img src="Juniors Academy-05.png" alt="Juniors Academy">
-  </div>
+    <!-- SPLIT PANELS -->
+    <main class="split" aria-label="Choix du programme">
+      <!-- FOOTBALL SIDE: left on laptop, top on phone -->
+      <a href="/football" class="panel panel--football">
+        <div class="panel-inner">
+          <div class="panel-label"></div>
+          <h2 class="panel-title">Football Camps</h2>
+          <p class="panel-sub">
+            Stage de football de haut niveau en Angleterre, combinant entraînements
+            Arsenal-style, immersion linguistique et encadrement 24/7.
+          </p>
+          <div class="panel-cta">
+            <span>Découvrir le camp</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.17 12L8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+          </div>
+        </div>
+      </a>
 
-  <!-- Main content -->
-  <div class="wrapper">
-    <h1>
-      Bienvenue à <br class="mobile-break"> Juniors Academy
-    </h1>
+      <!-- CULTURAL EXCHANGE SIDE: right on laptop, bottom on phone -->
+      <a href="/cultural-exchange" class="panel panel--exchange">
+        <div class="panel-inner">
+          <div class="panel-label"></div>
+          <h2 class="panel-title">Cultural Exchange Programs</h2>
+          <p class="panel-sub">
+            Séjours linguistiques et programmes d’échanges culturels sur mesure,
+            pour ouvrir le monde aux juniors tout en restant parfaitement encadrés.
+          </p>
+          <div class="panel-cta">
+            <span>Explorer les échanges</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.17 12L8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+          </div>
+        </div>
+      </a>
+    </main>
 
-    <div class="options">
-      <a href="/football" class="option-btn">Football Camps</a>
-      <a href="/cultural-exchange" class="option-btn">Cultural Exchange Programs</a>
-    </div>
+    <!-- FOOTER -->
+    <footer>
+      © 2025 Juniors Academy. Tous droits réservés.
+    </footer>
   </div>
 
   <!-- Floating Call Button -->
   <a class="call-fab" href="tel:+213550527722" aria-label="Appeler Juniors Academy">
-    <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/>
+    </svg>
   </a>
-
-  <!-- Footer -->
-  <footer>
-    © 2025 Juniors Academy. Tous droits réservés.
-  </footer>
-
 </body>
 </html>
