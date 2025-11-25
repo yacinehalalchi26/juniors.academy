@@ -1,282 +1,134 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Juniors Academy | Football Camps & Cultural Exchange Programs</title>
-
-  <!-- Canonical / Robots -->
-  <link rel="canonical" href="https://juniors.academy/">
-  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
-
-  <!-- Primary Meta -->
-  <meta name="description" content="Juniors Academy propose des camps de football de haut niveau et des programmes d’échanges culturels pour juniors. Choisissez votre programme.">
-  <meta name="keywords" content="Juniors Academy, camps de football, échanges culturels, séjours linguistiques, juniors, Algérie, Angleterre">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Juniors Academy">
-  <meta property="og:url" content="https://juniors.academy/">
-  <meta property="og:title" content="Juniors Academy – Football Camps & Cultural Exchange Programs">
-  <meta property="og:description" content="Choisissez entre nos camps de football avec Arsenal et nos programmes d’échanges culturels pour juniors.">
-  <meta property="og:image" content="https://juniors.academy/Arsenal%201.png">
-  <meta property="og:locale" content="fr_DZ">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Juniors Academy – Football Camps & Cultural Exchange Programs">
-  <meta name="twitter:description" content="Camps de football & programmes d’échanges culturels pour les jeunes.">
-  <meta name="twitter:image" content="https://juniors.academy/Arsenal%201.png">
-
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <title>Juniors Academy | Choisissez votre programme</title>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 
   <style>
-    :root{
+    :root {
       --primary:#dc143c;
       --primary-dark:#a00000;
-      --gray:#8a8a8e;
-      --card-bg:rgba(255,255,255,.08);
-      --elev:0 10px 30px rgba(0,0,0,.18);
-      --elev-2:0 18px 50px rgba(0,0,0,.35);
-      --t:cubic-bezier(.23,1,.32,1);
-      --radius-xl:22px;
+      --neutral:#1a1a1a;
+      --neutral-dark:#0f0f0f;
+      --text:#fff;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{width:100%;height:100%;overflow:hidden;touch-action:manipulation}
-    html{scroll-behavior:smooth}
-    body{
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";
-      line-height:1.6;background:#000;color:#fff;
-      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    * {
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Inter, sans-serif;
     }
 
-    .top-banner{
-      text-align:center;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      padding:10px 8px;
-      position:relative;
-      z-index:5;
-      box-shadow:0 2px 10px rgba(0,0,0,.25)
-    }
-    .top-banner p{
-      font-style:italic;
-      font-size:13px;
-      color:#fff;
-      letter-spacing:.5px
-    }
-
-    .entry-hero{
-      position:relative;
-      width:100%;
-      height:calc(100vh - 44px);
-      min-height:480px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      overflow:hidden;
-    }
-    .entry-bg{
-      position:absolute;inset:0;z-index:-1;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(220,20,60,.35), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(255,255,255,.08), transparent 55%),
-        linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.95)),
-        url('https://juniors.academy/Arsenal%201.png')
-        no-repeat center center / cover;
-      filter:saturate(1.1);
-    }
-
-    .entry-logo{
-      position:absolute;
-      top:22px;
-      left:50%;
-      transform:translateX(-50%);
-      text-align:center;
-    }
-    .entry-logo img{
-      max-height:120px;
-      width:auto;
-      filter:drop-shadow(0 10px 26px rgba(0,0,0,.6));
-    }
-
-    .entry-card{
-      position:relative;
-      max-width:600px;
-      width:100%;
-      background:rgba(0,0,0,.72);
-      border-radius:28px;
-      padding:26px 20px 24px;
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:var(--elev-2);
-      backdrop-filter:blur(14px);
-      text-align:center;
-    }
-
-    .entry-eyebrow{
-      font-size:12px;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      color:rgba(255,255,255,.7);
-      margin-bottom:6px;
-    }
-
-    .entry-title{
-      font-size:clamp(22px,4.5vw,32px);
-      font-weight:800;
-      letter-spacing:.4px;
-      margin-bottom:4px;
-    }
-
-    .entry-subtitle{
-      font-size:clamp(13px,3.5vw,16px);
-      color:rgba(255,255,255,.78);
-      max-width:460px;
-      margin:0 auto 22px;
-    }
-
-    .entry-options{
-      display:flex;
-      flex-direction:row;
-      gap:14px;
-      justify-content:center;
-      margin-bottom:12px;
-      flex-wrap:wrap;
-    }
-
-    .entry-btn{
-      flex:1 1 210px;
+    body {
+      background:#000;
+      color:var(--text);
       display:flex;
       flex-direction:column;
       justify-content:center;
       align-items:center;
-      gap:6px;
-      padding:16px 18px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:15px;
-      letter-spacing:.5px;
-      text-transform:uppercase;
-      text-decoration:none;
-      cursor:pointer;
-      border:none;
-      transition:transform .18s var(--t), box-shadow .18s var(--t), background-position .22s var(--t), background-color .18s var(--t), color .18s var(--t);
-      white-space:nowrap;
-    }
-
-    .entry-btn-primary{
-      background-image:linear-gradient(135deg,#ff3555,#dc143c,#a00000);
-      background-size:200% 100%;
-      color:#fff;
-      box-shadow:0 12px 34px rgba(220,20,60,.5);
-    }
-    .entry-btn-secondary{
-      background:linear-gradient(135deg,#1b1b1b,#101016);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow:0 10px 26px rgba(0,0,0,.7);
-    }
-
-    .entry-btn span{
-      font-size:11px;
-      font-weight:500;
-      text-transform:none;
-      opacity:.8;
-    }
-
-    .entry-note{
-      font-size:11px;
-      color:var(--gray);
-      margin-top:4px;
-    }
-
-    @media (hover:hover){
-      .entry-btn-primary:hover{
-        transform:translateY(-2px);
-        box-shadow:0 18px 46px rgba(220,20,60,.6);
-        background-position:100% 0;
-      }
-      .entry-btn-secondary:hover{
-        transform:translateY(-2px);
-        box-shadow:0 16px 40px rgba(0,0,0,.85);
-        background:linear-gradient(135deg,#232323,#14141c);
-      }
-    }
-
-    @media (max-width:600px){
-      .entry-card{
-        padding:22px 16px 20px;
-        border-radius:24px;
-      }
-      .entry-logo img{
-        max-height:100px;
-      }
-    }
-
-    footer.entry-footer{
-      position:absolute;
-      bottom:10px;
-      left:0;
-      right:0;
+      height:100vh;
       text-align:center;
-      font-size:11px;
-      color:rgba(255,255,255,.55);
-      padding:0 10px;
+      padding:20px;
+    }
+
+    /* LOGO */
+    .logo {
+      margin-bottom:40px;
+    }
+    .logo img {
+      max-width:160px;
+      filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));
+    }
+
+    /* TITLES */
+    h1 {
+      font-size:clamp(26px, 5vw, 38px);
+      font-weight:800;
+      margin-bottom:18px;
+    }
+    p {
+      font-size:15px;
+      color:#ccc;
+      margin-bottom:40px;
+    }
+
+    /* BUTTON CONTAINER */
+    .buttons {
+      display:flex;
+      gap:22px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    /* BASE BUTTON STYLE */
+    .btn {
+      padding:18px 38px;
+      border-radius:999px;
+      font-size:clamp(15px, 4vw, 18px);
+      font-weight:700;
+      text-decoration:none;
+      color:#fff;
+      background:var(--neutral);
+      border:1px solid rgba(255,255,255,.1);
+      transition:all .25s cubic-bezier(.23,1,.32,1);
+      min-width:220px;
+      text-align:center;
+    }
+
+    /* DEFAULT STATES */
+    .btn.active { background:var(--primary); }
+    .btn.inactive { background:var(--neutral-dark); }
+
+    /* SWITCH EFFECT ON HOVER */
+    .buttons:hover .btn {
+      background:var(--neutral-dark);
+    }
+
+    .btn:hover {
+      background:var(--primary) !important;
+      transform:translateY(-3px);
+      box-shadow:0 10px 24px rgba(220,20,60,.35);
+    }
+
+    footer {
+      position:absolute;
+      bottom:20px;
+      font-size:13px;
+      color:#777;
+    }
+    footer a {
+      color:var(--primary);
+      text-decoration:none;
     }
   </style>
 </head>
+
 <body>
-  <div class="top-banner" role="note" aria-live="polite">
-    <p>Official Partner of Arsenal Football Development</p>
+
+  <div class="logo">
+    <img src="Juniors%20Academy-05.png" alt="Juniors Academy Logo">
   </div>
 
-  <main class="entry-hero" aria-label="Choix du programme Juniors Academy">
-    <div class="entry-bg" aria-hidden="true"></div>
+  <h1>Bienvenue à Juniors Academy</h1>
+  <p>Choisissez votre programme destiné aux jeunes de <strong>6 à 18 ans</strong>.</p>
 
-    <div class="entry-logo">
-      <img src="Juniors%20Academy-05.png" alt="Logo Juniors Academy">
-    </div>
+  <div class="buttons">
+    <a href="/football/" class="btn" id="btnFootball">Football Camps</a>
+    <a href="/cultural-exchange/" class="btn" id="btnCultural">Cultural Exchange Programs</a>
+  </div>
 
-    <section class="entry-card" aria-label="Choisissez votre programme">
-      <p class="entry-eyebrow">JUNIORS ACADEMY</p>
-      <h1 class="entry-title">Choisissez votre programme</h1>
-      <p class="entry-subtitle">
-        Séjours linguistiques, camps de football de haut niveau et programmes d’échanges culturels pour les 9–17 ans.
-      </p>
+  <footer>
+    Vous pouvez revenir à cette page à tout moment via
+    <a href="https://www.juniors.academy">www.juniors.academy</a>.
+  </footer>
 
-      <div class="entry-options">
-        <!-- FOOTBALL CAMPS -->
-        <a class="entry-btn entry-btn-primary" href="/football/">
-          Football Camps
-          <span>Arsenal Football Development & séjours linguistiques</span>
-        </a>
-
-        <!-- CULTURAL EXCHANGE PROGRAMS -->
-        <a class="entry-btn entry-btn-secondary" href="/cultural-exchange/">
-          Cultural Exchange Programs
-          <span>Immersion culturelle & séjours académiques</span>
-        </a>
-      </div>
-
-      <p class="entry-note">
-        Vous pouvez revenir à cette page à tout moment via <strong>juniors.academy</strong>.
-      </p>
-    </section>
-
-    <footer class="entry-footer">
-      © 2025 Juniors Academy. Tous droits réservés.
-    </footer>
-  </main>
 </body>
 </html>
