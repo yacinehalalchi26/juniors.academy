@@ -51,7 +51,6 @@
       background:
         radial-gradient(circle at top, transparent 0, rgba(0,0,0,.45) 65%),
         radial-gradient(circle at bottom, transparent 0, rgba(0,0,0,.55) 70%);
-      mix-blend-mode:normal;
       z-index:-1;
     }
 
@@ -92,30 +91,22 @@
       .logo img{max-width:180px;}
     }
 
-    .tagline {
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.22em;
-      color:rgba(255,255,255,.55);
-      margin-bottom:12px;
-    }
-
     h1 {
       font-size:clamp(22px, 5vw, 34px);
       font-weight:800;
       letter-spacing:.03em;
-      margin-bottom:8px;
+      margin-bottom:10px;
     }
 
     p.lead {
       font-size:14px;
       line-height:1.6;
       color:rgba(230,230,235,.9);
-      margin-bottom:24px;
+      margin-bottom:26px;
     }
 
     @media (min-width:768px){
-      p.lead{font-size:15px;margin-bottom:32px;}
+      p.lead{font-size:15px;margin-bottom:34px;}
     }
 
     p.lead strong {
@@ -191,7 +182,7 @@
     }
 
     footer {
-      margin-top:6px;
+      margin-top:12px;
       font-size:12px;
       color:rgba(180,180,190,.75);
     }
@@ -206,6 +197,35 @@
       border-bottom-color:#fff;
       color:#fff;
     }
+
+    /* FLOATING CALL BUTTON */
+    .call-fab{
+      position:fixed;
+      right:16px;
+      bottom:20px;
+      z-index:9999;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      box-shadow:0 12px 30px rgba(220,20,60,.4);
+      text-decoration:none;
+      transition:transform .18s cubic-bezier(.23,1,.32,1),
+                 box-shadow .18s cubic-bezier(.23,1,.32,1);
+    }
+
+    .call-fab svg{width:26px;height:26px;fill:#fff;}
+
+    @media (hover:hover){
+      .call-fab:hover{
+        transform:translateY(-2px);
+        box-shadow:0 18px 44px rgba(220,20,60,.5);
+      }
+    }
+
+    .call-fab:active{transform:scale(.97);}
   </style>
 </head>
 
@@ -216,12 +236,10 @@
       <img src="Juniors%20Academy-05.png" alt="Juniors Academy Logo">
     </div>
 
-    <div class="tagline">PROGRAMMES INTERNATIONAUX</div>
-
     <h1>Bienvenue à Juniors Academy</h1>
+
     <p class="lead">
-      Choisissez votre expérience pour les jeunes de <strong>6 à 18 ans</strong> :
-      camps de football de haut niveau ou programmes d’échanges culturels.
+      Choisissez votre expérience pour les jeunes de <strong>6 à 18 ans</strong>.
     </p>
 
     <div class="buttons">
@@ -230,10 +248,15 @@
     </div>
 
     <footer>
-      Vous pouvez revenir à cette page à tout moment via
-      <a href="https://www.juniors.academy">www.juniors.academy</a>.
+      © 2025 Juniors Academy — Tous droits réservés.<br>
+      Revenir à cette page via <a href="https://www.juniors.academy">www.juniors.academy</a>.
     </footer>
   </div>
+
+  <!-- Floating Call Button -->
+  <a class="call-fab" href="tel:+213550527722" aria-label="Appeler Juniors Academy">
+    <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
+  </a>
 
 </body>
 </html>
