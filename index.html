@@ -54,7 +54,6 @@
       gap:10px;
     }
 
-    /* TOP */
     .top{
       text-align:center;
       padding-top:4px;
@@ -75,7 +74,6 @@
       color:rgba(230,230,235,.9);
     }
 
-    /* SPLIT PANELS */
     .split{
       flex:1;
       display:flex;
@@ -115,27 +113,28 @@
         flex .32s cubic-bezier(.23,1,.32,1);
     }
 
+    /* FOOTBALL BACKGROUND — UPDATED */
     .panel--football::before{
       content:"";
       position:absolute;
       inset:0;
       background:
         linear-gradient(135deg, rgba(0,0,0,.42), rgba(0,0,0,.52)),
-        url("Arsenal%204.png") center center / cover no-repeat;
+        url("Arsenal Image.jpg") center center / cover no-repeat;
       z-index:-1;
     }
 
+    /* CULTURAL EXCHANGE BACKGROUND — UPDATED */
     .panel--exchange::before{
       content:"";
       position:absolute;
       inset:0;
       background:
         linear-gradient(145deg, rgba(0,0,0,.40), rgba(0,0,0,.58)),
-        url("Beijing1.jpg") center center / cover no-repeat;
+        url("Beijing Image.jpg") center center / cover no-repeat;
       z-index:-1;
     }
 
-    /* 🧊 PANEL INNER — NO MORE DARK BOX */
     .panel-inner{
       padding:0 20px;
       max-width:420px;
@@ -204,7 +203,6 @@
       fill:#fff;
     }
 
-    /* FOOTER */
     footer{
       text-align:center;
       font-size:12px;
@@ -212,7 +210,6 @@
       padding-bottom:10px;
     }
 
-    /* CALL BUTTON */
     .call-fab{
       position:fixed;
       right:16px;
@@ -229,7 +226,6 @@
     }
     .call-fab svg{width:26px;height:26px;fill:#fff}
 
-    /* ANIMATIONS */
     @keyframes panelIn{
       0%{opacity:0;transform:translateY(18px);}
       100%{opacity:1;transform:translateY(4px);}
