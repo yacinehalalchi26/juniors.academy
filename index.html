@@ -30,9 +30,9 @@
     body {
       min-height:100vh;
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:center;
-      padding:24px 16px;
+      padding:10px 16px 24px;
       color:var(--text);
       text-align:center;
       background:
@@ -59,7 +59,7 @@
       position:relative;
       max-width:720px;
       width:100%;
-      padding:28px 18px 24px;
+      padding:18px 18px 24px;
       border-radius:24px;
       background:linear-gradient(135deg, rgba(10,10,18,.9), rgba(4,4,10,.96));
       box-shadow:
@@ -67,21 +67,23 @@
         0 0 0 1px rgba(255,255,255,.04);
       backdrop-filter:blur(18px);
       -webkit-backdrop-filter:blur(18px);
+      margin-top:8px;
     }
 
     @media (min-width:768px){
       .shell{
         padding:40px 40px 32px;
         border-radius:28px;
+        margin-top:40px;
       }
     }
 
     .logo {
-      margin-bottom:22px;
+      margin-bottom:18px;
     }
 
     .logo img {
-      max-width:150px;
+      max-width:140px;
       height:auto;
       filter:drop-shadow(0 12px 30px rgba(0,0,0,.8));
     }
@@ -95,21 +97,21 @@
       text-transform:uppercase;
       letter-spacing:.22em;
       color:rgba(255,255,255,.55);
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
 
     h1 {
-      font-size:clamp(24px, 5vw, 34px);
+      font-size:clamp(22px, 5vw, 34px);
       font-weight:800;
       letter-spacing:.03em;
-      margin-bottom:10px;
+      margin-bottom:8px;
     }
 
     p.lead {
       font-size:14px;
       line-height:1.6;
       color:rgba(230,230,235,.9);
-      margin-bottom:26px;
+      margin-bottom:24px;
     }
 
     @media (min-width:768px){
@@ -126,11 +128,11 @@
       gap:14px;
       flex-wrap:wrap;
       justify-content:center;
-      margin-bottom:8px;
+      margin-bottom:16px;
     }
 
     @media (min-width:768px){
-      .buttons{gap:18px;}
+      .buttons{gap:18px;margin-bottom:26px;}
     }
 
     .btn {
@@ -188,19 +190,8 @@
       opacity:1;
     }
 
-    .hint {
-      margin-top:8px;
-      font-size:12px;
-      color:rgba(220,220,230,.75);
-    }
-
-    .hint span {
-      color:var(--primary);
-      font-weight:600;
-    }
-
     footer {
-      margin-top:16px;
+      margin-top:6px;
       font-size:12px;
       color:rgba(180,180,190,.75);
     }
@@ -234,13 +225,8 @@
     </p>
 
     <div class="buttons">
-      <a href="/football/" class="btn" id="btnFootball">Football Camps</a>
-      <a href="/cultural-exchange/" class="btn" id="btnCultural">Cultural Exchange Programs</a>
-    </div>
-
-    <div class="hint">
-      Sur mobile, touchez simplement l’option souhaitée. Sur ordinateur, survolez pour voir le focus entre
-      <span>Football</span> et <span>Cultural Exchange</span>.
+      <a href="/football/" class="btn">Football Camps</a>
+      <a href="/cultural-exchange/" class="btn">Cultural Exchange Programs</a>
     </div>
 
     <footer>
