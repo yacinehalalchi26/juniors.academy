@@ -113,7 +113,7 @@
         flex .32s cubic-bezier(.23,1,.32,1);
     }
 
-    /* FOOTBALL BACKGROUND — UPDATED */
+    /* BACKGROUNDS */
     .panel--football::before{
       content:"";
       position:absolute;
@@ -124,7 +124,6 @@
       z-index:-1;
     }
 
-    /* CULTURAL EXCHANGE BACKGROUND — UPDATED */
     .panel--exchange::before{
       content:"";
       position:absolute;
@@ -201,6 +200,28 @@
       width:14px;
       height:14px;
       fill:#fff;
+    }
+
+    /* 🔥 PRESTIGE HOVER ANIMATION RESTORED */
+    @media (hover:hover){
+      .split:hover .panel{
+        filter:grayscale(.3) brightness(.78);
+        transform:translateY(6px);
+        flex:.9;
+        box-shadow:0 10px 34px rgba(0,0,0,.9);
+      }
+      .split:hover .panel:hover{
+        filter:none;
+        transform:translateY(0);
+        flex:1.1;
+        box-shadow:0 22px 60px rgba(0,0,0,.95);
+      }
+    }
+
+    .panel:active{
+      transform:translateY(2px) scale(.98);
+      box-shadow:0 10px 28px rgba(0,0,0,.9);
+      filter:none;
     }
 
     footer{
