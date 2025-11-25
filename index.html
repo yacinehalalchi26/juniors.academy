@@ -54,7 +54,7 @@
       gap:10px;
     }
 
-    /* TOP: logo + tagline */
+    /* TOP */
     .top{
       text-align:center;
       padding-top:4px;
@@ -75,18 +75,18 @@
       color:rgba(230,230,235,.9);
     }
 
-    /* MAIN SPLIT */
+    /* SPLIT PANELS */
     .split{
       flex:1;
       display:flex;
-      flex-direction:column;        /* phone: vertical (up/down) */
+      flex-direction:column;
       gap:14px;
       margin:14px 0 8px;
     }
 
     @media (min-width:768px){
       .split{
-        flex-direction:row;         /* laptop: horizontal (left/right) */
+        flex-direction:row;
         gap:18px;
         margin:18px 0 10px;
       }
@@ -108,8 +108,6 @@
       transform:translateY(4px);
       opacity:0;
       animation:panelIn .9s cubic-bezier(.23,1,.32,1) forwards;
-
-      /* ✅ transitions active on all devices (desktop + phone) */
       transition:
         transform .26s cubic-bezier(.23,1,.32,1),
         filter .26s cubic-bezier(.23,1,.32,1),
@@ -117,55 +115,39 @@
         flex .32s cubic-bezier(.23,1,.32,1);
     }
 
-    .panel--football{animation-delay:.08s;}
-    .panel--exchange{animation-delay:.18s;}
-
-    .panel::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:-2;
-    }
-
-    .panel::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:-1;
-      background:radial-gradient(circle at 50% 0%, rgba(255,255,255,.18) 0, transparent 55%);
-      mix-blend-mode:soft-light;
-      opacity:.6;
-    }
-
-    /* FOOTBALL SIDE — uses Arsenal 4.png */
     .panel--football::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        linear-gradient(135deg, rgba(0,0,0,.82), rgba(0,0,0,.9)),
+        linear-gradient(135deg, rgba(0,0,0,.42), rgba(0,0,0,.52)),
         url("Arsenal%204.png") center center / cover no-repeat;
+      z-index:-1;
     }
 
-    /* CULTURAL EXCHANGE SIDE — now uses Beijing1.jpg with same style */
     .panel--exchange::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        linear-gradient(145deg, rgba(0,0,0,.85), rgba(0,0,0,.92)),
+        linear-gradient(145deg, rgba(0,0,0,.40), rgba(0,0,0,.58)),
         url("Beijing1.jpg") center center / cover no-repeat;
+      z-index:-1;
     }
 
-    /* 🔧 MORE TRANSPARENT GLASS CARD */
+    /* 🧊 PANEL INNER — NO MORE DARK BOX */
     .panel-inner{
-      padding:26px 18px 24px;
+      padding:0 20px;
       max-width:420px;
-      background:linear-gradient(135deg, rgba(0,0,0,.32), rgba(0,0,0,.16));
-      border-radius:18px;
-      box-shadow:0 14px 40px rgba(0,0,0,.75);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      border:1px solid rgba(255,255,255,.14);
+      background:transparent !important;
+      box-shadow:none !important;
+      border:none !important;
+      backdrop-filter:none !important;
+      -webkit-backdrop-filter:none !important;
     }
 
     @media (min-width:768px){
       .panel-inner{
-        padding:30px 26px 26px;
         max-width:360px;
       }
     }
@@ -174,11 +156,11 @@
       font-size:11px;
       letter-spacing:.22em;
       text-transform:uppercase;
-      color:rgba(220,220,230,.82);
+      color:rgba(255,255,255,0.88);
       margin-bottom:10px;
+      font-weight:700;
     }
 
-    /* 🔧 SMALL LABEL TEXT CHANGED: FOOTBALL → SPORTS */
     .panel--football .panel-label::before{
       content:"SPORTS";
     }
@@ -187,32 +169,33 @@
     }
 
     .panel-title{
-      font-size:clamp(22px, 4.8vw, 30px);
+      font-size:clamp(26px, 5vw, 34px);
       font-weight:800;
-      letter-spacing:.04em;
       text-transform:uppercase;
-      margin-bottom:6px;
+      margin-bottom:10px;
+      text-shadow:0 3px 14px rgba(0,0,0,.7);
     }
 
     .panel-sub{
-      font-size:13px;
-      color:var(--gray);
-      line-height:1.7;
-      margin-bottom:18px;
+      font-size:14px;
+      color:#eee;
+      line-height:1.65;
+      margin-bottom:20px;
+      text-shadow:0 2px 12px rgba(0,0,0,.65);
     }
 
     .panel-cta{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:10px 18px;
+      padding:10px 20px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.2);
+      border:1px solid rgba(255,255,255,.35);
       font-size:13px;
       font-weight:600;
       text-transform:uppercase;
-      letter-spacing:.12em;
-      background:rgba(0,0,0,.55);
+      background:rgba(0,0,0,.35);
+      box-shadow:0 8px 20px rgba(0,0,0,.4);
     }
 
     .panel-cta svg{
@@ -221,44 +204,15 @@
       fill:#fff;
     }
 
-    /* HOVER / FOCUS DYNAMICS (desktop) */
-    @media (hover:hover){
-      .split:hover .panel{
-        filter:grayscale(.3) brightness(.78);
-        transform:translateY(6px);
-        flex:.9;
-        box-shadow:0 10px 34px rgba(0,0,0,.9);
-      }
-      .split:hover .panel:hover{
-        filter:none;
-        transform:translateY(0);
-        flex:1.1;
-        box-shadow:0 22px 60px rgba(0,0,0,.95);
-      }
-    }
-
-    /* Tap feedback on phone */
-    .panel:active{
-      transform:translateY(2px) scale(.98);
-      box-shadow:0 10px 28px rgba(0,0,0,.9);
-      filter:none;
-    }
-
-    .panel:focus-visible{
-      outline:2px solid #fff;
-      outline-offset:4px;
-    }
-
     /* FOOTER */
     footer{
       text-align:center;
       font-size:12px;
       color:var(--gray);
-      text-shadow:0 3px 18px rgba(0,0,0,.95);
-      padding-bottom:10px; /* 🔥 a bit more background space under copyright */
+      padding-bottom:10px;
     }
 
-    /* FLOATING CALL BUTTON */
+    /* CALL BUTTON */
     .call-fab{
       position:fixed;
       right:16px;
@@ -272,46 +226,19 @@
       background:linear-gradient(135deg,var(--primary),var(--primary-dark));
       box-shadow:0 16px 40px rgba(220,20,60,.65);
       text-decoration:none;
-      transition:transform .18s cubic-bezier(.23,1,.32,1), box-shadow .18s cubic-bezier(.23,1,.32,1);
     }
-    .call-fab svg{
-      width:26px;
-      height:26px;
-      fill:#fff;
-    }
-    @media (hover:hover){
-      .call-fab:hover{
-        transform:translateY(-2px);
-        box-shadow:0 22px 60px rgba(220,20,60,.8);
-      }
-    }
-    .call-fab:active{
-      transform:scale(.96);
-    }
+    .call-fab svg{width:26px;height:26px;fill:#fff}
 
     /* ANIMATIONS */
-    @keyframes fadeDown{
-      from{opacity:0;transform:translateY(-10px);}
-      to{opacity:1;transform:translateY(0);}
-    }
     @keyframes panelIn{
       0%{opacity:0;transform:translateY(18px);}
       100%{opacity:1;transform:translateY(4px);}
-    }
-
-    @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{
-        animation:none!important;
-        transition:none!important;
-      }
-      .panel{transform:none;opacity:1;}
     }
   </style>
 </head>
 
 <body>
   <div class="page">
-    <!-- TOP: Logo + tagline -->
     <header class="top">
       <div class="logo-box">
         <img src="Juniors Academy-05.png" alt="Juniors Academy">
@@ -319,9 +246,8 @@
       <p class="tagline">Programmes internationaux pour les jeunes de 6 à 18 ans</p>
     </header>
 
-    <!-- SPLIT PANELS -->
-    <main class="split" aria-label="Choix du programme">
-      <!-- FOOTBALL SIDE: left on laptop, top on phone -->
+    <main class="split">
+      <!-- FOOTBALL -->
       <a href="/football" class="panel panel--football">
         <div class="panel-inner">
           <div class="panel-label"></div>
@@ -332,16 +258,15 @@
           </p>
           <div class="panel-cta">
             <span>Découvrir le camp</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.17 12L8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M13.17 12L8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
           </div>
         </div>
       </a>
 
-      <!-- CULTURAL EXCHANGE SIDE: right on laptop, bottom on phone -->
+      <!-- EXCHANGE -->
       <a href="/cultural-exchange" class="panel panel--exchange">
         <div class="panel-inner">
           <div class="panel-label"></div>
-          <!-- 🔧 TITLE CHANGED TO KEEP ONLY "Exchange" -->
           <h2 class="panel-title">Exchange</h2>
           <p class="panel-sub">
             Séjours linguistiques et programmes d’échanges culturels sur mesure,
@@ -349,21 +274,17 @@
           </p>
           <div class="panel-cta">
             <span>Explorer les échanges</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.17 12L8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M13.17 12L8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
           </div>
         </div>
       </a>
     </main>
 
-    <!-- FOOTER -->
-    <footer>
-      © 2025 Juniors Academy. Tous droits réservés.
-    </footer>
+    <footer>© 2025 Juniors Academy. Tous droits réservés.</footer>
   </div>
 
-  <!-- Floating Call Button -->
-  <a class="call-fab" href="tel:+213550527722" aria-label="Appeler Juniors Academy">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
+  <a class="call-fab" href="tel:+213550527722">
+    <svg viewBox="0 0 24 24">
       <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/>
     </svg>
   </a>
