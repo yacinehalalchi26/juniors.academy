@@ -26,32 +26,31 @@
       font-family:Inter, sans-serif;
     }
 
-    html, body {
-      height:100%;
-      overflow:hidden; /* 🔥 BLOCK ALL SCROLL */
-      overscroll-behavior:none; /* 🔥 Stop iOS bouncing */
-      touch-action:none; /* 🔥 Prevent drag movement */
-    }
-
     body {
+      min-height:100vh;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      background: radial-gradient(circle at 50% 20%, #3a0a14, #120205 60%, #000 100%);
+      background:
+        linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.88)),
+        url('Arsenal 4.png')
+        no-repeat center/cover;
       color:#fff;
       -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
     }
 
     /* Logo Positioned Top */
     .logo-box {
       width:100%;
       text-align:center;
-      padding-top:10px; /* reduced spacing */
+      padding-top:10px;
       flex-shrink:0;
     }
     .logo-box img {
       width:150px;
       height:auto;
+      filter:drop-shadow(0 6px 20px rgba(0,0,0,0.7));
     }
 
     /* Main Wrapper */
@@ -71,6 +70,7 @@
       font-weight:800;
       margin-bottom:20px;
       line-height:1.2;
+      text-shadow:0 6px 30px rgba(0,0,0,0.6);
     }
 
     .mobile-break { display:none; }
@@ -97,86 +97,14 @@
       text-decoration:none;
       color:#fff;
       transition:0.25s ease;
-      background:#1a1a1a;
-      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.55);
+      border:1px solid rgba(255,255,255,0.14);
       display:block;
+      backdrop-filter:blur(6px);
       user-select:none;
     }
 
     .option-btn:hover {
       background:linear-gradient(135deg, var(--primary), var(--primary-dark));
       transform:translateY(-3px);
-      box-shadow:0 8px 20px rgba(220,20,60,0.45);
-    }
-
-    .options:hover .option-btn {
-      background:#111;
-      opacity:0.7;
-    }
-    .options:hover .option-btn:hover {
-      opacity:1;
-    }
-
-    /* Footer */
-    footer {
-      text-align:center;
-      padding:12px 0;
-      font-size:14px;
-      color:var(--gray);
-      flex-shrink:0;
-    }
-
-    /* Floating Call Button */
-    .call-fab{
-      position:fixed;
-      right:16px;
-      bottom:16px;
-      z-index:999;
-      width:56px;height:56px;
-      border-radius:50%;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      box-shadow:0 12px 30px rgba(220,20,60,.45);
-      text-decoration:none;
-      transition:0.2s ease;
-      user-select:none;
-    }
-    .call-fab svg{
-      width:26px;height:26px;fill:#fff;
-    }
-    .call-fab:active{transform:scale(.97);}
-  </style>
-</head>
-
-<body>
-
-  <!-- Logo -->
-  <div class="logo-box">
-    <img src="Juniors Academy-05.png" alt="Juniors Academy">
-  </div>
-
-  <!-- Content -->
-  <div class="wrapper">
-    <h1>
-      Bienvenue à <br class="mobile-break"> Juniors Academy
-    </h1>
-
-    <div class="options">
-      <a href="/football" class="option-btn">Football Camps</a>
-      <a href="/cultural-exchange" class="option-btn">Cultural Exchange Programs</a>
-    </div>
-
-  </div>
-
-  <!-- Call Button -->
-  <a class="call-fab" href="tel:+213550527722">
-    <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
-  </a>
-
-  <!-- Footer -->
-  <footer>
-    © 2025 Juniors Academy. Tous droits réservés.
-  </footer>
-
-</body>
-</html>
+      b
