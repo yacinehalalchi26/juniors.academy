@@ -108,6 +108,13 @@
       transform:translateY(4px);
       opacity:0;
       animation:panelIn .9s cubic-bezier(.23,1,.32,1) forwards;
+
+      /* ✅ transitions active on all devices (desktop + phone) */
+      transition:
+        transform .26s cubic-bezier(.23,1,.32,1),
+        filter .26s cubic-bezier(.23,1,.32,1),
+        box-shadow .26s cubic-bezier(.23,1,.32,1),
+        flex .32s cubic-bezier(.23,1,.32,1);
     }
 
     .panel--football{animation-delay:.08s;}
@@ -137,11 +144,11 @@
         url("Arsenal%204.png") center center / cover no-repeat;
     }
 
-    /* CULTURAL EXCHANGE SIDE — deep gradient, no image (for now) */
+    /* CULTURAL EXCHANGE SIDE — now uses Beijing1.jpg with same style */
     .panel--exchange::before{
       background:
-        radial-gradient(circle at 0% 0%, rgba(220,20,60,.55) 0, transparent 55%),
-        linear-gradient(145deg, #090310 0%, #141424 40%, #060208 100%);
+        linear-gradient(145deg, rgba(0,0,0,.85), rgba(0,0,0,.92)),
+        url("Beijing1.jpg") center center / cover no-repeat;
     }
 
     .panel-inner{
@@ -212,32 +219,27 @@
       fill:#fff;
     }
 
-    /* HOVER / FOCUS DYNAMICS */
-    .split:hover .panel{
-      filter:grayscale(.3) brightness(.78);
-      transform:translateY(6px);
-    }
-    .split:hover .panel:hover{
-      filter:none;
-      transform:translateY(0);
-    }
-
+    /* HOVER / FOCUS DYNAMICS (desktop) */
     @media (hover:hover){
-      .panel{
-        transition:
-          transform .26s cubic-bezier(.23,1,.32,1),
-          filter .26s cubic-bezier(.23,1,.32,1),
-          box-shadow .26s cubic-bezier(.23,1,.32,1),
-          flex .32s cubic-bezier(.23,1,.32,1);
-      }
       .split:hover .panel{
+        filter:grayscale(.3) brightness(.78);
+        transform:translateY(6px);
         flex:.9;
         box-shadow:0 10px 34px rgba(0,0,0,.9);
       }
       .split:hover .panel:hover{
+        filter:none;
+        transform:translateY(0);
         flex:1.1;
         box-shadow:0 22px 60px rgba(0,0,0,.95);
       }
+    }
+
+    /* Tap feedback on phone */
+    .panel:active{
+      transform:translateY(2px) scale(.98);
+      box-shadow:0 10px 28px rgba(0,0,0,.9);
+      filter:none;
     }
 
     .panel:focus-visible{
@@ -251,7 +253,7 @@
       font-size:12px;
       color:var(--gray);
       text-shadow:0 3px 18px rgba(0,0,0,.95);
-      padding-bottom:2px;
+      padding-bottom:10px; /* 🔥 a bit more background space under copyright */
     }
 
     /* FLOATING CALL BUTTON */
