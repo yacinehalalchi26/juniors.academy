@@ -151,15 +151,16 @@
         url("Beijing1.jpg") center center / cover no-repeat;
     }
 
+    /* 🔧 MORE TRANSPARENT GLASS CARD */
     .panel-inner{
       padding:26px 18px 24px;
       max-width:420px;
-      background:linear-gradient(135deg, rgba(0,0,0,.65), rgba(0,0,0,.45));
+      background:linear-gradient(135deg, rgba(0,0,0,.32), rgba(0,0,0,.16));
       border-radius:18px;
-      box-shadow:0 14px 40px rgba(0,0,0,.9);
+      box-shadow:0 14px 40px rgba(0,0,0,.75);
       backdrop-filter:blur(18px);
       -webkit-backdrop-filter:blur(18px);
-      border:1px solid rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.14);
     }
 
     @media (min-width:768px){
@@ -177,8 +178,9 @@
       margin-bottom:10px;
     }
 
+    /* 🔧 SMALL LABEL TEXT CHANGED: FOOTBALL → SPORTS */
     .panel--football .panel-label::before{
-      content:"FOOTBALL";
+      content:"SPORTS";
     }
     .panel--exchange .panel-label::before{
       content:"CULTURAL";
@@ -339,7 +341,8 @@
       <a href="/cultural-exchange" class="panel panel--exchange">
         <div class="panel-inner">
           <div class="panel-label"></div>
-          <h2 class="panel-title">Cultural Exchange Programs</h2>
+          <!-- 🔧 TITLE CHANGED TO KEEP ONLY "Exchange" -->
+          <h2 class="panel-title">Exchange</h2>
           <p class="panel-sub">
             Séjours linguistiques et programmes d’échanges culturels sur mesure,
             pour ouvrir le monde aux juniors tout en restant parfaitement encadrés.
