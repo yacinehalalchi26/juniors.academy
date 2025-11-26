@@ -161,8 +161,10 @@
       text-transform:uppercase;
       color:rgba(255,255,255,.7);
     }
+
+    /* Smaller headline on laptop/desktop */
     .hero-headline{
-      font-size:clamp(26px, 6vw, 52px);
+      font-size:clamp(24px, 4.4vw, 44px);
       font-weight:800;
       line-height:1.06;
       margin:8px auto 10px;
@@ -170,6 +172,7 @@
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
     }
+
     .hero-subhead{
       font-size:clamp(14px, 3.6vw, 20px);
       color:rgba(255,255,255,.9);
@@ -488,6 +491,38 @@
       border-top:1px solid rgba(255,255,255,.06);
     }
 
+    /* Floating Call Button — same logic as football page */
+    .call-fab{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:9999;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      box-shadow:0 12px 30px rgba(220,20,60,.4);
+      text-decoration:none;
+      transition:transform .18s var(--t), box-shadow .18s var(--t);
+    }
+    .call-fab svg{
+      width:26px;
+      height:26px;
+      display:block;
+      fill:#fff;
+    }
+    @media (hover:hover){
+      .call-fab:hover{
+        transform:translateY(-2px);
+        box-shadow:0 18px 44px rgba(220,20,60,.5);
+      }
+    }
+    .call-fab:active{
+      transform:scale(.98);
+    }
+
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
     }
@@ -563,7 +598,8 @@
           </ul>
         </div>
         <div class="destination-image">
-          <img src="./Beijing1.jpg" alt="Vue de Pékin avec un monument emblématique" loading="lazy">
+          <!-- Root-relative path so it works like on football page -->
+          <img src="/Beijing1.jpg" alt="Vue de Pékin avec un monument emblématique" loading="lazy">
         </div>
       </article>
 
@@ -589,7 +625,7 @@
           </ul>
         </div>
         <div class="destination-image">
-          <img src="./UK1.jpg" alt="Paysage urbain en Angleterre avec architecture typique" loading="lazy">
+          <img src="/UK1.jpg" alt="Paysage urbain en Angleterre avec architecture typique" loading="lazy">
         </div>
       </article>
 
@@ -615,7 +651,7 @@
           </ul>
         </div>
         <div class="destination-image">
-          <img src="./Swiss.jpg" alt="Camp de jeunes en Suisse dans un paysage alpin" loading="lazy">
+          <img src="/Swiss.jpg" alt="Camp de jeunes en Suisse dans un paysage alpin" loading="lazy">
         </div>
       </article>
     </section>
@@ -679,5 +715,12 @@
   <footer class="footer" role="contentinfo">
     <p>© 2025 Juniors Academy. Tous droits réservés.</p>
   </footer>
+
+  <!-- Floating call button (phone to call directly) -->
+  <a class="call-fab" href="tel:+213550527722" aria-label="Appeler Juniors Academy">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/>
+    </svg>
+  </a>
 </body>
 </html>
