@@ -8,6 +8,7 @@
   <!-- Brand & SEO -->
   <link rel="icon" type="image/png" sizes="32x32" href="../favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+  <link rel="shortcut icon" type="image/png" href="../favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
@@ -33,146 +34,466 @@
       --radius-xl:22px;
       --t:cubic-bezier(.23,1,.32,1);
     }
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{width:100%;overflow-x:hidden}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{width:100%;overflow-x:hidden;touch-action:manipulation}
+    html{scroll-behavior:smooth}
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";
-      line-height:1.6;background:#000;color:#fff;
-      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
+      background:
+        radial-gradient(circle at 0 0, rgba(220,20,60,.3) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(0,0,0,.8) 0, transparent 60%),
+        linear-gradient(135deg,#050308 0%,#09020f 50%,#050308 100%);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
-    /* Toolbar (ACCUEIL / INSCRIPTION) */
+    /* Top banner (same style family as football page) */
+    .top-banner{
+      text-align:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      padding:10px 8px;
+      position:relative;
+      z-index:10;
+      box-shadow:0 2px 10px rgba(0,0,0,.25);
+      font-size:13px;
+    }
+    .top-banner p{
+      font-style:italic;
+      color:#fff;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    /* Hero */
+    .hero{
+      position:relative;
+      min-height:60vh;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      padding:0 16px 32px;
+    }
+    .hero-bg{
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:
+        linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,.9)),
+        url('../Arsenal%205.png')
+        no-repeat center center / cover;
+      transform:scale(1.03);
+    }
+
+    .hero-logo{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top:calc(env(safe-area-inset-top, 0px) + 10px);
+      z-index:2;
+    }
+    .hero-logo a{display:inline-block;line-height:0}
+    .hero-logo img{
+      height:auto;
+      max-height:150px;
+      width:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 28px rgba(0,0,0,.6));
+      transition:transform .2s var(--t);
+    }
+    @media (hover:hover){ .hero-logo a:hover img{transform:scale(1.03)} }
+
+    /* Toolbar inside hero bottom area */
+    .hero-inner{
+      max-width:980px;
+      width:100%;
+      margin:0 auto;
+      padding-top:130px;
+    }
+
+    @media (max-width:768px){
+      .hero-inner{
+        padding-top:calc(130px + 12px + env(safe-area-inset-top, 0px));
+      }
+      .hero-logo img{max-height:130px}
+    }
+
     .toolbar{
-      max-width:1100px;margin:12px auto 0;padding:0 16px;
-      display:grid;grid-template-columns:1fr 1fr;align-items:start;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:22px;
+    }
+    @media (max-width:540px){
+      .toolbar{
+        flex-direction:column;
+        align-items:stretch;
+      }
     }
     .pill{
       display:inline-block;
       background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      color:#fff;text-decoration:none;font-weight:800;
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
       font-size:clamp(12px,2.6vw,14px);
       padding:clamp(6px,1.2vw,8px) clamp(12px,2.2vw,16px);
       border-radius:999px;
       box-shadow:0 6px 16px rgba(220,20,60,.35);
       transition:transform .18s var(--t), box-shadow .18s var(--t);
-      text-transform:uppercase;letter-spacing:.4px;
-      justify-self:start;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      text-align:center;
     }
-    .pill-right{justify-self:end}
     @media (hover:hover){
       .pill:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(220,20,60,.45)}
     }
 
-    /* Big headline below the buttons with extra spacing */
     .page-title{
-      max-width:1100px;margin:28px auto 20px;padding:0 16px;text-align:center;
+      text-align:center;
     }
     .page-title h1{
-      font-size:clamp(34px, 6.6vw, 66px);
-      font-weight:900;letter-spacing:1px;line-height:1.06;margin:0;
+      font-size:clamp(32px, 6.2vw, 60px);
+      font-weight:900;
+      letter-spacing:1px;
+      line-height:1.04;
+      margin:4px 0 4px;
       background:linear-gradient(90deg,#cfcfcf,#ffffff,#d6d6d6);
       background-size:200% 100%;
-      -webkit-background-clip:text;background-clip:text;
+      -webkit-background-clip:text;
+      background-clip:text;
       color:transparent;
-      filter:drop-shadow(0 10px 26px rgba(0,0,0,.5));
+      filter:drop-shadow(0 10px 26px rgba(0,0,0,.6));
       animation:shine 1.2s ease-out .15s 1 forwards;
     }
+    .page-sub{
+      font-size:clamp(13px,3.4vw,15px);
+      color:rgba(255,255,255,.88);
+      max-width:620px;
+      margin:0 auto;
+      line-height:1.7;
+    }
+
     @keyframes shine{
       from{background-position:0% 50%}
       to{background-position:100% 50%}
     }
-    @media (max-width:640px){
-      .page-title{ margin-top:34px; }
-    }
 
-    /* Posts (centered) */
-    main{max-width:1100px;margin:8px auto 60px;padding:0 16px}
+    /* Posts */
+    main{
+      max-width:1100px;
+      margin:8px auto 60px;
+      padding:0 16px;
+    }
     .posts{display:block}
     .post{
-      max-width:820px;margin:0 auto 18px;
-      background:var(--card-bg);border:1px solid rgba(255,255,255,.06);
-      border-radius:var(--radius-xl);overflow:hidden;
-      box-shadow:0 10px 30px rgba(0,0,0,.18);
+      max-width:820px;
+      margin:0 auto 22px;
+      background:var(--card-bg);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius-xl);
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
       transition:transform .18s var(--t), box-shadow .18s var(--t);
+      backdrop-filter:blur(10px);
     }
-    @media (hover:hover){ .post:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(0,0,0,.32)} }
+    @media (hover:hover){
+      .post:hover{
+        transform:translateY(-2px);
+        box-shadow:0 16px 44px rgba(0,0,0,.4);
+      }
+    }
 
-    .post-hero{width:100%;aspect-ratio:16/9;background:#0a0a0a;overflow:hidden}
-    .post-hero img{width:100%;height:100%;object-fit:cover;display:block}
-    .post-body{padding:18px}
-    .post h2{font-size:22px;margin:0 0 6px;font-weight:800}
-    .meta{font-size:13px;color:var(--gray);margin-bottom:8px}
-    .post p{font-size:15px;color:rgba(255,255,255,.9);margin:0 0 12px}
+    .post-hero{
+      width:100%;
+      aspect-ratio:16/9;
+      background:#0a0a0a;
+      overflow:hidden;
+    }
+    .post-hero img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .post-body{
+      padding:18px 18px 16px;
+    }
+    .post h2{
+      font-size:22px;
+      margin:0 0 6px;
+      font-weight:800;
+    }
+    .meta{
+      font-size:13px;
+      color:var(--gray);
+      margin-bottom:8px;
+    }
+    .post p{
+      font-size:15px;
+      color:rgba(255,255,255,.9);
+      margin:0 0 12px;
+    }
 
     .read-toggle{
-      display:inline-flex;align-items:center;gap:8px;
-      color:#fff;text-decoration:none;font-weight:800;letter-spacing:.2px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      letter-spacing:.2px;
       background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      padding:10px 16px;border-radius:999px;border:0;cursor:pointer
+      padding:10px 16px;
+      border-radius:999px;
+      border:0;
+      cursor:pointer;
+      font-size:13px;
+      text-transform:uppercase;
     }
-    .read-toggle svg{width:14px;height:14px;fill:#fff;transition:transform .18s var(--t)}
+    .read-toggle svg{
+      width:14px;
+      height:14px;
+      fill:#fff;
+      transition:transform .18s var(--t);
+    }
     .read-toggle.is-open{
       background:linear-gradient(135deg,#a00000,#6e0000);
       filter:saturate(1.05);
     }
 
     /* Collapsible details */
-    .details{display:none;padding:0 18px 18px}
+    .details{
+      display:none;
+      padding:0 18px 18px;
+    }
     .details-inner{
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.06);
-      border-radius:16px;padding:18px;
+      border-radius:16px;
+      padding:18px;
     }
-    .details h3{font-size:18px;margin:12px 0 8px;font-weight:800}
-    .details p, .details li{color:rgba(255,255,255,.92)}
-    .details ul{padding-left:1.1rem}
+    .details h3{
+      font-size:18px;
+      margin:12px 0 8px;
+      font-weight:800;
+    }
+    .details p,
+    .details li{
+      color:rgba(255,255,255,.92);
+      font-size:14px;
+    }
+    .details ul{
+      padding-left:1.1rem;
+    }
+    .details .pill{
+      margin-top:6px;
+    }
 
-    /* Partner section */
-    .partner-section{padding:60px 16px;text-align:center}
-    .partner-content{max-width:800px;margin:0 auto}
+    /* Partner section (same styling as football page) */
+    .partner-section{
+      padding:40px 16px 40px;
+      text-align:center;
+    }
+    .partner-content{
+      max-width:800px;
+      margin:0 auto;
+    }
     .partner-title{
-      font-size:clamp(16px,3.6vw,20px);font-weight:900;color:rgba(255,255,255,.92);margin-bottom:22px;
-      letter-spacing:1px;position:relative;display:inline-block;text-transform:uppercase
+      font-size:clamp(16px,3.6vw,20px);
+      font-weight:900;
+      color:rgba(255,255,255,.92);
+      margin-bottom:22px;
+      letter-spacing:1px;
+      position:relative;
+      display:inline-block;
+      text-transform:uppercase;
     }
-    .partner-title::after{content:"";position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:90px;height:3px;background:var(--primary);border-radius:2px}
+    .partner-title::after{
+      content:"";
+      position:absolute;
+      bottom:-10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:90px;
+      height:3px;
+      background:var(--primary);
+      border-radius:2px;
+    }
     .partner-logo{
-      width:auto;max-width:100%;height:auto;max-height:100px;object-fit:contain;
-      filter:none;opacity:1;transition:transform .2s var(--t)
+      width:auto;
+      max-width:100%;
+      height:auto;
+      max-height:100px;
+      object-fit:contain;
+      filter:none;
+      opacity:1;
+      transition:transform .2s var(--t);
     }
-    @media (hover:hover){ .partner-logo:hover{transform:translateY(-3px)} }
+    @media (hover:hover){
+      .partner-logo:hover{
+        transform:translateY(-3px);
+      }
+    }
 
-    /* Contact section */
-    .contact-section{padding:32px 16px 64px;max-width:1000px;margin:0 auto}
-    .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-    .contact-info{background:var(--card-bg);border-radius:var(--radius-xl);padding:22px;border:1px solid rgba(255,255,255,.06)}
-    .contact-title{font-size:20px;font-weight:900;margin-bottom:6px}
-    .contact-subtitle{color:var(--gray);font-size:15px;margin-bottom:10px}
-    .contact-item{margin:10px 0;font-size:15px;display:flex;align-items:flex-start;gap:10px}
-    .contact-item svg{width:20px;height:20px;min-width:20px;fill:var(--primary);margin-top:2px}
-    .contact-item a{color:var(--primary);text-decoration:none;border-bottom:1px solid rgba(220,20,60,.3)}
-    .contact-item a:hover{color:#fff;border-bottom-color:#fff}
-    .contact-map{background:var(--card-bg);border-radius:var(--radius-xl);overflow:hidden;min-height:320px;border:1px solid rgba(255,255,255,.06);position:relative}
+    /* Contact section (same family as football page) */
+    .contact-section{
+      padding:32px 16px 64px;
+      max-width:1000px;
+      margin:0 auto;
+    }
+    .contact-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:18px;
+    }
+    .contact-info{
+      background:var(--card-bg);
+      border-radius:var(--radius-xl);
+      padding:22px;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter:blur(10px);
+    }
+    .contact-title{
+      font-size:20px;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+    .contact-subtitle{
+      color:var(--gray);
+      font-size:15px;
+      margin-bottom:10px;
+    }
+    .contact-item{
+      margin:10px 0;
+      font-size:15px;
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .contact-item svg{
+      width:20px;
+      height:20px;
+      min-width:20px;
+      fill:var(--primary);
+      margin-top:2px;
+    }
+    .contact-item a{
+      color:var(--primary);
+      text-decoration:none;
+      border-bottom:1px solid rgba(220,20,60,.3);
+    }
+    .contact-item a:hover{
+      color:#fff;
+      border-bottom-color:#fff;
+    }
+    .contact-map{
+      background:var(--card-bg);
+      border-radius:var(--radius-xl);
+      overflow:hidden;
+      min-height:320px;
+      border:1px solid rgba(255,255,255,.06);
+      position:relative;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter:blur(10px);
+    }
 
-    footer{color:#8a8a8e;text-align:center;padding:28px 16px;border-top:1px solid rgba(255,255,255,.06)}
+    footer{
+      background:rgba(0,0,0,.9);
+      color:#8a8a8e;
+      text-align:center;
+      padding:26px 16px 30px;
+      font-size:14px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
     footer p{white-space:nowrap}
-    .vh{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+
+    .vh{
+      position:absolute;
+      left:-10000px;
+      top:auto;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+    }
+
+    /* Floating Call Button (same as football) */
+    .call-fab{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:9999;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      box-shadow:0 12px 30px rgba(220,20,60,.4);
+      text-decoration:none;
+      transition:transform .18s var(--t), box-shadow .18s var(--t);
+    }
+    .call-fab svg{
+      width:26px;
+      height:26px;
+      display:block;
+      fill:#fff;
+    }
+    @media (hover:hover){
+      .call-fab:hover{
+        transform:translateY(-2px);
+        box-shadow:0 18px 44px rgba(220,20,60,.5);
+      }
+    }
+    .call-fab:active{
+      transform:scale(.98);
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
   </style>
 </head>
 <body>
 
-  <!-- Buttons row -->
-  <div class="toolbar" role="navigation" aria-label="Barre principale">
-    <a class="pill" href="/">Accueil</a>
-    <a class="pill pill-right" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform">Inscription</a>
+  <!-- Top banner -->
+  <div class="top-banner" role="note" aria-live="polite">
+    <p>Conseils & coulisses des séjours Juniors Academy</p>
   </div>
 
-  <!-- Big headline under buttons (with more space) -->
-  <header class="page-title">
-    <h1>JA BLOGS</h1>
+  <!-- HERO -->
+  <header class="hero" aria-label="Présentation du blog">
+    <div class="hero-bg" aria-hidden="true"></div>
+
+    <div class="hero-logo">
+      <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Instagram Juniors Academy (nouvelle fenêtre)">
+        <img src="../Juniors%20Academy-05.png" alt="Logo Juniors Academy" />
+      </a>
+    </div>
+
+    <div class="hero-inner">
+      <nav class="toolbar" role="navigation" aria-label="Navigation principale">
+        <a class="pill" href="/">Accueil</a>
+        <a class="pill" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform">
+          Inscription
+        </a>
+      </nav>
+
+      <div class="page-title">
+        <h1>JA BLOGS</h1>
+        <p class="page-sub">
+          Conseils pratiques, préparation, coulisses du camp et retours d’expérience
+          pour accompagner les familles dans l’aventure Juniors Academy.
+        </p>
+      </div>
+    </div>
   </header>
 
-  <!-- Hidden H1 for SEO/accessibility -->
+  <!-- Hidden H2 for SEO/accessibility -->
   <h2 class="vh">JA BLOGS – Juniors Academy</h2>
 
   <main>
@@ -223,7 +544,9 @@
             </ul>
 
             <div style="margin-top:12px">
-              <a class="pill" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform">S'inscrire maintenant</a>
+              <a class="pill" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform">
+                S'inscrire maintenant
+              </a>
             </div>
           </div>
         </div>
@@ -242,7 +565,7 @@
           <img
             class="partner-logo"
             src="../AFDX.png"
-            alt="Partenaires officiels : AFDX"
+            alt="Partenaire officiel : AFDX"
             width="660" height="100"
             loading="lazy" decoding="async"
           />
@@ -273,7 +596,6 @@
       </div>
 
       <div class="contact-map" aria-label="Carte">
-        <!-- Plus Code embed: Q29P+3W El Biar -->
         <iframe
           title="Localisation Juniors Academy"
           src="https://www.google.com/maps?q=Q29P%2B3W%20El%20Biar&z=16&output=embed"
@@ -292,6 +614,13 @@
     <p>© 2025 Juniors Academy. Tous droits réservés.</p>
   </footer>
 
+  <!-- Floating call button -->
+  <a class="call-fab" href="tel:+213550527722" aria-label="Appeler Juniors Academy">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C10.4 21.02 2.98 13.6 2.98 4a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/>
+    </svg>
+  </a>
+
   <!-- Toggle logic -->
   <script>
     (function(){
@@ -306,7 +635,10 @@
       function openPanel(){
         panel.style.display = 'block';
         if(!prefersReduced){
-          panel.animate([{opacity:0, transform:'translateY(-6px)'},{opacity:1, transform:'none'}], {duration:220, easing:'cubic-bezier(.23,1,.32,1)'});
+          panel.animate(
+            [{opacity:0, transform:'translateY(-6px)'},{opacity:1, transform:'none'}],
+            {duration:220, easing:'cubic-bezier(.23,1,.32,1)'}
+          );
         }
         btn.setAttribute('aria-expanded','true');
         if(chevron) chevron.style.transform = 'rotate(180deg)';
