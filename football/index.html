@@ -475,6 +475,36 @@
       *{animation:none!important;transition:none!important}
       .hero-inner{transform:none;opacity:1;}
     }
+
+    /* PHONE-ONLY TWEAKS:
+       - Slightly smaller hero card
+       - Less top padding so the card sits more in the middle
+       - Slightly smaller text & button so it feels right on mobile
+    */
+    @media (max-width:600px){
+      .hero{
+        padding:8px 10px 24px;
+      }
+      .hero-content{
+        padding-top:calc(var(--hero-logo-h-sm) + 10px + env(safe-area-inset-top, 0px));
+      }
+      .hero-inner{
+        max-width:92%;
+        margin:0 auto 24px;
+        padding:18px 14px 22px;
+        border-radius:18px;
+      }
+      .hero-headline{
+        font-size:26px;
+      }
+      .hero-subhead{
+        font-size:14px;
+      }
+      .hero-cta{
+        padding:12px 26px;
+        font-size:15px;
+      }
+    }
   </style>
 </head>
 <body>
