@@ -205,7 +205,7 @@
       transition:transform .18s var(--t), box-shadow .18s var(--t);
       backdrop-filter:blur(10px);
     }
-    @media (hover:hover){
+    @media (hover:hover)){
       .post:hover{
         transform:translateY(-2px);
         box-shadow:0 16px 44px rgba(0,0,0,.4);
@@ -268,6 +268,33 @@
     .read-toggle.is-open{
       background:linear-gradient(135deg,#a00000,#6e0000);
       filter:saturate(1.05);
+    }
+
+    /* 🔴 Red pill button style (used in blog details inscription) */
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      font-size:13px;
+      padding:10px 20px;
+      border-radius:999px;
+      box-shadow:0 10px 24px rgba(220,20,60,.45);
+      text-transform:uppercase;
+      letter-spacing:.2px;
+      border:none;
+      cursor:pointer;
+      transition:transform .18s var(--t), box-shadow .18s var(--t), background .18s var(--t);
+    }
+    @media (hover:hover){
+      .pill:hover{
+        transform:translateY(-2px);
+        box-shadow:0 16px 36px rgba(220,20,60,.6);
+        background:linear-gradient(135deg,var(--primary-dark),#6e0000);
+      }
     }
 
     /* Collapsible details */
@@ -470,10 +497,10 @@
   <header class="hero" aria-label="Présentation du blog">
     <div class="hero-bg" aria-hidden="true"></div>
 
-    <!-- Switch buttons: SPORTS (left) / CULTURAL (right) -->
+    <!-- Switch buttons: SPORTS (left) / EXCHANGE (right) -->
     <nav class="hero-switch" aria-label="Choix de programme">
       <a href="/football">Sports</a>
-      <a href="/cultural">Cultural</a>
+      <a href="https://www.juniors.academy/cultural-exchange">Exchange</a>
     </nav>
 
     <div class="hero-logo">
