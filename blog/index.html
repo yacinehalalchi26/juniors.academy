@@ -270,6 +270,33 @@
       filter:saturate(1.05);
     }
 
+    /* 🔴 Red pill button style (used in blog details inscription) */
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      font-size:13px;
+      padding:10px 20px;
+      border-radius:999px;
+      box-shadow:0 10px 24px rgba(220,20,60,.45);
+      text-transform:uppercase;
+      letter-spacing:.2px;
+      border:none;
+      cursor:pointer;
+      transition:transform .18s var(--t), box-shadow .18s var(--t), background .18s var(--t);
+    }
+    @media (hover:hover){
+      .pill:hover{
+        transform:translateY(-2px);
+        box-shadow:0 16px 36px rgba(220,20,60,.6);
+        background:linear-gradient(135deg,var(--primary-dark),#6e0000);
+      }
+    }
+
     /* Collapsible details */
     .details{
       display:none;
