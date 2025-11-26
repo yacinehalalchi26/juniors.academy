@@ -33,10 +33,10 @@
   <meta name="twitter:description" content="Anglais + football pro pour les 9-17 ans à Oundle School, avec Arsenal Football Development. Sécurité 24/7, excursions, certificat.">
   <meta name="twitter:image" content="https://juniors.academy/Arsenal%201.png">
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
-  <link rel="shortcut icon" type="image/png" href="favicon.png">
+  <!-- Favicons (root-relative so they work under /football) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -166,7 +166,7 @@
       position:absolute;inset:0;z-index:-1;
       background:
         linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,.9)),
-        url('Arsenal 4.png')
+        url('/Arsenal%204.png')
         no-repeat center center / cover;
       transform:scale(1.03);
     }
@@ -472,7 +472,7 @@
 
       <div class="hero-logo">
         <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Instagram Juniors Academy (nouvelle fenêtre)">
-          <img src="Juniors Academy-05.png" alt="Logo Juniors Academy" />
+          <img src="/Juniors%20Academy-05.png" alt="Logo Juniors Academy" />
         </a>
       </div>
 
@@ -566,7 +566,7 @@
              aria-label="Site officiel Arsenal Football Development (nouvelle fenêtre)">
             <img
               class="partner-logo"
-              src="AFDX.png"
+              src="/AFDX.png"
               alt="Partenaire officiel : AFDX"
               width="660" height="100"
               loading="lazy" decoding="async"
@@ -663,7 +663,7 @@
       io.observe(header);
     })();
 
-    // Carousel (3s) — files "Arsenal 1.png" … "Arsenal 9.png"
+    // Carousel (3s) — files "/Arsenal%201.png" … "/Arsenal%209.png"
     (function(){
       const track = document.getElementById('carouselTrack');
       const dots = document.getElementById('carouselDots');
@@ -673,18 +673,17 @@
       if(!track) return;
 
       const COUNT = 9, INTERVAL = 3000;
-      const files = Array.from({length:COUNT}, (_,i)=> 'Arsenal ' + (i+1) + '.png');
 
       const slides = [], dotBtns = [];
-      files.forEach((name, idx)=>{
+      for(let i=1;i<=COUNT;i++){
         const slide = document.createElement('div');
         slide.className='carousel-slide';
         slide.setAttribute('role','listitem');
 
         const img = document.createElement('img');
-        img.src = name;                    // direct filename: Arsenal 1.png, etc.
-        img.alt = `Stage de football Arsenal Football Development – photo ${idx+1}`;
-        img.loading = idx<2 ? 'eager':'lazy';
+        img.src = '/Arsenal%20' + i + '.png';   // root-relative, space encoded
+        img.alt = `Stage de football Arsenal Football Development – photo ${i}`;
+        img.loading = i<=2 ? 'eager':'lazy';
         img.decoding='async';
 
         slide.appendChild(img);
@@ -693,11 +692,11 @@
 
         const dot = document.createElement('button');
         dot.type='button';
-        dot.setAttribute('aria-label',`Aller à l'image ${idx+1}`);
-        dot.addEventListener('click', ()=>goTo(idx, true));
+        dot.setAttribute('aria-label',`Aller à l'image ${i}`);
+        dot.addEventListener('click', ()=>goTo(i-1, true));
         dots.appendChild(dot);
         dotBtns.push(dot);
-      });
+      }
 
       let idx = 0, timer=null, dragging=false, startX=0, dx=0;
 
