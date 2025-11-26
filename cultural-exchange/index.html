@@ -5,29 +5,29 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <title>Juniors Academy | Cultural Exchange Programs – Chine (9–17 ans)</title>
+  <title>Juniors Academy | Cultural Exchange Programs</title>
 
   <!-- Canonical / Robots -->
   <link rel="canonical" href="https://juniors.academy/cultural-exchange/">
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 
   <!-- Primary Meta -->
-  <meta name="description" content="Programmes d’échanges culturels et linguistiques en Chine pour les 9–17 ans : découverte de Pékin, Grande Muraille, ateliers culturels, cours de langue et encadrement 24/7.">
-  <meta name="keywords" content="échange culturel Chine, séjour linguistique Chine, voyage scolaire Pékin, Grande Muraille, programme juniors Chine, Juniors Academy, camp Chine jeunes, immersion culturelle Chine">
+  <meta name="description" content="Programmes d’échanges culturels et linguistiques (Chine, Royaume-Uni, et autres) pour les 9–17 ans : découvertes, ateliers culturels, cours de langue et encadrement 24/7.">
+  <meta name="keywords" content="échange culturel, séjour linguistique, voyage scolaire, Juniors Academy, camps jeunes, immersion culturelle, Chine, Royaume-Uni">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Juniors Academy">
   <meta property="og:url" content="https://juniors.academy/cultural-exchange/">
-  <meta property="og:title" content="Juniors Academy – Cultural Exchange Programs en Chine (9–17 ans)">
-  <meta property="og:description" content="Séjours linguistiques et programmes d’échanges culturels en Chine : Pékin, Grande Muraille, Cité interdite, ateliers et vie de campus.">
+  <meta property="og:title" content="Juniors Academy – Cultural Exchange Programs (9–17 ans)">
+  <meta property="og:description" content="Séjours linguistiques et programmes d’échanges culturels : Chine, Royaume-Uni, et plus.">
   <meta property="og:image" content="https://juniors.academy/China%201.png">
   <meta property="og:locale" content="fr_DZ">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Juniors Academy – Cultural Exchange Programs en Chine">
-  <meta name="twitter:description" content="Immersion linguistique et culturelle en Chine pour les juniors, avec encadrement 24/7.">
+  <meta name="twitter:title" content="Juniors Academy – Cultural Exchange Programs">
+  <meta name="twitter:description" content="Immersion linguistique et culturelle pour les juniors, avec encadrement 24/7.">
   <meta name="twitter:image" content="https://juniors.academy/China%201.png">
 
   <!-- Favicons -->
@@ -58,24 +58,12 @@
     html{scroll-behavior:smooth}
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";
-      line-height:1.6;background:#000;color:#fff;
-      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-    }
-
-    .top-banner{
-      text-align:center;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      padding:12px 0;
-      position:relative;
-      z-index:10;
-      box-shadow:0 2px 10px rgba(0,0,0,.25)
-    }
-    .top-banner p{
-      font-style:italic;
-      font-size:14px;
+      line-height:1.6;
+      background:#000;
       color:#fff;
-      letter-spacing:.5px
+      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
     /* Hero */
@@ -88,7 +76,9 @@
       padding:0 16px;
     }
     .hero-bg{
-      position:absolute;inset:0;z-index:-1;
+      position:absolute;
+      inset:0;
+      z-index:-1;
       background:
         radial-gradient(circle at 0% 0%, rgba(220,20,60,.35), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(255,255,255,.08), transparent 55%),
@@ -97,7 +87,7 @@
         no-repeat center center / cover;
     }
 
-    /* Blog pill reused */
+    /* BLOG button (match football style – dark glass pill, not red) */
     .blog-pill{
       position:absolute;
       top:16px;
@@ -108,16 +98,25 @@
       color:#fff;
       font-weight:700;
       text-decoration:none;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      background:rgba(0,0,0,.55);
       padding:8px 16px;
       border-radius:999px;
-      box-shadow:0 4px 12px rgba(220,20,60,.4);
-      transition:transform .18s var(--t), box-shadow .18s var(--t);
-      font-size:13px;
-      letter-spacing:.5px;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 6px 18px rgba(0,0,0,.45);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      transition:transform .18s var(--t), box-shadow .18s var(--t), background .18s var(--t);
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      white-space:nowrap;
     }
     @media (hover:hover){
-      .blog-pill a:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(220,20,60,.5)}
+      .blog-pill a:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 28px rgba(0,0,0,.75);
+        background:rgba(0,0,0,.8);
+      }
     }
 
     .hero-logo{
@@ -262,7 +261,113 @@
       line-height:1.7;
     }
 
-    /* Grid cards (similar vibe to services) */
+    /* DESTINATIONS: image right, text left on laptop */
+    .destinations{
+      padding:60px 16px;
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .destinations-header{
+      text-align:center;
+      margin-bottom:30px;
+    }
+    .destinations-header h2{
+      display:inline-block;
+      color:#fff;
+      font-size:clamp(18px,4.6vw,26px);
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      position:relative;
+    }
+    .destinations-header h2::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-10px;
+      width:70%;
+      height:3px;
+      background:var(--primary);
+      border-radius:2px;
+      transform:translateX(-50%);
+    }
+    .destinations-header p{
+      font-size:clamp(13px,3.4vw,16px);
+      color:var(--gray);
+      max-width:760px;
+      margin:16px auto 0;
+      line-height:1.7;
+    }
+
+    .destination-row{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
+      gap:26px;
+      align-items:center;
+      margin-bottom:40px;
+    }
+    @media (max-width:800px){
+      .destination-row{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .destination-text{
+      background:var(--card-bg);
+      border-radius:var(--radius-xl);
+      padding:22px 20px;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--elev);
+      backdrop-filter:blur(10px);
+    }
+    .destination-tag{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:rgba(255,255,255,.75);
+      margin-bottom:6px;
+    }
+    .destination-title{
+      font-size:20px;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+    .destination-sub{
+      font-size:14px;
+      color:var(--gray);
+      margin-bottom:12px;
+    }
+    .destination-text p{
+      font-size:14px;
+      color:rgba(255,255,255,.9);
+      line-height:1.7;
+      margin-bottom:8px;
+    }
+    .destination-text ul{
+      margin:8px 0 0 1.1rem;
+      padding-left:0;
+    }
+    .destination-text li{
+      font-size:14px;
+      color:rgba(255,255,255,.9);
+      margin-bottom:4px;
+    }
+
+    .destination-image{
+      border-radius:var(--radius-xl);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--elev-2);
+      background:#000;
+    }
+    .destination-image img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+    }
+
+    /* Grid cards (existing China section) */
     .grid-3{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -436,13 +541,11 @@
   </style>
 </head>
 <body>
-  <div class="top-banner" role="note" aria-live="polite">
-    <p>Cultural Exchange Programs – Chine avec Juniors Academy</p>
-  </div>
+  <!-- No red top banner -->
 
   <main id="main">
     <!-- HERO -->
-    <section class="hero" aria-label="Programmes d'échanges culturels en Chine">
+    <section class="hero" aria-label="Programmes d'échanges culturels">
       <div class="hero-bg" aria-hidden="true"></div>
 
       <nav class="blog-pill" aria-label="Accès blog">
@@ -458,23 +561,82 @@
 
       <div class="hero-content">
         <p class="hero-eyebrow">CULTURAL EXCHANGE PROGRAMS</p>
-        <h1 class="hero-headline">Séjours culturels & linguistiques en Chine (9–17 ans)</h1>
+        <h1 class="hero-headline">Séjours culturels & linguistiques (9–17 ans)</h1>
         <p class="hero-subhead">
-          Un programme d’immersion en Chine pour découvrir <strong>Pékin, la Grande Muraille, la Cité interdite</strong> et vivre une
-          expérience académique et culturelle encadrée pour les juniors.
+          Des programmes d’immersion pour découvrir des destinations comme
+          <strong>Pékin</strong> et le <strong>Royaume-Uni</strong>, renforcer la langue
+          et vivre une expérience internationale dans un cadre sécurisé.
         </p>
         <p class="hero-tagline">
           LANGUE • CULTURE • DÉCOUVERTE • SÉCURITÉ 24/7
         </p>
 
-        <!-- CTA – update href with your real form link when ready -->
-        <a class="hero-cta" href="mailto:juniors.academy.dz@outlook.com?subject=Infos%20programme%20Chine&body=Bonjour%2C%0AJe%20souhaite%20recevoir%20le%20programme%20d%C3%A9taill%C3%A9%20des%20%C3%A9changes%20culturels%20en%20Chine.%0A%0AMerci." >
-          DEMANDER LE PROGRAMME DÉTAILLÉ
+        <!-- CTA – même logique que sur la page d'accueil : appel clair à l’action -->
+        <a class="hero-cta" href="mailto:juniors.academy.dz@outlook.com?subject=Pré-inscription%20Cultural%20Exchange&body=Bonjour%2C%0AJe%20souhaite%20pr%C3%A9-inscrire%20mon%20enfant%20%C3%A0%20un%20programme%20Cultural%20Exchange%20(Juniors%20Academy).%0A%0AMerci.">
+          PRÉ-INSCRIRE MON ENFANT
         </a>
       </div>
     </section>
 
-    <!-- SECTION: Programme global -->
+    <!-- DESTINATIONS (Beijing + United Kingdom) -->
+    <section class="destinations" aria-label="Destinations des échanges culturels">
+      <header class="destinations-header">
+        <h2>Destinations phares</h2>
+        <p>
+          Des séjours en petits groupes, encadrés depuis l’Algérie, pour vivre l’immersion
+          dans des villes iconiques tout en respectant le rythme et la sécurité des 9–17 ans.
+        </p>
+      </header>
+
+      <!-- Beijing -->
+      <article class="destination-row">
+        <div class="destination-text">
+          <p class="destination-tag">ASIE • CHINE</p>
+          <h3 class="destination-title">Pékin – Entre tradition et futur</h3>
+          <p class="destination-sub">Idéal pour un premier grand voyage en Asie.</p>
+          <p>
+            Pékin offre un mélange fascinant entre sites historiques et ville moderne.
+            Les juniors découvrent des lieux comme la <strong>Grande Muraille</strong>,
+            la <strong>Cité interdite</strong> ou les <strong>Hutongs</strong>, tout en
+            participant à des ateliers de langue et de culture.
+          </p>
+          <ul>
+            <li>Visites guidées des grands sites historiques.</li>
+            <li>Ateliers de mandarin débutant et communication interculturelle.</li>
+            <li>Activités encadrées sur campus ou en hôtel partenaire.</li>
+            <li>Accompagnateurs depuis l’Algérie et équipe locale sur place.</li>
+          </ul>
+        </div>
+        <div class="destination-image">
+          <img src="Beijing1.jpg" alt="Vue de Pékin avec un monument emblématique" loading="lazy">
+        </div>
+      </article>
+
+      <!-- United Kingdom -->
+      <article class="destination-row">
+        <div class="destination-text">
+          <p class="destination-tag">EUROPE • ROYAUME-UNI</p>
+          <h3 class="destination-title">Royaume-Uni – Langue & life on campus</h3>
+          <p class="destination-sub">Un classique des séjours linguistiques juniors.</p>
+          <p>
+            Au Royaume-Uni, les jeunes vivent la vie de campus en anglais :
+            cours de langue, activités sportives et culturelles, découvertes de villes
+            comme <strong>Londres</strong> ou <strong>Oxford</strong>, dans un environnement pensé pour les mineurs.
+          </p>
+          <ul>
+            <li>Cours d’anglais et ateliers de communication au quotidien.</li>
+            <li>Excursions en ville, visites de sites emblématiques.</li>
+            <li>Hébergement en résidence ou collège partenaire, en chambres partagées.</li>
+            <li>Encadrement 24/7 et suivi avec les parents.</li>
+          </ul>
+        </div>
+        <div class="destination-image">
+          <img src="UK1.jpg" alt="Paysage urbain au Royaume-Uni, avec architecture typique" loading="lazy">
+        </div>
+      </article>
+    </section>
+
+    <!-- SECTION: Programme global (Chine – gardé pour le détail si tu veux) -->
     <section class="section-shell" aria-labelledby="programme-chine-title">
       <div class="section-header">
         <h2 class="section-title" id="programme-chine-title">Un programme complet en Chine</h2>
