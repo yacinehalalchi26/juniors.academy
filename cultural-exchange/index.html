@@ -12,15 +12,15 @@
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 
   <!-- Primary Meta -->
-  <meta name="description" content="Programmes d’échanges culturels et linguistiques (Chine, Royaume-Uni, et autres) pour les 9–17 ans : découvertes, ateliers culturels, cours de langue et encadrement 24/7.">
-  <meta name="keywords" content="échange culturel, séjour linguistique, voyage scolaire, Juniors Academy, camps jeunes, immersion culturelle, Chine, Royaume-Uni">
+  <meta name="description" content="Programmes d’échanges culturels et linguistiques (Chine, Angleterre, Suisse, et autres) pour les 6–18 ans : découvertes, ateliers culturels, cours de langue et encadrement 24/7.">
+  <meta name="keywords" content="échange culturel, séjour linguistique, voyage scolaire, Juniors Academy, camps jeunes, immersion culturelle, Chine, Angleterre, Suisse">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Juniors Academy">
   <meta property="og:url" content="https://juniors.academy/cultural-exchange/">
-  <meta property="og:title" content="Juniors Academy – Cultural Exchange Programs (9–17 ans)">
-  <meta property="og:description" content="Séjours linguistiques et programmes d’échanges culturels : Chine, Royaume-Uni, et plus.">
+  <meta property="og:title" content="Juniors Academy – Cultural Exchange Programs (6–18 ans)">
+  <meta property="og:description" content="Séjours linguistiques et programmes d’échanges culturels : Chine, Angleterre, Suisse, et plus.">
   <meta property="og:image" content="https://juniors.academy/China%201.png">
   <meta property="og:locale" content="fr_DZ">
 
@@ -87,7 +87,7 @@
         no-repeat center center / cover;
     }
 
-    /* BLOG button (match football style – dark glass pill, not red) */
+    /* BLOG button */
     .blog-pill{
       position:absolute;
       top:16px;
@@ -219,7 +219,6 @@
     /* Sections */
     section{content-visibility:auto;contain-intrinsic-size:600px}
 
-    /* Shared section styling */
     .section-shell{
       padding:60px 16px;
       max-width:1200px;
@@ -261,7 +260,7 @@
       line-height:1.7;
     }
 
-    /* DESTINATIONS: image right, text left on laptop */
+    /* DESTINATIONS */
     .destinations{
       padding:60px 16px;
       max-width:1200px;
@@ -305,9 +304,17 @@
       gap:26px;
       align-items:center;
       margin-bottom:40px;
+      position:relative;
+      transition:transform .3s var(--t);
     }
+
+    .destination-row.reverse{
+      grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+    }
+
     @media (max-width:800px){
-      .destination-row{
+      .destination-row,
+      .destination-row.reverse{
         grid-template-columns:1fr;
       }
     }
@@ -319,6 +326,7 @@
       border:1px solid rgba(255,255,255,.06);
       box-shadow:var(--elev);
       backdrop-filter:blur(10px);
+      transition:transform .35s var(--t), box-shadow .35s var(--t), border-color .35s var(--t), background .35s var(--t);
     }
     .destination-tag{
       font-size:11px;
@@ -359,92 +367,38 @@
       border:1px solid rgba(255,255,255,.06);
       box-shadow:var(--elev-2);
       background:#000;
+      transition:transform .35s var(--t), box-shadow .35s var(--t), border-color .35s var(--t);
     }
     .destination-image img{
       width:100%;
       height:100%;
       display:block;
       object-fit:cover;
+      transition:transform .4s var(--t), filter .4s var(--t);
     }
 
-    /* Grid cards (existing China section) */
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;
-      margin-top:22px;
-    }
-    @media (max-width:992px){.grid-3{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.grid-3{grid-template-columns:1fr}}
-
-    .card{
-      background:var(--card-bg);
-      border-radius:var(--radius-xl);
-      padding:22px 18px;
-      text-align:left;
-      border:1px solid rgba(255,255,255,.06);
-      box-shadow:var(--elev);
-      backdrop-filter:blur(10px);
-      transition:transform .2s var(--t), box-shadow .2s var(--t);
-    }
+    /* Dynamic hover on whole block (image + text) */
     @media (hover:hover){
-      .card:hover{transform:translateY(-4px);box-shadow:var(--elev-2)}
-    }
-    .card-icon{
-      font-size:30px;
-      margin-bottom:10px;
-    }
-    .card-title{
-      color:#fff;
-      font-weight:800;
-      font-size:15px;
-      margin:0 0 8px;
-      text-transform:uppercase;
-      letter-spacing:.6px;
-    }
-    .card-text{
-      color:rgba(255,255,255,.82);
-      margin:0;
-      font-size:14px;
-      line-height:1.6;
+      .destination-row:hover .destination-text{
+        transform:translateY(-4px);
+        box-shadow:var(--elev-2);
+        border-color:rgba(255,255,255,.16);
+        background:rgba(10,10,18,.8);
+      }
+      .destination-row:hover .destination-image{
+        transform:translateY(-4px);
+        box-shadow:0 22px 60px rgba(0,0,0,.65);
+        border-color:rgba(255,255,255,.18);
+      }
+      .destination-row:hover .destination-image img{
+        transform:scale(1.05);
+        filter:brightness(1.05);
+      }
     }
 
-    /* About section list */
-    .about-list{
-      margin:10px 0 14px 1.1rem;
-      padding-left:0;
-    }
-    .about-list li{
-      margin-bottom:6px;
-      font-size:14px;
-      color:rgba(255,255,255,.9);
-    }
-
-    /* Timeline / sample day */
-    .timeline{
-      margin-top:20px;
-      border-radius:var(--radius-xl);
-      background:rgba(0,0,0,.55);
-      border:1px solid rgba(255,255,255,.06);
-      padding:18px 18px 20px;
-      box-shadow:var(--elev);
-    }
-    .timeline h3{
-      margin:0 0 10px;
-      font-size:15px;
-      text-transform:uppercase;
-      letter-spacing:.7px;
-      color:rgba(255,255,255,.9);
-    }
-    .timeline ul{
-      list-style:none;
-      padding-left:0;
-      margin:0;
-      font-size:14px;
-      color:rgba(255,255,255,.85);
-    }
-    .timeline li{
-      margin-bottom:4px;
+    @media (min-width:801px){
+      .destination-row.reverse .destination-text{order:2;}
+      .destination-row.reverse .destination-image{order:1;}
     }
 
     /* Partner (placeholder for China) */
@@ -466,7 +420,7 @@
       margin:0 auto;
     }
 
-    /* Contact (reuse from main site) */
+    /* Contact */
     .contact-section{
       padding:64px 16px;
       max-width:1000px;
@@ -534,7 +488,6 @@
       border-top:1px solid rgba(255,255,255,.06);
     }
 
-    /* Accessibility: reduce motion preference */
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
     }
@@ -553,7 +506,6 @@
       </nav>
 
       <div class="hero-logo">
-        <!-- Back to main choice page -->
         <a href="/" aria-label="Retour à la page d'accueil Juniors Academy">
           <img src="../Juniors%20Academy-05.png" alt="Logo Juniors Academy" />
         </a>
@@ -561,197 +513,114 @@
 
       <div class="hero-content">
         <p class="hero-eyebrow">CULTURAL EXCHANGE PROGRAMS</p>
-        <h1 class="hero-headline">Séjours culturels & linguistiques (9–17 ans)</h1>
+        <h1 class="hero-headline">Séjours culturels &amp; linguistiques (6–18 ans)</h1>
         <p class="hero-subhead">
-          Des programmes d’immersion pour découvrir des destinations comme
-          <strong>Pékin</strong> et le <strong>Royaume-Uni</strong>, renforcer la langue
-          et vivre une expérience internationale dans un cadre sécurisé.
+          Des programmes d’immersion sur mesure pour découvrir des destinations comme
+          <strong>Pékin</strong>, <strong>l’Angleterre</strong> ou la <strong>Suisse</strong>,
+          renforcer la langue et vivre une expérience internationale dans un cadre sécurisé.
         </p>
         <p class="hero-tagline">
-          LANGUE • CULTURE • DÉCOUVERTE • SÉCURITÉ 24/7
+          SUR MESURE • LANGUE • CULTURE • SÉCURITÉ 24/7
         </p>
 
-        <!-- CTA – même logique que sur la page d'accueil : appel clair à l’action -->
         <a class="hero-cta" href="mailto:juniors.academy.dz@outlook.com?subject=Pré-inscription%20Cultural%20Exchange&body=Bonjour%2C%0AJe%20souhaite%20pr%C3%A9-inscrire%20mon%20enfant%20%C3%A0%20un%20programme%20Cultural%20Exchange%20(Juniors%20Academy).%0A%0AMerci.">
           PRÉ-INSCRIRE MON ENFANT
         </a>
       </div>
     </section>
 
-    <!-- DESTINATIONS (Beijing + United Kingdom) -->
+    <!-- DESTINATIONS -->
     <section class="destinations" aria-label="Destinations des échanges culturels">
       <header class="destinations-header">
-        <h2>Destinations phares</h2>
+        <h2>Nos destinations</h2>
         <p>
-          Des séjours en petits groupes, encadrés depuis l’Algérie, pour vivre l’immersion
-          dans des villes iconiques tout en respectant le rythme et la sécurité des 9–17 ans.
+          Des séjours en petits groupes, co-construits avec les écoles et les familles,
+          pour des jeunes de <strong>6 à 18 ans</strong>. Chaque programme est adapté au niveau,
+          à l’âge et aux objectifs (langue, culture, sport), avec des partenaires
+          sélectionnés pour leur qualité et leur expérience avec les mineurs.
         </p>
       </header>
 
-      <!-- Beijing -->
+      <!-- Pékin -->
       <article class="destination-row">
         <div class="destination-text">
-          <p class="destination-tag">ASIE • CHINE</p>
-          <h3 class="destination-title">Pékin – Entre tradition et futur</h3>
-          <p class="destination-sub">Idéal pour un premier grand voyage en Asie.</p>
+          <p class="destination-tag">ASIE • PÉKIN</p>
+          <h3 class="destination-title">Pékin – Voyage sur mesure, de 6 à 18 ans</h3>
+          <p class="destination-sub">
+            Une immersion culturelle pensée avec votre établissement, entre sites iconiques et ateliers adaptés aux jeunes.
+          </p>
           <p>
-            Pékin offre un mélange fascinant entre sites historiques et ville moderne.
-            Les juniors découvrent des lieux comme la <strong>Grande Muraille</strong>,
-            la <strong>Cité interdite</strong> ou les <strong>Hutongs</strong>, tout en
-            participant à des ateliers de langue et de culture.
+            À Pékin, nous construisons avec l’école un itinéraire <strong>sur mesure</strong> :
+            rythme des journées, équilibre entre visites, ateliers et temps calmes, en tenant compte de l’âge
+            (6–18 ans), du niveau de langue et des besoins du groupe.
           </p>
           <ul>
-            <li>Visites guidées des grands sites historiques.</li>
-            <li>Ateliers de mandarin débutant et communication interculturelle.</li>
-            <li>Activités encadrées sur campus ou en hôtel partenaire.</li>
-            <li>Accompagnateurs depuis l’Algérie et équipe locale sur place.</li>
+            <li>Programme personnalisé : contenus adaptés par tranche d’âge et objectifs pédagogiques.</li>
+            <li>Découverte des grands classiques (Grande Muraille, Cité interdite, Hutongs) sans surcharger les journées.</li>
+            <li>Ateliers de langue et de culture pensés pour les juniors (mandarin découverte, activités créatives, jeux).</li>
+            <li>Hébergements partenaires sélectionnés pour leur qualité d’accueil des groupes scolaires et la sécurité.</li>
+            <li>Encadrement 24/7 : accompagnateurs depuis l’Algérie + équipe locale habituée aux jeunes internationaux.</li>
           </ul>
         </div>
         <div class="destination-image">
-          <img src="Beijing1.jpg" alt="Vue de Pékin avec un monument emblématique" loading="lazy">
+          <img src="./Beijing1.jpg" alt="Vue de Pékin avec un monument emblématique" loading="lazy">
         </div>
       </article>
 
-      <!-- United Kingdom -->
-      <article class="destination-row">
+      <!-- Angleterre -->
+      <article class="destination-row reverse">
         <div class="destination-text">
-          <p class="destination-tag">EUROPE • ROYAUME-UNI</p>
-          <h3 class="destination-title">Royaume-Uni – Langue & life on campus</h3>
-          <p class="destination-sub">Un classique des séjours linguistiques juniors.</p>
+          <p class="destination-tag">EUROPE • ANGLETERRE</p>
+          <h3 class="destination-title">Angleterre – Langue &amp; life on campus</h3>
+          <p class="destination-sub">
+            Des programmes inspirés des meilleurs summer schools britanniques, adaptés aux 6–18 ans.
+          </p>
           <p>
-            Au Royaume-Uni, les jeunes vivent la vie de campus en anglais :
-            cours de langue, activités sportives et culturelles, découvertes de villes
-            comme <strong>Londres</strong> ou <strong>Oxford</strong>, dans un environnement pensé pour les mineurs.
+            En Angleterre, les jeunes vivent une véritable <strong>vie de campus</strong> :
+            cours d’anglais, activités sportives et culturelles, excursions à Londres, Oxford ou d’autres villes,
+            dans des centres spécialisés dans l’accueil de mineurs internationaux.
           </p>
           <ul>
-            <li>Cours d’anglais et ateliers de communication au quotidien.</li>
-            <li>Excursions en ville, visites de sites emblématiques.</li>
-            <li>Hébergement en résidence ou collège partenaire, en chambres partagées.</li>
-            <li>Encadrement 24/7 et suivi avec les parents.</li>
+            <li>Programmes construits sur mesure avec l’école : durée, intensité des cours, équilibre langue / activités.</li>
+            <li>Cours d’anglais communicatifs en petits groupes, adaptés au niveau de chaque tranche d’âge.</li>
+            <li>Excursions vers des villes et sites emblématiques (centres historiques, musées, monuments).</li>
+            <li>Hébergement en collèges ou résidences partenaires, chambres partagées sécurisées pour les jeunes.</li>
+            <li>Encadrement 24/7, équipes habituées aux juniors de 6 à 18 ans, et communication régulière avec les parents.</li>
           </ul>
         </div>
         <div class="destination-image">
-          <img src="UK1.jpg" alt="Paysage urbain au Royaume-Uni, avec architecture typique" loading="lazy">
+          <img src="./UK1.jpg" alt="Paysage urbain en Angleterre avec architecture typique" loading="lazy">
+        </div>
+      </article>
+
+      <!-- Suisse -->
+      <article class="destination-row">
+        <div class="destination-text">
+          <p class="destination-tag">EUROPE • SUISSE</p>
+          <h3 class="destination-title">Suisse – Camps alpins &amp; multi-activités</h3>
+          <p class="destination-sub">
+            Une expérience internationale en montagne, entre sport, nature et langues, pour les 6–18 ans.
+          </p>
+          <p>
+            En Suisse, les juniors rejoignent des <strong>camps alpins internationaux</strong> :
+            journées rythmées par les activités sportives, la découverte de la montagne et des ateliers de langue,
+            dans un environnement sécurisé et encadré, été comme hiver.
+          </p>
+          <ul>
+            <li>Programmes ajustés à la saison : ski, snowboard, randonnées, activités d’aventure ou multi-activités d’été.</li>
+            <li>Camps internationaux où les jeunes rencontrent des participants de nombreux pays.</li>
+            <li>Chalets et résidences de montagne partenaires, organisés pour l’accueil des groupes scolaires.</li>
+            <li>Encadrement spécialisé, équipes formées à travailler avec des enfants et adolescents de 6 à 18 ans.</li>
+            <li>Possibilité de co-construire le contenu avec l’établissement (focus langue, sport, leadership, etc.).</li>
+          </ul>
+        </div>
+        <div class="destination-image">
+          <img src="./Swiss.jpg" alt="Camp de jeunes en Suisse dans un paysage alpin" loading="lazy">
         </div>
       </article>
     </section>
 
-    <!-- SECTION: Programme global (Chine – gardé pour le détail si tu veux) -->
-    <section class="section-shell" aria-labelledby="programme-chine-title">
-      <div class="section-header">
-        <h2 class="section-title" id="programme-chine-title">Un programme complet en Chine</h2>
-        <p class="section-subtitle">
-          Juniors Academy propose des <strong>séjours d’échanges culturels en Chine</strong> combinant
-          <strong>cours de langue</strong>, <strong>découverte des grandes villes</strong> (Pékin, etc.),
-          visites des sites emblématiques et <strong>encadrement continu</strong> adapté aux juniors
-          venant d’Algérie et de la région MENA.
-        </p>
-      </div>
-
-      <div class="grid-3">
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">🈶</div>
-          <h3 class="card-title">Langue & Communication</h3>
-          <p class="card-text">
-            Cours de <strong>mandarin niveau débutant</strong> et ateliers d’anglais pour communiquer avec les équipes locales.
-            Activités de mise en situation (shopping, commandes au restaurant, échanges simples).
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">🧭</div>
-          <h3 class="card-title">Découverte de Pékin</h3>
-          <p class="card-text">
-            Visites guidées de la <strong>Cité interdite</strong>, de la place Tian’anmen, de la <strong>Grande Muraille de Chine</strong> et
-            des quartiers traditionnels (Hutongs) avec encadrement et interprète.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">🏫</div>
-          <h3 class="card-title">Vie de campus & Encadrement</h3>
-          <p class="card-text">
-            Hébergement en <strong>campus ou hôtel partenaire</strong>, chambres partagées pour juniors,
-            encadrement 24/7, respect des normes de sécurité, et accompagnateurs depuis l’Algérie.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">🥢</div>
-          <h3 class="card-title">Ateliers culturels</h3>
-          <p class="card-text">
-            Ateliers de <strong>calligraphie chinoise</strong>, initiation au <strong>thé traditionnel</strong>,
-            découverte de la cuisine locale (avec options adaptées) et introduction aux fêtes et coutumes.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">🛫</div>
-          <h3 class="card-title">Vols & Transferts</h3>
-          <p class="card-text">
-            Assistance sur le choix des <strong>vols vers la Chine</strong>, transferts organisés aéroport–hébergement–aéroport
-            et suivi des juniors pendant tout le séjour.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">✅</div>
-          <h3 class="card-title">Accompagnement administratif</h3>
-          <p class="card-text">
-            Support pour la <strong>préparation des dossiers de visa</strong>, assurance voyage, documents nécessaires
-            et communication avec les parents avant, pendant et après le séjour.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- SECTION: À propos du séjour Chine -->
-    <section class="section-shell" aria-labelledby="about-chine-title">
-      <div style="max-width:900px;margin:0 auto;">
-        <div class="section-header" style="margin-bottom:18px;">
-          <h2 class="section-title" id="about-chine-title">À propos du séjour en Chine</h2>
-        </div>
-
-        <p style="color:rgba(255,255,255,.92);font-size:15px;line-height:1.75;margin-bottom:10px;">
-          Le programme <strong>Cultural Exchange – Chine</strong> est pensé pour des jeunes de
-          <strong>9 à 17 ans</strong> qui souhaitent découvrir un pays majeur du XXI<sup>e</sup> siècle, développer leur curiosité,
-          améliorer leur anglais et s’ouvrir à une nouvelle culture dans un cadre <strong>hautement encadré</strong>.
-        </p>
-
-        <p style="color:rgba(255,255,255,.92);font-size:15px;line-height:1.75;margin-bottom:10px;">
-          Les juniors sont accompagnés par une équipe bilingue (français/anglais) depuis le départ,
-          bénéficiant d’un <strong>programme équilibré</strong> entre visites, ateliers, cours et temps de repos.
-        </p>
-
-        <h3 style="color:var(--primary);margin:18px 0 8px;font-size:1.05rem;">
-          Ce qui est généralement inclus
-        </h3>
-        <ul class="about-list">
-          <li>Hébergement en campus ou hôtel partenaire (chambres partagées).</li>
-          <li>Programme structuré de <strong>visites culturelles à Pékin</strong> (Cité interdite, Grande Muraille, etc.).</li>
-          <li>Ateliers de <strong>langue et culture chinoises</strong>, avec supports adaptés aux juniors.</li>
-          <li>Encadrement complet, accompagnateurs depuis l’Algérie et équipe locale sur place.</li>
-          <li>Transferts internes et pass de transport local selon le programme.</li>
-          <li>Assurance voyage (selon formule choisie) et support administratif.</li>
-        </ul>
-
-        <!-- Sample day / timeline -->
-        <div class="timeline" aria-label="Exemple de journée type">
-          <h3>Exemple de journée type à Pékin</h3>
-          <ul>
-            <li><strong>08h00</strong> – Petit-déjeuner et briefing de la journée.</li>
-            <li><strong>09h30</strong> – Cours de langue (mandarin & communication interculturelle).</li>
-            <li><strong>11h30</strong> – Atelier thématique (calligraphie, culture, histoire).</li>
-            <li><strong>13h00</strong> – Déjeuner en groupe.</li>
-            <li><strong>14h30</strong> – Visite d’un site emblématique (ex. Cité interdite, Hutongs).</li>
-            <li><strong>18h30</strong> – Dîner, temps calme et activités de groupe au sein de l’hébergement.</li>
-            <li><strong>21h30</strong> – Couvre-feu et suivi des chambres.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Partner / note -->
+    <!-- PARTENAIRES EN CHINE (à travailler plus tard) -->
     <section class="partner-section" aria-label="Partenaires Chine">
       <h3 class="partner-title">PARTENAIRES EN CHINE</h3>
       <p class="partner-note">
@@ -765,10 +634,10 @@
     <section class="contact-section" aria-labelledby="contact-title">
       <div class="contact-grid">
         <div class="contact-info">
-          <h3 class="contact-title" id="contact-title">Contactez-nous pour la Chine</h3>
+          <h3 class="contact-title" id="contact-title">Contactez-nous pour un programme sur mesure</h3>
           <p class="contact-subtitle">
-            Notre équipe est disponible pour répondre à vos questions sur les <strong>séjours en Chine</strong>,
-            les <strong>visas</strong> et l’organisation pratique depuis l’Algérie.
+            Notre équipe vous accompagne pour construire le <strong>meilleur séjour culturel</strong> pour vos élèves,
+            que ce soit à <strong>Pékin</strong>, en <strong>Angleterre</strong> ou en <strong>Suisse</strong>, pour les jeunes de 6 à 18 ans.
           </p>
 
           <div class="contact-item">
@@ -792,7 +661,6 @@
         </div>
 
         <div class="contact-map" aria-label="Carte">
-          <!-- You can change this to a China-related map if you want, for now it's your office -->
           <iframe
             title="Localisation Juniors Academy"
             src="https://www.google.com/maps?q=Q29P%2B3W%20El%20Biar&z=16&output=embed"
