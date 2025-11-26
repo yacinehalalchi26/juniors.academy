@@ -1,3 +1,9 @@
+Got it — I’ve removed the red banner and added a **two-button switch** in the hero that reuses the same styling as the BLOG button from the football page.
+Left = **Sports → /football**, right = **Cultural → /cultural** (you can change the URLs if needed).
+
+Here’s the full updated `blog/index.html`:
+
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -49,23 +55,6 @@
       -moz-osx-font-smoothing:grayscale;
     }
 
-    /* Top banner (same style family as football page) */
-    .top-banner{
-      text-align:center;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      padding:10px 8px;
-      position:relative;
-      z-index:10;
-      box-shadow:0 2px 10px rgba(0,0,0,.25);
-      font-size:13px;
-    }
-    .top-banner p{
-      font-style:italic;
-      color:#fff;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-
     /* Hero */
     .hero{
       position:relative;
@@ -103,6 +92,51 @@
       transition:transform .2s var(--t);
     }
     @media (hover:hover){ .hero-logo a:hover img{transform:scale(1.03)} }
+
+    /* SWITCH BUTTONS (Sports / Cultural) – same look as football BLOG button */
+    .hero-switch{
+      position:absolute;
+      top:18px;
+      left:16px;
+      z-index:3;
+      display:flex;
+      gap:8px;
+    }
+    .hero-switch a{
+      color:#fff;
+      font-weight:700;
+      text-decoration:none;
+      background:rgba(0,0,0,.55);
+      padding:8px 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 6px 18px rgba(0,0,0,.45);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      transition:transform .18s var(--t), box-shadow .18s var(--t), background .18s var(--t);
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    @media (hover:hover){
+      .hero-switch a:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 28px rgba(0,0,0,.75);
+        background:rgba(0,0,0,.8);
+      }
+    }
+    @media (max-width:480px){
+      .hero-switch{
+        top:14px;
+        left:10px;
+      }
+      .hero-switch a{
+        padding:6px 12px;
+        font-size:11px;
+        letter-spacing:.12em;
+      }
+    }
 
     /* Toolbar inside hero bottom area */
     .hero-inner{
@@ -460,14 +494,15 @@
 </head>
 <body>
 
-  <!-- Top banner -->
-  <div class="top-banner" role="note" aria-live="polite">
-    <p>Conseils & coulisses des séjours Juniors Academy</p>
-  </div>
-
   <!-- HERO -->
   <header class="hero" aria-label="Présentation du blog">
     <div class="hero-bg" aria-hidden="true"></div>
+
+    <!-- Switch buttons: SPORTS / CULTURAL -->
+    <nav class="hero-switch" aria-label="Choix de programme">
+      <a href="/football">Sports</a>
+      <a href="/cultural">Cultural</a>
+    </nav>
 
     <div class="hero-logo">
       <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener" aria-label="Instagram Juniors Academy (nouvelle fenêtre)">
@@ -681,3 +716,4 @@
   </script>
 </body>
 </html>
+```
