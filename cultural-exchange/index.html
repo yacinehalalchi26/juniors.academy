@@ -404,7 +404,7 @@
       .destination-row.reverse .destination-image{order:1;}
     }
 
-    /* Partner (placeholder for China) */
+    /* Partner */
     .partner-section{
       padding:52px 16px 40px;
       text-align:center;
@@ -413,8 +413,21 @@
       font-size:clamp(15px,3.4vw,19px);
       font-weight:700;
       color:rgba(255,255,255,.85);
-      margin-bottom:12px;
+      margin-bottom:22px;
       letter-spacing:.9px;
+      position:relative;
+      display:inline-block;
+    }
+    .partner-title::after{
+      content:"";
+      position:absolute;
+      bottom:-10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:70px;
+      height:3px;
+      background:var(--primary);
+      border-radius:2px;
     }
     .partner-note{
       font-size:13px;
@@ -598,7 +611,6 @@
           </ul>
         </div>
         <div class="destination-image">
-          <!-- Root-relative path so it works like on football page -->
           <img src="/Beijing1.jpg" alt="Vue de Pékin avec un monument emblématique" loading="lazy">
         </div>
       </article>
@@ -656,9 +668,9 @@
       </article>
     </section>
 
-    <!-- PARTENAIRES EN CHINE (à travailler plus tard) -->
-    <section class="partner-section" aria-label="Partenaires Chine">
-      <h3 class="partner-title">PARTENAIRES EN CHINE</h3>
+    <!-- PARTENAIRES -->
+    <section class="partner-section" aria-label="Partenaires">
+      <h3 class="partner-title">PARTENAIRES</h3>
       <p class="partner-note">
         Juniors Academy travaille avec des <strong>écoles, campus et agences locales</strong> sélectionnés pour leur sérieux
         et leur expérience avec les mineurs internationaux. Les détails des partenaires seront communiqués
