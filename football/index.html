@@ -11,7 +11,7 @@
   <meta name="google-site-verification" content="GczBFYrZRp2YEdTQbVL4euIJ-O8d3bm9rdFrreEDQiw" />
 
   <!-- Canonical / Robots -->
-  <link rel="canonical" href="https://juniors.academy/">
+  <link rel="canonical" href="https://juniors.academy/football">
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 
   <!-- Primary Meta -->
@@ -21,7 +21,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Juniors Academy">
-  <meta property="og:url" content="https://juniors.academy/">
+  <meta property="og:url" content="https://juniors.academy/football">
   <meta property="og:title" content="Juniors Academy – Séjours linguistiques & Stage avec Arsenal Football Development">
   <meta property="og:description" content="Programmes 9-17 ans : anglais à Oundle School + stage de foot pro avec Arsenal Football Development. Hébergement, sécurité 24/7, excursions, certificat officiel.">
   <meta property="og:image" content="https://juniors.academy/Arsenal%201.png">
@@ -125,16 +125,21 @@
     html{scroll-behavior:smooth}
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans";
-      line-height:1.6;background:#000;color:#fff;
-      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+      line-height:1.6;
+      background:
+        radial-gradient(circle at 0 0, rgba(220,20,60,.3) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(0,0,0,.8) 0, transparent 60%),
+        linear-gradient(135deg,#050308 0%,#09020f 50%,#050308 100%);
+      color:#fff;
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     }
 
     .top-banner{
       text-align:center;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      padding:12px 0;position:relative;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.25)
+      padding:10px 8px;position:relative;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.25);
+      font-size:13px;
     }
-    .top-banner p{font-style:italic;font-size:14px;color:#fff;letter-spacing:.5px}
+    .top-banner p{font-style:italic;color:#fff;letter-spacing:.06em;text-transform:uppercase}
 
     /* Floating Call Button — efficient */
     .call-fab{
@@ -154,65 +159,121 @@
     .hero{
       position:relative;
       min-height:100svh;
-      display:grid;place-items:center;overflow:hidden;padding:0 16px
+      display:grid;place-items:center;overflow:hidden;padding:0 16px 32px;
     }
     .hero-bg{
       position:absolute;inset:0;z-index:-1;
       background:
-        linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.88)),
-        url('https://juniors.academy/Arsenal%201.png')
+        linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,.9)),
+        url('Arsenal Image.jpg')
         no-repeat center center / cover;
+      transform:scale(1.03);
     }
 
     /* BLOG BUTTON — inside hero, top-left, not sticky */
     .blog-pill{
       position:absolute;
-      top:16px;
+      top:18px;
       left:16px;
       z-index:3;
     }
     .blog-pill a{
       color:#fff;font-weight:700;text-decoration:none;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+      background:rgba(0,0,0,.55);
       padding:8px 16px;border-radius:999px;
-      box-shadow:0 4px 12px rgba(220,20,60,.4);
-      transition:transform .18s var(--t), box-shadow .18s var(--t);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 6px 18px rgba(0,0,0,.45);
+      backdrop-filter:blur(14px);
+      transition:transform .18s var(--t), box-shadow .18s var(--t), background .18s var(--t);
+      font-size:12px;letter-spacing:.16em;text-transform:uppercase;
     }
     @media (hover:hover){
-      .blog-pill a:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(220,20,60,.5)}
+      .blog-pill a:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 28px rgba(0,0,0,.75);
+        background:rgba(0,0,0,.8);
+      }
     }
 
     .hero-logo{
       position:absolute;left:50%;transform:translateX(-50%);
-      top:calc(env(safe-area-inset-top, 0px) + 8px);
+      top:calc(env(safe-area-inset-top, 0px) + 10px);
       z-index:2;
     }
     .hero-logo a{display:inline-block;line-height:0}
     .hero-logo img{
       height:auto;max-height:var(--hero-logo-h);width:auto;object-fit:contain;
-      filter:drop-shadow(0 10px 28px rgba(0,0,0,.5));
+      filter:drop-shadow(0 10px 28px rgba(0,0,0,.6));
       transition:transform .2s var(--t);
     }
     @media (hover:hover){ .hero-logo a:hover img{transform:scale(1.03)} }
 
-    .hero-content{text-align:center;max-width:1100px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 1.1)}
-    @media (min-width:1200px){ .hero-content{padding-top:calc(var(--hero-logo-h) * 1.18)} }
+    .hero-content{text-align:center;max-width:1100px;margin:0 auto;padding-top:calc(var(--hero-logo-h) * 1.05)}
+    @media (min-width:1200px){ .hero-content{padding-top:calc(var(--hero-logo-h) * 1.12)} }
     @media (max-width:768px){
       .hero-logo img{max-height:var(--hero-logo-h-sm)}
-      .hero-content{padding-top:calc(var(--hero-logo-h-sm) + 28px + env(safe-area-inset-top, 0px));}
+      .hero-content{padding-top:calc(var(--hero-logo-h-sm) + 26px + env(safe-area-inset-top, 0px));}
+    }
+
+    .hero-inner{
+      max-width:780px;
+      margin:0 auto 32px;
+      padding:22px 18px 26px;
+      background:linear-gradient(135deg,rgba(0,0,0,.7),rgba(0,0,0,.45));
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 22px 60px rgba(0,0,0,.9);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      animation:heroCardIn .8s var(--t) both;
+    }
+    @media (min-width:768px){
+      .hero-inner{
+        padding:26px 32px 30px;
+      }
+    }
+
+    .hero-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(0,0,0,.45);
+      font-size:11px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:rgba(250,250,255,.88);
+      margin-bottom:10px;
     }
 
     .hero-headline{
-      font-size:clamp(28px, 6vw, 64px);font-weight:800;line-height:1.06;margin:6px auto 12px;
-      background:linear-gradient(to right,#fff,#f0f0f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      font-size:clamp(28px, 6vw, 60px);
+      font-weight:800;
+      line-height:1.05;
+      margin:8px auto 10px;
+      background:linear-gradient(to right,#ffffff,#f5f5f5);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
+
     .hero-subhead{
-      font-size:clamp(14px, 3.6vw, 22px);color:rgba(255,255,255,.9);max-width:920px;margin:0 auto 10px;line-height:1.55
+      font-size:clamp(14px, 3.6vw, 22px);
+      color:rgba(255,255,255,.9);
+      max-width:920px;
+      margin:0 auto 10px;
+      line-height:1.55;
     }
 
     .one-line{
-      white-space:nowrap;overflow:hidden;text-overflow:clip;
-      font-weight:900;margin:8px auto 14px;font-size:clamp(12px, 3.6vw, 26px);letter-spacing:-0.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:clip;
+      font-weight:900;
+      margin:10px auto 16px;
+      font-size:clamp(13px, 3.6vw, 24px);
+      letter-spacing:-0.1px;
     }
 
     .hero-cta{
@@ -222,23 +283,32 @@
       border-radius:999px;
       background-image:linear-gradient(135deg,#ff3555,#dc143c,#a00000);
       background-size:200% 100%;
-      box-shadow:0 12px 34px rgba(220,20,60,.45);
+      box-shadow:0 12px 34px rgba(220,20,60,.55);
       will-change:transform;
       transition:transform .18s var(--t), box-shadow .18s var(--t), background-position .25s var(--t);
-      margin:22px auto 44px;
+      margin:10px auto 4px;
     }
     @media (hover:hover){
       .hero-cta:hover{
         transform:translateY(-2px);
-        box-shadow:0 18px 46px rgba(220,20,60,.55);
+        box-shadow:0 18px 46px rgba(220,20,60,.7);
         background-position:100% 0;
       }
     }
     .hero-cta:active{transform:scale(.99)}
 
     /* Carousel */
-    .hero-carousel{margin:0 auto;max-width:900px;width:100%;
-      border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04)}
+    .hero-carousel{
+      margin:10px auto 0;
+      max-width:900px;
+      width:100%;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      box-shadow:0 18px 50px rgba(0,0,0,.7);
+      animation:carouselIn .9s var(--t) both;
+    }
     .carousel-viewport{position:relative;width:100%;aspect-ratio:4945/3295;max-height:380px;overflow:hidden}
     @media (max-width:480px){ .carousel-viewport{max-height:220px} }
     .carousel-track{display:flex;width:100%;height:100%;transition:transform .5s var(--t)}
@@ -258,7 +328,7 @@
     .section-title--nowrap{white-space:nowrap}
     .section-title{
       display:inline-block;
-      background:none; /* removed red pill */
+      background:none;
       color:#fff;
       padding:0;
       border-radius:0;
@@ -270,7 +340,6 @@
       position:relative;
       line-height:1.2;
     }
-    /* Single animated underline */
     .section-title::after{
       content:"";
       position:absolute; left:50%; bottom:-10px;
@@ -284,17 +353,39 @@
       transform:translateX(-50%) scaleX(1);
     }
 
-    .section-subtitle{font-size:clamp(13px,3.4vw,16px);color:var(--gray);max-width:740px;margin:14px auto 0;line-height:1.7}
+    .section-subtitle{
+      font-size:clamp(13px,3.4vw,16px);
+      color:var(--gray);
+      max-width:740px;
+      margin:14px auto 0;
+      line-height:1.7;
+    }
 
-    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+    .services-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:22px;
+    }
     @media (max-width:992px){.services-grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:640px){.services-grid{grid-template-columns:1fr}}
 
     .service-card{
-      background:var(--card-bg);border-radius:var(--radius-xl);padding:22px 18px;text-align:center;border:1px solid rgba(255,255,255,.06);
-      box-shadow:var(--elev);backdrop-filter:blur(10px);transition:transform .2s var(--t), box-shadow .2s var(--t)
+      background:var(--card-bg);
+      border-radius:var(--radius-xl);
+      padding:22px 18px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--elev);
+      backdrop-filter:blur(10px);
+      transition:transform .2s var(--t), box-shadow .2s var(--t);
     }
-    @media (hover:hover){ .service-card:hover{transform:translateY(-4px);box-shadow:var(--elev-2)} }
+    @media (hover:hover){
+      .service-card:hover{
+        transform:translateY(-4px);
+        box-shadow:var(--elev-2);
+      }
+    }
     .service-icon{font-size:36px;margin-bottom:12px;color:var(--primary)}
     .service-card h3{color:#fff;font-weight:800;font-size:16px;margin:0 0 8px;text-transform:uppercase}
     .service-card p{color:rgba(255,255,255,.78);margin:0;font-size:14px;line-height:1.6}
@@ -338,11 +429,29 @@
     .contact-item a:hover{color:#fff;border-bottom-color:#fff}
     .contact-map{background:var(--card-bg);border-radius:var(--radius-xl);overflow:hidden;min-height:320px;border:1px solid rgba(255,255,255,.06);position:relative}
 
-    footer.footer{background:rgba(0,0,0,.85);color:var(--gray);text-align:center;padding:30px 16px;font-size:14px;border-top:1px solid rgba(255,255,255,.06)}
+    footer.footer{
+      background:rgba(0,0,0,.9);
+      color:var(--gray);
+      text-align:center;
+      padding:26px 16px 30px;
+      font-size:14px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    /* ANIMATIONS */
+    @keyframes heroCardIn{
+      from{opacity:0;transform:translateY(14px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    @keyframes carouselIn{
+      from{opacity:0;transform:translateY(16px);}
+      to{opacity:1;transform:translateY(0);}
+    }
 
     /* Accessibility: reduce motion preference */
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
+      .hero-inner{transform:none;opacity:1;}
     }
   </style>
 </head>
@@ -367,13 +476,18 @@
       </div>
 
       <div class="hero-content">
-        <h1 class="hero-headline">WELCOME TO EXCELLENCE.</h1>
-        <p class="hero-subhead">Juniors Academy propose des <strong>séjours linguistiques </strong> et des <strong> stages de football avec Arsenal en Angleterre</strong> pour les 9-17 ans</p>
-
-        <h2 class="one-line">PRÊT À INSCRIRE VOTRE ENFANT À L'AVENTURE ?</h2>
-        <a class="hero-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener">
-          INSCRIPTIONS OUVERTES!
-        </a>
+        <div class="hero-inner">
+          <p class="hero-pill">Sports · Arsenal Football Development</p>
+          <h1 class="hero-headline">WELCOME TO EXCELLENCE.</h1>
+          <p class="hero-subhead">
+            Juniors Academy propose des <strong>séjours linguistiques</strong> et des
+            <strong>stages de football avec Arsenal en Angleterre</strong> pour les 9–17 ans.
+          </p>
+          <h2 class="one-line">PRÊT À INSCRIRE VOTRE ENFANT À L'AVENTURE ?</h2>
+          <a class="hero-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener">
+            INSCRIPTIONS OUVERTES !
+          </a>
+        </div>
 
         <!-- Carousel -->
         <div class="hero-carousel" aria-label="Galerie photos du stage Arsenal Football Development">
@@ -443,23 +557,23 @@
 
     <!-- Partner -->
     <section class="partner-section" aria-label="Partenaires">
-  <div class="partner-content">
-    <h3 class="partner-title">PARTENAIRES</h3>
-    <div>
-      <a href="https://www.arsenal.com/arsenalfootballdevelopment-1"
-         target="_blank" rel="noopener"
-         aria-label="Site officiel Arsenal Football Development (nouvelle fenêtre)">
-        <img
-          class="partner-logo"
-          src="AFDX.png"
-          alt="Partenaires officiels : AFDX"
-          width="660" height="100"
-          loading="lazy" decoding="async"
-        />
-      </a>
-    </div>
-  </div>
-</section>
+      <div class="partner-content">
+        <h3 class="partner-title">PARTENAIRES</h3>
+        <div>
+          <a href="https://www.arsenal.com/arsenalfootballdevelopment-1"
+             target="_blank" rel="noopener"
+             aria-label="Site officiel Arsenal Football Development (nouvelle fenêtre)">
+            <img
+              class="partner-logo"
+              src="AFDX.png"
+              alt="Partenaires officiels : AFDX"
+              width="660" height="100"
+              loading="lazy" decoding="async"
+            />
+          </a>
+        </div>
+      </div>
+    </section>
 
     <!-- Contact -->
     <section class="contact-section" aria-labelledby="contact-title">
@@ -483,7 +597,6 @@
         </div>
 
         <div class="contact-map" aria-label="Carte">
-          <!-- Plus Code embed: Q29P+3W El Biar -->
           <iframe
             title="Localisation Juniors Academy"
             src="https://www.google.com/maps?q=Q29P%2B3W%20El%20Biar&z=16&output=embed"
