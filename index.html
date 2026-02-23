@@ -117,6 +117,8 @@
       text-decoration: none;
       letter-spacing: -0.021em;
       transition: opacity 0.3s;
+      z-index: 10002;
+      position: relative;
     }
     .nav-logo:hover {
       opacity: 0.8;
@@ -129,15 +131,24 @@
       border: none;
       cursor: pointer;
       padding: 8px;
-      z-index: 10001;
+      z-index: 10002;
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      transition: background 0.3s var(--ease-out);
+    }
+    .nav-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
     .nav-toggle span {
       display: block;
-      width: 24px;
+      width: 18px;
       height: 2px;
       background: var(--text-primary);
-      margin: 6px 0;
-      transition: all 0.3s var(--ease-out);
+      margin: 5px auto;
+      transition: all 0.4s var(--ease-out);
+      border-radius: 1px;
     }
     
     .nav-links {
@@ -185,50 +196,94 @@
       transform: scale(1.02);
     }
 
-    /* Mobile Navigation Styles */
+    /* Apple-Style Mobile Navigation - RESIZED */
     @media (max-width: 768px) {
       .nav-toggle {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
+      
       .nav-links {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: rgba(0, 0, 0, 0.98);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 32px;
-        transform: translateX(100%);
-        transition: transform 0.4s var(--ease-out);
+        gap: 0;
+        transform: translateY(-100%);
+        transition: transform 0.5s var(--ease-out);
         z-index: 9998;
         padding: 80px 24px;
       }
+      
       .nav-links.active {
-        transform: translateX(0);
+        transform: translateY(0);
       }
+      
+      /* Resized menu items - smaller and more logical */
       .nav-link {
-        font-size: 24px;
-        font-weight: 500;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--text-secondary);
+        padding: 16px 0;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s var(--ease-out);
       }
+      
+      .nav-links.active .nav-link {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Staggered animation for menu items */
+      .nav-links.active .nav-link:nth-child(1) { transition-delay: 0.1s; }
+      .nav-links.active .nav-link:nth-child(2) { transition-delay: 0.15s; }
+      .nav-links.active .nav-link:nth-child(3) { transition-delay: 0.2s; }
+      
+      .nav-link::after {
+        display: none;
+      }
+      
+      .nav-link:hover {
+        color: var(--text-primary);
+      }
+      
+      /* Resized CTA in menu */
       .nav-cta {
-        font-size: 18px;
-        padding: 12px 32px;
-        margin-top: 16px;
+        font-size: 17px;
+        font-weight: 600;
+        padding: 14px 28px;
+        margin-top: 24px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s var(--ease-out) 0.25s;
       }
+      
+      .nav-links.active .nav-cta {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
       /* Hamburger Animation */
       .nav-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 6px);
+        transform: rotate(45deg) translate(5px, 5px);
       }
       .nav-toggle.active span:nth-child(2) {
         opacity: 0;
+        transform: scaleX(0);
       }
       .nav-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -6px);
+        transform: rotate(-45deg) translate(5px, -5px);
       }
     }
 
@@ -256,7 +311,6 @@
       background: radial-gradient(ellipse at 50% 0%, rgba(220, 20, 60, 0.15) 0%, transparent 50%);
       pointer-events: none;
     }
-    /* Removed hero-badge styles as the element is removed */
     .hero-title {
       font-size: clamp(48px, 10vw, 96px);
       font-weight: 700;
@@ -467,21 +521,70 @@
     }
     .features-intro {
       max-width: 800px;
-      margin: 0 auto 60px;
+      margin: 0 auto 40px;
       text-align: center;
     }
-    .features-intro-text {
+    .features-intro-short {
       font-size: 19px;
       color: var(--text-secondary);
       line-height: 1.6;
+      margin-bottom: 20px;
     }
-    .features-intro-text strong {
+    .features-intro-full {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.5s var(--ease-out);
+    }
+    .features-intro-full.expanded {
+      max-height: 500px;
+      opacity: 1;
+      margin-top: 20px;
+    }
+    .features-intro-full strong {
       color: var(--text-primary);
       font-weight: 600;
     }
+    
+    /* Blurry Glass Button */
+    .expand-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      margin-top: 8px;
+    }
+    .expand-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--text-primary);
+      transform: scale(1.02);
+    }
+    .expand-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s var(--ease-out);
+    }
+    .expand-btn.expanded svg {
+      transform: rotate(180deg);
+    }
+    
     .features-grid {
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 60px auto 0;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 40px;
@@ -537,10 +640,25 @@
       margin: 0 auto 60px;
       text-align: center;
     }
-    .destinations-intro-text {
+    .destinations-intro-short {
       font-size: 19px;
       color: var(--text-secondary);
       line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .destinations-intro-full {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.5s var(--ease-out);
+    }
+    .destinations-intro-full.expanded {
+      max-height: 400px;
+      opacity: 1;
+      margin-top: 20px;
     }
     .destination-card {
       display: grid;
@@ -859,9 +977,8 @@
   <!-- Navigation -->
   <nav class="nav">
     <div class="nav-content">
-      <a href="#" class="nav-logo">Juniors Academy</a>
+      <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" class="nav-logo">Juniors Academy</a>
       
-      <!-- Mobile Menu Toggle -->
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
         <span></span>
         <span></span>
@@ -879,7 +996,6 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <!-- Removed: <div class="hero-badge">Official Partner of Arsenal</div> -->
     <h1 class="hero-title">L'excellence<br>pour vos enfants.</h1>
     <p class="hero-subtitle">Programmes internationaux pour les jeunes de 6 à 18 ans. Football Camps avec Arsenal et séjours culturels sur mesure.</p>
     <div class="hero-ctas">
@@ -909,7 +1025,6 @@
     </div>
 
     <div class="programs-grid">
-      <!-- Football Card -->
       <a href="#football-program" class="program-card reveal" id="football">
         <div class="program-image">
           <img src="Arsenal Image.jpg" alt="Stage de football Arsenal">
@@ -921,7 +1036,6 @@
         </div>
       </a>
 
-      <!-- Exchange Card -->
       <a href="#cultural-program" class="program-card reveal" id="exchange">
         <div class="program-image">
           <img src="Beijing Image.jpg" alt="Échange culturel">
@@ -943,9 +1057,20 @@
     </div>
 
     <div class="features-intro reveal">
-      <p class="features-intro-text">
-        <strong>Juniors Academy</strong> propose des <strong>séjours linguistiques</strong> et des <strong>stages de football avec Arsenal Football Development</strong> pour les 9–16 ans. Notre programme combine formation en anglais, coaching sportif de haut niveau, hébergement premium et excursions passionnantes. Les juniors évoluent sur des terrains d'entraînement professionnels, participent à des matchs compétitifs et reçoivent un <strong>certificat officiel Arsenal Football Development</strong> à la fin de leur séjour. Avec plus de 37 ans d'expertise cumulée via nos partenaires, nous offrons une expérience complète : assurance médicale, transferts aéroport, encadrement 24/7 et équipements Adidas officiels Arsenal.
+      <p class="features-intro-short">
+        Des séjours linguistiques et stages de football avec <strong>Arsenal Football Development</strong> pour les 9–16 ans. Formation en anglais, coaching pro, hébergement premium et excursions.
       </p>
+      <div class="features-intro-full" id="footballFullText">
+        <p>
+          Notre programme combine formation en anglais, coaching sportif de haut niveau, hébergement premium et excursions passionnantes. Les juniors évoluent sur des terrains d'entraînement professionnels, participent à des matchs compétitifs et reçoivent un <strong>certificat officiel Arsenal Football Development</strong> à la fin de leur séjour. Avec plus de 37 ans d'expertise cumulée via nos partenaires, nous offrons une expérience complète : assurance médicale, transferts aéroport, encadrement 24/7 et équipements Adidas officiels Arsenal.
+        </p>
+      </div>
+      <button class="expand-btn" onclick="toggleExpand('footballFullText', this)">
+        <span>Cliquez ici pour en savoir plus</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
     </div>
 
     <div class="features-grid">
@@ -983,16 +1108,27 @@
   </section>
 
   <!-- Destinations Section / Cultural Exchange -->
-  <section class="destinations" id="cultural-program">
+  <section class="destinations" id="destinations">
     <div class="section-header reveal">
       <p class="section-eyebrow">Programme Cultural Exchange</p>
       <h2 class="section-title">Le monde à portée de main.</h2>
     </div>
 
     <div class="destinations-intro reveal">
-      <p class="destinations-intro-text">
-        Cultural exchange is one of the most valuable gifts we can offer our juniors. It allows them to understand the world beyond textbooks, develop confidence, and learn to appreciate diversity with maturity and respect. At Juniors Academy, every program is designed to provide safe, meaningful exposure to new cultures—helping young people grow into open-minded, responsible, and globally aware individuals. By giving them the chance to explore, we help them build skills and perspectives that will guide them for life.
+      <p class="destinations-intro-short">
+        L'échange culturel est l'un des cadeaux les plus précieux pour nos juniors. Découvrir le monde au-delà des manuels scolaires, développer la confiance et apprendre à apprécier la diversité.
       </p>
+      <div class="destinations-intro-full" id="culturalFullText">
+        <p>
+          Cultural exchange is one of the most valuable gifts we can offer our juniors. It allows them to understand the world beyond textbooks, develop confidence, and learn to appreciate diversity with maturity and respect. At Juniors Academy, every program is designed to provide safe, meaningful exposure to new cultures—helping young people grow into open-minded, responsible, and globally aware individuals. By giving them the chance to explore, we help them build skills and perspectives that will guide them for life.
+        </p>
+      </div>
+      <button class="expand-btn" onclick="toggleExpand('culturalFullText', this)">
+        <span>Cliquez ici pour en savoir plus</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
     </div>
 
     <!-- Beijing -->
@@ -1049,7 +1185,6 @@
     <!-- Spain -->
     <div class="destination-card reverse reveal">
       <div class="destination-visual">
-        <!-- Adjusted image filename to lowercase 'spain.jpg' -->
         <img src="spain.jpg" alt="Espagne">
       </div>
       <div class="destination-content">
@@ -1150,6 +1285,22 @@
       }, 400);
     });
 
+    // Expand/Collapse functionality
+    function toggleExpand(elementId, button) {
+      const element = document.getElementById(elementId);
+      const isExpanded = element.classList.contains('expanded');
+      
+      if (isExpanded) {
+        element.classList.remove('expanded');
+        button.classList.remove('expanded');
+        button.querySelector('span').textContent = 'Cliquez ici pour en savoir plus';
+      } else {
+        element.classList.add('expanded');
+        button.classList.add('expanded');
+        button.querySelector('span').textContent = 'Réduire';
+      }
+    }
+
     // Mobile Menu Toggle
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.getElementById('navLinks');
@@ -1157,6 +1308,7 @@
     navToggle.addEventListener('click', () => {
       navToggle.classList.toggle('active');
       navLinks.classList.toggle('active');
+      document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
     });
 
     // Close menu when clicking on a link
@@ -1164,6 +1316,7 @@
       link.addEventListener('click', () => {
         navToggle.classList.remove('active');
         navLinks.classList.remove('active');
+        document.body.style.overflow = '';
       });
     });
 
