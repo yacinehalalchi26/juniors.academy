@@ -325,6 +325,7 @@
       font-weight: 700;
       letter-spacing: -0.021em;
       margin-bottom: 16px;
+      color: var(--text-primary);
     }
     .section-subtitle {
       font-size: 19px;
@@ -354,6 +355,7 @@
       min-height: 500px;
       display: flex;
       flex-direction: column;
+      text-decoration: none;
     }
     .program-card:hover {
       transform: scale(1.01);
@@ -408,6 +410,7 @@
       font-weight: 700;
       letter-spacing: -0.021em;
       margin-bottom: 12px;
+      color: var(--text-primary);
     }
     .program-desc {
       font-size: 16px;
@@ -416,28 +419,25 @@
       margin-bottom: 24px;
       flex: 1;
     }
-    .program-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--primary-light);
-      text-decoration: none;
-      transition: gap 0.3s var(--ease-out);
-    }
-    .program-link:hover {
-      gap: 10px;
-    }
-    .program-link svg {
-      width: 16px;
-      height: 16px;
-    }
 
     /* Features Section */
     .features {
       padding: 100px 24px;
       background: var(--bg-secondary);
+    }
+    .features-intro {
+      max-width: 800px;
+      margin: 0 auto 60px;
+      text-align: center;
+    }
+    .features-intro-text {
+      font-size: 19px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .features-intro-text strong {
+      color: var(--text-primary);
+      font-weight: 600;
     }
     .features-grid {
       max-width: 1200px;
@@ -478,6 +478,7 @@
       font-weight: 600;
       margin-bottom: 8px;
       letter-spacing: -0.021em;
+      color: var(--text-primary);
     }
     .feature-desc {
       font-size: 15px;
@@ -490,6 +491,16 @@
       padding: 100px 24px;
       max-width: 1200px;
       margin: 0 auto;
+    }
+    .destinations-intro {
+      max-width: 800px;
+      margin: 0 auto 60px;
+      text-align: center;
+    }
+    .destinations-intro-text {
+      font-size: 19px;
+      color: var(--text-secondary);
+      line-height: 1.7;
     }
     .destination-card {
       display: grid;
@@ -547,6 +558,7 @@
       font-weight: 700;
       letter-spacing: -0.021em;
       margin-bottom: 16px;
+      color: var(--text-primary);
     }
     .destination-desc {
       font-size: 17px;
@@ -600,6 +612,7 @@
       letter-spacing: -0.021em;
       margin-bottom: 16px;
       position: relative;
+      color: var(--text-primary);
     }
     .cta-subtitle {
       font-size: 19px;
@@ -659,6 +672,7 @@
       font-weight: 700;
       margin-bottom: 8px;
       letter-spacing: -0.021em;
+      color: var(--text-primary);
     }
     .contact-info p {
       font-size: 15px;
@@ -820,13 +834,13 @@
     <h1 class="hero-title">L'excellence<br>pour vos enfants.</h1>
     <p class="hero-subtitle">Programmes internationaux pour les jeunes de 6 à 18 ans. Football Camps avec Arsenal et séjours culturels sur mesure.</p>
     <div class="hero-ctas">
-      <a href="#football" class="btn-primary">
+      <a href="#football-program" class="btn-primary">
         Découvrir les camps
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </a>
-      <a href="#exchange" class="btn-secondary">
+      <a href="#cultural-program" class="btn-secondary">
         Explorer les échanges
       </a>
     </div>
@@ -847,7 +861,7 @@
 
     <div class="programs-grid">
       <!-- Football Card -->
-      <a href="#football" class="program-card reveal" id="football">
+      <a href="#football-program" class="program-card reveal" id="football">
         <div class="program-image">
           <img src="Arsenal Image.jpg" alt="Stage de football Arsenal">
         </div>
@@ -855,40 +869,34 @@
           <span class="program-tag">Sports</span>
           <h3 class="program-title">Football Camps</h3>
           <p class="program-desc">Stage de football de haut niveau en Angleterre avec Arsenal Football Development. Entraînements pro, immersion linguistique et encadrement 24/7.</p>
-          <span class="program-link">
-            En savoir plus
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </span>
         </div>
       </a>
 
       <!-- Exchange Card -->
-      <a href="#exchange" class="program-card reveal" id="exchange">
+      <a href="#cultural-program" class="program-card reveal" id="exchange">
         <div class="program-image">
           <img src="Beijing Image.jpg" alt="Échange culturel">
         </div>
         <div class="program-content">
           <span class="program-tag">Culturel</span>
           <h3 class="program-title">Cultural Exchange</h3>
-          <p class="program-desc">Séjours linguistiques et programmes d'échanges culturels sur mesure. Pékin, Angleterre, Suisse — pour ouvrir le monde aux juniors.</p>
-          <span class="program-link">
-            En savoir plus
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </span>
+          <p class="program-desc">Séjours linguistiques et programmes d'échanges culturels sur mesure. Pékin, Angleterre, Suisse, Espagne — pour ouvrir le monde aux juniors.</p>
         </div>
       </a>
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="features">
+  <!-- Features Section / Football Program -->
+  <section class="features" id="football-program">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Ce qui nous distingue</p>
+      <p class="section-eyebrow">Programme Football</p>
       <h2 class="section-title">Une expérience complète.</h2>
+    </div>
+
+    <div class="features-intro reveal">
+      <p class="features-intro-text">
+        <strong>Juniors Academy</strong> propose des <strong>séjours linguistiques</strong> et des <strong>stages de football avec Arsenal Football Development</strong> pour les 9–16 ans. Notre programme combine formation en anglais, coaching sportif de haut niveau, hébergement premium et excursions passionnantes. Les juniors évoluent sur des terrains d'entraînement professionnels, participent à des matchs compétitifs et reçoivent un <strong>certificat officiel Arsenal Football Development</strong> à la fin de leur séjour. Avec plus de 37 ans d'expertise cumulée via nos partenaires, nous offrons une expérience complète : assurance médicale, transferts aéroport, encadrement 24/7 et équipements Adidas officiels Arsenal.
+      </p>
     </div>
 
     <div class="features-grid">
@@ -925,12 +933,17 @@
     </div>
   </section>
 
-  <!-- Destinations Section -->
-  <section class="destinations" id="destinations">
+  <!-- Destinations Section / Cultural Exchange -->
+  <section class="destinations" id="cultural-program">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Destinations</p>
+      <p class="section-eyebrow">Programme Cultural Exchange</p>
       <h2 class="section-title">Le monde à portée de main.</h2>
-      <p class="section-subtitle">Des programmes sur mesure dans trois destinations exceptionnelles.</p>
+    </div>
+
+    <div class="destinations-intro reveal">
+      <p class="destinations-intro-text">
+        Cultural exchange is one of the most valuable gifts we can offer our juniors. It allows them to understand the world beyond textbooks, develop confidence, and learn to appreciate diversity with maturity and respect. At Juniors Academy, every program is designed to provide safe, meaningful exposure to new cultures—helping young people grow into open-minded, responsible, and globally aware individuals. By giving them the chance to explore, we help them build skills and perspectives that will guide them for life.
+      </p>
     </div>
 
     <!-- Beijing -->
@@ -980,6 +993,24 @@
           <li>Programmes adaptés à chaque saison</li>
           <li>Rencontres avec participants du monde entier</li>
           <li>Encadrement spécialisé jeunes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Spain -->
+    <div class="destination-card reverse reveal">
+      <div class="destination-visual">
+        <img src="Spain.jpg" alt="Espagne">
+      </div>
+      <div class="destination-content">
+        <p class="destination-location">Europe • Espagne</p>
+        <h3 class="destination-title">Soleil, plage et découvertes.</h3>
+        <p class="destination-desc">Un séjour ensoleillé où les juniors peuvent choisir d'apprendre l'espagnol ou perfectionner leur anglais, tout en profitant de magnifiques plages, de visites culturelles et de beaucoup de fun.</p>
+        <ul class="destination-features">
+          <li>Choix entre cours d'espagnol ou d'anglais</li>
+          <li>Plages, sports nautiques et activités en plein air</li>
+          <li>Visites culturelles et découvertes locales</li>
+          <li>Hébergement sécurisé avec encadrement 24/7</li>
         </ul>
       </div>
     </div>
