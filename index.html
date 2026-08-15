@@ -64,7 +64,7 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
     .jah-header-logo { display: inline-flex; align-items: center; }
-    .jah-header-logo img { height: 36px; width: auto; display: block; }
+    .jah-header-logo img { height: 52px; width: auto; display: block; }
     .jah-header-phone {
       display: inline-flex;
       align-items: center;
@@ -87,7 +87,7 @@
     }
     @media (max-width: 640px) {
       .jah-header { padding: 8px 14px; }
-      .jah-header-logo img { height: 30px; }
+      .jah-header-logo img { height: 42px; }
       .jah-logo-text { font-size: .95rem; }
       .jah-header-phone {
         gap: 7px;
@@ -206,6 +206,10 @@
     display: inline-block; padding: 0 .18em; border-radius: .18em;
     background: var(--jah-highlight); color: var(--jah-ink);
     transform: rotate(-1.2deg);
+    animation:
+      jah-mark-pop .9s cubic-bezier(.34, 1.56, .64, 1) .85s both,
+      jah-mark-wiggle 5s ease-in-out 3.2s infinite;
+    will-change: transform;
   }
 
   .jah-sub {
@@ -425,6 +429,18 @@
 
   @keyframes jah-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes jah-slow-zoom { from { transform: scale(1.1); } to { transform: scale(1.04); } }
+  @keyframes jah-mark-pop {
+    0%   { transform: scale(0) rotate(-14deg); }
+    60%  { transform: scale(1.18) rotate(4deg); }
+    80%  { transform: scale(.94) rotate(-3deg); }
+    100% { transform: scale(1) rotate(-1.2deg); }
+  }
+  @keyframes jah-mark-wiggle {
+    0%, 12%, 100% { transform: scale(1) rotate(-1.2deg); }
+    3%  { transform: scale(1.07) rotate(2.6deg); }
+    6%  { transform: scale(1.07) rotate(-3.4deg); }
+    9%  { transform: scale(1.03) rotate(1.6deg); }
+  }
 
   .jah-carousel-nav { display: none; } /* points + flèches : mobile uniquement */
 
@@ -576,7 +592,7 @@
     .jah-contact-ctas { margin-top: 22px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .jah-frame > img, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas { animation: none !important; }
+    .jah-frame > img, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas, .jah-title .jah-mark { animation: none !important; }
     .jah-btn, .jah-card, .jah-card img { transition: none !important; }
     .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   }
