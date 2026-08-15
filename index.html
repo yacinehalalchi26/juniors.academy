@@ -1,502 +1,245 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Juniors Academy | Programmes Internationaux pour Jeunes</title>
-  <meta name="description" content="Football Camps avec des clubs de Premier League et échanges culturels sur mesure (Pékin, Angleterre, Suisse, Espagne) pour les jeunes de 6 à 18 ans.">
-  <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#0a0a0a">
+<!-- ================= JUNIORS ACADEMY — HERO v2 (style EF) ================= -->
+<!-- Bloc autonome : ses styles sont préfixés "jah-" et n'entrent pas en
+     conflit avec index.css. Remplace l'ancienne <section class="hero">. -->
 
-  <!-- Open Graph / réseaux sociaux -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Juniors Academy">
-  <meta property="og:title" content="Juniors Academy | Programmes Internationaux pour Jeunes">
-  <meta property="og:description" content="Football Camps avec des clubs de Premier League et échanges culturels sur mesure pour les jeunes de 6 à 18 ans.">
-  <meta property="og:image" content="juniorsacademy.jpg"> <!-- remplacez par l'URL absolue une fois le domaine en ligne -->
-  <meta property="og:locale" content="fr_FR">
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- <link rel="canonical" href="https://votre-domaine.com/"> -->
+<style>
+  .jah-hero {
+    --jah-ink: #14181D;
+    --jah-paper: #FAFAF7;
+    --jah-accent: #FF3B6B;       /* corail vif : énergie, jeunesse */
+    --jah-highlight: #FFD23F;    /* jaune soleil : surlignage du mot clé */
+    --jah-ease: cubic-bezier(.16, 1, .3, 1);
 
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="index.css">
-
-  <!-- Données structurées pour Google -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "Juniors Academy",
-    "image": "juniorsacademy.jpg",
-    "telephone": "+213550527722",
-    "email": "admin@juniors.academy",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "25 Rue Rabah Bourbia, El Biar",
-      "addressLocality": "Alger",
-      "addressCountry": "DZ"
-    },
-    "sameAs": ["https://www.instagram.com/juniors.academy.dz"]
+    background: var(--jah-paper);
+    padding: calc(var(--ja-nav-h, 80px) + 20px) clamp(14px, 3vw, 40px) clamp(20px, 3vw, 40px);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
-  </script>
 
-  <!-- ============================================================
-       Ajouts « premium » : uniquement du mouvement, de la profondeur
-       et de l'espacement. Aucune couleur ni police n'est redéfinie —
-       tout vient s'ajouter par-dessus index.css, jamais à sa place.
-       ============================================================ -->
-  <style>
-    :root {
-      --ja-ease: cubic-bezier(.16, 1, .3, 1);
-      --ja-nav-h: 80px; /* recalculée en JS au chargement réel */
-    }
+  /* Le cadre : l'image plein écran vit dans une grande carte arrondie,
+     entourée de blanc — c'est la signature visuelle de ce hero. */
+  .jah-frame {
+    position: relative;
+    min-height: min(86vh, 900px);
+    border-radius: clamp(20px, 3vw, 32px);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    isolation: isolate;
+  }
 
-    /* Le scroll natif reste neutre : c'est Lenis (JS) qui pilote la
-       fluidité. Le repli sans JS utilise scrollIntoView "smooth". */
-    html { scroll-behavior: initial; }
+  .jah-frame > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    transform: scale(1.04);
+    animation: jah-slow-zoom 14s var(--jah-ease) forwards;
+  }
 
-    #main-content, section[id] { scroll-margin-top: var(--ja-nav-h); }
+  .jah-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(to top, rgba(20,24,29,.78) 0%, rgba(20,24,29,.35) 42%, rgba(20,24,29,.05) 70%),
+      linear-gradient(105deg, rgba(20,24,29,.45) 0%, transparent 55%);
+  }
 
-    .ja-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
-      width: 0%;
-      background: #fff;
-      mix-blend-mode: difference;
-      z-index: 9999;
-      pointer-events: none;
-    }
+  /* Pastille "confiance" en haut du cadre */
+  .jah-badge {
+    position: absolute;
+    top: clamp(16px, 2.5vw, 28px);
+    right: clamp(16px, 2.5vw, 28px);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #fff;
+    font-size: .82rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    animation: jah-rise .9s var(--jah-ease) .55s both;
+  }
+  .jah-badge span::before {
+    content: "•";
+    margin: 0 8px;
+    color: var(--jah-highlight);
+  }
+  .jah-badge span:first-child::before { content: none; margin: 0; }
 
-    .nav {
-      transition: backdrop-filter .4s var(--ja-ease), box-shadow .4s var(--ja-ease);
-    }
-    .nav.ja-scrolled {
-      backdrop-filter: blur(16px) saturate(160%);
-      -webkit-backdrop-filter: blur(16px) saturate(160%);
-      box-shadow: 0 1px 0 rgba(255,255,255,.06), 0 12px 30px rgba(0,0,0,.18);
-    }
+  .jah-content {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    padding: clamp(28px, 5vw, 64px);
+    color: #fff;
+  }
 
-    .hero-video iframe {
-      transform: scale(1.15);
-      will-change: transform;
-    }
+  .jah-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.85);
+    margin: 0 0 18px;
+    animation: jah-rise .9s var(--jah-ease) .1s both;
+  }
+  .jah-eyebrow::before {
+    content: "";
+    width: 34px;
+    height: 2px;
+    background: var(--jah-accent);
+    border-radius: 2px;
+  }
 
-    .programs-grid .program-card,
-    .features-grid .feature {
-      transition-timing-function: var(--ja-ease);
-      transition-duration: .9s;
-    }
-    .programs-grid .program-card:nth-child(1) { transition-delay: 0s; }
-    .programs-grid .program-card:nth-child(2) { transition-delay: .12s; }
-    .features-grid .feature:nth-child(1) { transition-delay: 0s; }
-    .features-grid .feature:nth-child(2) { transition-delay: .08s; }
-    .features-grid .feature:nth-child(3) { transition-delay: .16s; }
-    .features-grid .feature:nth-child(4) { transition-delay: .24s; }
-    .features-grid .feature:nth-child(5) { transition-delay: .32s; }
-    .features-grid .feature:nth-child(6) { transition-delay: .4s; }
+  .jah-title {
+    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 22px;
+    animation: jah-rise .9s var(--jah-ease) .22s both;
+  }
+  .jah-title .jah-mark {
+    display: inline-block;
+    padding: 0 .18em;
+    border-radius: .18em;
+    background: var(--jah-highlight);
+    color: var(--jah-ink);
+    transform: rotate(-1.2deg);
+  }
 
-    .program-card,
-    .feature {
-      transition: transform .5s var(--ja-ease), box-shadow .5s var(--ja-ease);
-    }
-    .program-card:hover,
-    .feature:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 24px 48px rgba(0,0,0,.22);
-    }
+  .jah-sub {
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(255,255,255,.92);
+    max-width: 54ch;
+    margin: 0 0 34px;
+    animation: jah-rise .9s var(--jah-ease) .34s both;
+  }
 
-    .program-image,
-    .destination-visual {
-      overflow: hidden;
-    }
-    .program-image img,
-    .destination-visual img {
-      transition: transform 1s var(--ja-ease);
-    }
-    .program-card:hover .program-image img,
-    .destination-card:hover .destination-visual img {
-      transform: scale(1.08);
-    }
+  .jah-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    animation: jah-rise .9s var(--jah-ease) .46s both;
+  }
 
-    .btn-primary, .btn-secondary, .nav-cta {
-      transition: transform .35s var(--ja-ease), box-shadow .35s var(--ja-ease);
+  .jah-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 17px 32px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform .35s var(--jah-ease), box-shadow .35s var(--jah-ease), background .35s var(--jah-ease);
+  }
+  .jah-btn svg { transition: transform .35s var(--jah-ease); }
+
+  .jah-btn--primary {
+    background: var(--jah-accent);
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(255,59,107,.35);
+  }
+  .jah-btn--primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(255,59,107,.45);
+  }
+  .jah-btn--primary:hover svg { transform: translateX(4px); }
+
+  .jah-btn--ghost {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.35);
+    color: #fff;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .jah-btn--ghost:hover {
+    background: rgba(255,255,255,.22);
+    transform: translateY(-3px);
+  }
+
+  .jah-btn:active { transform: scale(.97); }
+
+  /* Bandeau destinations sous le cadre : respire, ancre l'international */
+  .jah-strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px clamp(18px, 4vw, 44px);
+    padding: clamp(18px, 2.5vw, 28px) 12px 4px;
+    color: #7A828C;
+    font-size: .85rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .jah-strip b {
+    color: var(--jah-ink);
+    font-weight: 700;
+  }
+
+  @keyframes jah-rise {
+    from { opacity: 0; transform: translateY(26px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes jah-slow-zoom {
+    from { transform: scale(1.1); }
+    to   { transform: scale(1.04); }
+  }
+
+  @media (max-width: 640px) {
+    .jah-frame { min-height: 78vh; align-items: flex-end; }
+    .jah-badge { display: none; }
+    .jah-btn { padding: 15px 26px; width: 100%; justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .jah-frame > img,
+    .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas {
+      animation: none !important;
     }
-    .btn-primary:hover, .nav-cta:hover { transform: translateY(-3px); }
-    .btn-primary:active, .btn-secondary:active, .nav-cta:active { transform: scale(.96); }
+    .jah-btn { transition: none; }
+  }
+</style>
 
-    .float-cta {
-      transition: transform .4s var(--ja-ease), opacity .4s var(--ja-ease);
-    }
-    .float-cta:hover { transform: scale(1.08); }
+<section class="jah-hero" id="hero">
+  <div class="jah-frame">
+    <!-- Remplacez par une photo éditoriale de jeunes en immersion à
+         l'étranger (candide, lumineuse) dès que vous en avez une. -->
+    <img src="juniorsacademy.jpg" alt="Jeunes de Juniors Academy en immersion à l'étranger" fetchpriority="high">
 
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .program-card, .destination-card, .feature,
-      .program-image img, .destination-visual img,
-      .btn-primary, .btn-secondary, .nav-cta, .float-cta,
-      .hero-video iframe {
-        transition: none !important;
-        transform: none !important;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="ja-progress" id="jaProgress" aria-hidden="true"></div>
-  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
-
-  <!-- Navigation -->
-  <header class="nav">
-    <div class="nav-content">
-      <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener noreferrer" class="nav-logo">JA</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="nav-links" id="navLinks" aria-label="Navigation principale">
-        <a href="#destinations" class="nav-link">Cultural Exchange</a>
-        <a href="#football-program" class="nav-link">Football Camps</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener noreferrer" class="nav-cta">S'inscrire</a>
-      </nav>
+    <div class="jah-badge" aria-hidden="true">
+      <span>6–18 ans</span><span>5+ destinations</span><span>Encadrement 24/7</span>
     </div>
-  </header>
 
-  <main id="main-content">
-
-    <!-- Hero with YouTube Video -->
-    <section class="hero">
-      <div class="hero-video">
-        <iframe id="heroVideo" src="" data-src="https://www.youtube.com/embed/DLEybFen6QA?autoplay=1&mute=1&loop=1&playlist=DLEybFen6QA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1" data-src-static="https://www.youtube.com/embed/DLEybFen6QA?mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media" title="Vidéo de présentation Juniors Academy" tabindex="-1" aria-hidden="true"></iframe>
-      </div>
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <h1 class="hero-title">L'excellence<br>pour vos enfants.</h1>
-        <p class="hero-subtitle">Programmes internationaux pour les jeunes de 6 à 18 ans. Football Camps avec des clubs de Premier League et séjours culturels sur mesure.</p>
-        <div class="hero-ctas">
-          <a href="#football-program" class="btn-primary">Découvrir les camps <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          <a href="#destinations" class="btn-secondary">Explorer les échanges</a>
-        </div>
-      </div>
-      <div class="hero-scroll">
-        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-      </div>
-    </section>
-
-    <!-- Programs -->
-    <section class="programs" id="programs">
-      <div class="section-header reveal">
-        <p class="section-eyebrow">Nos Programmes</p>
-        <h2 class="section-title">Deux univers. Une excellence.</h2>
-        <p class="section-subtitle">Choisissez l'expérience qui correspond aux aspirations de votre enfant.</p>
-      </div>
-      <div class="programs-grid">
-        <a href="#destinations" class="program-card reveal" id="exchange">
-          <div class="program-image"><img src="Beijing Image.jpg" alt="Échange culturel" loading="lazy" decoding="async"></div>
-          <div class="program-content">
-            <span class="program-tag">Culturel</span>
-            <h3 class="program-title">Cultural Exchange</h3>
-            <p class="program-desc">Séjours linguistiques et programmes d'échanges culturels sur mesure. Pékin, Angleterre, Suisse, Espagne — pour ouvrir le monde aux juniors.</p>
-          </div>
+    <div class="jah-content">
+      <p class="jah-eyebrow">Étudier · Voyager · Grandir</p>
+      <h1 class="jah-title">Le <span class="jah-mark">monde</span> est leur salle de classe.</h1>
+      <p class="jah-sub">Langues, football et découvertes culturelles : de Pékin à Londres, nos programmes transforment chaque séjour en une aventure qui fait grandir — en confiance, en ouverture et en anglais.</p>
+      <div class="jah-ctas">
+        <a href="#programs" class="jah-btn jah-btn--primary">Explorer les programmes
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#football-program" class="program-card reveal" id="football">
-          <div class="program-image"><img src="Arsenal Image.jpg" alt="Stage de football" loading="lazy" decoding="async"></div>
-          <div class="program-content">
-            <span class="program-tag">Sports</span>
-            <h3 class="program-title">Football Camps</h3>
-            <p class="program-desc">Stage de football de haut niveau en Angleterre avec des clubs de Premier League. Entraînements pro, immersion linguistique et encadrement 24/7.</p>
-          </div>
-        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener noreferrer" class="jah-btn jah-btn--ghost">Commencer l'aventure</a>
       </div>
-    </section>
-
-    <!-- Football Features -->
-    <section class="features" id="football-program">
-      <div class="section-header reveal">
-        <p class="section-eyebrow">Programme Football</p>
-        <h2 class="section-title">Une expérience complète.</h2>
-      </div>
-      <div class="features-intro reveal">
-        <p class="features-intro-short">Des séjours linguistiques et stages de football avec <strong>des clubs de Premier League anglaise</strong> pour les 9–16 ans. Formation en anglais, coaching pro, hébergement premium et excursions.</p>
-        <div class="features-intro-full" id="footballFullText">
-          <p>Notre programme combine formation en anglais, coaching sportif de haut niveau, hébergement premium et excursions passionnantes. Les juniors évoluent sur des terrains d'entraînement professionnels, participent à des matchs compétitifs et reçoivent un <strong>certificat officiel des clubs partenaires</strong> à la fin de leur séjour. Avec plus de 37 ans d'expertise cumulée via nos partenaires, nous offrons une expérience complète : assurance médicale, transferts aéroport, encadrement 24/7 et équipements officiels.</p>
-        </div>
-        <button class="expand-btn" onclick="toggleExpand('footballFullText', this)" aria-expanded="false" aria-controls="footballFullText">
-          <span>Cliquez ici pour en savoir plus</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-      </div>
-      <div class="features-grid">
-        <div class="feature reveal"><div class="feature-icon">🎓</div><h4 class="feature-title">Formation linguistique</h4><p class="feature-desc">Cours d'anglais immersifs adaptés au niveau de chaque enfant.</p></div>
-        <div class="feature reveal"><div class="feature-icon">⚽</div><h4 class="feature-title">Coaching pro</h4><p class="feature-desc">Encadrement par des clubs de Premier League anglaise.</p></div>
-        <div class="feature reveal"><div class="feature-icon">🛡️</div><h4 class="feature-title">Sécurité 24/7</h4><p class="feature-desc">Accompagnement constant et assurance complète incluse.</p></div>
-        <div class="feature reveal"><div class="feature-icon">🏡</div><h4 class="feature-title">Hébergement premium</h4><p class="feature-desc">Chambres confortables en campus avec repas équilibrés.</p></div>
-        <div class="feature reveal"><div class="feature-icon">🌍</div><h4 class="feature-title">Excursions</h4><p class="feature-desc">Découverte de Londres, stades emblématiques et sites historiques.</p></div>
-        <div class="feature reveal"><div class="feature-icon">📜</div><h4 class="feature-title">Certification</h4><p class="feature-desc">Certificat officiel des clubs partenaires à la clé.</p></div>
-      </div>
-    </section>
-
-    <!-- Destinations -->
-    <section class="destinations" id="destinations">
-      <div class="section-header reveal">
-        <p class="section-eyebrow">Programme Cultural Exchange</p>
-        <h2 class="section-title">Le monde à portée de main.</h2>
-      </div>
-      <div class="destinations-intro reveal">
-        <p class="destinations-intro-short">L'échange culturel est l'un des cadeaux les plus précieux pour nos juniors. Découvrir le monde au-delà des manuels scolaires, développer la confiance et apprendre à apprécier la diversité.</p>
-        <div class="destinations-intro-full" id="culturalFullText">
-          <p>Cultural exchange is one of the most valuable gifts we can offer our juniors. It allows them to understand the world beyond textbooks, develop confidence, and learn to appreciate diversity with maturity and respect. At Juniors Academy, every program is designed to provide safe, meaningful exposure to new cultures—helping young people grow into open-minded, responsible, and globally aware individuals. By giving them the chance to explore, we help them build skills and perspectives that will guide them for life.</p>
-        </div>
-        <button class="expand-btn" onclick="toggleExpand('culturalFullText', this)" aria-expanded="false" aria-controls="culturalFullText">
-          <span>Cliquez ici pour en savoir plus</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-      </div>
-
-      <div class="destination-card reveal">
-        <div class="destination-visual"><img src="Beijing1.jpg" alt="Pékin" loading="lazy" decoding="async"></div>
-        <div class="destination-content">
-          <p class="destination-location">Asie • Pékin</p>
-          <h3 class="destination-title">Une immersion culturelle unique.</h3>
-          <p class="destination-desc">Programme sur mesure de 6 à 18 ans. Grande Muraille, Cité interdite, ateliers de mandarin et découverte des Hutongs avec encadrement 24/7.</p>
-          <ul class="destination-features">
-            <li>Itinéraire personnalisé avec l'établissement</li>
-            <li>Ateliers de langue et culture adaptés</li>
-            <li>Hébergements sélectionnés pour les jeunes</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="destination-card reverse reveal">
-        <div class="destination-visual"><img src="england-dest.jpg" alt="Angleterre" loading="lazy" decoding="async"></div>
-        <div class="destination-content">
-          <p class="destination-location">Europe • Angleterre</p>
-          <h3 class="destination-title">La vie de campus britannique.</h3>
-          <p class="destination-desc">Cours d'anglais communicatifs en petits groupes, excursions à Londres et Oxford, dans des écoles partenaires prestigieuses.</p>
-          <ul class="destination-features">
-            <li>Uppingham, Oundle, Worth & Brambletye School</li>
-            <li>Excursions vers sites emblématiques</li>
-            <li>Communication régulière avec les parents</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="destination-card reveal">
-        <div class="destination-visual"><img src="Swiss.jpg" alt="Suisse" loading="lazy" decoding="async"></div>
-        <div class="destination-content">
-          <p class="destination-location">Europe • Suisse</p>
-          <h3 class="destination-title">Camps alpins internationaux.</h3>
-          <p class="destination-desc">Expérience en montagne entre sport, nature et langues. Ski, snowboard, randonnées et multi-activités dans un cadre exceptionnel.</p>
-          <ul class="destination-features">
-            <li>Programmes adaptés à chaque saison</li>
-            <li>Rencontres avec participants du monde entier</li>
-            <li>Encadrement spécialisé jeunes</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="destination-card reverse reveal">
-        <div class="destination-visual"><img src="spain.jpg" alt="Espagne" loading="lazy" decoding="async"></div>
-        <div class="destination-content">
-          <p class="destination-location">Europe • Espagne</p>
-          <h3 class="destination-title">Soleil, plage et découvertes.</h3>
-          <p class="destination-desc">Un séjour ensoleillé où les juniors peuvent choisir d'apprendre l'espagnol ou perfectionner leur anglais, tout en profitant de magnifiques plages, de visites culturelles et de beaucoup de fun.</p>
-          <ul class="destination-features">
-            <li>Choix entre cours d'espagnol ou d'anglais</li>
-            <li>Plages, sports nautiques et activités en plein air</li>
-            <li>Visites culturelles et découvertes locales</li>
-            <li>Hébergement sécurisé avec encadrement 24/7</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="more-countries reveal">
-        <p>Et bien d'autres pays à découvrir…</p>
-        <div class="line"></div>
-      </div>
-    </section>
-
-    <!-- CTA / Registration -->
-    <section class="cta-section" id="cultural-program">
-      <div class="cta-bg"><img src="juniorsacademy.jpg" alt="Juniors Academy" loading="lazy" decoding="async"></div>
-      <div class="cta-overlay"></div>
-      <div class="cta-content">
-        <h2 class="cta-title reveal">Inscrivez votre enfant dès aujourd'hui</h2>
-        <p class="cta-subtitle reveal">Les places sont limitées. Rejoignez-nous pour une expérience inoubliable.</p>
-        <div class="cta-buttons reveal">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener noreferrer" class="btn-primary">Inscrire mon enfant <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          <a href="tel:+213550527722" class="btn-secondary">Nous appeler</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="contact" id="contact">
-      <div class="section-header reveal">
-        <p class="section-eyebrow">Contact</p>
-        <h2 class="section-title">Discutons de votre projet.</h2>
-      </div>
-      <div class="contact-grid reveal">
-        <div class="contact-info">
-          <h3>Juniors Academy</h3>
-          <p>Notre équipe vous accompagne pour construire le meilleur séjour pour votre enfant.</p>
-          <div class="contact-item">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            <span>25 Rue Rabah Bourbia, El Biar, Alger</span>
-          </div>
-          <div class="contact-item">
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-            <a href="tel:+213550527722">+213 (0) 550 52 77 22</a>
-          </div>
-          <div class="contact-item">
-            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            <a href="mailto:admin@juniors.academy">admin@juniors.academy</a>
-          </div>
-        </div>
-        <div class="contact-map">
-          <iframe src="https://www.google.com/maps?q=Q29P%2B3W%20El%20Biar&z=16&output=embed" loading="lazy" title="Localisation de Juniors Academy sur la carte"></iframe>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <p class="footer-text">Des programmes d'échange culturel aux standards internationaux d'excellence</p>
-      <div class="footer-links">
-        <a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a>
-        <a href="mailto:admin@juniors.academy" class="footer-link">Email</a>
-      </div>
-      <p class="footer-text">&copy; 2025 Juniors Academy. Tous droits réservés.</p>
     </div>
-  </footer>
+  </div>
 
-  <!-- Floating Call Button -->
-  <a href="tel:+213550527722" class="float-cta" id="floatCta" aria-label="Appeler Juniors Academy">
-    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-  </a>
-
-  <!-- Lenis : moteur de scroll fluide. Si le CDN ne charge pas, le site
-       repasse automatiquement sur le scroll natif (voir script ci-dessous). -->
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script>
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // ---------- Références DOM ----------
-    const navEl = document.querySelector('.nav');
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-    const floatCta = document.getElementById('floatCta');
-    const progressBar = document.getElementById('jaProgress');
-    const heroVideoFrame = document.getElementById('heroVideo');
-
-    // ---------- Vidéo hero : pas de lecture auto si "reduced motion" ----------
-    heroVideoFrame.src = prefersReducedMotion ? heroVideoFrame.dataset.srcStatic : heroVideoFrame.dataset.src;
-
-    // ---------- Hauteur réelle de la nav → décalage des ancres ----------
-    function setNavHeightVar() {
-      document.documentElement.style.setProperty('--ja-nav-h', navEl.offsetHeight + 'px');
-    }
-    setNavHeightVar();
-    window.addEventListener('resize', setNavHeightVar);
-
-    // ---------- Effets pilotés par le scroll ----------
-    function onScroll(scrollY, progress) {
-      navEl.classList.toggle('ja-scrolled', scrollY > 40);
-      floatCta.classList.toggle('visible', scrollY > 300);
-      if (progressBar) {
-        progressBar.style.width = Math.min(Math.max(progress * 100, 0), 100) + '%';
-      }
-      if (!prefersReducedMotion && heroVideoFrame) {
-        const shift = Math.min(scrollY * 0.25, 120);
-        heroVideoFrame.style.transform = `scale(1.15) translateY(${shift}px)`;
-      }
-    }
-
-    // ---------- Lenis, avec repli propre sur le scroll natif ----------
-    let lenis = null;
-    if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
-      lenis = new Lenis({
-        autoRaf: true,
-        duration: 1.1,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-      lenis.on('scroll', ({ scroll, progress }) => onScroll(scroll, progress));
-    } else {
-      window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        const progress = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-        onScroll(scrollY, progress);
-      }, { passive: true });
-    }
-
-    // ---------- Menu mobile ----------
-    function closeMenu() {
-      navToggle.classList.remove('active');
-      navLinks.classList.remove('active');
-      navToggle.setAttribute('aria-expanded', 'false');
-      navToggle.setAttribute('aria-label', 'Ouvrir le menu');
-      document.body.style.overflow = '';
-    }
-
-    navToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('active');
-      navToggle.classList.toggle('active', isOpen);
-      navToggle.setAttribute('aria-expanded', String(isOpen));
-      navToggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-
-    document.querySelectorAll('.nav-link, .nav-cta').forEach(link => {
-      link.addEventListener('click', closeMenu);
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenu();
-    });
-
-    // ---------- "En savoir plus" ----------
-    function toggleExpand(elementId, button) {
-      const element = document.getElementById(elementId);
-      const isExpanded = element.classList.contains('expanded');
-      if (isExpanded) {
-        element.classList.remove('expanded');
-        button.classList.remove('expanded');
-        button.setAttribute('aria-expanded', 'false');
-        button.querySelector('span').textContent = 'Cliquez ici pour en savoir plus';
-      } else {
-        element.classList.add('expanded');
-        button.classList.add('expanded');
-        button.setAttribute('aria-expanded', 'true');
-        button.querySelector('span').textContent = 'Réduire';
-      }
-    }
-
-    // ---------- Apparitions au scroll ----------
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // ---------- Ancres : passent par Lenis quand il est actif ----------
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (!target) return;
-        e.preventDefault();
-        if (lenis) {
-          // Lenis lit scroll-margin-top tout seul : pas besoin de recalculer
-          // l'offset ici, sinon on décale deux fois (CSS + JS).
-          lenis.scrollTo(target, { duration: 1.2 });
-        } else {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-  </script>
-
-</body>
-</html>
+  <p class="jah-strip"><b>Pékin</b> <span>Londres</span> <b>Alpes suisses</b> <span>Espagne</span> <b>Premier League</b></p>
+</section>
+<!-- ================= FIN HERO v2 ================= -->
