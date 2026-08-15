@@ -1,5 +1,5 @@
 <!-- ============================================================
-     JUNIORS ACADEMY — HERO v4 : hero + 10 destinations + contact
+     JUNIORS ACADEMY — HERO v5 : hero + 10 destinations + contact
      Bloc 100 % autonome (styles préfixés "jah-", aucun conflit
      avec index.css). Remplace l'ancien bloc en entier.
      ============================================================ -->
@@ -302,12 +302,63 @@
     .jah-detail:nth-child(even) .jah-detail-visual { order: 0; }
     .jah-contact-card { grid-template-columns: 1fr; }
   }
+
+  /* ---------- Mobile : version aérée ---------- */
   @media (max-width: 640px) {
-    .jah-frame { min-height: 78vh; }
+    .jah-hero { padding-left: 10px; padding-right: 10px; padding-bottom: 8px; }
+    .jah-frame { min-height: 72vh; border-radius: 22px; }
     .jah-badge { display: none; }
-    .jah-btn { padding: 15px 26px; width: 100%; justify-content: center; }
-    .jah-grid { grid-template-columns: repeat(2, 1fr); }
+    .jah-content { padding: 24px 20px 28px; }
+    .jah-eyebrow { font-size: .7rem; letter-spacing: .14em; margin-bottom: 12px; }
+    .jah-title { font-size: clamp(2.1rem, 9.5vw, 2.6rem); margin-bottom: 14px; }
+    .jah-sub { font-size: .95rem; line-height: 1.55; margin-bottom: 22px; }
+    .jah-ctas { gap: 10px; }
+    .jah-btn { padding: 14px 22px; width: 100%; justify-content: center; font-size: .95rem; }
+
+    /* Bandeau destinations : une seule ligne qui glisse au doigt */
+    .jah-strip {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      gap: 22px;
+      padding: 16px 16px 6px;
+      font-size: .72rem;
+      scrollbar-width: none;
+    }
+    .jah-strip::-webkit-scrollbar { display: none; }
+    .jah-strip b, .jah-strip span { flex: none; }
+
+    /* Grille : 2 colonnes épurées, sans éléments superflus */
+    .jah-dests { padding: 34px 14px 14px; }
+    .jah-section-head { margin-bottom: 24px; }
+    .jah-section-sub { font-size: .92rem; }
+    .jah-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .jah-card { aspect-ratio: 3 / 4; border-radius: 16px; }
+    .jah-card-go, .jah-card-tag { display: none; }
+    .jah-card-label { left: 12px; right: 12px; bottom: 12px; }
+    .jah-card-flag { font-size: 1.05rem; margin-bottom: 3px; }
+    .jah-card-name { font-size: .98rem; }
+
+    /* Fiches : plus compactes */
+    .jah-details { padding: 14px 12px 30px; }
+    .jah-detail { padding: 12px 12px 20px; gap: 16px; margin-bottom: 18px; border-radius: 18px; }
+    .jah-detail-visual { aspect-ratio: 16 / 10; border-radius: 12px; }
+    .jah-detail-desc { font-size: .93rem; line-height: 1.6; }
+    .jah-detail-list { gap: 7px; margin-bottom: 16px; }
+    .jah-detail-list li { font-size: .88rem; }
+    .jah-top { font-size: .82rem; }
+
+    /* Contact : padding réduit */
+    .jah-contact { padding-left: 12px; padding-right: 12px; }
+    .jah-contact-card { padding: 28px 20px; gap: 24px; border-radius: 22px; }
+    .jah-contact-sub { font-size: .93rem; margin-bottom: 20px; }
+    .jah-contact-list { gap: 13px; }
+    .jah-contact-list li { font-size: .9rem; }
+    .jah-ico { width: 36px; height: 36px; border-radius: 10px; }
+    .jah-contact-ctas { margin-top: 22px; }
   }
+
   @media (prefers-reduced-motion: reduce) {
     .jah-frame > img, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas { animation: none !important; }
     .jah-btn, .jah-card, .jah-card img { transition: none !important; }
