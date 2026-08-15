@@ -1,22 +1,31 @@
-<!-- ================= JUNIORS ACADEMY — HERO v2 (style EF) ================= -->
-<!-- Bloc autonome : ses styles sont préfixés "jah-" et n'entrent pas en
-     conflit avec index.css. Remplace l'ancienne <section class="hero">. -->
+<!-- ============================================================
+     JUNIORS ACADEMY — HERO v3 : hero + destinations + contact
+     Bloc 100 % autonome (styles préfixés "jah-", aucun conflit
+     avec index.css). Remplace l'ancien bloc HERO v2 en entier.
+     ============================================================ -->
 
 <style>
-  .jah-hero {
+  /* ---------- Base du bloc ---------- */
+  .jah-hero, .jah-dests, .jah-details, .jah-contact {
     --jah-ink: #14181D;
     --jah-paper: #FAFAF7;
-    --jah-accent: #FF3B6B;       /* corail vif : énergie, jeunesse */
-    --jah-highlight: #FFD23F;    /* jaune soleil : surlignage du mot clé */
+    --jah-accent: #FF3B6B;
+    --jah-highlight: #FFD23F;
+    --jah-muted: #7A828C;
     --jah-ease: cubic-bezier(.16, 1, .3, 1);
-
     background: var(--jah-paper);
-    padding: calc(var(--ja-nav-h, 80px) + 20px) clamp(14px, 3vw, 40px) clamp(20px, 3vw, 40px);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--jah-ink);
+  }
+  .jah-hero *, .jah-dests *, .jah-details *, .jah-contact * { box-sizing: border-box; }
+
+  [id^="jah-"] { scroll-margin-top: calc(var(--ja-nav-h, 80px) + 16px); }
+
+  .jah-hero {
+    padding: calc(var(--ja-nav-h, 80px) + 20px) clamp(14px, 3vw, 40px) clamp(20px, 3vw, 40px);
   }
 
-  /* Le cadre : l'image plein écran vit dans une grande carte arrondie,
-     entourée de blanc — c'est la signature visuelle de ce hero. */
+  /* ---------- Cadre hero ---------- */
   .jah-frame {
     position: relative;
     min-height: min(86vh, 900px);
@@ -26,220 +35,536 @@
     align-items: flex-end;
     isolation: isolate;
   }
-
   .jah-frame > img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
     object-fit: cover;
     z-index: -2;
     transform: scale(1.04);
     animation: jah-slow-zoom 14s var(--jah-ease) forwards;
   }
-
   .jah-frame::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+    content: ""; position: absolute; inset: 0; z-index: -1;
     background:
       linear-gradient(to top, rgba(20,24,29,.78) 0%, rgba(20,24,29,.35) 42%, rgba(20,24,29,.05) 70%),
       linear-gradient(105deg, rgba(20,24,29,.45) 0%, transparent 55%);
   }
 
-  /* Pastille "confiance" en haut du cadre */
   .jah-badge {
     position: absolute;
     top: clamp(16px, 2.5vw, 28px);
     right: clamp(16px, 2.5vw, 28px);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    display: inline-flex; align-items: center; gap: 10px;
     padding: 10px 18px;
     border-radius: 999px;
     background: rgba(255,255,255,.14);
     border: 1px solid rgba(255,255,255,.25);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: #fff;
-    font-size: .82rem;
-    font-weight: 500;
-    letter-spacing: .02em;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    color: #fff; font-size: .82rem; font-weight: 500; letter-spacing: .02em;
     animation: jah-rise .9s var(--jah-ease) .55s both;
   }
-  .jah-badge span::before {
-    content: "•";
-    margin: 0 8px;
-    color: var(--jah-highlight);
-  }
+  .jah-badge span::before { content: "•"; margin: 0 8px; color: var(--jah-highlight); }
   .jah-badge span:first-child::before { content: none; margin: 0; }
 
   .jah-content {
-    position: relative;
-    width: 100%;
-    max-width: 720px;
+    position: relative; width: 100%; max-width: 720px;
     padding: clamp(28px, 5vw, 64px);
     color: #fff;
   }
-
   .jah-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: .8rem;
-    font-weight: 600;
-    letter-spacing: .18em;
-    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
     color: rgba(255,255,255,.85);
     margin: 0 0 18px;
     animation: jah-rise .9s var(--jah-ease) .1s both;
   }
-  .jah-eyebrow::before {
-    content: "";
-    width: 34px;
-    height: 2px;
-    background: var(--jah-accent);
-    border-radius: 2px;
-  }
+  .jah-eyebrow::before { content: ""; width: 34px; height: 2px; background: var(--jah-accent); border-radius: 2px; }
 
   .jah-title {
     font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
     font-size: clamp(2.5rem, 6.5vw, 5rem);
-    font-weight: 800;
-    line-height: 1.02;
-    letter-spacing: -0.02em;
-    margin: 0 0 22px;
+    font-weight: 800; line-height: 1.02; letter-spacing: -.02em;
+    margin: 0 0 22px; color: #fff;
     animation: jah-rise .9s var(--jah-ease) .22s both;
   }
   .jah-title .jah-mark {
-    display: inline-block;
-    padding: 0 .18em;
-    border-radius: .18em;
-    background: var(--jah-highlight);
-    color: var(--jah-ink);
+    display: inline-block; padding: 0 .18em; border-radius: .18em;
+    background: var(--jah-highlight); color: var(--jah-ink);
     transform: rotate(-1.2deg);
   }
 
   .jah-sub {
-    font-size: clamp(1rem, 1.4vw, 1.2rem);
-    line-height: 1.65;
-    color: rgba(255,255,255,.92);
-    max-width: 54ch;
-    margin: 0 0 34px;
+    font-size: clamp(1rem, 1.4vw, 1.2rem); line-height: 1.65;
+    color: rgba(255,255,255,.92); max-width: 54ch; margin: 0 0 34px;
     animation: jah-rise .9s var(--jah-ease) .34s both;
   }
 
-  .jah-ctas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    animation: jah-rise .9s var(--jah-ease) .46s both;
-  }
+  .jah-ctas { display: flex; flex-wrap: wrap; gap: 14px; animation: jah-rise .9s var(--jah-ease) .46s both; }
 
   .jah-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 17px 32px;
-    border-radius: 999px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 17px 32px; border-radius: 999px;
+    font-size: 1rem; font-weight: 600; text-decoration: none;
     transition: transform .35s var(--jah-ease), box-shadow .35s var(--jah-ease), background .35s var(--jah-ease);
+    cursor: pointer;
   }
   .jah-btn svg { transition: transform .35s var(--jah-ease); }
-
-  .jah-btn--primary {
-    background: var(--jah-accent);
-    color: #fff;
-    box-shadow: 0 10px 30px rgba(255,59,107,.35);
-  }
-  .jah-btn--primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 40px rgba(255,59,107,.45);
-  }
+  .jah-btn--primary { background: var(--jah-accent); color: #fff; box-shadow: 0 10px 30px rgba(255,59,107,.35); }
+  .jah-btn--primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(255,59,107,.45); }
   .jah-btn--primary:hover svg { transform: translateX(4px); }
-
   .jah-btn--ghost {
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.35);
-    color: #fff;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35); color: #fff;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
-  .jah-btn--ghost:hover {
-    background: rgba(255,255,255,.22);
-    transform: translateY(-3px);
-  }
-
+  .jah-btn--ghost:hover { background: rgba(255,255,255,.22); transform: translateY(-3px); }
   .jah-btn:active { transform: scale(.97); }
 
-  /* Bandeau destinations sous le cadre : respire, ancre l'international */
   .jah-strip {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex; flex-wrap: wrap; justify-content: center;
     gap: 8px clamp(18px, 4vw, 44px);
     padding: clamp(18px, 2.5vw, 28px) 12px 4px;
-    color: #7A828C;
-    font-size: .85rem;
-    font-weight: 500;
-    letter-spacing: .14em;
-    text-transform: uppercase;
+    color: var(--jah-muted);
+    font-size: .85rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+    margin: 0;
   }
-  .jah-strip b {
-    color: var(--jah-ink);
-    font-weight: 700;
-  }
+  .jah-strip b { color: var(--jah-ink); font-weight: 700; }
 
-  @keyframes jah-rise {
-    from { opacity: 0; transform: translateY(26px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes jah-slow-zoom {
-    from { transform: scale(1.1); }
-    to   { transform: scale(1.04); }
-  }
+  /* ---------- Grille destinations ---------- */
+  .jah-dests { padding: clamp(40px, 7vw, 90px) clamp(14px, 3vw, 40px) clamp(20px, 4vw, 50px); }
 
+  .jah-section-head { max-width: 720px; margin: 0 auto clamp(30px, 5vw, 54px); text-align: center; }
+  .jah-section-eyebrow {
+    font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--jah-accent); margin: 0 0 12px;
+  }
+  .jah-section-title {
+    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.08;
+    margin: 0 0 14px; color: var(--jah-ink);
+  }
+  .jah-section-sub { font-size: 1.02rem; line-height: 1.65; color: var(--jah-muted); margin: 0; }
+
+  .jah-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: clamp(12px, 1.8vw, 20px);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .jah-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    isolation: isolate;
+    background: linear-gradient(135deg, #2b3440, #14181D); /* visible si photo manquante */
+    transition: transform .45s var(--jah-ease), box-shadow .45s var(--jah-ease);
+  }
+  .jah-card:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(20,24,29,.22); }
+  .jah-card img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: -2;
+    transition: transform .9s var(--jah-ease);
+  }
+  .jah-card:hover img { transform: scale(1.07); }
+  .jah-card::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(to top, rgba(20,24,29,.75) 0%, rgba(20,24,29,.1) 55%);
+  }
+  .jah-card-label {
+    position: absolute; left: 18px; right: 18px; bottom: 16px; color: #fff;
+  }
+  .jah-card-flag { font-size: 1.3rem; display: block; margin-bottom: 6px; }
+  .jah-card-name {
+    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; display: block;
+  }
+  .jah-card-tag { font-size: .8rem; color: rgba(255,255,255,.8); }
+  .jah-card-go {
+    position: absolute; top: 14px; right: 14px;
+    width: 38px; height: 38px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.3);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    transition: background .35s var(--jah-ease), transform .35s var(--jah-ease);
+  }
+  .jah-card:hover .jah-card-go { background: var(--jah-accent); transform: rotate(45deg); }
+
+  /* ---------- Fiches destinations ---------- */
+  .jah-details { padding: clamp(20px, 4vw, 50px) clamp(14px, 3vw, 40px) clamp(30px, 5vw, 70px); }
+
+  .jah-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(20px, 3.5vw, 48px);
+    align-items: center;
+    max-width: 1240px;
+    margin: 0 auto clamp(28px, 4vw, 56px);
+    padding: clamp(18px, 2.5vw, 32px);
+    background: #fff;
+    border: 1px solid rgba(20,24,29,.07);
+    border-radius: clamp(18px, 2.5vw, 28px);
+    box-shadow: 0 6px 26px rgba(20,24,29,.05);
+  }
+  .jah-detail:nth-child(even) .jah-detail-visual { order: 2; }
+  .jah-detail-visual {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #2b3440, #14181D);
+  }
+  .jah-detail-visual img { width: 100%; height: 100%; object-fit: cover; }
+  .jah-detail-loc {
+    font-size: .78rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--jah-accent); margin: 0 0 10px;
+  }
+  .jah-detail-title {
+    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    font-weight: 800; letter-spacing: -.015em; line-height: 1.12;
+    margin: 0 0 12px; color: var(--jah-ink);
+  }
+  .jah-detail-desc { font-size: 1rem; line-height: 1.7; color: #444B54; margin: 0 0 16px; }
+  .jah-detail-list { list-style: none; margin: 0 0 20px; padding: 0; display: grid; gap: 9px; }
+  .jah-detail-list li {
+    position: relative; padding-left: 26px;
+    font-size: .95rem; line-height: 1.5; color: var(--jah-ink);
+  }
+  .jah-detail-list li::before {
+    content: "✓";
+    position: absolute; left: 0; top: 0;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--jah-highlight); color: var(--jah-ink);
+    font-size: .68rem; font-weight: 800;
+  }
+  .jah-detail-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: .95rem; font-weight: 600; color: var(--jah-accent);
+    text-decoration: none;
+  }
+  .jah-detail-cta:hover { text-decoration: underline; }
+  .jah-top {
+    display: block; max-width: 1240px; margin: 0 auto;
+    text-align: center; font-size: .88rem; font-weight: 600;
+    color: var(--jah-muted); text-decoration: none;
+  }
+  .jah-top:hover { color: var(--jah-ink); }
+
+  /* ---------- Contact ---------- */
+  .jah-contact { padding: 0 clamp(14px, 3vw, 40px) clamp(30px, 5vw, 70px); }
+  .jah-contact-card {
+    max-width: 1240px; margin: 0 auto;
+    background: var(--jah-ink);
+    border-radius: clamp(20px, 3vw, 32px);
+    padding: clamp(32px, 5vw, 64px);
+    color: #fff;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 60px);
+    align-items: center;
+  }
+  .jah-contact-title {
+    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.1;
+    margin: 0 0 12px; color: #fff;
+  }
+  .jah-contact-sub { font-size: 1rem; line-height: 1.65; color: rgba(255,255,255,.75); margin: 0 0 26px; max-width: 46ch; }
+  .jah-contact-list { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .jah-contact-list li { display: flex; align-items: flex-start; gap: 14px; font-size: .98rem; line-height: 1.5; }
+  .jah-contact-list a { color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.3); }
+  .jah-contact-list a:hover { border-bottom-color: var(--jah-highlight); }
+  .jah-ico {
+    flex: none; width: 40px; height: 40px; border-radius: 12px;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+  }
+  .jah-ico svg { width: 18px; height: 18px; fill: var(--jah-highlight); }
+  .jah-contact-label { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 3px; }
+  .jah-contact-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  /* ---------- Apparitions au scroll (autonome) ---------- */
+  .jah-reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--jah-ease), transform .9s var(--jah-ease); }
+  .jah-reveal.jah-in { opacity: 1; transform: translateY(0); }
+
+  @keyframes jah-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes jah-slow-zoom { from { transform: scale(1.1); } to { transform: scale(1.04); } }
+
+  @media (max-width: 860px) {
+    .jah-detail { grid-template-columns: 1fr; }
+    .jah-detail:nth-child(even) .jah-detail-visual { order: 0; }
+    .jah-contact-card { grid-template-columns: 1fr; }
+  }
   @media (max-width: 640px) {
-    .jah-frame { min-height: 78vh; align-items: flex-end; }
+    .jah-frame { min-height: 78vh; }
     .jah-badge { display: none; }
     .jah-btn { padding: 15px 26px; width: 100%; justify-content: center; }
+    .jah-grid { grid-template-columns: repeat(2, 1fr); }
   }
-
   @media (prefers-reduced-motion: reduce) {
-    .jah-frame > img,
-    .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas {
-      animation: none !important;
-    }
-    .jah-btn { transition: none; }
+    .jah-frame > img, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas { animation: none !important; }
+    .jah-btn, .jah-card, .jah-card img { transition: none !important; }
+    .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   }
 </style>
 
+<!-- ==================== 1. HERO ==================== -->
 <section class="jah-hero" id="hero">
   <div class="jah-frame">
-    <!-- Remplacez par une photo éditoriale de jeunes en immersion à
-         l'étranger (candide, lumineuse) dès que vous en avez une. -->
     <img src="juniorsacademy.jpg" alt="Jeunes de Juniors Academy en immersion à l'étranger" fetchpriority="high">
-
     <div class="jah-badge" aria-hidden="true">
-      <span>6–18 ans</span><span>5+ destinations</span><span>Encadrement 24/7</span>
+      <span>6–18 ans</span><span>8 programmes</span><span>Encadrement 24/7</span>
     </div>
-
     <div class="jah-content">
       <p class="jah-eyebrow">Étudier · Voyager · Grandir</p>
       <h1 class="jah-title">Le <span class="jah-mark">monde</span> est leur salle de classe.</h1>
       <p class="jah-sub">Langues, football et découvertes culturelles : de Pékin à Londres, nos programmes transforment chaque séjour en une aventure qui fait grandir — en confiance, en ouverture et en anglais.</p>
       <div class="jah-ctas">
-        <a href="#programs" class="jah-btn jah-btn--primary">Explorer les programmes
+        <a href="#jah-destinations" class="jah-btn jah-btn--primary">Explorer les programmes
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener noreferrer" class="jah-btn jah-btn--ghost">Commencer l'aventure</a>
+        <a href="#jah-contact" class="jah-btn jah-btn--ghost">Nous contacter</a>
       </div>
     </div>
   </div>
-
-  <p class="jah-strip"><b>Pékin</b> <span>Londres</span> <b>Alpes suisses</b> <span>Espagne</span> <b>Premier League</b></p>
+  <p class="jah-strip"><b>Angleterre</b> <span>Espagne</span> <b>Suisse</b> <span>Chine</span> <b>Japon</b> <span>Corée du Sud</span> <b>Finlande</b> <span>Premier League</span></p>
 </section>
-<!-- ================= FIN HERO v2 ================= -->
+
+<!-- ==================== 2. GRILLE DESTINATIONS ==================== -->
+<section class="jah-dests" id="jah-destinations">
+  <div class="jah-section-head jah-reveal">
+    <p class="jah-section-eyebrow">Nos destinations</p>
+    <h2 class="jah-section-title">Huit façons de découvrir le monde.</h2>
+    <p class="jah-section-sub">Touchez une destination pour découvrir le programme en détail.</p>
+  </div>
+  <div class="jah-grid">
+    <a href="#jah-angleterre" class="jah-card jah-reveal">
+      <img src="england-dest.jpg" alt="Angleterre" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇬🇧</span><span class="jah-card-name">Angleterre</span><span class="jah-card-tag">Campus &amp; anglais</span></span>
+    </a>
+    <a href="#jah-espagne" class="jah-card jah-reveal">
+      <img src="spain.jpg" alt="Espagne" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇪🇸</span><span class="jah-card-name">Espagne</span><span class="jah-card-tag">Soleil &amp; langues</span></span>
+    </a>
+    <a href="#jah-suisse" class="jah-card jah-reveal">
+      <img src="Swiss.jpg" alt="Suisse" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇭</span><span class="jah-card-name">Suisse</span><span class="jah-card-tag">Camps alpins</span></span>
+    </a>
+    <a href="#jah-chine" class="jah-card jah-reveal">
+      <img src="Beijing1.jpg" alt="Chine — Pékin" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇳</span><span class="jah-card-name">Chine</span><span class="jah-card-tag">Pékin &amp; mandarin</span></span>
+    </a>
+    <a href="#jah-japon" class="jah-card jah-reveal">
+      <img src="japan.jpg" alt="Japon" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇯🇵</span><span class="jah-card-name">Japon</span><span class="jah-card-tag">Tradition &amp; futur</span></span>
+    </a>
+    <a href="#jah-coree" class="jah-card jah-reveal">
+      <img src="korea.jpg" alt="Corée du Sud" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇰🇷</span><span class="jah-card-name">Corée du Sud</span><span class="jah-card-tag">Séoul &amp; K-culture</span></span>
+    </a>
+    <a href="#jah-finlande" class="jah-card jah-reveal">
+      <img src="finland.jpg" alt="Finlande" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇫🇮</span><span class="jah-card-name">Finlande</span><span class="jah-card-tag">Éducation &amp; nature</span></span>
+    </a>
+    <a href="#jah-football" class="jah-card jah-reveal">
+      <img src="Arsenal Image.jpg" alt="Football Premier League" loading="lazy" onerror="this.style.display='none'">
+      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">⚽</span><span class="jah-card-name">Premier League</span><span class="jah-card-tag">Football camps</span></span>
+    </a>
+  </div>
+</section>
+
+<!-- ==================== 3. FICHES DESTINATIONS ==================== -->
+<section class="jah-details">
+
+  <article class="jah-detail jah-reveal" id="jah-angleterre">
+    <div class="jah-detail-visual"><img src="england-dest.jpg" alt="Campus en Angleterre" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">🇬🇧 Europe · Angleterre</p>
+      <h3 class="jah-detail-title">La vie de campus britannique.</h3>
+      <p class="jah-detail-desc">Cours d'anglais communicatifs en petits groupes, excursions à Londres et Oxford, dans des écoles partenaires prestigieuses.</p>
+      <ul class="jah-detail-list">
+        <li>Uppingham, Oundle, Worth &amp; Brambletye School</li>
+        <li>Excursions vers sites emblématiques</li>
+        <li>Communication régulière avec les parents</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <article class="jah-detail jah-reveal" id="jah-espagne">
+    <div class="jah-detail-visual"><img src="spain.jpg" alt="Séjour en Espagne" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">🇪🇸 Europe · Espagne</p>
+      <h3 class="jah-detail-title">Soleil, plage et découvertes.</h3>
+      <p class="jah-detail-desc">Un séjour ensoleillé où les juniors peuvent choisir d'apprendre l'espagnol ou perfectionner leur anglais, tout en profitant de magnifiques plages, de visites culturelles et de beaucoup de fun.</p>
+      <ul class="jah-detail-list">
+        <li>Choix entre cours d'espagnol ou d'anglais</li>
+        <li>Plages, sports nautiques et activités en plein air</li>
+        <li>Hébergement sécurisé avec encadrement 24/7</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <article class="jah-detail jah-reveal" id="jah-suisse">
+    <div class="jah-detail-visual"><img src="Swiss.jpg" alt="Camps alpins en Suisse" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">🇨🇭 Europe · Suisse</p>
+      <h3 class="jah-detail-title">Camps alpins internationaux.</h3>
+      <p class="jah-detail-desc">Expérience en montagne entre sport, nature et langues. Ski, snowboard, randonnées et multi-activités dans un cadre exceptionnel.</p>
+      <ul class="jah-detail-list">
+        <li>Programmes adaptés à chaque saison</li>
+        <li>Rencontres avec participants du monde entier</li>
+        <li>Encadrement spécialisé jeunes</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <article class="jah-detail jah-reveal" id="jah-chine">
+    <div class="jah-detail-visual"><img src="Beijing1.jpg" alt="Pékin, Chine" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">🇨🇳 Asie · Chine</p>
+      <h3 class="jah-detail-title">Une immersion culturelle unique.</h3>
+      <p class="jah-detail-desc">Programme sur mesure de 6 à 18 ans. Grande Muraille, Cité interdite, ateliers de mandarin et découverte des Hutongs avec encadrement 24/7.</p>
+      <ul class="jah-detail-list">
+        <li>Itinéraire personnalisé avec l'établissement</li>
+        <li>Ateliers de langue et culture adaptés</li>
+        <li>Hébergements sélectionnés pour les jeunes</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <article class="jah-detail jah-reveal" id="jah-japon">
+    <div class="jah-detail-visual"><img src="japan.jpg" alt="Japon" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">🇯🇵 Asie · Japon</p>
+      <h3 class="jah-detail-title">Entre tradition et futur.</h3>
+      <p class="jah-detail-desc">De Tokyo à Kyoto, les juniors découvrent un pays où temples millénaires et technologies de pointe se côtoient. Ateliers de culture japonaise, visites guidées et immersion en toute sécurité.</p>
+      <ul class="jah-detail-list">
+        <li>Découverte de Tokyo et Kyoto</li>
+        <li>Ateliers culturels : calligraphie, cuisine, traditions</li>
+        <li>Encadrement 24/7 et hébergement sélectionné</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <article class="jah-detail jah-reveal" id="jah-coree">
+    <div class="jah-detail-visual"><img src="korea.jpg" alt="Séoul, Corée du Sud" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">🇰🇷 Asie · Corée du Sud</p>
+      <h3 class="jah-detail-title">Séoul, capitale de la K-culture.</h3>
+      <p class="jah-detail-desc">Une destination qui passionne les jeunes : entre palais historiques, quartiers créatifs et culture pop, Séoul offre une immersion moderne, sûre et inoubliable.</p>
+      <ul class="jah-detail-list">
+        <li>Visites de Séoul : palais, musées, quartiers emblématiques</li>
+        <li>Initiation à la langue et à la culture coréennes</li>
+        <li>Programme adapté aux centres d'intérêt des juniors</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <article class="jah-detail jah-reveal" id="jah-finlande">
+    <div class="jah-detail-visual"><img src="finland.jpg" alt="Finlande" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">🇫🇮 Europe · Finlande</p>
+      <h3 class="jah-detail-title">Au cœur de l'éducation la plus admirée au monde.</h3>
+      <p class="jah-detail-desc">La Finlande, référence mondiale en éducation, accueille nos juniors entre nature grandiose et pédagogie innovante : apprentissage en anglais, activités de plein air et vie de camp nordique.</p>
+      <ul class="jah-detail-list">
+        <li>Immersion dans l'approche éducative finlandaise</li>
+        <li>Nature : lacs, forêts et activités quatre saisons</li>
+        <li>Cadre calme, sûr et bienveillant</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <article class="jah-detail jah-reveal" id="jah-football">
+    <div class="jah-detail-visual"><img src="Arsenal Image.jpg" alt="Stage de football en Angleterre" loading="lazy" onerror="this.style.display='none'"></div>
+    <div>
+      <p class="jah-detail-loc">⚽ Angleterre · Football Camps</p>
+      <h3 class="jah-detail-title">S'entraîner comme un pro de Premier League.</h3>
+      <p class="jah-detail-desc">Stage de football de haut niveau pour les 9–16 ans avec des clubs de Premier League anglaise : entraînements pro, immersion linguistique, hébergement premium et certificat officiel des clubs partenaires.</p>
+      <ul class="jah-detail-list">
+        <li>Coaching par des clubs de Premier League</li>
+        <li>Cours d'anglais immersifs et excursions à Londres</li>
+        <li>Assurance, transferts aéroport et encadrement 24/7</li>
+      </ul>
+      <a href="#jah-contact" class="jah-detail-cta">Demander ce programme →</a>
+    </div>
+  </article>
+
+  <a href="#jah-destinations" class="jah-top">↑ Revenir aux destinations</a>
+</section>
+
+<!-- ==================== 4. CONTACT ==================== -->
+<section class="jah-contact" id="jah-contact">
+  <div class="jah-contact-card jah-reveal">
+    <div>
+      <h2 class="jah-contact-title">Discutons du séjour de votre enfant.</h2>
+      <p class="jah-contact-sub">Notre équipe vous accompagne pour construire le programme idéal — destination, dates, budget. Les places sont limitées.</p>
+      <div class="jah-contact-ctas">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNnEEnASMZep6BO_qbH1n2sN4lJO5BQ6GuMSj70NEca9CSJQ/viewform" target="_blank" rel="noopener noreferrer" class="jah-btn jah-btn--primary">Inscrire mon enfant
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="tel:+213550527722" class="jah-btn jah-btn--ghost">Nous appeler</a>
+      </div>
+    </div>
+    <ul class="jah-contact-list">
+      <li>
+        <span class="jah-ico"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></span>
+        <span><span class="jah-contact-label">Bureau</span>25 Rue Rabah Bourbia, El Biar, Alger</span>
+      </li>
+      <li>
+        <span class="jah-ico"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span>
+        <span><span class="jah-contact-label">Téléphone</span><a href="tel:+213550527722">+213 (0) 550 52 77 22</a></span>
+      </li>
+      <li>
+        <span class="jah-ico"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span>
+        <span><span class="jah-contact-label">Email</span><a href="mailto:admin@juniors.academy">admin@juniors.academy</a></span>
+      </li>
+      <li>
+        <span class="jah-ico"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95C23.73 2.7 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.15A3.99 3.99 0 1 1 16 12a3.99 3.99 0 0 1-4 3.99zm6.41-11.85a1.44 1.44 0 1 0 1.43 1.44 1.44 1.44 0 0 0-1.43-1.44z"/></svg></span>
+        <span><span class="jah-contact-label">Instagram</span><a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener noreferrer">@juniors.academy.dz</a></span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  /* Apparitions au scroll du bloc (autonome, sans dépendance à index.css) */
+  (function () {
+    var els = document.querySelectorAll('.jah-reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('jah-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('jah-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+<!-- ==================== FIN DU BLOC ==================== -->
