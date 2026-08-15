@@ -1,7 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Juniors Academy | Programmes Internationaux pour Jeunes</title>
+  <meta name="description" content="Séjours linguistiques, échanges culturels et Football Camps Premier League pour les jeunes de 6 à 18 ans — Angleterre, Espagne, Suisse, Chine, Japon, Corée du Sud, Finlande, Canada, États-Unis.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#FAFAF7">
+
+  <!-- Réseaux sociaux -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Juniors Academy">
+  <meta property="og:title" content="Juniors Academy | Programmes Internationaux pour Jeunes">
+  <meta property="og:description" content="Le monde est leur salle de classe : langues, football et découvertes culturelles pour les 6–18 ans.">
+  <meta property="og:image" content="GroupPicture.jpeg">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Icône d'onglet (logo rouge) -->
+  <link rel="icon" type="image/png" href="Juniors%20Academy-05.png">
+  <link rel="apple-touch-icon" href="Juniors%20Academy-05.png">
+
+  <!-- Polices -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Données structurées pour Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Juniors Academy",
+    "image": "GroupPicture.jpeg",
+    "telephone": "+213550527722",
+    "email": "admin@juniors.academy",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "25 Rue Rabah Bourbia, El Biar",
+      "addressLocality": "Alger",
+      "addressCountry": "DZ"
+    },
+    "sameAs": ["https://www.instagram.com/juniors.academy.dz"]
+  }
+  </script>
+
+  <style>
+    /* Base de page */
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #FAFAF7; }
+
+    /* ===== En-tête : logo + téléphone ===== */
+    .jah-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #fff;
+      border-bottom: 1px solid rgba(20, 24, 29, .08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px clamp(14px, 3vw, 40px);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .jah-header-logo { display: inline-flex; align-items: center; }
+    .jah-header-logo img { height: 36px; width: auto; display: block; }
+    .jah-header-phone {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: #14181D;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .jah-header-phone:hover { color: #FF3B6B; }
+    .jah-header-phone svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+    @media (max-width: 640px) {
+      .jah-header { padding: 8px 14px; }
+      .jah-header-logo img { height: 30px; }
+      .jah-header-phone span { display: none; } /* icône seule sur mobile, comme EF */
+      .jah-header-phone {
+        width: 40px; height: 40px;
+        justify-content: center;
+        border: 1px solid rgba(20,24,29,.15);
+        border-radius: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="jah-header" id="jahHeader">
+  <a href="#jah-contact" class="jah-header-logo" aria-label="Juniors Academy — nous contacter">
+    <img src="Juniors Acadmey Black.png" alt="Juniors Academy" onerror="this.style.display='none'">
+  </a>
+  <a href="tel:+213550527722" class="jah-header-phone" aria-label="Appeler Juniors Academy">
+    <span>+213 550 52 77 22</span>
+    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+  </a>
+</header>
+
 <!-- ============================================================
-     JUNIORS ACADEMY — HERO v7 : hero + 10 destinations + contact
-     Mobile : hero style EF + carrousel destinations à glisser.
-     Bloc 100 % autonome (styles préfixés "jah-").
+     JUNIORS ACADEMY — HERO v3 : hero + destinations + contact
+     Bloc 100 % autonome (styles préfixés "jah-", aucun conflit
+     avec index.css). Remplace l'ancien bloc HERO v2 en entier.
      ============================================================ -->
 
 <style>
@@ -290,6 +395,20 @@
   .jah-contact-label { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 3px; }
   .jah-contact-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 
+  /* ---------- Pied de page ---------- */
+  .jah-footer {
+    background: var(--jah-paper, #FAFAF7);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    text-align: center;
+    padding: 4px 16px 26px;
+  }
+  .jah-footer p {
+    margin: 0;
+    font-size: .82rem;
+    font-weight: 500;
+    color: #7A828C;
+  }
+
   /* ---------- Apparitions au scroll (autonome) ---------- */
   .jah-reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--jah-ease), transform .9s var(--jah-ease); }
   .jah-reveal.jah-in { opacity: 1; transform: translateY(0); }
@@ -297,22 +416,13 @@
   @keyframes jah-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes jah-slow-zoom { from { transform: scale(1.1); } to { transform: scale(1.04); } }
 
-  .jah-swipe-hint {
-    display: none; /* visible uniquement sur mobile */
-    text-align: center;
-    font-size: .78rem;
-    font-weight: 600;
-    letter-spacing: .04em;
-    color: var(--jah-muted);
-    margin: 0 0 12px;
-  }
+  .jah-carousel-nav { display: none; } /* points + flèches : mobile uniquement */
 
   @media (max-width: 860px) {
     .jah-detail { grid-template-columns: 1fr; }
     .jah-detail:nth-child(even) .jah-detail-visual { order: 0; }
     .jah-contact-card { grid-template-columns: 1fr; }
   }
-
   /* ---------- Mobile : hero style EF (texte d'abord, photo dessous) ---------- */
   @media (max-width: 640px) {
     .jah-hero { padding-left: 14px; padding-right: 14px; padding-top: calc(var(--ja-nav-h, 64px) + 10px); padding-bottom: 8px; }
@@ -380,7 +490,6 @@
     .jah-dests { padding: 34px 14px 14px; }
     .jah-section-head { margin-bottom: 20px; }
     .jah-section-sub { font-size: .92rem; }
-    .jah-swipe-hint { display: block; }
     .jah-grid {
       display: flex;
       gap: 12px;
@@ -406,6 +515,35 @@
     .jah-card-flag { font-size: 1.15rem; margin-bottom: 4px; }
     .jah-card-name { font-size: 1.1rem; }
 
+    /* Points + flèches façon EF, sous le carrousel */
+    .jah-carousel-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 2px 8px;
+    }
+    .jah-dots { display: flex; align-items: center; gap: 7px; }
+    .jah-dot {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: rgba(20,24,29,.25);
+      border: 0; padding: 0;
+      transition: width .3s var(--jah-ease), background .3s var(--jah-ease);
+    }
+    .jah-dot--on { width: 20px; background: var(--jah-ink); }
+    .jah-arrows { display: flex; gap: 10px; }
+    .jah-arrow {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(20,24,29,.18);
+      background: #fff;
+      color: var(--jah-ink);
+      display: grid; place-items: center;
+      transition: opacity .3s var(--jah-ease);
+    }
+    .jah-arrow:disabled { opacity: .3; }
+    .jah-arrow:active { transform: scale(.94); }
+
     /* Fiches : plus compactes */
     .jah-details { padding: 14px 12px 30px; }
     .jah-detail { padding: 12px 12px 20px; gap: 16px; margin-bottom: 18px; border-radius: 18px; }
@@ -424,7 +562,6 @@
     .jah-ico { width: 36px; height: 36px; border-radius: 10px; }
     .jah-contact-ctas { margin-top: 22px; }
   }
-
   @media (prefers-reduced-motion: reduce) {
     .jah-frame > img, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas { animation: none !important; }
     .jah-btn, .jah-card, .jah-card img { transition: none !important; }
@@ -454,15 +591,14 @@
   <p class="jah-strip"><b>Angleterre</b> <span>Espagne</span> <b>Suisse</b> <span>Chine</span> <b>Japon</b> <span>Corée du Sud</span> <b>Finlande</b> <span>Canada</span> <b>États-Unis</b> <span>Premier League</span></p>
 </section>
 
-<!-- ==================== 2. DESTINATIONS (carrousel sur mobile) ==================== -->
+<!-- ==================== 2. GRILLE DESTINATIONS ==================== -->
 <section class="jah-dests" id="jah-destinations">
   <div class="jah-section-head jah-reveal">
     <p class="jah-section-eyebrow">Nos destinations</p>
     <h2 class="jah-section-title">Dix façons de découvrir le monde.</h2>
     <p class="jah-section-sub">Touchez une destination pour découvrir le programme en détail.</p>
   </div>
-  <p class="jah-swipe-hint">Glissez vers la gauche pour tout voir&nbsp;→</p>
-  <div class="jah-grid">
+  <div class="jah-grid" id="jahGrid">
     <a href="#jah-angleterre" class="jah-card jah-reveal">
       <img src="england-dest.jpg" alt="Angleterre" loading="lazy" onerror="this.style.display='none'">
       <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
@@ -513,6 +649,13 @@
       <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
       <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">⚽</span><span class="jah-card-name">Premier League</span><span class="jah-card-tag">Football camps</span></span>
     </a>
+  </div>
+  <div class="jah-carousel-nav" aria-hidden="true">
+    <div class="jah-dots" id="jahDots"></div>
+    <div class="jah-arrows">
+      <button type="button" class="jah-arrow" id="jahPrev" aria-label="Destination précédente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+      <button type="button" class="jah-arrow" id="jahNext" aria-label="Destination suivante"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
   </div>
 </section>
 
@@ -706,6 +849,11 @@
   </div>
 </section>
 
+<!-- ==================== 5. COPYRIGHT ==================== -->
+<footer class="jah-footer">
+  <p>&copy; 2026 Juniors Academy. Tous droits réservés.</p>
+</footer>
+
 <script>
   /* Apparitions au scroll du bloc (autonome, sans dépendance à index.css) */
   (function () {
@@ -724,5 +872,85 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     els.forEach(function (el) { io.observe(el); });
   })();
+
+  /* Carrousel destinations : points + flèches (actifs sur mobile) */
+  (function () {
+    var grid = document.getElementById('jahGrid');
+    var dotsWrap = document.getElementById('jahDots');
+    var prev = document.getElementById('jahPrev');
+    var next = document.getElementById('jahNext');
+    if (!grid || !dotsWrap || !prev || !next) return;
+
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.jah-card'));
+    if (!cards.length) return;
+
+    var dots = cards.map(function (card, i) {
+      var d = document.createElement('button');
+      d.type = 'button';
+      d.className = 'jah-dot';
+      d.setAttribute('aria-label', 'Destination ' + (i + 1));
+      d.addEventListener('click', function () {
+        grid.scrollTo({ left: i * step(), behavior: 'smooth' });
+      });
+      dotsWrap.appendChild(d);
+      return d;
+    });
+
+    function step() { return cards[0].offsetWidth + 12; }
+    function current() {
+      return Math.min(cards.length - 1, Math.max(0, Math.round(grid.scrollLeft / step())));
+    }
+    function update() {
+      var i = current();
+      dots.forEach(function (d, k) { d.classList.toggle('jah-dot--on', k === i); });
+      prev.disabled = grid.scrollLeft <= 4;
+      next.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 4;
+    }
+
+    grid.addEventListener('scroll', function () { requestAnimationFrame(update); }, { passive: true });
+    window.addEventListener('resize', update);
+    prev.addEventListener('click', function () { grid.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { grid.scrollBy({ left: step(), behavior: 'smooth' }); });
+    update();
+  })();
 </script>
 <!-- ==================== FIN DU BLOC ==================== -->
+
+<!-- Scroll fluide (Lenis) — repli automatique sur le scroll natif -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>
+  (function () {
+    var header = document.getElementById('jahHeader');
+    function setNavVar() {
+      document.documentElement.style.setProperty('--ja-nav-h', (header ? header.offsetHeight : 60) + 'px');
+    }
+    setNavVar();
+    window.addEventListener('resize', setNavVar);
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var lenis = null;
+    if (!reduced && typeof Lenis !== 'undefined') {
+      lenis = new Lenis({
+        autoRaf: true,
+        duration: 1.1,
+        easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }
+      });
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+      anchor.addEventListener('click', function (e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        if (lenis) {
+          lenis.scrollTo(target, { duration: 1.2 }); /* Lenis lit scroll-margin-top tout seul */
+        } else {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
