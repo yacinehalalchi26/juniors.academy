@@ -78,16 +78,25 @@
     }
     .jah-header-phone:hover { color: #FF3B6B; }
     .jah-header-phone svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+    .jah-logo-text {
+      font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -.01em;
+      color: #14181D;
+    }
     @media (max-width: 640px) {
       .jah-header { padding: 8px 14px; }
       .jah-header-logo img { height: 30px; }
-      .jah-header-phone span { display: none; } /* icône seule sur mobile, comme EF */
+      .jah-logo-text { font-size: .95rem; }
       .jah-header-phone {
-        width: 40px; height: 40px;
-        justify-content: center;
+        gap: 7px;
+        font-size: .8rem;
+        padding: 9px 13px;
         border: 1px solid rgba(20,24,29,.15);
-        border-radius: 50%;
+        border-radius: 999px;
       }
+      .jah-header-phone svg { width: 14px; height: 14px; }
     }
   </style>
 </head>
@@ -95,7 +104,8 @@
 
 <header class="jah-header" id="jahHeader">
   <a href="#jah-contact" class="jah-header-logo" aria-label="Juniors Academy — nous contacter">
-    <img src="Juniors Acadmey Black.png" alt="Juniors Academy" onerror="this.style.display='none'">
+    <img src="Juniors Academy Black.png" alt="Juniors Academy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="jah-logo-text" style="display:none">Juniors Academy</span>
   </a>
   <a href="tel:+213550527722" class="jah-header-phone" aria-label="Appeler Juniors Academy">
     <span>+213 550 52 77 22</span>
@@ -462,10 +472,13 @@
     .jah-sub { color: #444B54; font-size: .98rem; line-height: 1.6; margin: 0 auto 24px; }
     .jah-ctas { gap: 10px; }
     .jah-btn { padding: 15px 22px; width: 100%; justify-content: center; font-size: .97rem; }
-    .jah-btn--primary { background: var(--jah-ink); box-shadow: 0 10px 26px rgba(20,24,29,.22); }
-    .jah-btn--primary svg,
-    .jah-btn--primary:hover svg { transform: rotate(90deg); } /* la flèche pointe vers le bas */
-    .jah-btn--ghost {
+    /* Boutons sombres UNIQUEMENT dans le hero (fond clair).
+       Dans la carte contact (fond sombre), les boutons gardent
+       leurs couleurs d'origine : corail + contour blanc. */
+    .jah-hero .jah-btn--primary { background: var(--jah-ink); box-shadow: 0 10px 26px rgba(20,24,29,.22); }
+    .jah-hero .jah-btn--primary svg,
+    .jah-hero .jah-btn--primary:hover svg { transform: rotate(90deg); } /* la flèche pointe vers le bas */
+    .jah-hero .jah-btn--ghost {
       background: transparent;
       border: 1.5px solid rgba(20,24,29,.22);
       color: var(--jah-ink);
