@@ -1,6 +1,6 @@
 <!-- ============================================================
-     JUNIORS ACADEMY — HERO v6 : hero + 10 destinations + contact
-     Mobile façon EF : texte d'abord sur fond clair, photo dessous.
+     JUNIORS ACADEMY — HERO v7 : hero + 10 destinations + contact
+     Mobile : hero style EF + carrousel destinations à glisser.
      Bloc 100 % autonome (styles préfixés "jah-").
      ============================================================ -->
 
@@ -297,6 +297,16 @@
   @keyframes jah-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes jah-slow-zoom { from { transform: scale(1.1); } to { transform: scale(1.04); } }
 
+  .jah-swipe-hint {
+    display: none; /* visible uniquement sur mobile */
+    text-align: center;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    color: var(--jah-muted);
+    margin: 0 0 12px;
+  }
+
   @media (max-width: 860px) {
     .jah-detail { grid-template-columns: 1fr; }
     .jah-detail:nth-child(even) .jah-detail-visual { order: 0; }
@@ -366,16 +376,35 @@
     .jah-strip::-webkit-scrollbar { display: none; }
     .jah-strip b, .jah-strip span { flex: none; }
 
-    /* Grille : 2 colonnes épurées, sans éléments superflus */
+    /* Destinations : carrousel à glisser (swipe) au doigt */
     .jah-dests { padding: 34px 14px 14px; }
-    .jah-section-head { margin-bottom: 24px; }
+    .jah-section-head { margin-bottom: 20px; }
     .jah-section-sub { font-size: .92rem; }
-    .jah-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .jah-card { aspect-ratio: 3 / 4; border-radius: 16px; }
-    .jah-card-go, .jah-card-tag { display: none; }
-    .jah-card-label { left: 12px; right: 12px; bottom: 12px; }
-    .jah-card-flag { font-size: 1.05rem; margin-bottom: 3px; }
-    .jah-card-name { font-size: .98rem; }
+    .jah-swipe-hint { display: block; }
+    .jah-grid {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      margin: 0 -14px;            /* les cartes glissent bord à bord */
+      padding: 4px 14px 14px;
+    }
+    .jah-grid::-webkit-scrollbar { display: none; }
+    .jah-card {
+      flex: 0 0 62vw;             /* une carte + un aperçu de la suivante */
+      max-width: 260px;
+      aspect-ratio: 3 / 4;
+      border-radius: 18px;
+      scroll-snap-align: start;
+      scroll-margin-left: 14px;
+    }
+    .jah-card-go { display: none; }
+    .jah-card-tag { display: block; font-size: .78rem; }
+    .jah-card-label { left: 14px; right: 14px; bottom: 14px; }
+    .jah-card-flag { font-size: 1.15rem; margin-bottom: 4px; }
+    .jah-card-name { font-size: 1.1rem; }
 
     /* Fiches : plus compactes */
     .jah-details { padding: 14px 12px 30px; }
@@ -425,13 +454,14 @@
   <p class="jah-strip"><b>Angleterre</b> <span>Espagne</span> <b>Suisse</b> <span>Chine</span> <b>Japon</b> <span>Corée du Sud</span> <b>Finlande</b> <span>Canada</span> <b>États-Unis</b> <span>Premier League</span></p>
 </section>
 
-<!-- ==================== 2. GRILLE DESTINATIONS ==================== -->
+<!-- ==================== 2. DESTINATIONS (carrousel sur mobile) ==================== -->
 <section class="jah-dests" id="jah-destinations">
   <div class="jah-section-head jah-reveal">
     <p class="jah-section-eyebrow">Nos destinations</p>
     <h2 class="jah-section-title">Dix façons de découvrir le monde.</h2>
     <p class="jah-section-sub">Touchez une destination pour découvrir le programme en détail.</p>
   </div>
+  <p class="jah-swipe-hint">Glissez vers la gauche pour tout voir&nbsp;→</p>
   <div class="jah-grid">
     <a href="#jah-angleterre" class="jah-card jah-reveal">
       <img src="england-dest.jpg" alt="Angleterre" loading="lazy" onerror="this.style.display='none'">
