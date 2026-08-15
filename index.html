@@ -1,7 +1,7 @@
 <!-- ============================================================
-     JUNIORS ACADEMY — HERO v5 : hero + 10 destinations + contact
-     Bloc 100 % autonome (styles préfixés "jah-", aucun conflit
-     avec index.css). Remplace l'ancien bloc en entier.
+     JUNIORS ACADEMY — HERO v6 : hero + 10 destinations + contact
+     Mobile façon EF : texte d'abord sur fond clair, photo dessous.
+     Bloc 100 % autonome (styles préfixés "jah-").
      ============================================================ -->
 
 <style>
@@ -303,17 +303,54 @@
     .jah-contact-card { grid-template-columns: 1fr; }
   }
 
-  /* ---------- Mobile : version aérée ---------- */
+  /* ---------- Mobile : hero style EF (texte d'abord, photo dessous) ---------- */
   @media (max-width: 640px) {
-    .jah-hero { padding-left: 10px; padding-right: 10px; padding-bottom: 8px; }
-    .jah-frame { min-height: 72vh; border-radius: 22px; }
+    .jah-hero { padding-left: 14px; padding-right: 14px; padding-top: calc(var(--ja-nav-h, 64px) + 10px); padding-bottom: 8px; }
+    .jah-frame {
+      min-height: 0;
+      display: flex;
+      flex-direction: column-reverse; /* le texte passe au-dessus de la photo */
+      overflow: visible;
+      border-radius: 0;
+      align-items: stretch;
+    }
+    .jah-frame::after { display: none; } /* plus de voile sombre : fond clair */
+    .jah-frame > img {
+      position: static;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      border-radius: 18px;
+      transform: none;
+      animation: jah-rise .9s var(--jah-ease) .5s both;
+      z-index: 0;
+    }
     .jah-badge { display: none; }
-    .jah-content { padding: 24px 20px 28px; }
-    .jah-eyebrow { font-size: .7rem; letter-spacing: .14em; margin-bottom: 12px; }
-    .jah-title { font-size: clamp(2.1rem, 9.5vw, 2.6rem); margin-bottom: 14px; }
-    .jah-sub { font-size: .95rem; line-height: 1.55; margin-bottom: 22px; }
+    .jah-content {
+      color: var(--jah-ink);
+      text-align: center;
+      max-width: none;
+      padding: 22px 6px 30px;
+    }
+    .jah-eyebrow {
+      display: flex; justify-content: center;
+      color: var(--jah-accent);
+      font-size: .68rem; letter-spacing: .16em; margin-bottom: 14px;
+    }
+    .jah-eyebrow::before { display: none; }
+    .jah-title { color: var(--jah-ink); font-size: clamp(2.4rem, 11vw, 3rem); line-height: 1.04; margin-bottom: 14px; }
+    .jah-sub { color: #444B54; font-size: .98rem; line-height: 1.6; margin: 0 auto 24px; }
     .jah-ctas { gap: 10px; }
-    .jah-btn { padding: 14px 22px; width: 100%; justify-content: center; font-size: .95rem; }
+    .jah-btn { padding: 15px 22px; width: 100%; justify-content: center; font-size: .97rem; }
+    .jah-btn--primary { background: var(--jah-ink); box-shadow: 0 10px 26px rgba(20,24,29,.22); }
+    .jah-btn--primary svg,
+    .jah-btn--primary:hover svg { transform: rotate(90deg); } /* la flèche pointe vers le bas */
+    .jah-btn--ghost {
+      background: transparent;
+      border: 1.5px solid rgba(20,24,29,.22);
+      color: var(--jah-ink);
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+    }
 
     /* Bandeau destinations : une seule ligne qui glisse au doigt */
     .jah-strip {
