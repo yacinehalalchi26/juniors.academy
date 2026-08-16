@@ -150,14 +150,19 @@
     align-items: flex-end;
     isolation: isolate;
   }
-  .jah-frame > img {
+  .jah-slideshow {
+    position: absolute; inset: 0; z-index: -2;
+    overflow: hidden;
+  }
+  .jah-slide {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    z-index: -2;
-    transform: scale(1.04);
-    animation: jah-slow-zoom 14s var(--jah-ease) forwards;
+    opacity: 0;
+    animation: jah-slow-zoom 20s ease-in-out infinite alternate;
+    transition: opacity 1s var(--jah-ease);
   }
+  .jah-slide--active { opacity: 1; z-index: 1; }
   .jah-frame::after {
     content: ""; position: absolute; inset: 0; z-index: -1;
     background:
@@ -428,7 +433,7 @@
   .jah-reveal.jah-in { opacity: 1; transform: translateY(0); }
 
   @keyframes jah-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes jah-slow-zoom { from { transform: scale(1.1); } to { transform: scale(1.04); } }
+  @keyframes jah-slow-zoom { from { transform: scale(1); } to { transform: scale(1.08); } }
   @keyframes jah-mark-pop {
     0%   { transform: scale(0) rotate(-14deg); }
     60%  { transform: scale(1.18) rotate(4deg); }
@@ -514,15 +519,14 @@
       align-items: stretch;
     }
     .jah-frame::after { display: none; } /* plus de voile sombre : fond clair */
-    .jah-frame > img {
-      position: static;
+    .jah-slideshow {
+      position: relative;
+      inset: auto;
       width: 100%;
-      height: auto;
       aspect-ratio: 4 / 3;
       border-radius: 18px;
-      transform: none;
-      animation: jah-rise .9s var(--jah-ease) .5s both;
       z-index: 0;
+      animation: jah-rise .9s var(--jah-ease) .5s both;
     }
     .jah-badge { display: none; }
     .jah-content {
@@ -652,8 +656,8 @@
     .jah-marquee-group img { height: 26px; width: 68px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .jah-frame > img, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas, .jah-title .jah-mark { animation: none !important; }
-    .jah-btn, .jah-card, .jah-card img { transition: none !important; }
+    .jah-slide, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas, .jah-title .jah-mark { animation: none !important; }
+    .jah-btn, .jah-card, .jah-card img, .jah-slide { transition: none !important; }
     .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .jah-marquee-track { animation: none !important; }
   }
@@ -687,7 +691,14 @@
 <!-- ==================== 1. HERO ==================== -->
 <section class="jah-hero" id="hero">
   <div class="jah-frame">
-    <img src="GroupPicture.jpeg" alt="Jeunes de Juniors Academy en immersion à l'étranger" fetchpriority="high">
+    <div class="jah-slideshow" id="jahSlideshow">
+      <img class="jah-slide jah-slide--active" src="GroupPicture.jpeg" alt="Jeunes de Juniors Academy en immersion à l'étranger" fetchpriority="high" onerror="this.style.display='none'">
+      <img class="jah-slide" src="universal.jpeg" alt="Sortie à Universal Studios" onerror="this.style.display='none'">
+      <img class="jah-slide" src="london.HEIC" alt="Découverte de Londres" onerror="this.style.display='none'">
+      <img class="jah-slide" src="oundle.HEIC" alt="Campus de Oundle School" onerror="this.style.display='none'">
+      <img class="jah-slide" src="chinaembassyalgiers.jpeg" alt="Ambassade de Chine à Alger" onerror="this.style.display='none'">
+      <img class="jah-slide" src="greatwall.jpeg" alt="Grande Muraille de Chine" onerror="this.style.display='none'">
+    </div>
     <div class="jah-badge" aria-hidden="true">
       <span>6–18 ans</span><span>10 programmes</span><span>Encadrement 24/7</span>
     </div>
@@ -1027,6 +1038,29 @@
     prev.addEventListener('click', function () { grid.scrollBy({ left: -step(), behavior: 'smooth' }); });
     next.addEventListener('click', function () { grid.scrollBy({ left: step(), behavior: 'smooth' }); });
     update();
+  })();
+
+  /* Diaporama hero : les photos changent automatiquement toutes les 2 secondes */
+  (function () {
+    var slides = Array.prototype.slice.call(document.querySelectorAll('#jahSlideshow .jah-slide'));
+    if (slides.length < 2) return;
+    var current = slides.findIndex(function (s) { return s.classList.contains('jah-slide--active'); });
+    if (current < 0) current = 0;
+
+    function goTo(index) {
+      slides[current].classList.remove('jah-slide--active');
+      current = index;
+      slides[current].classList.add('jah-slide--active');
+    }
+
+    setInterval(function () {
+      var next = current;
+      for (var i = 0; i < slides.length; i++) {
+        next = (next + 1) % slides.length;
+        /* on saute les photos qui n'ont pas pu se charger (ex. formats non supportés) */
+        if (slides[next].style.display !== 'none') { goTo(next); break; }
+      }
+    }, 2000);
   })();
 </script>
 <!-- ==================== FIN DU BLOC ==================== -->
