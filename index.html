@@ -468,21 +468,24 @@
   .jah-marquee-track {
     display: flex;
     width: max-content;
-    animation: jah-marquee-scroll 28s linear infinite;
+    animation: jah-marquee-scroll 34s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
   .jah-marquee-group {
     display: flex;
     align-items: center;
     flex: none;
-    gap: clamp(40px, 6vw, 76px);
-    padding: 0 clamp(20px, 3vw, 38px);
+    gap: clamp(56px, 8vw, 100px);
+    padding: 0 clamp(28px, 4vw, 50px);
   }
   .jah-marquee-group img {
-    height: clamp(28px, 3.6vw, 42px);
-    width: auto;
-    max-width: 140px;
+    /* Boîte fixe : la taille ne dépend pas du chargement de l'image,
+       ce qui évite tout micro-saut au moment où la boucle recommence. */
+    height: clamp(30px, 3.8vw, 44px);
+    width: clamp(90px, 8.5vw, 120px);
     object-fit: contain;
-    filter: grayscale(1) opacity(.5);
+    filter: grayscale(.35) opacity(.82);
     transition: filter .35s var(--jah-ease, cubic-bezier(.16, 1, .3, 1));
   }
   @media (hover: hover) and (pointer: fine) {
@@ -490,8 +493,8 @@
     .jah-marquee:hover .jah-marquee-group img { filter: grayscale(0) opacity(1); }
   }
   @keyframes jah-marquee-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
   }
 
   @media (max-width: 860px) {
@@ -644,9 +647,9 @@
     /* Bandeau partenaires : logos plus petits, défilement plus rapide */
     .jah-partners { padding: 14px 14px 4px; }
     .jah-partners-title { font-size: .66rem; letter-spacing: .14em; margin-bottom: 12px; }
-    .jah-marquee-track { animation-duration: 18s; }
-    .jah-marquee-group { gap: 28px; padding: 0 12px; }
-    .jah-marquee-group img { height: 24px; }
+    .jah-marquee-track { animation-duration: 22s; }
+    .jah-marquee-group { gap: 40px; padding: 0 16px; }
+    .jah-marquee-group img { height: 26px; width: 68px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .jah-frame > img, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas, .jah-title .jah-mark { animation: none !important; }
@@ -662,20 +665,20 @@
   <div class="jah-marquee">
     <div class="jah-marquee-track">
       <div class="jah-marquee-group">
-        <img src="china.webp" alt="Partenaire — Chine" loading="lazy" onerror="this.style.display='none'">
-        <img src="BritishEmbassy.jpeg" alt="British Embassy" loading="lazy" onerror="this.style.display='none'">
-        <img src="Finland.jpeg" alt="Partenaire — Finlande" loading="lazy" onerror="this.style.display='none'">
-        <img src="Polish.png" alt="Partenaire polonais" loading="lazy" onerror="this.style.display='none'">
-        <img src="BritishCouncil.png" alt="British Council" loading="lazy" onerror="this.style.display='none'">
-        <img src="Cervantes.png" alt="Instituto Cervantes" loading="lazy" onerror="this.style.display='none'">
+        <img src="china.webp" alt="Partenaire — Chine" onerror="this.style.display='none'">
+        <img src="British.png" alt="British Embassy" onerror="this.style.display='none'">
+        <img src="Finland.jpeg" alt="Partenaire — Finlande" onerror="this.style.display='none'">
+        <img src="Polish.png" alt="Partenaire polonais" onerror="this.style.display='none'">
+        <img src="BritishCouncil.png" alt="British Council" onerror="this.style.display='none'">
+        <img src="cervantes.png" alt="Instituto Cervantes" onerror="this.style.display='none'">
       </div>
       <div class="jah-marquee-group" aria-hidden="true">
-        <img src="china.webp" alt="" loading="lazy" onerror="this.style.display='none'">
-        <img src="BritishEmbassy.jpeg" alt="" loading="lazy" onerror="this.style.display='none'">
-        <img src="Finland.jpeg" alt="" loading="lazy" onerror="this.style.display='none'">
-        <img src="Polish.png" alt="" loading="lazy" onerror="this.style.display='none'">
-        <img src="BritishCouncil.png" alt="" loading="lazy" onerror="this.style.display='none'">
-        <img src="Cervantes.png" alt="" loading="lazy" onerror="this.style.display='none'">
+        <img src="china.webp" alt="" onerror="this.style.display='none'">
+        <img src="British.png" alt="" onerror="this.style.display='none'">
+        <img src="Finland.jpeg" alt="" onerror="this.style.display='none'">
+        <img src="Polish.png" alt="" onerror="this.style.display='none'">
+        <img src="BritishCouncil.png" alt="" onerror="this.style.display='none'">
+        <img src="cervantes.png" alt="" onerror="this.style.display='none'">
       </div>
     </div>
   </div>
