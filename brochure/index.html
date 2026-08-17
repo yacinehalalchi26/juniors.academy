@@ -39,15 +39,20 @@
 
     .jbc-container { max-width: 1200px; margin: 0 auto; }
 
-    /* ---------- Retour ---------- */
+    /* ---------- Barre du haut : Retour + logo ---------- */
+    .jbc-topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin: 0 0 clamp(28px, 5vw, 48px);
+    }
     .jbc-back {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: .92rem; font-weight: 600; color: var(--jah-ink);
-      text-decoration: none; margin: 0 0 clamp(28px, 5vw, 48px);
+      text-decoration: none;
     }
     .jbc-back svg { width: 18px; height: 18px; transition: transform .3s var(--jah-ease); }
     .jbc-back:hover { color: var(--jah-accent); }
     .jbc-back:hover svg { transform: translateX(-3px); }
+    .jbc-logo { height: 38px; width: auto; display: block; }
 
     /* ---------- Titre ---------- */
     .jbc-title {
@@ -110,6 +115,7 @@
       margin: 0 0 20px; color: var(--jah-ink);
     }
     .jbc-form { display: grid; gap: 16px; }
+    .jbc-form[hidden] { display: none; }
     .jbc-field input,
     .jbc-field select {
       width: 100%;
@@ -200,6 +206,7 @@
     }
     @media (max-width: 640px) {
       .jbc-page { padding: 16px 14px 50px; }
+      .jbc-logo { height: 30px; }
       .jbc-title { text-align: center; }
       .jbc-visual-frame { padding: 20px; border-radius: 22px; }
       .jbc-visual-frame img { max-width: 240px; }
@@ -217,10 +224,15 @@
 <div class="jbc-page">
   <div class="jbc-container">
 
-    <a href="../index.html" class="jbc-back">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      Retour
-    </a>
+    <div class="jbc-topbar">
+      <a href="../index.html" class="jbc-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Retour
+      </a>
+      <a href="../index.html" aria-label="Juniors Academy — accueil">
+        <img src="../JA%20Black%20Logo.png" alt="Juniors Academy" class="jbc-logo" onerror="this.style.display='none'">
+      </a>
+    </div>
 
     <h1 class="jbc-title">Brochure Juniors&nbsp;Academy gratuite</h1>
 
@@ -348,6 +360,7 @@
         headers: { 'Accept': 'application/json' }
       }).then(function (res) {
         if (res.ok) {
+          label.textContent = 'Envoyé !';
           form.hidden = true;
           success.hidden = false;
           success.scrollIntoView({ behavior: 'smooth', block: 'start' });
