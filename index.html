@@ -389,17 +389,32 @@
     max-width: 720px;
     margin: 0 auto clamp(40px, 6vw, 64px);
   }
-  .jah-why-badge {
-    display: inline-grid;
-    place-items: center;
-    width: clamp(54px, 5.5vw, 70px);
-    height: clamp(54px, 5.5vw, 70px);
-    border-radius: 50%;
-    background: rgba(255, 59, 107, .1);
-    color: var(--jah-accent);
-    margin: 0 0 20px;
+  .jah-why-flight {
+    position: relative;
+    width: min(280px, 60%);
+    height: 24px;
+    margin: 0 auto 22px;
   }
-  .jah-why-badge svg { width: 46%; height: 46%; }
+  .jah-why-flight-track {
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    border-top: 2px dashed rgba(255, 59, 107, .3);
+    transform: translateY(-50%);
+  }
+  .jah-why-flight-plane {
+    position: absolute;
+    top: 50%; left: 0;
+    width: 22px; height: 22px;
+    color: var(--jah-accent);
+    transform: translate(-50%, -50%) rotate(90deg);
+    animation: jah-plane-fly 3.4s ease-in-out infinite;
+  }
+  @keyframes jah-plane-fly {
+    0%   { left: 0%;   opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
   .jah-why-heading {
     font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
     font-size: clamp(1.6rem, 2.6vw, 2.2rem);
@@ -408,9 +423,7 @@
     line-height: 1.1;
     color: var(--jah-ink);
     margin: 0;
-  }
-  @media (min-width: 641px) {
-    .jah-why-heading { white-space: nowrap; }
+    white-space: nowrap;
   }
   .jah-why-list {
     display: grid;
@@ -715,11 +728,12 @@
     .jah-detail-list li { font-size: .88rem; }
     .jah-top { font-size: .82rem; margin-top: 22px; }
 
-    /* Pourquoi choisir : badge + titre centrés, colonne unique */
+    /* Pourquoi choisir : séparateur avion + titre centrés, colonne unique */
     .jah-why { padding: 32px 14px 0; }
     .jah-why-head { margin-bottom: 32px; }
-    .jah-why-badge { width: 50px; height: 50px; margin-bottom: 14px; }
-    .jah-why-heading { font-size: clamp(1.6rem, 7.5vw, 2rem); }
+    .jah-why-flight { width: min(200px, 65%); height: 20px; margin-bottom: 16px; }
+    .jah-why-flight-plane { width: 18px; height: 18px; }
+    .jah-why-heading { font-size: clamp(.95rem, 4.6vw, 2rem); }
     .jah-why-list { gap: 30px; max-width: 300px; }
     .jah-why-icon { width: 88px; height: 88px; margin-bottom: 16px; }
     .jah-why-title { font-size: 1.02rem; margin-bottom: 6px; }
@@ -746,6 +760,7 @@
     .jah-btn, .jah-card, .jah-card img, .jah-slide { transition: none !important; }
     .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .jah-marquee-track { animation: none !important; }
+    .jah-why-flight-plane { animation: none !important; left: 50% !important; opacity: 1 !important; }
   }
 </style>
 
@@ -1029,9 +1044,10 @@
 <!-- ==================== 3B. POURQUOI CHOISIR ==================== -->
 <section class="jah-why" id="jah-why">
   <div class="jah-why-head jah-reveal">
-    <span class="jah-why-badge" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15 9 9"/><path d="M21 15 15 9"/><path d="M9 9 10.5 12 12 9.5 13.5 12 15 9"/></svg>
-    </span>
+    <div class="jah-why-flight" aria-hidden="true">
+      <span class="jah-why-flight-track"></span>
+      <svg class="jah-why-flight-plane" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+    </div>
     <h2 class="jah-why-heading">Pourquoi choisir Juniors Academy&nbsp;?</h2>
   </div>
   <div class="jah-why-list">
@@ -1046,7 +1062,7 @@
       <p class="jah-why-desc">Langues, culture et rencontres internationales.</p>
     </div>
     <div class="jah-why-item jah-reveal">
-      <span class="jah-why-icon"><img src="confiance.png" alt="" loading="lazy" onerror="this.style.display='none'"></span>
+      <span class="jah-why-icon"><img src="trust.png" alt="" loading="lazy" onerror="this.style.display='none'"></span>
       <h3 class="jah-why-title">Un encadrement de confiance</h3>
       <p class="jah-why-desc">Un accompagnement à chaque étape.</p>
     </div>
