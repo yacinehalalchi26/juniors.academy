@@ -115,7 +115,6 @@
       margin: 0 0 20px; color: var(--jah-ink);
     }
     .jbc-form { display: grid; gap: 16px; }
-    .jbc-form[hidden] { display: none; }
     .jbc-field input,
     .jbc-field select {
       width: 100%;
@@ -127,7 +126,16 @@
       border: 1.5px solid rgba(20,24,29,.14);
       border-radius: 14px;
       padding: 17px 18px;
-      transition: border-color .25s var(--jah-ease), box-shadow .25s var(--jah-ease);
+      transition: border-color .25s var(--jah-ease), box-shadow .25s var(--jah-ease), background .25s var(--jah-ease), color .25s var(--jah-ease);
+    }
+    .jbc-field input:disabled,
+    .jbc-field select:disabled {
+      background: #EFEFEC;
+      color: var(--jah-muted);
+      border-color: rgba(20,24,29,.08);
+      cursor: not-allowed;
+      opacity: 1;
+      -webkit-text-fill-color: var(--jah-muted);
     }
     .jbc-field select {
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A828C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
@@ -153,14 +161,16 @@
       display: flex; align-items: flex-start; gap: 12px;
       font-size: .88rem; line-height: 1.55; color: #444B54;
       cursor: pointer; margin-top: 4px;
+      transition: color .25s var(--jah-ease);
     }
     .jbc-consent input {
       flex: none; width: 20px; height: 20px; margin-top: 2px;
       accent-color: var(--jah-accent); cursor: pointer;
     }
+    .jbc-form--sent .jbc-consent { color: var(--jah-muted); cursor: not-allowed; }
 
     .jbc-submit {
-      display: inline-flex; align-items: center; justify-content: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
       width: fit-content;
       padding: 17px 40px; border: none; border-radius: 999px;
       background: var(--jah-accent); color: #fff;
@@ -171,7 +181,21 @@
       margin-top: 6px;
     }
     .jbc-submit:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(255,59,107,.4); }
-    .jbc-submit:disabled { opacity: .65; cursor: default; transform: none; }
+    .jbc-submit:disabled { opacity: .65; cursor: default; transform: none; pointer-events: none; }
+    .jbc-submit--sent { opacity: 1 !important; }
+    .jbc-submit-check {
+      width: 0; height: 16px;
+      flex: none; overflow: visible;
+      opacity: 0;
+      transform: scale(.4);
+      transition: width .3s var(--jah-ease), opacity .25s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .jbc-submit-check polyline {
+      stroke-dasharray: 20; stroke-dashoffset: 20;
+      transition: stroke-dashoffset .4s ease .15s;
+    }
+    .jbc-submit--sent .jbc-submit-check { width: 17px; opacity: 1; transform: scale(1); }
+    .jbc-submit--sent .jbc-submit-check polyline { stroke-dashoffset: 0; }
 
     .jbc-status { font-size: .88rem; color: var(--jah-accent); margin: 4px 0 0; min-height: 1.2em; }
 
@@ -181,6 +205,7 @@
       border-radius: 24px;
       padding: clamp(32px, 5vw, 48px);
       color: #fff;
+      margin-top: clamp(20px, 3vw, 28px);
     }
     .jbc-success h2 {
       font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
@@ -215,7 +240,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-      .jbc-visual-frame img, .jbc-back svg, .jbc-submit { transition: none !important; }
+      .jbc-visual-frame img, .jbc-back svg, .jbc-submit, .jbc-submit-check, .jbc-submit-check polyline { transition: none !important; }
     }
   </style>
 </head>
@@ -300,6 +325,7 @@
           </label>
 
           <button type="submit" class="jbc-submit">
+            <svg class="jbc-submit-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             <span class="jbc-submit-label">Envoyer</span>
           </button>
 
@@ -361,9 +387,13 @@
       }).then(function (res) {
         if (res.ok) {
           label.textContent = 'Envoyé !';
-          form.hidden = true;
+          btn.classList.add('jbc-submit--sent');
+          form.classList.add('jbc-form--sent');
+          Array.prototype.forEach.call(form.elements, function (el) {
+            if (el !== btn) el.disabled = true;
+          });
           success.hidden = false;
-          success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } else {
           throw new Error('network');
         }
