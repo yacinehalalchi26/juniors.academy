@@ -279,17 +279,34 @@
   }
   .jah-section-sub { font-size: 1.02rem; line-height: 1.65; color: var(--jah-muted); margin: 0; }
 
+  /* ---------- Rail destinations (style "Pick your vibe") ---------- */
   .jah-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: clamp(12px, 1.8vw, 20px);
+    --jah-rail-h: clamp(440px, 44vw, 560px);
+    display: flex;
+    gap: clamp(14px, 1.6vw, 20px);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
     max-width: 1240px;
     margin: 0 auto;
+    padding: 4px 4px 10px;
+  }
+  .jah-grid::-webkit-scrollbar { display: none; }
+  .jah-grid > * {
+    flex: 0 0 clamp(250px, 24vw, 310px);
+    scroll-snap-align: start;
+  }
+  .jah-pair {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 1.6vw, 20px);
+    height: var(--jah-rail-h);
   }
   .jah-card {
     position: relative;
     display: block;
-    aspect-ratio: 4 / 5;
+    height: var(--jah-rail-h);
     border-radius: 20px;
     overflow: hidden;
     text-decoration: none;
@@ -297,6 +314,7 @@
     background: linear-gradient(135deg, #2b3440, #14181D); /* visible si photo manquante */
     transition: transform .45s var(--jah-ease), box-shadow .45s var(--jah-ease);
   }
+  .jah-pair .jah-card { height: auto; flex: 1; min-height: 0; }
   .jah-card:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(20,24,29,.22); }
   .jah-card img {
     position: absolute; inset: 0; width: 100%; height: 100%;
@@ -306,28 +324,37 @@
   .jah-card:hover img { transform: scale(1.07); }
   .jah-card::after {
     content: ""; position: absolute; inset: 0; z-index: -1;
-    background: linear-gradient(to top, rgba(20,24,29,.75) 0%, rgba(20,24,29,.1) 55%);
+    background: linear-gradient(to top, rgba(20,24,29,.82) 0%, rgba(20,24,29,.28) 45%, rgba(20,24,29,.02) 70%);
   }
   .jah-card-label {
-    position: absolute; left: 18px; right: 18px; bottom: 16px; color: #fff;
+    position: absolute; left: 18px; right: 18px; bottom: 18px; color: #fff;
   }
-  .jah-card-flag { font-size: 1.3rem; display: block; margin-bottom: 6px; }
+  .jah-card-region {
+    display: block;
+    font-size: .82rem; font-weight: 600;
+    color: rgba(255,255,255,.9);
+    margin: 0 0 4px;
+  }
   .jah-card-name {
     font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
-    font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; display: block;
+    font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em;
+    line-height: 1.12; display: block;
   }
-  .jah-card-tag { font-size: .8rem; color: rgba(255,255,255,.8); }
-  .jah-card-go {
-    position: absolute; top: 14px; right: 14px;
-    width: 38px; height: 38px; border-radius: 50%;
-    display: grid; place-items: center;
-    background: rgba(255,255,255,.16);
-    border: 1px solid rgba(255,255,255,.3);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  .jah-card--tall .jah-card-name { font-size: clamp(1.5rem, 2vw, 1.9rem); }
+  .jah-card-desc {
+    display: block;
+    font-size: .9rem; line-height: 1.45;
+    color: rgba(255,255,255,.85);
+    margin: 8px 0 0;
+  }
+  .jah-card-cta {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: .88rem; font-weight: 600;
     color: #fff;
-    transition: background .35s var(--jah-ease), transform .35s var(--jah-ease);
+    margin-top: 10px;
   }
-  .jah-card:hover .jah-card-go { background: var(--jah-accent); transform: rotate(45deg); }
+  .jah-card-cta svg { flex: none; transition: transform .35s var(--jah-ease); }
+  .jah-card:hover .jah-card-cta svg { transform: translateX(4px); }
 
   /* ---------- Fiches destinations ---------- */
   .jah-details { padding: clamp(20px, 4vw, 50px) clamp(14px, 3vw, 40px) clamp(30px, 5vw, 70px); }
@@ -546,7 +573,38 @@
     9%  { transform: scale(1.03) rotate(1.6deg); }
   }
 
-  .jah-carousel-nav { display: none; } /* points + flèches : mobile uniquement */
+  /* Points + flèches sous le rail (toutes tailles d'écran) */
+  .jah-carousel-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1240px;
+    margin: 14px auto 0;
+    padding: 0 4px;
+  }
+  .jah-dots { display: flex; align-items: center; gap: 7px; }
+  .jah-dot {
+    width: 6px; height: 6px;
+    border-radius: 999px;
+    background: rgba(20,24,29,.25);
+    border: 0; padding: 0;
+    cursor: pointer;
+    transition: width .3s var(--jah-ease), background .3s var(--jah-ease);
+  }
+  .jah-dot--on { width: 20px; background: var(--jah-ink); }
+  .jah-arrows { display: flex; gap: 10px; }
+  .jah-arrow {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(20,24,29,.18);
+    background: #fff;
+    color: var(--jah-ink);
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: opacity .3s var(--jah-ease);
+  }
+  .jah-arrow:disabled { opacity: .3; cursor: default; }
+  .jah-arrow:active { transform: scale(.94); }
 
   /* ---------- Bandeau partenaires (défilement automatique) ---------- */
   .jah-partners {
@@ -669,63 +727,30 @@
     .jah-strip::-webkit-scrollbar { display: none; }
     .jah-strip b, .jah-strip span { flex: none; }
 
-    /* Destinations : carrousel à glisser (swipe) au doigt */
+    /* Destinations : rail à glisser (swipe) au doigt */
     .jah-dests { padding: 34px 14px 14px; }
     .jah-section-head { margin-bottom: 20px; }
     .jah-section-sub { font-size: .92rem; }
     .jah-grid {
-      display: flex;
+      --jah-rail-h: 430px;
       gap: 12px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
       margin: 0 -14px;            /* les cartes glissent bord à bord */
-      padding: 4px 14px 14px;
+      padding: 4px 14px 12px;
     }
-    .jah-grid::-webkit-scrollbar { display: none; }
-    .jah-card {
-      flex: 0 0 62vw;             /* une carte + un aperçu de la suivante */
-      max-width: 260px;
-      aspect-ratio: 3 / 4;
-      border-radius: 18px;
-      scroll-snap-align: start;
+    .jah-grid > * {
+      flex: 0 0 66vw;             /* une colonne + un aperçu de la suivante */
+      max-width: 280px;
       scroll-margin-left: 14px;
     }
-    .jah-card-go { display: none; }
-    .jah-card-tag { display: block; font-size: .78rem; }
+    .jah-pair { gap: 12px; }
+    .jah-card { border-radius: 18px; }
     .jah-card-label { left: 14px; right: 14px; bottom: 14px; }
-    .jah-card-flag { font-size: 1.15rem; margin-bottom: 4px; }
+    .jah-card-region { font-size: .74rem; }
     .jah-card-name { font-size: 1.1rem; }
-
-    /* Points + flèches façon EF, sous le carrousel */
-    .jah-carousel-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 2px 2px 8px;
-    }
-    .jah-dots { display: flex; align-items: center; gap: 7px; }
-    .jah-dot {
-      width: 6px; height: 6px;
-      border-radius: 999px;
-      background: rgba(20,24,29,.25);
-      border: 0; padding: 0;
-      transition: width .3s var(--jah-ease), background .3s var(--jah-ease);
-    }
-    .jah-dot--on { width: 20px; background: var(--jah-ink); }
-    .jah-arrows { display: flex; gap: 10px; }
-    .jah-arrow {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      border: 1px solid rgba(20,24,29,.18);
-      background: #fff;
-      color: var(--jah-ink);
-      display: grid; place-items: center;
-      transition: opacity .3s var(--jah-ease);
-    }
-    .jah-arrow:disabled { opacity: .3; }
-    .jah-arrow:active { transform: scale(.94); }
+    .jah-card--tall .jah-card-name { font-size: 1.45rem; }
+    .jah-card-desc { font-size: .84rem; }
+    .jah-card-cta { font-size: .8rem; margin-top: 8px; }
+    .jah-carousel-nav { margin-top: 10px; padding: 0 2px; }
 
     /* Fiches : plus compactes */
     .jah-details { padding: 14px 12px 30px; }
@@ -835,58 +860,98 @@
     <p class="jah-section-sub">Touchez une destination pour découvrir le programme en détail.</p>
   </div>
   <div class="jah-grid" id="jahGrid">
-    <a href="#jah-angleterre" class="jah-card jah-reveal">
+    <a href="#jah-angleterre" class="jah-card jah-card--tall jah-reveal">
       <img src="england-dest.jpg" alt="Angleterre" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇬🇧</span><span class="jah-card-name">Angleterre</span><span class="jah-card-tag">Campus &amp; anglais</span></span>
+      <span class="jah-card-label">
+        <span class="jah-card-region">Europe</span>
+        <span class="jah-card-name">Angleterre</span>
+        <span class="jah-card-desc">Campus prestigieux, excursions à Londres et Oxford.</span>
+        <span class="jah-card-cta">Campus &amp; anglais <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </span>
     </a>
-    <a href="#jah-espagne" class="jah-card jah-reveal">
-      <img src="spain.jpg" alt="Espagne" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇪🇸</span><span class="jah-card-name">Espagne</span><span class="jah-card-tag">Soleil &amp; langues</span></span>
-    </a>
-    <a href="#jah-suisse" class="jah-card jah-reveal">
-      <img src="Swiss.jpg" alt="Suisse" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇭</span><span class="jah-card-name">Suisse</span><span class="jah-card-tag">Camps alpins</span></span>
-    </a>
-    <a href="#jah-chine" class="jah-card jah-reveal">
+    <div class="jah-pair jah-reveal">
+      <a href="#jah-espagne" class="jah-card jah-reveal">
+        <img src="spain.jpg" alt="Espagne" loading="lazy" onerror="this.style.display='none'">
+        <span class="jah-card-label">
+          <span class="jah-card-region">Europe</span>
+          <span class="jah-card-name">Espagne</span>
+          <span class="jah-card-cta">Soleil &amp; langues <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </span>
+      </a>
+      <a href="#jah-suisse" class="jah-card jah-reveal">
+        <img src="Swiss.jpg" alt="Suisse" loading="lazy" onerror="this.style.display='none'">
+        <span class="jah-card-label">
+          <span class="jah-card-region">Europe</span>
+          <span class="jah-card-name">Suisse</span>
+          <span class="jah-card-cta">Camps alpins <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </span>
+      </a>
+    </div>
+    <a href="#jah-chine" class="jah-card jah-card--tall jah-reveal">
       <img src="Beijing1.jpg" alt="Chine, Pékin" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇳</span><span class="jah-card-name">Chine</span><span class="jah-card-tag">Pékin &amp; mandarin</span></span>
+      <span class="jah-card-label">
+        <span class="jah-card-region">Asie</span>
+        <span class="jah-card-name">Chine</span>
+        <span class="jah-card-desc">Grande Muraille, Cité interdite et ateliers de mandarin.</span>
+        <span class="jah-card-cta">Pékin &amp; mandarin <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </span>
     </a>
-    <a href="#jah-japon" class="jah-card jah-reveal">
-      <img src="tokyo.avif" alt="Japon" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇯🇵</span><span class="jah-card-name">Japon</span><span class="jah-card-tag">Tradition &amp; futur</span></span>
-    </a>
-    <a href="#jah-coree" class="jah-card jah-reveal">
-      <img src="southkorea.avif" alt="Corée du Sud" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇰🇷</span><span class="jah-card-name">Corée du Sud</span><span class="jah-card-tag">Séoul &amp; K-culture</span></span>
-    </a>
-    <a href="#jah-finlande" class="jah-card jah-reveal">
-      <img src="Finland.avif" alt="Finlande" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇫🇮</span><span class="jah-card-name">Finlande</span><span class="jah-card-tag">Éducation &amp; nature</span></span>
-    </a>
-    <a href="#jah-canada" class="jah-card jah-reveal">
-      <img src="montreal.jpg" alt="Canada, Montréal" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇦</span><span class="jah-card-name">Canada</span><span class="jah-card-tag">Montréal &amp; bilinguisme</span></span>
-    </a>
-    <a href="#jah-usa" class="jah-card jah-reveal">
+    <div class="jah-pair jah-reveal">
+      <a href="#jah-japon" class="jah-card jah-reveal">
+        <img src="tokyo.avif" alt="Japon" loading="lazy" onerror="this.style.display='none'">
+        <span class="jah-card-label">
+          <span class="jah-card-region">Asie</span>
+          <span class="jah-card-name">Japon</span>
+          <span class="jah-card-cta">Tradition &amp; futur <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </span>
+      </a>
+      <a href="#jah-coree" class="jah-card jah-reveal">
+        <img src="southkorea.avif" alt="Corée du Sud" loading="lazy" onerror="this.style.display='none'">
+        <span class="jah-card-label">
+          <span class="jah-card-region">Asie</span>
+          <span class="jah-card-name">Corée du Sud</span>
+          <span class="jah-card-cta">Séoul &amp; K-culture <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </span>
+      </a>
+    </div>
+    <a href="#jah-usa" class="jah-card jah-card--tall jah-reveal">
       <img src="nyc.jpeg" alt="États-Unis, New York" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇺🇸</span><span class="jah-card-name">États-Unis</span><span class="jah-card-tag">New York &amp; campus</span></span>
+      <span class="jah-card-label">
+        <span class="jah-card-region">Amérique du Nord</span>
+        <span class="jah-card-name">États-Unis</span>
+        <span class="jah-card-desc">Vivre le rêve américain à New York.</span>
+        <span class="jah-card-cta">New York &amp; campus <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </span>
     </a>
-    <a href="#jah-football" class="jah-card jah-reveal">
+    <div class="jah-pair jah-reveal">
+      <a href="#jah-finlande" class="jah-card jah-reveal">
+        <img src="Finland.avif" alt="Finlande" loading="lazy" onerror="this.style.display='none'">
+        <span class="jah-card-label">
+          <span class="jah-card-region">Europe</span>
+          <span class="jah-card-name">Finlande</span>
+          <span class="jah-card-cta">Éducation &amp; nature <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </span>
+      </a>
+      <a href="#jah-canada" class="jah-card jah-reveal">
+        <img src="montreal.jpg" alt="Canada, Montréal" loading="lazy" onerror="this.style.display='none'">
+        <span class="jah-card-label">
+          <span class="jah-card-region">Amérique du Nord</span>
+          <span class="jah-card-name">Canada</span>
+          <span class="jah-card-cta">Montréal &amp; bilinguisme <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </span>
+      </a>
+    </div>
+    <a href="#jah-football" class="jah-card jah-card--tall jah-reveal">
       <img src="Arsenal Image.jpg" alt="Football Premier League" loading="lazy" onerror="this.style.display='none'">
-      <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-      <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">⚽</span><span class="jah-card-name">Premier League</span><span class="jah-card-tag">Football camps</span></span>
+      <span class="jah-card-label">
+        <span class="jah-card-region">Angleterre</span>
+        <span class="jah-card-name">Premier League</span>
+        <span class="jah-card-desc">S'entraîner avec de vrais clubs de Premier League.</span>
+        <span class="jah-card-cta">Football camps <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </span>
     </a>
   </div>
-  <div class="jah-carousel-nav" aria-hidden="true">
+  <div class="jah-carousel-nav">
     <div class="jah-dots" id="jahDots"></div>
     <div class="jah-arrows">
       <button type="button" class="jah-arrow" id="jahPrev" aria-label="Destination précédente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
@@ -1138,7 +1203,7 @@
     els.forEach(function (el) { io.observe(el); });
   })();
 
-  /* Carrousel destinations : points + flèches (actifs sur mobile) */
+  /* Rail destinations : points + flèches (toutes tailles d'écran) */
   (function () {
     var grid = document.getElementById('jahGrid');
     var dotsWrap = document.getElementById('jahDots');
@@ -1146,14 +1211,14 @@
     var next = document.getElementById('jahNext');
     if (!grid || !dotsWrap || !prev || !next) return;
 
-    var cards = Array.prototype.slice.call(grid.querySelectorAll('.jah-card'));
-    if (!cards.length) return;
+    var units = Array.prototype.slice.call(grid.children);
+    if (!units.length) return;
 
-    var dots = cards.map(function (card, i) {
+    var dots = units.map(function (unit, i) {
       var d = document.createElement('button');
       d.type = 'button';
       d.className = 'jah-dot';
-      d.setAttribute('aria-label', 'Destination ' + (i + 1));
+      d.setAttribute('aria-label', 'Destinations ' + (i + 1));
       d.addEventListener('click', function () {
         grid.scrollTo({ left: i * step(), behavior: 'smooth' });
       });
@@ -1161,9 +1226,13 @@
       return d;
     });
 
-    function step() { return cards[0].offsetWidth + 12; }
+    function step() {
+      return units.length > 1
+        ? units[1].offsetLeft - units[0].offsetLeft
+        : units[0].offsetWidth;
+    }
     function current() {
-      return Math.min(cards.length - 1, Math.max(0, Math.round(grid.scrollLeft / step())));
+      return Math.min(units.length - 1, Math.max(0, Math.round(grid.scrollLeft / step())));
     }
     function update() {
       var i = current();
