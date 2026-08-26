@@ -560,7 +560,7 @@
     position: absolute;
     top: clamp(10px, 2vw, 22px);
     right: clamp(10px, 2vw, 22px);
-    width: clamp(76px, 8.5vw, 106px);
+    width: clamp(128px, 13vw, 168px);
     color: var(--jah-accent, #FF3B6B);
     opacity: 0;
     transform: scale(1.7) rotate(var(--stamp-rot, -8deg));
@@ -578,12 +578,12 @@
   .jah-stamp--out { animation: jah-stamp-fade 1.9s ease forwards; }
   @keyframes jah-stamp-thump {
     0%   { opacity: 0;   transform: scale(1.7) rotate(var(--stamp-rot, -8deg)); }
-    55%  { opacity: .8;  transform: scale(.9)  rotate(var(--stamp-rot, -8deg)); }
-    78%  { opacity: .74; transform: scale(1.05) rotate(var(--stamp-rot, -8deg)); }
-    100% { opacity: .72; transform: scale(1)   rotate(var(--stamp-rot, -8deg)); }
+    55%  { opacity: .9;  transform: scale(.9)  rotate(var(--stamp-rot, -8deg)); }
+    78%  { opacity: .84; transform: scale(1.05) rotate(var(--stamp-rot, -8deg)); }
+    100% { opacity: .82; transform: scale(1)   rotate(var(--stamp-rot, -8deg)); }
   }
   @keyframes jah-stamp-fade {
-    from { opacity: .72; transform: scale(1) rotate(var(--stamp-rot, -8deg)); }
+    from { opacity: .82; transform: scale(1) rotate(var(--stamp-rot, -8deg)); }
     to   { opacity: 0;   transform: scale(1.06) rotate(var(--stamp-rot, -8deg)); }
   }
   /* La fiche vibre sous l'impact du tampon, comme une page de passeport */
@@ -826,7 +826,7 @@
     .jah-contact-ctas { margin-top: 22px; }
 
     /* Tampons de passeport : plus petits sur mobile */
-    .jah-stamp { width: 66px; top: 20px; }
+    .jah-stamp { width: 108px; top: 18px; }
     .jah-detail:nth-child(even) .jah-stamp { left: auto; right: clamp(10px, 2vw, 22px); }
 
     /* Bandeau partenaires : logos plus petits, défilement plus rapide */
@@ -842,7 +842,7 @@
     .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .jah-marquee-track { animation: none !important; }
     .jah-why-flight-plane { animation: none !important; left: 50% !important; opacity: 1 !important; }
-    .jah-stamp { opacity: .72 !important; transform: scale(1) rotate(var(--stamp-rot, -8deg)) !important; animation: none !important; }
+    .jah-stamp { opacity: .82 !important; transform: scale(1) rotate(var(--stamp-rot, -8deg)) !important; animation: none !important; }
     .jah-detail--shake { animation: none !important; }
   }
 </style>
@@ -1334,27 +1334,60 @@
     if (!arts.length) return;
 
     var planePath = 'M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z';
-    var rotations = [-9, 6, -13, 8, -6, 11, -10, 5, -14, 7];
+    var rotations = [-7, 5, -10, 6, -5, 9, -8, 4, -11, 6];
+    /* codes aéroport de chaque destination (départ Alger) */
+    var codes = {
+      'ANGLETERRE': 'LHR', 'ESPAGNE': 'MAD', 'SUISSE': 'GVA', 'CHINE': 'PEK',
+      'JAPON': 'NRT', 'CORÉE DU SUD': 'ICN', 'FINLANDE': 'HEL', 'CANADA': 'YUL',
+      'ÉTATS-UNIS': 'JFK', 'PREMIER LEAGUE': 'MAN'
+    };
 
     arts.forEach(function (art, i) {
       var name = (art.getAttribute('data-stamp') || '').toUpperCase();
-      var idT = 'jahStampT' + i;
-      var idB = 'jahStampB' + i;
+      var code = codes[name] || '';
+      var seed = i * 17 + 3;
+      var idR = 'jahStampR' + i;
+      var idN = 'jahStampN' + i;
+      var idM = 'jahStampM' + i;
+      /* les noms longs recoivent une typo plus petite et resserrée */
+      var n = name.length;
+      var fs = n >= 13 ? 11.5 : n >= 10 ? 13.5 : 16.5;
+      var ls = n >= 13 ? .3 : n >= 10 ? .7 : 1.2;
+      var route = code
+        ? '<text x="53" y="70" font-size="9" font-weight="700" letter-spacing="1.2" fill="currentColor" text-anchor="end">ALG</text>' +
+          '<line x1="57.5" y1="66.8" x2="65" y2="66.8" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2.6"/>' +
+          '<g transform="translate(75 66.5) rotate(90)"><path transform="translate(-7.2 -7.2) scale(0.6)" fill="currentColor" d="' + planePath + '"/></g>' +
+          '<line x1="85" y1="66.8" x2="92.5" y2="66.8" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2.6"/>' +
+          '<text x="97" y="70" font-size="9" font-weight="700" letter-spacing="1.2" fill="currentColor" text-anchor="start">' + code + '</text>'
+        : '<g transform="translate(75 66.5) rotate(90)"><path transform="translate(-7.2 -7.2) scale(0.6)" fill="currentColor" d="' + planePath + '"/></g>';
       var wrap = document.createElement('span');
       wrap.className = 'jah-stamp';
       wrap.setAttribute('aria-hidden', 'true');
       wrap.style.setProperty('--stamp-rot', rotations[i % rotations.length] + 'deg');
       wrap.innerHTML =
-        '<svg viewBox="0 0 120 120" fill="none">' +
+        '<svg viewBox="0 0 150 90" fill="none">' +
           '<defs>' +
-            '<path id="' + idT + '" d="M 60,60 m -47,0 a 47,47 0 1,1 94,0"/>' +
-            '<path id="' + idB + '" d="M 60,60 m -45,0 a 45,45 0 1,0 90,0"/>' +
+            '<filter id="' + idR + '" x="-6%" y="-8%" width="112%" height="116%">' +
+              '<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="' + seed + '" result="n"/>' +
+              '<feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/>' +
+            '</filter>' +
+            '<filter id="' + idN + '">' +
+              '<feTurbulence type="fractalNoise" baseFrequency="0.28" numOctaves="3" seed="' + (seed + 5) + '"/>' +
+              '<feComponentTransfer>' +
+                '<feFuncR type="linear" slope="2.4" intercept="-0.35"/>' +
+                '<feFuncG type="linear" slope="2.4" intercept="-0.35"/>' +
+                '<feFuncB type="linear" slope="2.4" intercept="-0.35"/>' +
+              '</feComponentTransfer>' +
+            '</filter>' +
+            '<mask id="' + idM + '"><g filter="url(#' + idN + ')"><rect width="150" height="90" fill="#fff"/></g></mask>' +
           '</defs>' +
-          '<circle cx="60" cy="60" r="56" stroke="currentColor" stroke-width="3"/>' +
-          '<circle cx="60" cy="60" r="36" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 5"/>' +
-          '<text font-size="12" font-weight="700" letter-spacing="1.3" fill="currentColor"><textPath href="#' + idT + '" startOffset="50%" text-anchor="middle">' + name + '</textPath></text>' +
-          '<text font-size="9.5" font-weight="700" letter-spacing="1.5" fill="currentColor"><textPath href="#' + idB + '" startOffset="50%" text-anchor="middle">JUNIORS ACADEMY</textPath></text>' +
-          '<g transform="translate(60 60) rotate(45)"><path transform="translate(-12 -12)" fill="currentColor" d="' + planePath + '"/></g>' +
+          '<g filter="url(#' + idR + ')" mask="url(#' + idM + ')">' +
+            '<rect x="3" y="3" width="144" height="84" rx="10" stroke="currentColor" stroke-width="2.5"/>' +
+            '<rect x="8.5" y="8.5" width="133" height="73" rx="6.5" stroke="currentColor" stroke-width="1.1"/>' +
+            '<text x="75" y="24" font-size="7.2" font-weight="700" letter-spacing="2.1" fill="currentColor" text-anchor="middle">JUNIORS ACADEMY</text>' +
+            '<text x="75" y="49.5" font-size="' + fs + '" font-weight="800" letter-spacing="' + ls + '" fill="currentColor" text-anchor="middle">' + name + '</text>' +
+            route +
+          '</g>' +
         '</svg>';
       art.appendChild(wrap);
     });
