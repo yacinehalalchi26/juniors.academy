@@ -114,6 +114,14 @@
   </a>
 </header>
 
+<!-- Avion d'arrière-plan : traverse l'écran au fil du scroll -->
+<div class="jah-sky" aria-hidden="true">
+  <div class="jah-sky-unit" id="jahSkyUnit">
+    <span class="jah-sky-trail"></span>
+    <svg class="jah-sky-plane" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+  </div>
+</div>
+
 <!-- ============================================================
      JUNIORS ACADEMY — HERO v3 : hero + destinations + contact
      Bloc 100 % autonome (styles préfixés "jah-", aucun conflit
@@ -129,7 +137,7 @@
     --jah-highlight: #FFD23F;
     --jah-muted: #7A828C;
     --jah-ease: cubic-bezier(.16, 1, .3, 1);
-    background: var(--jah-paper);
+    background: transparent;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     color: var(--jah-ink);
   }
@@ -317,11 +325,11 @@
   .jah-pair .jah-card { height: auto; flex: 1; min-height: 0; }
   .jah-card:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(20,24,29,.22); }
   .jah-card img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
+    position: absolute; top: 0; bottom: 0; left: -15%;
+    width: 130%; height: 100%;
     object-fit: cover; z-index: -2;
-    transition: transform .9s var(--jah-ease);
+    will-change: transform;
   }
-  .jah-card:hover img { transform: scale(1.07); }
   .jah-card::after {
     content: ""; position: absolute; inset: 0; z-index: -1;
     background: linear-gradient(to top, rgba(20,24,29,.82) 0%, rgba(20,24,29,.28) 45%, rgba(20,24,29,.02) 70%);
@@ -357,7 +365,7 @@
   .jah-card:hover .jah-card-cta svg { transform: translateX(4px); }
 
   /* ---------- Fiches destinations ---------- */
-  .jah-details { padding: clamp(20px, 4vw, 50px) clamp(14px, 3vw, 40px) clamp(30px, 5vw, 70px); }
+  .jah-details { padding: clamp(20px, 4vw, 50px) clamp(14px, 3vw, 40px) clamp(10px, 2vw, 20px); }
 
   .jah-detail {
     display: grid;
@@ -420,7 +428,7 @@
   .jah-top:hover { color: var(--jah-ink, #14181D); }
 
   /* ---------- Pourquoi choisir Juniors Academy ---------- */
-  .jah-why { padding: clamp(40px, 6vw, 76px) clamp(14px, 3vw, 40px) 0; }
+  .jah-why { padding: 0 clamp(14px, 3vw, 40px) 0; }
   .jah-why-head {
     text-align: center;
     max-width: 720px;
@@ -542,7 +550,7 @@
 
   /* ---------- Pied de page ---------- */
   .jah-footer {
-    background: var(--jah-paper, #FAFAF7);
+    background: transparent;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     text-align: center;
     padding: 4px 16px 26px;
@@ -552,6 +560,31 @@
     font-size: .82rem;
     font-weight: 500;
     color: #7A828C;
+  }
+
+  /* ---------- Avion d'arrière-plan lié au scroll ---------- */
+  .jah-sky {
+    position: fixed; inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .jah-sky-unit {
+    position: absolute;
+    top: 0; left: 0;
+    display: flex; align-items: center; gap: 10px;
+    opacity: .32;
+    will-change: transform;
+  }
+  .jah-sky-trail {
+    width: 110px; height: 0;
+    border-top: 2px dashed rgba(255, 59, 107, .55);
+  }
+  .jah-sky-plane {
+    width: 30px; height: 30px;
+    flex: none;
+    color: #FF3B6B;
+    transform: rotate(90deg);
   }
 
   /* ---------- Apparitions au scroll (autonome) ---------- */
@@ -608,7 +641,7 @@
 
   /* ---------- Bandeau partenaires (défilement automatique) ---------- */
   .jah-partners {
-    background: var(--jah-paper, #FAFAF7);
+    background: transparent;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     padding: clamp(18px, 3vw, 32px) clamp(14px, 3vw, 40px) clamp(8px, 1.6vw, 16px);
   }
@@ -753,7 +786,7 @@
     .jah-carousel-nav { margin-top: 10px; padding: 0 2px; }
 
     /* Fiches : plus compactes */
-    .jah-details { padding: 14px 12px 30px; }
+    .jah-details { padding: 14px 12px 10px; }
     .jah-detail { padding: 12px 12px 20px; gap: 16px; margin-bottom: 18px; border-radius: 18px; }
     .jah-detail-visual { aspect-ratio: 16 / 10; border-radius: 12px; }
     .jah-detail-desc { font-size: .93rem; line-height: 1.6; }
@@ -762,7 +795,7 @@
     .jah-top { font-size: .82rem; margin-top: 22px; }
 
     /* Pourquoi choisir : séparateur avion + titre centrés, colonne unique */
-    .jah-why { padding: 32px 14px 0; }
+    .jah-why { padding: 0 14px 0; }
     .jah-why-head { margin-bottom: 32px; }
     .jah-why-flight { width: min(200px, 65%); height: 20px; margin-bottom: 16px; }
     .jah-why-flight-plane { width: 18px; height: 18px; }
@@ -782,6 +815,11 @@
     .jah-ico { width: 36px; height: 36px; border-radius: 10px; }
     .jah-contact-ctas { margin-top: 22px; }
 
+    /* Avion d'arrière-plan : plus discret sur mobile */
+    .jah-sky-unit { opacity: .24; gap: 8px; }
+    .jah-sky-plane { width: 22px; height: 22px; }
+    .jah-sky-trail { width: 70px; }
+
     /* Bandeau partenaires : logos plus petits, défilement plus rapide */
     .jah-partners { padding: 14px 14px 4px; }
     .jah-partners-title { font-size: .66rem; letter-spacing: .14em; margin-bottom: 12px; }
@@ -795,6 +833,7 @@
     .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .jah-marquee-track { animation: none !important; }
     .jah-why-flight-plane { animation: none !important; left: 50% !important; opacity: 1 !important; }
+    .jah-sky { display: none !important; }
   }
 </style>
 
@@ -1246,6 +1285,70 @@
     prev.addEventListener('click', function () { grid.scrollBy({ left: -step(), behavior: 'smooth' }); });
     next.addEventListener('click', function () { grid.scrollBy({ left: step(), behavior: 'smooth' }); });
     update();
+  })();
+
+  /* Parallaxe du rail : les photos glissent dans leur cadre pendant le swipe */
+  (function () {
+    var grid = document.getElementById('jahGrid');
+    if (!grid) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var imgs = Array.prototype.slice.call(grid.querySelectorAll('.jah-card img'));
+    if (!imgs.length) return;
+
+    var ticking = false;
+    function apply() {
+      ticking = false;
+      var rect = grid.getBoundingClientRect();
+      var mid = rect.left + rect.width / 2;
+      imgs.forEach(function (img) {
+        var card = img.parentElement;
+        var r = card.getBoundingClientRect();
+        var progress = (r.left + r.width / 2 - mid) / rect.width;
+        progress = Math.max(-1, Math.min(1, progress));
+        img.style.transform = 'translateX(' + (progress * r.width * 0.12).toFixed(1) + 'px)';
+      });
+    }
+    function request() {
+      if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+    }
+    grid.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    apply();
+  })();
+
+  /* Avion d'arrière-plan : traverse l'écran de gauche à droite au fil du scroll,
+     fait demi-tour quand on remonte, avec un léger tangage d'altitude */
+  (function () {
+    var unit = document.getElementById('jahSkyUnit');
+    if (!unit) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var current = -220;
+    var dir = 1;
+    var painted = false;
+
+    function targetX() {
+      var doc = document.documentElement;
+      var max = Math.max(1, doc.scrollHeight - window.innerHeight);
+      var p = Math.min(1, Math.max(0, window.scrollY / max));
+      var span = window.innerWidth + 440; /* démarre et finit hors écran */
+      return p * span - 220;
+    }
+
+    function loop() {
+      var t = targetX();
+      var d = t - current;
+      if (Math.abs(d) > .15 || !painted) {
+        if (Math.abs(d) > .5) dir = d > 0 ? 1 : -1;
+        current += d * .055;
+        var y = window.innerHeight * .16 + Math.sin(current / 150) * 14;
+        unit.style.transform = 'translate(' + current.toFixed(1) + 'px,' + y.toFixed(1) + 'px) scaleX(' + dir + ')';
+        painted = true;
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
   })();
 
   /* Diaporama hero : les photos changent automatiquement toutes les 2 secondes */
