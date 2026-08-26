@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Juniors Academy | Programmes Internationaux pour Jeunes</title>
-  <meta name="description" content="Séjours linguistiques, échanges culturels et Football Camps Premier League pour les jeunes de 6 à 18 ans — Angleterre, Espagne, Suisse, Chine, Japon, Corée du Sud, Finlande, Canada, États-Unis.">
+  <meta name="description" content="Séjours linguistiques, échanges culturels et Football Camps Premier League pour les jeunes de 6 à 18 ans : Angleterre, Espagne, Suisse, Chine, Japon, Corée du Sud, Finlande, Canada, États-Unis.">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#FAFAF7">
 
@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Juniors Academy">
   <meta property="og:title" content="Juniors Academy | Programmes Internationaux pour Jeunes">
-  <meta property="og:description" content="Le monde est leur salle de classe : langues, football et découvertes culturelles pour les 6–18 ans.">
+  <meta property="og:description" content="Le monde est leur salle de classe : langues, football et découvertes culturelles pour les 6 à 18 ans.">
   <meta property="og:image" content="GroupPicture.jpeg">
   <meta property="og:locale" content="fr_FR">
   <meta name="twitter:card" content="summary_large_image">
@@ -104,7 +104,7 @@
 <body>
 
 <header class="jah-header" id="jahHeader">
-  <a href="#jah-contact" class="jah-header-logo" aria-label="Juniors Academy — nous contacter">
+  <a href="#jah-contact" class="jah-header-logo" aria-label="Juniors Academy, nous contacter">
     <img src="JA Black Logo.png" alt="Juniors Academy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
     <span class="jah-logo-text" style="display:none">Juniors Academy</span>
   </a>
@@ -243,6 +243,12 @@
   }
   .jah-btn--ghost:hover { background: rgba(255,255,255,.22); transform: translateY(-3px); }
   .jah-btn:active { transform: scale(.97); }
+  .jah-btn--pulse { animation: jah-cta-pulse 2.4s ease-out infinite; }
+  @keyframes jah-cta-pulse {
+    0%   { box-shadow: 0 10px 30px rgba(255,59,107,.35), 0 0 0 0 rgba(255,59,107,.5); }
+    70%  { box-shadow: 0 10px 30px rgba(255,59,107,.35), 0 0 0 16px rgba(255,59,107,0); }
+    100% { box-shadow: 0 10px 30px rgba(255,59,107,.35), 0 0 0 0 rgba(255,59,107,0); }
+  }
 
   .jah-strip {
     display: flex; flex-wrap: wrap; justify-content: center;
@@ -639,12 +645,9 @@
     .jah-sub { color: #444B54; font-size: .98rem; line-height: 1.6; margin: 0 auto 24px; }
     .jah-ctas { gap: 10px; }
     .jah-btn { padding: 15px 22px; width: 100%; justify-content: center; font-size: .97rem; }
-    /* Boutons sombres UNIQUEMENT dans le hero (fond clair).
-       Dans la carte contact (fond sombre), les boutons gardent
-       leurs couleurs d'origine : corail + contour blanc. */
-    .jah-hero .jah-btn--primary { background: var(--jah-ink); box-shadow: 0 10px 26px rgba(20,24,29,.22); }
-    .jah-hero .jah-btn--primary svg,
-    .jah-hero .jah-btn--primary:hover svg { transform: rotate(90deg); } /* la flèche pointe vers le bas */
+    /* Le CTA principal "Nous contacter" reste corail et pulse
+       sur mobile pour être immédiatement visible sur fond clair.
+       Le bouton secondaire passe en contour sombre. */
     .jah-hero .jah-btn--ghost {
       background: transparent;
       border: 1.5px solid rgba(20,24,29,.22);
@@ -762,7 +765,7 @@
     .jah-marquee-group img { height: 26px; width: 68px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .jah-slide, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas, .jah-title .jah-mark { animation: none !important; }
+    .jah-slide, .jah-badge, .jah-eyebrow, .jah-title, .jah-sub, .jah-ctas, .jah-title .jah-mark, .jah-btn--pulse { animation: none !important; }
     .jah-btn, .jah-card, .jah-card img, .jah-slide { transition: none !important; }
     .jah-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .jah-marquee-track { animation: none !important; }
@@ -776,9 +779,9 @@
   <div class="jah-marquee">
     <div class="jah-marquee-track">
       <div class="jah-marquee-group">
-        <img src="china.webp" alt="Partenaire — Chine" onerror="this.style.display='none'">
+        <img src="china.webp" alt="Partenaire Chine" onerror="this.style.display='none'">
         <img src="British.png" alt="British Embassy" onerror="this.style.display='none'">
-        <img src="Finland.jpeg" alt="Partenaire — Finlande" onerror="this.style.display='none'">
+        <img src="Finland.jpeg" alt="Partenaire Finlande" onerror="this.style.display='none'">
         <img src="Polish.png" alt="Partenaire polonais" onerror="this.style.display='none'">
         <img src="BritishCouncil.png" alt="British Council" onerror="this.style.display='none'">
         <img src="cervantes.png" alt="Instituto Cervantes" onerror="this.style.display='none'">
@@ -807,17 +810,17 @@
       <img class="jah-slide" src="greatwall.jpeg" alt="Grande Muraille de Chine" onerror="this.style.display='none'">
     </div>
     <div class="jah-badge" aria-hidden="true">
-      <span>6–18 ans</span><span>10 programmes</span><span>Encadrement 24/7</span>
+      <span>6 à 18 ans</span><span>10 programmes</span><span>Encadrement 24/7</span>
     </div>
     <div class="jah-content">
       <p class="jah-eyebrow">Étudier · Voyager · Grandir</p>
       <h1 class="jah-title">Le <span class="jah-mark">monde</span> est leur salle de classe.</h1>
-      <p class="jah-sub">Langues, football et découvertes culturelles : de Pékin à Londres, nos programmes transforment chaque séjour en une aventure qui fait grandir — en confiance, en ouverture et en anglais.</p>
+      <p class="jah-sub">Langues, football et découvertes culturelles : de Pékin à Londres, nos programmes transforment chaque séjour en une aventure qui fait grandir en confiance, en ouverture et en anglais.</p>
       <div class="jah-ctas">
-        <a href="#jah-destinations" class="jah-btn jah-btn--primary">Explorer les programmes
+        <a href="https://www.juniors.academy/brochure" class="jah-btn jah-btn--primary jah-btn--pulse">Nous contacter
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="https://www.juniors.academy/brochure" class="jah-btn jah-btn--ghost">Nous contacter</a>
+        <a href="#jah-destinations" class="jah-btn jah-btn--ghost">Explorer les programmes</a>
       </div>
     </div>
   </div>
@@ -848,7 +851,7 @@
       <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇭</span><span class="jah-card-name">Suisse</span><span class="jah-card-tag">Camps alpins</span></span>
     </a>
     <a href="#jah-chine" class="jah-card jah-reveal">
-      <img src="Beijing1.jpg" alt="Chine — Pékin" loading="lazy" onerror="this.style.display='none'">
+      <img src="Beijing1.jpg" alt="Chine, Pékin" loading="lazy" onerror="this.style.display='none'">
       <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
       <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇳</span><span class="jah-card-name">Chine</span><span class="jah-card-tag">Pékin &amp; mandarin</span></span>
     </a>
@@ -868,12 +871,12 @@
       <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇫🇮</span><span class="jah-card-name">Finlande</span><span class="jah-card-tag">Éducation &amp; nature</span></span>
     </a>
     <a href="#jah-canada" class="jah-card jah-reveal">
-      <img src="montreal.jpg" alt="Canada — Montréal" loading="lazy" onerror="this.style.display='none'">
+      <img src="montreal.jpg" alt="Canada, Montréal" loading="lazy" onerror="this.style.display='none'">
       <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
       <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇨🇦</span><span class="jah-card-name">Canada</span><span class="jah-card-tag">Montréal &amp; bilinguisme</span></span>
     </a>
     <a href="#jah-usa" class="jah-card jah-reveal">
-      <img src="nyc.jpeg" alt="États-Unis — New York" loading="lazy" onerror="this.style.display='none'">
+      <img src="nyc.jpeg" alt="États-Unis, New York" loading="lazy" onerror="this.style.display='none'">
       <span class="jah-card-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
       <span class="jah-card-label"><span class="jah-card-flag" aria-hidden="true">🇺🇸</span><span class="jah-card-name">États-Unis</span><span class="jah-card-tag">New York &amp; campus</span></span>
     </a>
@@ -1019,8 +1022,8 @@
     <div class="jah-detail-visual"><img src="nyc.jpeg" alt="New York, États-Unis" loading="lazy" onerror="this.style.display='none'"></div>
     <div>
       <p class="jah-detail-loc">🇺🇸 Amérique du Nord · États-Unis</p>
-      <h3 class="jah-detail-title">New York, l'anglais grandeur nature.</h3>
-      <p class="jah-detail-desc">L'expérience américaine par excellence : cours d'anglais dynamiques, vie de campus et découverte de New York — Times Square, musées de renommée mondiale et quartiers mythiques.</p>
+      <h3 class="jah-detail-title">New York, vivre le rêve américain.</h3>
+      <p class="jah-detail-desc">L'expérience américaine par excellence : cours d'anglais dynamiques, vie de campus et découverte de New York, entre Times Square, musées de renommée mondiale et quartiers mythiques.</p>
       <ul class="jah-detail-list">
         <li>Cours d'anglais immersifs en petits groupes</li>
         <li>Visites : Statue de la Liberté, Central Park, musées</li>
@@ -1035,7 +1038,7 @@
     <div>
       <p class="jah-detail-loc">⚽ Angleterre · Football Camps</p>
       <h3 class="jah-detail-title">S'entraîner comme un pro de Premier League.</h3>
-      <p class="jah-detail-desc">Stage de football de haut niveau pour les 9–16 ans avec des clubs de Premier League anglaise : entraînements pro, immersion linguistique, hébergement premium et certificat officiel des clubs partenaires.</p>
+      <p class="jah-detail-desc">Stage de football de haut niveau pour les 9 à 16 ans avec des clubs de Premier League anglaise : entraînements pro, immersion linguistique, hébergement premium et certificat officiel des clubs partenaires.</p>
       <ul class="jah-detail-list">
         <li>Coaching par des clubs de Premier League</li>
         <li>Cours d'anglais immersifs et excursions à Londres</li>
@@ -1082,7 +1085,7 @@
   <div class="jah-contact-card jah-reveal">
     <div>
       <h2 class="jah-contact-title">Discutons du séjour de votre enfant.</h2>
-      <p class="jah-contact-sub">Notre équipe vous accompagne pour construire le programme idéal — destination, dates, budget. Les places sont limitées.</p>
+      <p class="jah-contact-sub">Notre équipe vous accompagne pour construire le programme idéal : destination, dates, budget. Les places sont limitées.</p>
       <div class="jah-contact-ctas">
         <a href="https://www.juniors.academy/brochure" class="jah-btn jah-btn--primary">Inscrire mon enfant
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
