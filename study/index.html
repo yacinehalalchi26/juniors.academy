@@ -581,12 +581,56 @@
   </style>
   <script>
     /* Photos : essaie chaque fichier de la liste data-srcs, dans l'ordre, jusqu'à ce qu'un se charge.
-       Les .jpg passent avant les .HEIC car seul Safari sait afficher le HEIC. */
+       Safari (iPhone, Mac) affiche le HEIC directement. Chrome, Edge, Firefox et Android ne savent pas
+       le lire : pour eux, le fichier HEIC est converti en JPEG dans le navigateur, et la même photo
+       s'affiche donc partout. (Un vrai fichier .jpg reste plus rapide : il passe toujours en premier.) */
+    var scHeicLib = null;
+    function scLoadHeicLib() {
+      if (!scHeicLib) {
+        scHeicLib = new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/heic-to@1.4.2/dist/iife/heic-to.js';
+          s.onload = function () {
+            var lib = window.HeicTo, fn = lib && (lib.heicTo || lib);
+            if (typeof fn === 'function') resolve(fn); else reject(new Error('heic-to indisponible'));
+          };
+          s.onerror = function () { reject(new Error('heic-to non chargé')); };
+          document.head.appendChild(s);
+        });
+      }
+      return scHeicLib;
+    }
+    function scHeicToJpeg(url) {
+      return fetch(url)
+        .then(function (r) { if (!r.ok) throw new Error('introuvable'); return r.blob(); })
+        .then(function (blob) {
+          return scLoadHeicLib().then(function (heicTo) {
+            return heicTo({ blob: blob, type: 'image/jpeg', quality: 0.82 });
+          });
+        })
+        .then(function (jpeg) { return URL.createObjectURL(jpeg); });
+    }
     function scNextSrc(img) {
-      var list = (img.getAttribute('data-srcs') || '').split('|');
-      var i = +(img.getAttribute('data-i') || 0);
-      if (i < list.length && list[i]) { img.setAttribute('data-i', i + 1); img.src = list[i]; }
-      else { img.onerror = null; img.style.display = 'none'; }
+      var cur = img.getAttribute('data-cur') || img.getAttribute('src') || '';
+      function advance() {
+        var list = (img.getAttribute('data-srcs') || '').split('|');
+        var i = +(img.getAttribute('data-i') || 0);
+        if (i < list.length && list[i]) {
+          img.setAttribute('data-i', i + 1);
+          img.setAttribute('data-cur', list[i]);
+          img.src = list[i];
+        } else { img.onerror = null; img.style.display = 'none'; }
+      }
+      /* le fichier qui vient d'échouer est un HEIC : on tente la conversion avant de passer au suivant */
+      if (/\.hei[cf]$/i.test(cur) && window.fetch && window.Promise) {
+        img.setAttribute('data-cur', 'conversion');
+        scHeicToJpeg(cur).then(function (blobUrl) {
+          img.setAttribute('data-cur', 'blob');
+          img.src = blobUrl;
+        }).catch(advance);
+        return;
+      }
+      advance();
     }
   </script>
 </head>
