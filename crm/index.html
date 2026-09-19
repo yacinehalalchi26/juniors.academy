@@ -220,11 +220,7 @@
     .lock-card .btn { width: 100%; min-height: 46px; }
     .lock-card .check { display: flex; align-items: center; gap: 9px; font-size: .88rem; color: var(--body); }
     .lock-card .check input { width: 17px; height: 17px; accent-color: var(--ink); }
-    .lock-card .linkish { justify-self: center; }
     .lock-msg { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-text); font-size: .88rem; font-weight: 500; }
-    .lock-out { width: 100%; min-height: 96px; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(20,24,29,.18); background: #fff; font-family: ui-monospace, Menlo, monospace; font-size: .74rem; line-height: 1.5; resize: vertical; word-break: break-all; }
-    .lock-card ol { margin: 0; padding-left: 20px; font-size: .88rem; color: var(--body); }
-    .lock-card li { margin: 0 0 4px; }
 
     /* ---------- "Where to save" screen ---------- */
     .setup { position: fixed; inset: 0; z-index: 500; background: rgba(20,24,29,.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: grid; place-items: center; padding: 20px; overflow-y: auto; }
@@ -288,30 +284,7 @@
         <div class="field"><label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password" required></div>
         <label class="check"><input type="checkbox" id="lKeep" checked> Keep me signed in on this Mac</label>
         <button type="submit" class="btn btn-primary" id="lSubmit">Sign in</button>
-        <button type="button" class="linkish" id="lToMake">Create a new login</button>
       </form>
-    </div>
-
-    <div id="lockMake" hidden>
-      <h1>Create a new login</h1>
-      <p class="lead" id="makeLead">Choose the email and password, then paste the result into index.html.</p>
-      <form id="makeForm" novalidate>
-        <p class="lock-msg" id="makeMsg" role="alert" hidden></p>
-        <div class="field"><label for="mEmail">Email</label><input id="mEmail" type="email" autocomplete="off" required></div>
-        <div class="field"><label for="mPass">New password (10 characters or more)</label><input id="mPass" type="password" autocomplete="new-password" required></div>
-        <div class="field"><label for="mPass2">Same password again</label><input id="mPass2" type="password" autocomplete="new-password" required></div>
-        <button type="submit" class="btn btn-primary" id="mSubmit">Create login lines</button>
-      </form>
-      <div id="makeResult" hidden style="display:grid;gap:12px;margin-top:16px">
-        <textarea class="lock-out" id="makeOut" readonly aria-label="Lines to paste into index.html"></textarea>
-        <button type="button" class="btn btn-light" id="makeCopy">Copy these two lines</button>
-        <ol>
-          <li>On GitHub, open <b>crm/index.html</b> and click the pencil.</li>
-          <li>Search for <b>LOGIN_EMAIL</b>. Replace that line and the <b>LOGIN_PASSWORD_CODE</b> line under it with the two lines above.</li>
-          <li>Commit, wait a minute, then reload the CRM.</li>
-        </ol>
-      </div>
-      <button type="button" class="linkish" id="lToSignIn" style="display:block;margin:16px auto 0">Back to sign in</button>
     </div>
   </div>
 </div>
@@ -559,8 +532,6 @@
      LOGIN — the email and password that open this CRM.
      The password is stored as a scrambled code, never in clear text,
      because this file is public on GitHub.
-     To change it: open the CRM, click "Create a new login" on the
-     sign-in screen, and paste the two lines it gives you here.
      ============================================================ */
   var LOGIN_EMAIL = 'director@juniors.academy';
   var LOGIN_PASSWORD_CODE = 'pbkdf2$200000$8ae86203c4b6ee151dfc38811180080e$4179df539d838fd317b7822acaf8c4456faa8a9a8376b15db6e2371189b87390';
@@ -1072,12 +1043,7 @@
     var m = sessionMark(); if (!m) return false;
     try { return sessionStorage.getItem(SESSION) === m || localStorage.getItem(SESSION) === m; } catch (e) { return false; }
   }
-  function lockMode(make) {
-    $('lockSignIn').hidden = make; $('lockMake').hidden = !make;
-    $('lToSignIn').hidden = !parseCode(LOGIN_PASSWORD_CODE);
-    if (make && !parseCode(LOGIN_PASSWORD_CODE)) $('makeLead').textContent = 'No login is set in index.html yet. Choose the email and password, then paste the result into the file.';
-    setTimeout(function () { (make ? $('mEmail') : $('lEmail')).focus(); }, 50);
-  }
+  function showLogin() { setTimeout(function () { $('lEmail').focus(); }, 50); }
   function unlock() { $('lock').hidden = true; $('app').hidden = false; boot(); }
   function lockMsg(id, text) { var el = $(id); el.textContent = text || ''; el.hidden = !text; }
 
@@ -1101,27 +1067,6 @@
     try { ($('lKeep').checked ? localStorage : sessionStorage).setItem(SESSION, sessionMark()); } catch (err) {}
     $('lPass').value = ''; lockMsg('lockMsg', ''); unlock();
   });
-  $('makeForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    var email = $('mEmail').value.trim(), p1 = $('mPass').value, p2 = $('mPass2').value;
-    if (!/^\S+@\S+\.\S+$/.test(email)) { lockMsg('makeMsg', 'Enter a full email address.'); return; }
-    if (p1.length < 10) { lockMsg('makeMsg', 'Use 10 characters or more. A short phrase works well.'); return; }
-    if (p1 !== p2) { lockMsg('makeMsg', 'The two passwords are not the same.'); return; }
-    if (!window.crypto || !crypto.subtle) { lockMsg('makeMsg', 'Open the CRM from https://www.juniors.academy/crm to create a login.'); return; }
-    lockMsg('makeMsg', '');
-    var salt = bytesToHex(crypto.getRandomValues(new Uint8Array(16))), it = 200000;
-    var hash = await derive(p1, salt, it);
-    $('makeOut').value = "  var LOGIN_EMAIL = '" + email.replace(/['\\]/g, '') + "';\n  var LOGIN_PASSWORD_CODE = 'pbkdf2$" + it + '$' + salt + '$' + hash + "';";
-    $('makeResult').hidden = false; $('mPass').value = ''; $('mPass2').value = '';
-  });
-  $('makeCopy').addEventListener('click', function () {
-    var t = $('makeOut'); t.select();
-    (navigator.clipboard ? navigator.clipboard.writeText(t.value) : Promise.reject()).catch(function () { try { document.execCommand('copy'); } catch (e) {} });
-    $('makeCopy').textContent = 'Copied';
-    setTimeout(function () { $('makeCopy').textContent = 'Copy these two lines'; }, 1800);
-  });
-  $('lToMake').addEventListener('click', function () { lockMode(true); });
-  $('lToSignIn').addEventListener('click', function () { lockMode(false); });
   $('btnLock').addEventListener('click', function () {
     if (writeTimer) writeNow();
     try { localStorage.removeItem(SESSION); sessionStorage.removeItem(SESSION); } catch (e) {}
@@ -1138,7 +1083,7 @@
     startStorage();
   }
   if (hasSession()) unlock();
-  else lockMode(!parseCode(LOGIN_PASSWORD_CODE));
+  else showLogin();
 })();
 </script>
 </body>
