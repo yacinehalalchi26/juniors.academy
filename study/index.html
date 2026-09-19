@@ -328,11 +328,11 @@
     .sc-panel-photo { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
     .sc-panel::before {
       content: ""; position: absolute; inset: 0; z-index: -1;
-      background: linear-gradient(to top, rgba(20,24,29,.94) 0%, rgba(20,24,29,.72) 45%, rgba(20,24,29,.38) 100%);
+      background: linear-gradient(to top, rgba(20,24,29,.94) 0%, rgba(20,24,29,.62) 42%, rgba(20,24,29,.14) 100%);
     }
     .sc-panel-mark {
       position: absolute; left: 18px; top: 6px; z-index: -1;
-      font-family: var(--brush); font-size: clamp(6rem, 10vw, 9rem); line-height: 1; color: rgba(255,255,255,.1);
+      font-family: var(--brush); font-size: clamp(6rem, 10vw, 9rem); line-height: 1; color: rgba(255,255,255,.16); text-shadow: 0 2px 18px rgba(20,24,29,.35);
     }
     /* sceau rouge (印章) qui se pose quand la fiche arrive à l'écran */
     .sc-seal {
@@ -380,9 +380,9 @@
 
     /* — Langue : la carte de vocabulaire qui se retourne — */
     .sc-flash {
-      align-self: center; width: min(100%, 300px); margin: auto;
+      align-self: flex-end; width: min(100%, 250px); margin: auto 0 0 auto;   /* en bas à droite : la photo reste visible */
       background: var(--sheet); color: var(--ink);
-      border: 0; border-radius: 18px; padding: 22px 20px 18px;
+      border: 0; border-radius: 18px; padding: 18px 18px 14px;
       font: inherit; text-align: center; cursor: pointer;
       box-shadow: 0 20px 50px rgba(0,0,0,.4);
       transform: rotate(-2deg);
@@ -393,7 +393,7 @@
       50%  { transform: rotate(-2deg) rotateX(90deg); }
       100% { transform: rotate(-2deg) rotateX(0); }
     }
-    .sc-flash-zh { display: block; font-family: var(--brush); font-size: clamp(3rem, 5.4vw, 4.2rem); line-height: 1.15; min-height: 1.2em; }
+    .sc-flash-zh { display: block; font-family: var(--brush); font-size: clamp(2.6rem, 4.4vw, 3.4rem); line-height: 1.15; min-height: 1.2em; }
     .sc-flash-py { display: block; margin-top: 6px; font-family: var(--display); font-weight: 800; font-size: 1.15rem; color: var(--accent); }
     .sc-flash-fr { display: block; margin-top: 4px; font-size: .95rem; font-weight: 600; color: var(--body); }
     .sc-flash-hint { display: block; margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(20,24,29,.16); font-size: .76rem; font-weight: 500; color: var(--muted); }
@@ -579,6 +579,16 @@
       .sc-ico-fr { opacity: 0; }
     }
   </style>
+  <script>
+    /* Photos : essaie chaque fichier de la liste data-srcs, dans l'ordre, jusqu'à ce qu'un se charge.
+       Les .jpg passent avant les .HEIC car seul Safari sait afficher le HEIC. */
+    function scNextSrc(img) {
+      var list = (img.getAttribute('data-srcs') || '').split('|');
+      var i = +(img.getAttribute('data-i') || 0);
+      if (i < list.length && list[i]) { img.setAttribute('data-i', i + 1); img.src = list[i]; }
+      else { img.onerror = null; img.style.display = 'none'; }
+    }
+  </script>
 </head>
 <body>
 
@@ -740,9 +750,8 @@
   <!-- Université -->
   <article class="sc-detail sc-reveal" id="sc-universite">
     <div class="sc-panel">
-      <!-- Photo : déposez "campus.jpg" dans le dossier /study. Sinon la photo de Pékin du site est utilisée. -->
-      <img class="sc-panel-photo" src="campus.jpg" alt="Campus universitaire en Chine" loading="lazy"
-           onerror="if(!this.dataset.f){this.dataset.f=1;this.src='../Beijing1.jpg'}else{this.style.display='none'}">
+      <!-- Photo : « Juniors Academy Beijing » (.jpg de préférence, sinon .HEIC), dans /study ou à la racine du site -->
+      <img class="sc-panel-photo" src="Juniors%20Academy%20Beijing.jpg" data-srcs="../Juniors%20Academy%20Beijing.jpg|Juniors%20Academy%20Beijing.HEIC|../Juniors%20Academy%20Beijing.HEIC|../Beijing1.jpg" alt="Étudiants de Juniors Academy à Pékin" loading="lazy" onerror="scNextSrc(this)">
       <span class="sc-panel-mark" aria-hidden="true">大学</span>
       <span class="sc-seal" aria-hidden="true">学</span>
       <div class="sc-stairs" role="img" aria-label="Les niveaux d'études possibles : langue, année préparatoire, licence, master, doctorat">
@@ -776,16 +785,15 @@
   <!-- Langue -->
   <article class="sc-detail sc-reveal" id="sc-langue">
     <div class="sc-panel">
-      <!-- Photo : déposez "langue.jpg" dans le dossier /study. -->
-      <img class="sc-panel-photo" src="langue.jpg" alt="Cours de chinois" loading="lazy"
-           onerror="if(!this.dataset.f){this.dataset.f=1;this.src='../chinaembassyalgiers.jpeg'}else{this.style.display='none'}">
+      <!-- Photo : « Juniors Academy Students » (.jpg de préférence, sinon .heic), dans /study ou à la racine du site -->
+      <img class="sc-panel-photo" src="Juniors%20Academy%20Students.jpg" data-srcs="../Juniors%20Academy%20Students.jpg|Juniors%20Academy%20Students.heic|../Juniors%20Academy%20Students.heic|../chinaembassyalgiers.jpeg" alt="Élèves de Juniors Academy en Chine" loading="lazy" onerror="scNextSrc(this)">
       <span class="sc-panel-mark" aria-hidden="true">汉语</span>
       <span class="sc-seal" aria-hidden="true">语</span>
       <button type="button" class="sc-flash" id="scFlash" aria-label="Carte de vocabulaire : afficher le mot suivant">
         <span class="sc-flash-zh" id="scFlashZh" lang="zh">你好</span>
         <span class="sc-flash-py" id="scFlashPy">nǐ hǎo</span>
         <span class="sc-flash-fr" id="scFlashFr">Bonjour</span>
-        <span class="sc-flash-hint">Touchez la carte pour le mot suivant</span>
+        <span class="sc-flash-hint">Touchez pour le mot suivant</span>
       </button>
     </div>
     <div>
@@ -804,8 +812,8 @@
   <!-- Métier -->
   <article class="sc-detail sc-reveal" id="sc-metier">
     <div class="sc-panel">
-      <!-- Photo : déposez "metier.jpg" dans le dossier /study. -->
-      <img class="sc-panel-photo" src="metier.jpg" alt="Formation professionnelle en Chine" loading="lazy" onerror="this.style.display='none'">
+      <!-- Photo : « Juniors Academy Shanghai » (.jpg de préférence, sinon .HEIC), dans /study ou à la racine du site -->
+      <img class="sc-panel-photo" src="Juniors%20Academy%20Shanghai.jpg" data-srcs="../Juniors%20Academy%20Shanghai.jpg|Juniors%20Academy%20Shanghai.HEIC|../Juniors%20Academy%20Shanghai.HEIC" alt="Juniors Academy à Shanghai" loading="lazy" onerror="scNextSrc(this)">
       <span class="sc-panel-mark" aria-hidden="true">工匠</span>
       <span class="sc-seal" aria-hidden="true">工</span>
       <div class="sc-gears" aria-hidden="true">
@@ -891,7 +899,7 @@
 
 <!-- ==================== 6. RENVOI SÉJOURS JUNIORS ==================== -->
 <section class="sc-junior sc-reveal">
-  <a href="../#jah-chine">
+  <a href="https://www.juniors.academy">
     <span>
       <b>Votre enfant a entre 6 et 18 ans ?</b>
       <span>Découvrez aussi notre séjour culturel à Pékin : Grande Muraille, Cité interdite et ateliers de mandarin.</span>
