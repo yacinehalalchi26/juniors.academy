@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Juniors CRM</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#14181D">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       JUNIORS CRM — leads, follow-ups, bookings
+       One file. Data is saved to a folder on this Mac
+       (crm-data.json + a dated backup per day).
+       ============================================================ */
+    :root {
+      --ink: #14181D; --paper: #FAFAF7; --card: #fff;
+      --accent: #FF3B6B; --accent-soft: rgba(255,59,107,.1); --accent-text: #C8184A;
+      --highlight: #FFD23F; --highlight-soft: rgba(255,210,63,.32);
+      --ok: #1E8E5A; --ok-soft: rgba(30,142,90,.12);
+      --blue: #2B6FD6; --blue-soft: rgba(43,111,214,.11);
+      --muted: #6B737D; --body: #3D444C; --line: rgba(20,24,29,.1);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+      --display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+      --side: 236px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--paper); color: var(--ink);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+    .num { font-variant-numeric: tabular-nums; }
+    [hidden] { display: none !important; }
+
+    .app { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); min-height: 100%; }
+
+    /* ---------- Sidebar ---------- */
+    .side {
+      position: sticky; top: 0; height: 100vh; height: 100dvh;
+      background: var(--ink); color: #fff;
+      display: flex; flex-direction: column; padding: 18px 12px 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; padding: 2px 8px 18px; }
+    .seal { flex: none; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: .95rem; transform: rotate(-5deg); color: #fff; }
+    .brand b { display: block; font-family: var(--display); font-size: 1.12rem; letter-spacing: -.01em; line-height: 1.1; }
+    .brand span { font-size: .76rem; color: rgba(255,255,255,.55); }
+    .nav { display: grid; gap: 3px; }
+    .nav button {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      padding: 10px 10px; border: 0; border-radius: 10px; background: transparent;
+      color: rgba(255,255,255,.78); font-weight: 600; font-size: .93rem; text-align: left;
+    }
+    .nav button:hover { background: rgba(255,255,255,.07); color: #fff; }
+    .nav button[aria-current="page"] { background: rgba(255,255,255,.13); color: #fff; }
+    .nav svg { width: 17px; height: 17px; flex: none; opacity: .85; }
+    .nav .count { margin-left: auto; min-width: 24px; padding: 1px 7px; border-radius: 999px; background: rgba(255,255,255,.12); font-size: .76rem; font-weight: 700; text-align: center; }
+    .nav .count.hot { background: var(--highlight); color: var(--ink); }
+    .nav hr { border: 0; border-top: 1px solid rgba(255,255,255,.1); margin: 8px 6px; }
+
+    .side-foot { margin-top: auto; padding: 12px 8px 0; border-top: 1px solid rgba(255,255,255,.1); font-size: .8rem; color: rgba(255,255,255,.62); }
+    .save-state { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 10px; line-height: 1.35; }
+    .dot { flex: none; width: 9px; height: 9px; border-radius: 50%; margin-top: 4px; background: var(--highlight); }
+    .dot.ok { background: #3DDC84; } .dot.bad { background: var(--accent); }
+    .save-state b { display: block; color: #fff; font-weight: 600; }
+    .side-links { display: grid; gap: 2px; }
+    .side-links button { background: none; border: 0; padding: 5px 0; text-align: left; color: rgba(255,255,255,.72); font-size: .8rem; font-weight: 500; }
+    .side-links button:hover { color: #fff; text-decoration: underline; }
+
+    /* ---------- Main ---------- */
+    .main { min-width: 0; padding: clamp(14px, 2.2vw, 26px) clamp(14px, 2.6vw, 32px) 50px; }
+    .bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 16px; }
+    .bar h1 { margin: 0 auto 0 0; font-family: var(--display); font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -.02em; line-height: 1.1; }
+    .bar h1 small { display: block; margin-top: 4px; font-family: 'Inter', sans-serif; font-size: .86rem; font-weight: 500; letter-spacing: 0; color: var(--muted); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 40px; padding: 8px 16px; border-radius: 999px; border: 1px solid transparent;
+      font-weight: 600; font-size: .9rem; white-space: nowrap;
+      transition: transform .2s var(--ease), background .2s, border-color .2s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .6; cursor: default; }
+    .btn svg { width: 16px; height: 16px; flex: none; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #f02a5c; }
+    .btn-light { background: #fff; border-color: var(--line); color: var(--ink); }
+    .btn-light:hover { border-color: rgba(20,24,29,.3); }
+    .btn-danger { background: transparent; border-color: rgba(255,59,107,.4); color: var(--accent-text); }
+    .btn-danger:hover { background: var(--accent-soft); }
+    .btn-small { min-height: 32px; padding: 4px 12px; font-size: .82rem; }
+
+    .notice { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 16px; padding: 12px 16px; border-radius: 14px; background: var(--highlight-soft); font-size: .9rem; }
+    .notice.bad { background: var(--accent-soft); }
+
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 18px; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; text-align: left; }
+    button.stat:hover { border-color: rgba(20,24,29,.3); }
+    .stat b { display: block; font-family: var(--display); font-size: clamp(1.25rem, 2vw, 1.7rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+    .stat span { display: block; margin-top: 3px; font-size: .82rem; color: var(--muted); }
+    .stat--alert { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .stat--alert span { color: rgba(255,255,255,.7); }
+    .stat--alert b { color: var(--highlight); }
+
+    .tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 12px; }
+    .search { position: relative; flex: 1 1 260px; max-width: 440px; }
+    .search svg { position: absolute; left: 13px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    .search input { width: 100%; min-height: 42px; padding: 8px 14px 8px 38px; border-radius: 999px; border: 1px solid var(--line); background: #fff; }
+    .tools select { min-height: 38px; padding: 6px 30px 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: .86rem; font-weight: 600; margin-left: auto; }
+
+    .table-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: .78rem; font-weight: 600; color: var(--muted); padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; background: #FCFCFA; }
+    td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    tbody tr { cursor: pointer; transition: background .15s; }
+    tbody tr:hover { background: #FAFAF4; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr.is-due { box-shadow: inset 4px 0 0 var(--accent); }
+    tbody tr.is-today { box-shadow: inset 4px 0 0 var(--highlight); }
+    .t-right { text-align: right; }
+    .c-num { font-weight: 700; font-size: .84rem; white-space: nowrap; color: var(--body); }
+    .c-name { min-width: 170px; }
+    .c-name strong { display: block; font-weight: 700; }
+    .sub { display: block; font-size: .8rem; color: var(--muted); margin-top: 2px; }
+    .sub.only-m { display: none; }
+    .c-last .sub { max-width: 30ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .links { display: flex; gap: 6px; margin-top: 5px; }
+    .link-pill { display: inline-flex; align-items: center; min-height: 26px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--line); font-size: .76rem; font-weight: 600; color: var(--ink); text-decoration: none; background: #fff; }
+    .link-pill:hover { border-color: var(--ink); }
+    .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .78rem; font-weight: 700; white-space: nowrap; }
+    .tag-late { background: var(--accent-soft); color: var(--accent-text); }
+    .tag-today { background: var(--highlight); color: var(--ink); }
+    .tag-soon { background: rgba(20,24,29,.06); color: var(--body); }
+    .st-lead { background: var(--blue-soft); color: var(--blue); }
+    .st-talking { background: var(--highlight-soft); color: #6B5200; }
+    .st-booked { background: var(--ok-soft); color: var(--ok); }
+    .st-lost { background: rgba(20,24,29,.08); color: var(--muted); }
+    .bal { font-weight: 700; white-space: nowrap; }
+    .bal-zero { color: var(--ok); }
+
+    .empty { padding: clamp(36px, 6vw, 70px) 20px; text-align: center; }
+    .empty h2 { font-family: var(--display); font-size: 1.4rem; margin: 0 0 8px; letter-spacing: -.01em; }
+    .empty p { margin: 0 auto 18px; max-width: 46ch; color: var(--muted); }
+
+    /* ---------- Record sheet ---------- */
+    dialog.sheet { margin: 0 0 0 auto; padding: 0; border: 0; width: min(620px, 100vw); max-width: 100vw; height: 100dvh; max-height: 100dvh; background: var(--paper); color: var(--ink); box-shadow: -20px 0 60px rgba(20,24,29,.25); }
+    dialog.sheet::backdrop { background: rgba(20,24,29,.45); }
+    dialog.sheet[open] { animation: sheet-in .35s var(--ease); }
+    @keyframes sheet-in { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+    .sheet form { display: flex; flex-direction: column; height: 100%; }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; background: var(--ink); color: #fff; }
+    .sheet-head h2 { margin: 0; font-family: var(--display); font-size: 1.2rem; letter-spacing: -.01em; }
+    .sheet-head p { margin: 2px 0 0; font-size: .82rem; color: var(--highlight); font-weight: 600; }
+    .x { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; font-size: 1.3rem; line-height: 1; }
+    .sheet-body { flex: 1; overflow-y: auto; padding: 18px 20px 30px; }
+    .sheet-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 20px; background: #fff; border-top: 1px solid var(--line); }
+    .sheet-foot div { display: flex; gap: 8px; }
+
+    fieldset { border: 1px solid var(--line); border-radius: 16px; background: #fff; margin: 0 0 16px; padding: 16px; min-width: 0; }
+    legend { font-family: var(--display); font-weight: 800; font-size: 1.02rem; padding: 0 8px; margin-left: -8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .full { grid-column: 1 / -1; }
+    .field label, .lab { display: block; font-size: .8rem; font-weight: 600; color: var(--body); margin: 0 0 5px; }
+    .field input, .field select, .field textarea, .add-row input { width: 100%; min-height: 42px; padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(20,24,29,.18); background: #fff; }
+    .field textarea { min-height: 84px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus, .add-row input:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(20,24,29,.08); }
+    .field .err { display: none; margin-top: 4px; font-size: .78rem; color: var(--accent-text); }
+    .field.invalid input { border-color: var(--accent); }
+    .field.invalid .err { display: block; }
+    .readout { min-height: 42px; display: flex; align-items: center; padding: 8px 12px; border-radius: 10px; background: rgba(20,24,29,.05); font-weight: 700; }
+    .seg { display: flex; gap: 6px; }
+    .seg label { flex: 1; margin: 0; }
+    .seg input { position: absolute; opacity: 0; pointer-events: none; }
+    .seg span { display: grid; place-items: center; min-height: 42px; padding: 0 6px; border-radius: 10px; border: 1px solid rgba(20,24,29,.18); font-weight: 600; font-size: .88rem; cursor: pointer; text-align: center; }
+    .seg input:checked + span { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .seg input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .seg--status input[value="booked"]:checked + span { background: var(--ok); border-color: var(--ok); }
+    .seg--status input[value="lost"]:checked + span { background: var(--muted); border-color: var(--muted); }
+
+    .quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .add-row { display: grid; gap: 8px; align-items: end; margin-top: 4px; }
+    .add-row--call { grid-template-columns: 150px 1fr auto; }
+    .add-row--pay { grid-template-columns: 150px 130px 1fr auto; }
+    .log { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+    .log:empty { display: none; }
+    .log li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); }
+    .log .when { flex: none; font-weight: 700; font-size: .84rem; white-space: nowrap; min-width: 84px; }
+    .log .what { flex: 1; font-size: .9rem; color: var(--body); white-space: pre-wrap; word-break: break-word; }
+    .log .amt { font-weight: 700; white-space: nowrap; }
+    .log button { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 0; background: transparent; color: var(--muted); font-size: 1.1rem; line-height: 1; }
+    .log button:hover { background: var(--accent-soft); color: var(--accent-text); }
+    .money { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0 4px; }
+    .money div { padding: 10px 12px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); }
+    .money span { display: block; font-size: .76rem; color: var(--muted); }
+    .money b { display: block; font-family: var(--display); font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; }
+    .money .is-due { background: var(--accent-soft); border-color: transparent; }
+    .money .is-due b { color: var(--accent-text); }
+    .money .is-paid { background: var(--ok-soft); border-color: transparent; }
+    .money .is-paid b { color: var(--ok); }
+
+    /* ---------- "Where to save" screen ---------- */
+    .setup { position: fixed; inset: 0; z-index: 500; background: rgba(20,24,29,.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: grid; place-items: center; padding: 20px; overflow-y: auto; }
+    .setup-card { width: min(100%, 470px); background: var(--paper); border-radius: 24px; padding: 30px 28px 24px; }
+    .setup-card .seal { width: 46px; height: 46px; border-radius: 13px; font-size: 1.1rem; margin: 0 0 16px; }
+    .setup-card h2 { margin: 0 0 10px; font-family: var(--display); font-size: 1.5rem; letter-spacing: -.02em; line-height: 1.15; }
+    .setup-card p { margin: 0 0 12px; color: var(--body); }
+    .setup-card ol { margin: 0 0 18px; padding-left: 20px; color: var(--body); }
+    .setup-card li { margin: 0 0 5px; }
+    .setup-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 6px; }
+    .linkish { background: none; border: 0; padding: 0; color: var(--muted); font-weight: 600; text-decoration: underline; font-size: .88rem; }
+
+    .toast { position: fixed; left: 50%; bottom: 22px; z-index: 600; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-weight: 600; font-size: .9rem; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
+    .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ---------- Narrow windows ---------- */
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .side { position: static; height: auto; padding: 12px; }
+      .brand { padding-bottom: 10px; }
+      .nav { display: flex; overflow-x: auto; gap: 4px; scrollbar-width: none; }
+      .nav::-webkit-scrollbar { display: none; }
+      .nav button { width: auto; white-space: nowrap; padding: 8px 12px; }
+      .nav hr { display: none; }
+      .side-foot { margin-top: 10px; display: flex; gap: 8px 20px; flex-wrap: wrap; align-items: center; }
+      .save-state { margin: 0; }
+      .side-links { display: flex; gap: 14px; flex-wrap: wrap; }
+      .stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hide-m { display: none; }
+      .sub.only-m { display: block; margin: 0 0 2px; font-weight: 600; white-space: nowrap; font-size: .74rem; }
+      .c-name { min-width: 0; width: 44%; }
+      th, td { padding: 11px 8px; }
+      th:first-child, td:first-child, .c-name { padding-left: 14px; }
+      .tag { font-size: .72rem; padding: 3px 8px; white-space: normal; }
+      .tools select { margin-left: 0; }
+      .grid { grid-template-columns: 1fr; }
+      .seg--status { flex-wrap: wrap; } .seg--status label { flex: 1 1 45%; }
+      .add-row--call, .add-row--pay { grid-template-columns: 1fr 1fr; }
+      .add-row .grow, .add-row .btn { grid-column: 1 / -1; }
+      .money { grid-template-columns: 1fr 1fr; } .money div:last-child { grid-column: 1 / -1; }
+      .sheet-body { padding: 14px 14px 26px; } fieldset { padding: 14px 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <span class="seal" aria-hidden="true">JA</span>
+      <div><b>Juniors CRM</b><span>Juniors Academy</span></div>
+    </div>
+
+    <nav class="nav" aria-label="Views">
+      <button type="button" data-view="followups">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11 11 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+        Follow-ups <span class="count" id="nFollow">0</span>
+      </button>
+      <button type="button" data-view="leads">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        Leads <span class="count" id="nLeads">0</span>
+      </button>
+      <button type="button" data-view="bookings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14v17l-7-4-7 4zM9 9l2 2 4-4"/></svg>
+        Bookings <span class="count" id="nBooked">0</span>
+      </button>
+      <button type="button" data-view="lost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg>
+        Lost leads <span class="count" id="nLost">0</span>
+      </button>
+      <hr>
+      <button type="button" data-view="all">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        Everyone <span class="count" id="nAll">0</span>
+      </button>
+    </nav>
+
+    <div class="side-foot">
+      <p class="save-state"><span class="dot" id="saveDot"></span><span><b id="saveTitle">Starting…</b><span id="saveSub"></span></span></p>
+      <div class="side-links">
+        <button type="button" id="btnFolder">Choose save folder</button>
+        <button type="button" id="btnCsv">Export to Excel (CSV)</button>
+        <button type="button" id="btnBackup">Download a backup copy</button>
+        <button type="button" id="btnRestore">Restore from a backup</button>
+        <input type="file" id="fileRestore" accept="application/json,.json" hidden>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="bar">
+      <h1 id="viewTitle">Follow-ups<small id="viewSub"></small></h1>
+      <button type="button" class="btn btn-primary" id="btnNew">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span id="btnNewLabel">New lead</span>
+      </button>
+    </div>
+
+    <div class="notice" id="notice" hidden>
+      <span id="noticeText"></span>
+      <button type="button" class="btn btn-light btn-small" id="noticeBtn"></button>
+    </div>
+
+    <section class="stats" aria-label="Summary">
+      <button type="button" class="stat stat--alert" data-view="followups"><b class="num" id="sDue">0</b><span>to call today</span></button>
+      <button type="button" class="stat" data-view="leads"><b class="num" id="sLeads">0</b><span>open leads</span></button>
+      <button type="button" class="stat" data-view="bookings"><b class="num" id="sValue">0</b><span id="sValueSub">booked</span></button>
+      <button type="button" class="stat" data-view="bookings"><b class="num" id="sBal">0</b><span>still to collect</span></button>
+    </section>
+
+    <div class="tools">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="q" placeholder="Search a name, reference or phone" aria-label="Search" autocomplete="off">
+      </label>
+      <select id="sort" aria-label="Sort">
+        <option value="auto">Best order for this view</option>
+        <option value="recent">Newest first</option>
+        <option value="follow">By follow-up date</option>
+        <option value="name">By name</option>
+        <option value="balance">By balance</option>
+      </select>
+      <select id="currency" aria-label="Currency" style="margin-left:0"><option>DA</option><option>€</option><option>£</option><option>$</option></select>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table id="table">
+          <thead>
+            <tr>
+              <th class="hide-m">Ref</th><th>Name</th><th>Status</th><th class="hide-m">Contact</th>
+              <th class="hide-m">Last contact</th><th id="thFollow">Follow-up</th>
+              <th class="t-right">Balance</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="empty" hidden>
+        <h2 id="emptyTitle"></h2>
+        <p id="emptyText"></p>
+        <button type="button" class="btn btn-primary" id="btnNew2">New lead</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ==================== RECORD SHEET ==================== -->
+<dialog class="sheet" id="sheet" aria-labelledby="sheetTitle">
+  <form id="form" novalidate>
+    <div class="sheet-head">
+      <div><h2 id="sheetTitle">New lead</h2><p id="sheetNum"></p></div>
+      <button type="button" class="x" id="btnClose" aria-label="Close">×</button>
+    </div>
+
+    <div class="sheet-body">
+      <fieldset>
+        <legend>Where they stand</legend>
+        <div class="seg seg--status" role="radiogroup" aria-label="Status">
+          <label><input type="radio" name="status" value="lead"><span>New lead</span></label>
+          <label><input type="radio" name="status" value="talking"><span>In discussion</span></label>
+          <label><input type="radio" name="status" value="booked"><span>Booked</span></label>
+          <label><input type="radio" name="status" value="lost"><span>Lost</span></label>
+        </div>
+        <div class="field" id="fldLost" style="margin-top:12px" hidden>
+          <label for="fLost">Why was it lost?</label>
+          <select id="fLost">
+            <option value="">Choose a reason</option>
+            <option>Too expensive</option><option>Dates did not work</option><option>Chose another agency</option>
+            <option>Visa or paperwork</option><option>Stopped answering</option><option>Changed their mind</option><option>Other</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>The person</legend>
+        <div class="grid">
+          <div class="field full" id="fldName">
+            <label for="fName">Full name</label>
+            <input id="fName" type="text" autocomplete="off" required>
+            <span class="err">Add a name to save this record.</span>
+          </div>
+          <div class="field"><label for="fPhone">Phone</label><input id="fPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="0550 00 00 00"></div>
+          <div class="field"><label for="fEmail">Email</label><input id="fEmail" type="email" autocomplete="off"></div>
+          <div class="field">
+            <span class="lab" id="labGender">Gender</span>
+            <div class="seg" role="radiogroup" aria-labelledby="labGender">
+              <label><input type="radio" name="gender" value="Male"><span>Male</span></label>
+              <label><input type="radio" name="gender" value="Female"><span>Female</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="fProgram">Program</label>
+            <input id="fProgram" type="text" list="programs" autocomplete="off" placeholder="Pick or type">
+            <datalist id="programs">
+              <option>England</option><option>Spain</option><option>Switzerland</option><option>China</option><option>Japan</option>
+              <option>South Korea</option><option>Finland</option><option>Canada</option><option>United States</option><option>Premier League football camp</option>
+              <option>Study in China: university</option><option>Study in China: language</option><option>Study in China: 2+6 vocational</option>
+            </datalist>
+          </div>
+          <div class="field"><label for="fDob">Date of birth</label><input id="fDob" type="date"></div>
+          <div class="field"><span class="lab">Age (calculated)</span><div class="readout" id="fAge">—</div></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Calls and follow-up</legend>
+        <div class="grid">
+          <div class="field"><span class="lab">Last contact</span><div class="readout" id="fLast">No call logged yet</div></div>
+          <div class="field">
+            <label for="fFollow">Follow up on</label>
+            <input id="fFollow" type="date">
+            <div class="quick">
+              <button type="button" class="btn btn-light btn-small" data-follow="1">Tomorrow</button>
+              <button type="button" class="btn btn-light btn-small" data-follow="3">In 3 days</button>
+              <button type="button" class="btn btn-light btn-small" data-follow="7">In 1 week</button>
+              <button type="button" class="btn btn-light btn-small" data-follow="0">None</button>
+            </div>
+          </div>
+        </div>
+        <span class="lab" style="margin-top:16px">Log a call</span>
+        <div class="add-row add-row--call">
+          <input id="cDate" type="date" aria-label="Call date">
+          <input id="cNote" class="grow" type="text" placeholder="What was said" aria-label="Call summary" autocomplete="off">
+          <button type="button" class="btn btn-light" id="btnAddCall">Add call</button>
+        </div>
+        <ul class="log" id="callLog"></ul>
+        <div class="field" style="margin-top:16px">
+          <label for="fComments">Comments</label>
+          <textarea id="fComments" placeholder="Anything worth remembering: expectations, allergies, passport, who decides…"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Payment</legend>
+        <div class="grid">
+          <div class="field"><label for="fFee">Program fee (<span class="cur">DA</span>)</label><input id="fFee" type="number" inputmode="decimal" min="0" step="any" placeholder="0"></div>
+          <div class="field"><label for="fDue">Payment due by</label><input id="fDue" type="date"></div>
+        </div>
+        <div class="money" aria-live="polite">
+          <div><span>Fee</span><b class="num" id="mFee">0</b></div>
+          <div><span>Paid so far</span><b class="num" id="mPaid">0</b></div>
+          <div id="mBalBox"><span>Balance remaining</span><b class="num" id="mBal">0</b></div>
+        </div>
+        <span class="lab" style="margin-top:14px">Record a payment</span>
+        <div class="add-row add-row--pay">
+          <input id="pDate" type="date" aria-label="Payment date">
+          <input id="pAmount" type="number" inputmode="decimal" min="0" step="any" placeholder="Amount" aria-label="Amount paid">
+          <input id="pNote" class="grow" type="text" placeholder="Cash, transfer, deposit…" aria-label="Payment note" autocomplete="off">
+          <button type="button" class="btn btn-light" id="btnAddPay">Add payment</button>
+        </div>
+        <ul class="log" id="payLog"></ul>
+      </fieldset>
+    </div>
+
+    <div class="sheet-foot">
+      <button type="button" class="btn btn-danger" id="btnDelete">Delete</button>
+      <div>
+        <button type="button" class="btn btn-light" id="btnCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<!-- ==================== WHERE TO SAVE ==================== -->
+<div class="setup" id="setup" hidden>
+  <div class="setup-card" role="dialog" aria-labelledby="setupTitle">
+    <span class="seal" aria-hidden="true">JA</span>
+    <h2 id="setupTitle"></h2>
+    <div id="setupBody"></div>
+    <div class="setup-actions">
+      <button type="button" class="btn btn-primary" id="setupMain"></button>
+      <button type="button" class="linkish" id="setupAlt"></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ==================== Data ==================== */
+  var KEY = 'ja_crm_v1';                 /* quick copy inside the browser, used while the folder connects */
+  var DATA_FILE = 'crm-data.json';       /* the real data, in the folder chosen on the Mac */
+  var KEEP_BACKUPS = 60;
+  var FS_OK = typeof window.showDirectoryPicker === 'function';
+  var state = { seq: {}, bookings: [], currency: 'DA', savedAt: null };
+  var STATUS = { lead: 'New lead', talking: 'In discussion', booked: 'Booked', lost: 'Lost' };
+
+  function normalize(b) {
+    b.payments = b.payments || []; b.calls = b.calls || [];
+    if (b.gender === 'Garçon') b.gender = 'Male'; if (b.gender === 'Fille') b.gender = 'Female';
+    if (!STATUS[b.status]) b.status = (toNum(b.fee) > 0 || b.payments.length) ? 'booked' : 'lead';
+    return b;
+  }
+  function adopt(d) {
+    state.seq = d.seq || {}; state.currency = d.currency || 'DA'; state.savedAt = d.savedAt || null;
+    state.bookings = (d.bookings || []).map(normalize);
+    state.seq = seqFrom(state.bookings, state.seq);
+  }
+  function payload() { return { app: 'juniors-crm', version: 3, savedAt: state.savedAt, currency: state.currency, seq: state.seq, bookings: state.bookings }; }
+  function loadMirror() {
+    try { var d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && Array.isArray(d.bookings)) adopt(d); } catch (e) {}
+  }
+  function mirror() { try { localStorage.setItem(KEY, JSON.stringify(payload())); } catch (e) {} }
+  /* every change goes through here */
+  function commit() { state.savedAt = new Date().toISOString(); mirror(); scheduleWrite(); render(); }
+
+  /* ==================== Saving to a folder on the Mac ==================== */
+  var dir = null, writeTimer = null, writeChain = Promise.resolve(), pruned = false, lastWrite = null, writeError = null;
+
+  function idb() {
+    return new Promise(function (res, rej) {
+      var r = indexedDB.open('juniors-crm', 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore('kv'); };
+      r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); };
+    });
+  }
+  function idbGet(k) { return idb().then(function (db) { return new Promise(function (res, rej) { var q = db.transaction('kv').objectStore('kv').get(k); q.onsuccess = function () { res(q.result); }; q.onerror = function () { rej(q.error); }; }); }); }
+  function idbSet(k, v) { return idb().then(function (db) { return new Promise(function (res, rej) { var t = db.transaction('kv', 'readwrite'); t.objectStore('kv').put(v, k); t.oncomplete = function () { res(); }; t.onerror = function () { rej(t.error); }; }); }); }
+
+  async function writeText(d, name, text) {
+    var fh = await d.getFileHandle(name, { create: true });
+    var w = await fh.createWritable(); await w.write(text); await w.close();
+  }
+  async function readDataFile(d) {
+    var fh;
+    try { fh = await d.getFileHandle(DATA_FILE); } catch (e) { if (e && e.name === 'NotFoundError') return { data: null, raw: '' }; throw e; }
+    var raw = await (await fh.getFile()).text();
+    if (!raw.trim()) return { data: null, raw: '' };
+    try { var j = JSON.parse(raw); j = j.data || j; if (!Array.isArray(j.bookings)) throw new Error('shape'); return { data: j, raw: raw }; }
+    catch (e) { return { data: null, raw: raw, unreadable: true }; }
+  }
+  async function prune(bdir) {
+    var names = [];
+    for await (var entry of bdir.values()) { if (entry.kind === 'file' && /^crm-backup-\d{4}-\d{2}-\d{2}\.json$/.test(entry.name)) names.push(entry.name); }
+    names.sort();
+    while (names.length > KEEP_BACKUPS) { await bdir.removeEntry(names.shift()); }
+  }
+  function scheduleWrite() { if (!dir) return; clearTimeout(writeTimer); writeTimer = setTimeout(writeNow, 250); }
+  function writeNow() {
+    clearTimeout(writeTimer); writeTimer = null;
+    if (!dir) return writeChain;
+    var d = dir, text = JSON.stringify(payload(), null, 2);
+    writeChain = writeChain.then(async function () {
+      await writeText(d, DATA_FILE, text);
+      var bdir = await d.getDirectoryHandle('backups', { create: true });
+      await writeText(bdir, 'crm-backup-' + todayISO() + '.json', text);     /* one copy per day, the last 60 days are kept */
+      if (!pruned) { pruned = true; try { await prune(bdir); } catch (e) {} }
+      lastWrite = new Date(); writeError = null; saveStatus();
+    }).catch(function (e) { writeError = e || new Error('write'); saveStatus(); });
+    return writeChain;
+  }
+
+  function sameIds(a, b) {
+    if (a.length !== b.length) return false;
+    var s = {}; a.forEach(function (x) { s[x.id] = 1; });
+    return b.every(function (x) { return s[x.id]; });
+  }
+  /* fresh = the folder was just picked by hand (not simply reopened) */
+  async function connect(handle, fresh) {
+    var f = await readDataFile(handle);
+    var fileHas = !!(f.data && f.data.bookings.length), localHas = state.bookings.length > 0;
+    var useFile = false;
+    if (fileHas && !localHas) useFile = true;
+    else if (fileHas && localHas) {
+      if (fresh && !sameIds(f.data.bookings, state.bookings)) {
+        useFile = confirm('This folder already holds ' + f.data.bookings.length + ' records' + (f.data.savedAt ? ' (saved ' + frDate(f.data.savedAt.slice(0, 10)) + ')' : '') + '.\n\n' +
+          'OK: open the records from the folder (recommended).\nCancel: replace them with the ' + state.bookings.length + ' records currently on screen.');
+      } else useFile = (f.data.savedAt || '') >= (state.savedAt || '');
+    }
+    if ((f.unreadable || (fileHas && !useFile)) && f.raw) {                  /* never overwrite without keeping a copy */
+      var bdir = await handle.getDirectoryHandle('backups', { create: true });
+      await writeText(bdir, 'crm-replaced-' + new Date().toISOString().replace(/[:.]/g, '-') + '.json', f.raw);
+    }
+    if (useFile) { adopt(f.data); mirror(); }
+    dir = handle; pruned = false;
+    try { await idbSet('dir', handle); } catch (e) {}
+    if (!useFile) { if (!state.savedAt) state.savedAt = new Date().toISOString(); await writeNow(); }
+    else { lastWrite = new Date(); writeError = null; }
+    setup(null); render();
+  }
+  async function pickFolder() {
+    var h;
+    try { h = await window.showDirectoryPicker({ id: 'juniors-crm', mode: 'readwrite', startIn: 'documents' }); }
+    catch (e) { if (e && e.name === 'AbortError') return; toast("That folder can't be used. Make a new folder inside Documents and pick it."); return; }
+    try { await connect(h, true); toast('Saving to the folder “' + h.name + '” on this Mac'); }
+    catch (e) { toast("Couldn't open that folder. Try a new folder inside Documents."); }
+  }
+  async function reopen(h) {
+    try {
+      var p = h.requestPermission ? await h.requestPermission({ mode: 'readwrite' }) : 'granted';
+      if (p !== 'granted') { toast('Permission is needed to save to the folder.'); return; }
+      await connect(h, false);
+    } catch (e) { setup('missing', h); }
+  }
+  async function startStorage() {
+    if (!FS_OK) { saveStatus(); render(); return; }
+    var h = null; try { h = await idbGet('dir'); } catch (e) {}
+    if (!h) { setup('first'); saveStatus(); return; }
+    var p = 'prompt'; try { p = h.queryPermission ? await h.queryPermission({ mode: 'readwrite' }) : 'granted'; } catch (e) {}
+    if (p === 'granted') { try { await connect(h, false); } catch (e) { setup('missing', h); } }
+    else setup('reopen', h);
+    saveStatus();
+  }
+
+  /* first | reopen | missing | null */
+  var pendingHandle = null;
+  function setup(mode, h) {
+    var el = $('setup'); pendingHandle = h || null;
+    if (!mode) { el.hidden = true; saveStatus(); return; }
+    el.hidden = false; el.setAttribute('data-mode', mode);
+    if (mode === 'first') {
+      $('setupTitle').textContent = 'Where should your CRM save its data?';
+      $('setupBody').innerHTML = '<p>Pick a folder on this Mac. Every change is written there straight away, and a dated backup copy is kept for each day.</p>' +
+        '<ol><li>Click <b>Choose folder</b>.</li><li>Open <b>Documents</b>, click <b>New Folder</b> and name it <b>Juniors CRM</b>.</li><li>Select it, then allow the CRM to edit files in it.</li></ol>';
+      $('setupMain').textContent = 'Choose folder'; $('setupAlt').textContent = 'Not now';
+    } else if (mode === 'reopen') {
+      $('setupTitle').textContent = 'Open your data';
+      $('setupBody').innerHTML = '<p>Your records are in the folder <b>' + esc(h.name) + '</b> on this Mac. Click below to open them.</p>' +
+        '<p>If Chrome asks, choose <b>Allow on every visit</b> and you will not see this step again.</p>';
+      $('setupMain').textContent = 'Open my data'; $('setupAlt').textContent = 'Use a different folder';
+    } else {
+      $('setupTitle').textContent = "The save folder can't be found";
+      $('setupBody').innerHTML = '<p>The folder <b>' + esc(h ? h.name : '') + '</b> was moved, renamed or deleted. Pick it again, or pick a new one. Nothing on screen is lost.</p>';
+      $('setupMain').textContent = 'Choose folder'; $('setupAlt').textContent = 'Not now';
+    }
+  }
+
+  function saveStatus() {
+    var dot = $('saveDot'), t = $('saveTitle'), s = $('saveSub'), n = $('notice');
+    $('btnFolder').hidden = !FS_OK;
+    $('btnFolder').textContent = dir ? 'Change save folder' : 'Choose save folder';
+    n.hidden = true; n.classList.remove('bad');
+    if (!FS_OK) {
+      dot.className = 'dot'; t.textContent = 'Saved in this browser only'; s.textContent = 'Open in Google Chrome to save to your Mac';
+      n.hidden = false; $('noticeText').textContent = "This browser can't save to a folder on your Mac. Open the CRM in Google Chrome to turn that on. Until then, download a backup copy regularly.";
+      $('noticeBtn').textContent = 'Download a backup'; $('noticeBtn').onclick = backup;
+    } else if (writeError) {
+      dot.className = 'dot bad'; t.textContent = "Couldn't save to the folder"; s.textContent = 'Your changes are safe on screen';
+      n.hidden = false; n.classList.add('bad'); $('noticeText').textContent = "The last change couldn't be written to the folder on your Mac (moved, renamed, or permission removed). Reconnect it to keep saving.";
+      $('noticeBtn').textContent = 'Reconnect folder'; $('noticeBtn').onclick = pickFolder;
+    } else if (dir) {
+      dot.className = 'dot ok'; t.textContent = 'Saved on this Mac';
+      s.textContent = (dir.name ? 'Folder “' + dir.name + '”' : 'In your chosen folder') + (lastWrite ? ', ' + lastWrite.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '');
+    } else {
+      dot.className = 'dot'; t.textContent = 'Not saved to your Mac yet'; s.textContent = 'Kept in this browser for now';
+      if ($('setup').hidden) {
+        n.hidden = false; $('noticeText').textContent = 'Your records are only inside this browser for now. Choose a folder on your Mac so they are saved for good.';
+        $('noticeBtn').textContent = 'Choose folder'; $('noticeBtn').onclick = pickFolder;
+      }
+    }
+  }
+
+  /* ==================== Helpers ==================== */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function todayISO() { var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+  function addDays(iso, n) { var d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function dayDiff(a, b) { return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000); }
+  function frDate(iso) { if (!iso) return ''; var p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+  function ago(iso) {
+    var n = dayDiff(iso, todayISO());
+    if (n <= 0) return 'today'; if (n === 1) return 'yesterday';
+    if (n < 30) return n + ' days ago';
+    if (n < 365) { var m = Math.round(n / 30); return m + (m === 1 ? ' month ago' : ' months ago'); }
+    var y = Math.floor(n / 365); return y + (y === 1 ? ' year ago' : ' years ago');
+  }
+  function ageFrom(dob) {
+    if (!dob) return null;
+    var t = todayISO().split('-').map(Number), b = dob.split('-').map(Number), a = t[0] - b[0];
+    if (t[1] < b[1] || (t[1] === b[1] && t[2] < b[2])) a--;
+    return (a >= 0 && a < 130) ? a : null;
+  }
+  var nf = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+  function money(n) { return nf.format(n || 0) + '\u00A0' + state.currency; }
+  function toNum(v) { var n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? n : 0; }
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function formatNum(y, n) { return 'JA-' + y + '-' + String(n).padStart(4, '0'); }
+  function nextNumber(commitIt) { var y = new Date().getFullYear(), n = (state.seq[y] || 0) + 1; if (commitIt) state.seq[y] = n; return formatNum(y, n); }
+  function seqFrom(list, base) {
+    var seq = Object.assign({}, base || {});
+    list.forEach(function (b) { var m = /^JA-(\d{4})-(\d+)$/.exec(b.num || ''); if (m) seq[m[1]] = Math.max(seq[m[1]] || 0, +m[2]); });
+    return seq;
+  }
+  function waNumber(phone) {
+    var d = String(phone || '').replace(/\D/g, ''); if (!d) return '';
+    if (d.indexOf('00') === 0) d = d.slice(2); else if (d.charAt(0) === '0') d = '213' + d.slice(1);
+    return d;
+  }
+  function byDateDesc(x, y) { return x.date < y.date ? 1 : -1; }
+  function paid(b) { return (b.payments || []).reduce(function (s, p) { return s + toNum(p.amount); }, 0); }
+  function balance(b) { return Math.max(0, toNum(b.fee) - paid(b)); }
+  function lastCall(b) { return (b.calls || []).slice().sort(byDateDesc)[0] || null; }
+  function lastPayment(b) { return (b.payments || []).slice().sort(byDateDesc)[0] || null; }
+  function isOpen(b) { return b.status === 'lead' || b.status === 'talking'; }
+  function hasFollow(b) { return b.status !== 'lost' && !!b.followUp; }
+  function isDue(b) { return hasFollow(b) && b.followUp <= todayISO(); }
+
+  /* ==================== Views ==================== */
+  var VIEWS = {
+    followups: { title: 'Follow-ups', sub: 'Who to call, most overdue first', test: hasFollow, sort: 'follow',
+                 empty: ['Nobody to follow up', 'Set a follow-up date on a lead or booking and it shows up here on the right day.'] },
+    leads:     { title: 'Leads', sub: 'People who have not booked yet', test: isOpen, sort: 'recent',
+                 empty: ['No open leads', 'Add everyone who asks about a program, even if they are only curious.'] },
+    bookings:  { title: 'Bookings', sub: 'Confirmed programs and their payments', test: function (b) { return b.status === 'booked'; }, sort: 'recent',
+                 empty: ['No bookings yet', 'When a lead confirms, open their record and set the status to Booked.'] },
+    lost:      { title: 'Lost leads', sub: 'Why people did not book', test: function (b) { return b.status === 'lost'; }, sort: 'recent',
+                 empty: ['No lost leads', 'When someone decides not to book, mark them Lost and note why. It is worth calling them again next season.'] },
+    all:       { title: 'Everyone', sub: 'All leads, bookings and lost leads', test: function () { return true; }, sort: 'recent',
+                 empty: ['Nothing here yet', 'Add your first lead. The reference number is created for you.'] }
+  };
+  var view = 'followups', query = '', sortBy = 'auto';
+
+  function visible() {
+    var v = VIEWS[view], q = query.trim().toLowerCase(), qd = q.replace(/\D/g, '');
+    var list = state.bookings.filter(function (b) {
+      if (!q) return v.test(b);                       /* a search looks through everyone */
+      if ([b.num, b.name, b.email, b.program, b.phone].join(' ').toLowerCase().indexOf(q) !== -1) return true;
+      return qd.length >= 3 && String(b.phone || '').replace(/\D/g, '').indexOf(qd) !== -1;
+    });
+    var s = sortBy === 'auto' ? v.sort : sortBy;
+    list.sort(function (a, b) {
+      if (s === 'name') return String(a.name).localeCompare(String(b.name), 'en');
+      if (s === 'balance') return balance(b) - balance(a);
+      if (s === 'follow') {
+        var fa = hasFollow(a) ? a.followUp : '', fb = hasFollow(b) ? b.followUp : '';
+        if (!fa && !fb) return 0; if (!fa) return 1; if (!fb) return -1;
+        return fa < fb ? -1 : fa > fb ? 1 : 0;
+      }
+      return (b.createdAt || '') < (a.createdAt || '') ? -1 : 1;
+    });
+    return list;
+  }
+  function followTag(b) {
+    if (b.status === 'lost') return '<span class="sub">' + esc(b.lostReason || 'No reason noted') + '</span>';
+    if (!b.followUp) return '<span class="sub">—</span>';
+    var n = dayDiff(todayISO(), b.followUp);
+    if (n < 0) return '<span class="tag tag-late">' + (-n) + (n === -1 ? ' day late' : ' days late') + '</span><span class="sub">' + frDate(b.followUp) + '</span>';
+    if (n === 0) return '<span class="tag tag-today">Today</span>';
+    return '<span class="tag tag-soon">' + (n === 1 ? 'Tomorrow' : 'In ' + n + ' days') + '</span><span class="sub">' + frDate(b.followUp) + '</span>';
+  }
+
+  function render() {
+    var all = state.bookings, t = todayISO();
+    var due = all.filter(isDue).length, open = all.filter(isOpen), booked = all.filter(VIEWS.bookings.test), lost = all.filter(VIEWS.lost.test);
+    $('sDue').textContent = due; $('sLeads').textContent = open.length;
+    $('sValue').textContent = money(booked.reduce(function (s, b) { return s + toNum(b.fee); }, 0));
+    var decided = booked.length + lost.length;
+    $('sValueSub').textContent = 'from ' + booked.length + (booked.length === 1 ? ' booking' : ' bookings') + (decided ? ', ' + Math.round(booked.length / decided * 100) + '% of decided leads won' : '');
+    $('sBal').textContent = money(booked.reduce(function (s, b) { return s + balance(b); }, 0));
+    $('nFollow').textContent = due; $('nFollow').className = 'count' + (due ? ' hot' : '');
+    $('nLeads').textContent = open.length; $('nBooked').textContent = booked.length; $('nLost').textContent = lost.length; $('nAll').textContent = all.length;
+    document.querySelectorAll('.cur').forEach(function (el) { el.textContent = state.currency; });
+    $('currency').value = state.currency;
+
+    var v = VIEWS[view], searching = !!query.trim();
+    $('viewTitle').firstChild.nodeValue = searching ? 'Search results' : v.title;
+    $('viewSub').textContent = searching ? 'Looking through everyone' : v.sub;
+    $('thFollow').textContent = view === 'lost' && !searching ? 'Reason' : 'Follow-up';
+    $('btnNewLabel').textContent = view === 'bookings' ? 'New booking' : 'New lead';
+    document.querySelectorAll('.nav button').forEach(function (b) { if (b.getAttribute('data-view') === view && !searching) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+
+    var list = visible();
+    $('rows').innerHTML = list.map(function (b) {
+      var lc = lastCall(b), bal = balance(b), age = ageFrom(b.dob), settled = toNum(b.fee) > 0 && bal <= 0;
+      var meta = [b.program, age != null ? age + ' yrs' : '', b.gender].filter(Boolean).join(', ');
+      var wa = waNumber(b.phone);
+      var contact = b.phone
+        ? '<span>' + esc(b.phone) + '</span><span class="links"><a class="link-pill" href="tel:' + esc(String(b.phone).replace(/[^\d+]/g, '')) + '">Call</a>' +
+          (wa ? '<a class="link-pill" href="https://wa.me/' + wa + '" target="_blank" rel="noopener noreferrer">WhatsApp</a>' : '') + '</span>'
+        : '<span class="sub">—</span>';
+      if (b.email) contact += '<span class="sub">' + esc(b.email) + '</span>';
+      var cls = hasFollow(b) ? (b.followUp < t ? 'is-due' : b.followUp === t ? 'is-today' : '') : '';
+      var balSub = '';
+      if (b.status === 'booked' && bal > 0 && b.dueDate) balSub = '<span class="sub' + (b.dueDate < t ? '" style="color:var(--accent-text);font-weight:600' : '') + '">due ' + frDate(b.dueDate) + '</span>';
+      else if (settled) balSub = '<span class="sub">paid in full</span>';
+      return '<tr class="' + cls + '" data-id="' + esc(b.id) + '" tabindex="0" aria-label="Open ' + esc(b.name) + '">' +
+        '<td class="c-num hide-m">' + esc(b.num) + '</td>' +
+        '<td class="c-name"><span class="sub only-m">' + esc(b.num) + '</span><strong>' + esc(b.name) + '</strong>' + (meta ? '<span class="sub">' + esc(meta) + '</span>' : '') + '</td>' +
+        '<td><span class="tag st-' + b.status + '">' + STATUS[b.status] + '</span></td>' +
+        '<td class="hide-m">' + contact + '</td>' +
+        '<td class="hide-m c-last">' + (lc ? '<span>' + ago(lc.date) + '</span><span class="sub">' + esc(lc.note || frDate(lc.date)) + '</span>' : '<span class="sub">Never called</span>') + '</td>' +
+        '<td>' + followTag(b) + '</td>' +
+        '<td class="t-right"><span class="bal num ' + (settled ? 'bal-zero' : '') + '">' + (toNum(b.fee) ? money(bal) : '—') + '</span>' + (toNum(b.fee) ? '<span class="sub num">of ' + money(b.fee) + '</span>' : '') + balSub + '</td>' +
+      '</tr>';
+    }).join('');
+
+    var none = list.length === 0;
+    $('table').hidden = none; $('empty').hidden = !none;
+    if (none) {
+      $('emptyTitle').textContent = searching ? 'No match' : v.empty[0];
+      $('emptyText').textContent = searching ? 'Nobody matches “' + query.trim() + '”. Try part of the name or phone number.' : v.empty[1];
+      $('btnNew2').hidden = searching || view === 'lost' || view === 'followups';
+      $('btnNew2').textContent = view === 'bookings' ? 'New booking' : 'New lead';
+    }
+  }
+
+  /* ==================== Record sheet ==================== */
+  var sheet = $('sheet'), draft = null, isNew = false, dirty = false;
+
+  function openSheet(id) {
+    var found = id && state.bookings.filter(function (b) { return b.id === id; })[0];
+    isNew = !found;
+    draft = found ? JSON.parse(JSON.stringify(found)) : normalize({
+      id: uid(), num: '', createdAt: new Date().toISOString(), status: view === 'bookings' ? 'booked' : 'lead',
+      name: '', phone: '', email: '', gender: '', dob: '', program: '', lostReason: '',
+      fee: '', dueDate: '', payments: [], calls: [], followUp: '', comments: ''
+    });
+    $('sheetTitle').textContent = isNew ? (draft.status === 'booked' ? 'New booking' : 'New lead') : draft.name;
+    $('sheetNum').textContent = 'Ref ' + (isNew ? nextNumber(false) : draft.num);
+    $('fName').value = draft.name; $('fPhone').value = draft.phone || ''; $('fEmail').value = draft.email || '';
+    $('fDob').value = draft.dob || ''; $('fProgram').value = draft.program || '';
+    $('fFee').value = (draft.fee === '' || draft.fee == null) ? '' : draft.fee; $('fDue').value = draft.dueDate || '';
+    $('fFollow').value = draft.followUp || ''; $('fComments').value = draft.comments || ''; $('fLost').value = draft.lostReason || '';
+    if ($('fLost').value !== (draft.lostReason || '')) $('fLost').value = 'Other';
+    document.querySelectorAll('input[name="gender"]').forEach(function (r) { r.checked = r.value === draft.gender; });
+    document.querySelectorAll('input[name="status"]').forEach(function (r) { r.checked = r.value === draft.status; });
+    $('fldLost').hidden = draft.status !== 'lost';
+    $('cDate').value = todayISO(); $('cNote').value = ''; $('pDate').value = todayISO(); $('pAmount').value = ''; $('pNote').value = '';
+    $('fldName').classList.remove('invalid'); $('btnDelete').hidden = isNew; dirty = false;
+    renderAge(); renderCalls(); renderPays();
+    sheet.showModal(); if (isNew) $('fName').focus();
+    $('form').querySelector('.sheet-body').scrollTop = 0;
+  }
+  function closeSheet(force) { if (!force && dirty && !confirm('Close without saving your changes?')) return; sheet.close(); draft = null; }
+  function renderAge() { var a = ageFrom($('fDob').value); $('fAge').textContent = a == null ? '—' : a + ' years old'; }
+  function renderCalls() {
+    draft.calls.sort(byDateDesc); var lc = draft.calls[0];
+    $('fLast').textContent = lc ? frDate(lc.date) + ' (' + ago(lc.date) + ')' : 'No call logged yet';
+    $('callLog').innerHTML = draft.calls.map(function (c, i) {
+      return '<li><span class="when">' + frDate(c.date) + '</span><span class="what">' + esc(c.note || 'Call') + '</span><button type="button" data-del-call="' + i + '" aria-label="Remove this call">×</button></li>';
+    }).join('');
+  }
+  function renderPays() {
+    draft.payments.sort(byDateDesc);
+    var fee = toNum($('fFee').value), p = paid(draft), bal = Math.max(0, fee - p);
+    $('mFee').textContent = money(fee); $('mPaid').textContent = money(p); $('mBal').textContent = money(bal);
+    $('mBalBox').className = fee > 0 ? (bal > 0 ? 'is-due' : 'is-paid') : '';
+    $('payLog').innerHTML = draft.payments.map(function (x, i) {
+      return '<li><span class="when">' + frDate(x.date) + '</span><span class="what">' + esc(x.note || 'Payment') + '</span><span class="amt num">' + money(x.amount) + '</span><button type="button" data-del-pay="' + i + '" aria-label="Remove this payment">×</button></li>';
+    }).join('');
+  }
+  function addCall() { draft.calls.push({ date: $('cDate').value || todayISO(), note: $('cNote').value.trim() }); $('cNote').value = ''; dirty = true; renderCalls(); }
+  function addPay() {
+    var amt = toNum($('pAmount').value);
+    if (amt <= 0) { $('pAmount').focus(); toast('Enter the amount paid.'); return; }
+    draft.payments.push({ date: $('pDate').value || todayISO(), amount: amt, note: $('pNote').value.trim() });
+    $('pAmount').value = ''; $('pNote').value = ''; dirty = true; renderPays();
+  }
+  function save() {
+    var name = $('fName').value.trim();
+    if (!name) { $('fldName').classList.add('invalid'); $('fName').focus(); return; }
+    if ($('cNote').value.trim()) addCall();                       /* typed but not yet "added" still counts */
+    if (toNum($('pAmount').value) > 0) addPay();
+    var g = document.querySelector('input[name="gender"]:checked'), st = document.querySelector('input[name="status"]:checked');
+    var before = draft.status;
+    draft.name = name; draft.phone = $('fPhone').value.trim(); draft.email = $('fEmail').value.trim();
+    draft.gender = g ? g.value : ''; draft.dob = $('fDob').value; draft.program = $('fProgram').value.trim();
+    draft.status = st ? st.value : 'lead';
+    draft.lostReason = draft.status === 'lost' ? $('fLost').value : '';
+    draft.fee = $('fFee').value === '' ? '' : toNum($('fFee').value); draft.dueDate = $('fDue').value;
+    draft.followUp = draft.status === 'lost' ? '' : $('fFollow').value;
+    draft.comments = $('fComments').value.trim(); draft.updatedAt = new Date().toISOString();
+    if (draft.status === 'booked' && !draft.bookedAt) draft.bookedAt = todayISO();
+    if (draft.status === 'lost' && !draft.lostAt) draft.lostAt = todayISO();
+    if (isNew) { draft.num = nextNumber(true); state.bookings.push(draft); }
+    else { var i = state.bookings.findIndex(function (b) { return b.id === draft.id; }); if (i === -1) state.bookings.push(draft); else state.bookings[i] = draft; }
+    var msg = draft.name + ' saved';
+    if (!isNew && before !== draft.status) msg = draft.name + ' moved to ' + (draft.status === 'booked' ? 'Bookings' : draft.status === 'lost' ? 'Lost leads' : 'Leads');
+    closeSheet(true); commit(); toast(msg);
+  }
+  function removeRecord() {
+    if (!draft || isNew) return;
+    if (!confirm('Delete ' + draft.name + ' (' + draft.num + ') for good?\n\nTip: if they simply did not book, set the status to Lost instead.')) return;
+    var id = draft.id, name = draft.name;
+    state.bookings = state.bookings.filter(function (b) { return b.id !== id; });
+    closeSheet(true); commit(); toast(name + ' deleted');
+  }
+
+  /* ==================== Export, backup, restore ==================== */
+  function download(name, text, type) {
+    var blob = new Blob([text], { type: type }), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  }
+  function exportCsv() {
+    if (!state.bookings.length) { toast('Nothing to export yet.'); return; }
+    var head = ['Ref', 'Status', 'Lost reason', 'Full name', 'Phone', 'Email', 'Gender', 'Date of birth', 'Age', 'Program', 'Last contact', 'Last note', 'Follow up on', 'Calls logged', 'Comments',
+                'Fee (' + state.currency + ')', 'Paid', 'Balance', 'Last payment', 'Payment due by', 'Created'];
+    function cell(v) { v = String(v == null ? '' : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+    var lines = [head.map(cell).join(',')];
+    state.bookings.forEach(function (b) {
+      var lc = lastCall(b), lp = lastPayment(b), a = ageFrom(b.dob);
+      lines.push([b.num, STATUS[b.status], b.lostReason, b.name, b.phone, b.email, b.gender, frDate(b.dob), a == null ? '' : a, b.program,
+        lc ? frDate(lc.date) : '', lc ? lc.note : '', frDate(b.followUp), (b.calls || []).length, b.comments,
+        toNum(b.fee), paid(b), balance(b), lp ? frDate(lp.date) : '', frDate(b.dueDate), frDate((b.createdAt || '').slice(0, 10))].map(cell).join(','));
+    });
+    download('juniors-crm-' + todayISO() + '.csv', '\uFEFF' + lines.join('\r\n'), 'text/csv;charset=utf-8');
+    toast('Spreadsheet downloaded');
+  }
+  function backup() {
+    if (!state.bookings.length) { toast('Nothing to back up yet.'); return; }
+    download('juniors-crm-backup-' + todayISO() + '.json', JSON.stringify(payload(), null, 2), 'application/json');
+    toast('Backup copy downloaded');
+  }
+  function restore(file) {
+    var r = new FileReader();
+    r.onload = function () {
+      var d; try { d = JSON.parse(r.result); d = d.data || d; if (!d || !Array.isArray(d.bookings)) throw new Error('shape'); }
+      catch (e) { alert('That file is not a Juniors CRM backup. Pick a “crm-backup-….json” or “crm-data.json” file.'); return; }
+      var msg = 'Restore ' + d.bookings.length + ' records from this file?';
+      if (state.bookings.length) msg += '\n\nThe ' + state.bookings.length + ' records on screen will be replaced. (Today’s copy in the backups folder is kept.)';
+      if (!confirm(msg)) return;
+      adopt(d); commit(); toast(d.bookings.length + ' records restored');
+    };
+    r.readAsText(file);
+  }
+
+  /* ==================== Misc ==================== */
+  var toastTimer;
+  function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('on'); }, 3200); }
+  function setView(v) { view = v; if (query) { query = ''; $('q').value = ''; } render(); window.scrollTo(0, 0); }
+
+  /* ==================== Events ==================== */
+  document.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { setView(b.getAttribute('data-view')); }); });
+  $('btnNew').addEventListener('click', function () { openSheet(null); });
+  $('btnNew2').addEventListener('click', function () { openSheet(null); });
+  $('btnCsv').addEventListener('click', exportCsv);
+  $('btnBackup').addEventListener('click', backup);
+  $('btnFolder').addEventListener('click', pickFolder);
+  $('btnRestore').addEventListener('click', function () { $('fileRestore').click(); });
+  $('fileRestore').addEventListener('change', function () { if (this.files[0]) restore(this.files[0]); this.value = ''; });
+  $('q').addEventListener('input', function () { query = this.value; render(); });
+  $('sort').addEventListener('change', function () { sortBy = this.value; render(); });
+  $('currency').addEventListener('change', function () { state.currency = this.value; commit(); });
+
+  $('rows').addEventListener('click', function (e) { if (e.target.closest('a')) return; var tr = e.target.closest('tr'); if (tr) openSheet(tr.getAttribute('data-id')); });
+  $('rows').addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.tagName === 'TR') { e.preventDefault(); openSheet(e.target.getAttribute('data-id')); } });
+
+  $('form').addEventListener('submit', function (e) { e.preventDefault(); save(); });
+  $('form').addEventListener('input', function () { dirty = true; });
+  document.querySelectorAll('input[name="status"]').forEach(function (r) { r.addEventListener('change', function () { $('fldLost').hidden = r.value !== 'lost' || !r.checked; }); });
+  $('fName').addEventListener('input', function () { $('fldName').classList.remove('invalid'); });
+  $('fDob').addEventListener('input', renderAge);
+  $('fFee').addEventListener('input', renderPays);
+  $('btnAddCall').addEventListener('click', addCall);
+  $('btnAddPay').addEventListener('click', addPay);
+  $('cNote').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addCall(); } });
+  $('pAmount').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addPay(); } });
+  $('pNote').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addPay(); } });
+  $('callLog').addEventListener('click', function (e) { var b = e.target.closest('[data-del-call]'); if (!b) return; draft.calls.splice(+b.getAttribute('data-del-call'), 1); dirty = true; renderCalls(); });
+  $('payLog').addEventListener('click', function (e) { var b = e.target.closest('[data-del-pay]'); if (!b) return; draft.payments.splice(+b.getAttribute('data-del-pay'), 1); dirty = true; renderPays(); });
+  document.querySelectorAll('[data-follow]').forEach(function (btn) { btn.addEventListener('click', function () { var n = +btn.getAttribute('data-follow'); $('fFollow').value = n ? addDays(todayISO(), n) : ''; dirty = true; }); });
+  $('btnClose').addEventListener('click', function () { closeSheet(false); });
+  $('btnCancel').addEventListener('click', function () { closeSheet(false); });
+  $('btnDelete').addEventListener('click', removeRecord);
+  sheet.addEventListener('cancel', function (e) { e.preventDefault(); closeSheet(false); });
+  sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(false); });
+
+  $('setupMain').addEventListener('click', function () { if ($('setup').getAttribute('data-mode') === 'reopen' && pendingHandle) reopen(pendingHandle); else pickFolder(); });
+  $('setupAlt').addEventListener('click', function () { if ($('setup').getAttribute('data-mode') === 'reopen') pickFolder(); else setup(null); });
+
+  /* make sure the last change reaches the disk when the window is closed or hidden */
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden' && writeTimer) writeNow(); });
+  window.addEventListener('pagehide', function () { if (writeTimer) writeNow(); });
+
+  /* lets the installed app open with no internet */
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+
+  /* ==================== Start ==================== */
+  loadMirror();
+  if (state.bookings.some(isDue)) view = 'followups'; else if (state.bookings.length) view = 'all';
+  render();
+  startStorage();
+})();
+</script>
+</body>
+</html>
