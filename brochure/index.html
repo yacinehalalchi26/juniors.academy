@@ -8,10 +8,10 @@
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#FAFAF7">
 
-  <!-- Icône d'onglet (logo rouge) -->
-  <link rel="icon" type="image/png" href="../Juniors%20Academy%20Red%20Logo.png?v=2">
-  <link rel="shortcut icon" type="image/png" href="../Juniors%20Academy%20Red%20Logo.png?v=2">
-  <link rel="apple-touch-icon" href="../Juniors%20Academy%20Red%20Logo.png?v=2">
+  <!-- Icône d'onglet : fichier « Juniors Academy Logo Red.jpg » à la racine du site (nom exact, majuscules comprises) -->
+  <link rel="icon" type="image/jpeg" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
+  <link rel="shortcut icon" type="image/jpeg" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
+  <link rel="apple-touch-icon" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
 
   <!-- Polices -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -255,7 +255,9 @@
         Retour
       </a>
       <a href="../index.html" aria-label="Juniors Academy — accueil">
-        <img src="../Juniors-Academy-Black-Logo.png" alt="Juniors Academy" class="jbc-logo" onerror="this.style.display='none'">
+        <!-- Logo : essaie d'abord ce fichier ; s'il n'existe pas, utilise le même logo que la page d'accueil -->
+        <img src="../Juniors-Academy-Black-Logo.png" alt="Juniors Academy" class="jbc-logo"
+             onerror="if(!this.dataset.f){this.dataset.f=1;this.src='../JA%20Black%20Logo.png'}else{this.style.display='none'}">
       </a>
     </div>
 
