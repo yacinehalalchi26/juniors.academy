@@ -17,8 +17,8 @@
   <style>
     /* ============================================================
        JUNIORS CRM — leads, follow-ups, bookings
-       One file. Data is saved to a folder on this Mac
-       (crm-data.json + a dated backup per day).
+       One file. Data is saved online (Firebase) and shared by the team.
+       The only thing to edit is the SETTINGS block near the bottom.
        ============================================================ */
     :root {
       --ink: #14181D; --paper: #FAFAF7; --card: #fff;
@@ -220,7 +220,11 @@
     .lock-card .btn { width: 100%; min-height: 46px; }
     .lock-card .check { display: flex; align-items: center; gap: 9px; font-size: .88rem; color: var(--body); }
     .lock-card .check input { width: 17px; height: 17px; accent-color: var(--ink); }
-    .lock-msg { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-text); font-size: .88rem; font-weight: 500; }
+    .lock-msg.info { background: var(--highlight-soft); color: #6B5200; }
+    .sub.owner { margin-top: 5px; font-weight: 600; color: var(--body); }
+    .sub.owner.none { color: var(--accent-text); }
+    .log .by { color: var(--muted); font-size: .76rem; font-weight: 600; }
+    .lock-msg { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-text); font-size: .88rem; font-weight: 500; }
 
     /* ---------- "Where to save" screen ---------- */
     .setup { position: fixed; inset: 0; z-index: 500; background: rgba(20,24,29,.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: grid; place-items: center; padding: 20px; overflow-y: auto; }
@@ -270,22 +274,24 @@
 </head>
 <body>
 
-<!-- ==================== LOGIN ==================== -->
-<div class="lock" id="lock">
+<!-- ==================== SIGN IN ==================== -->
+<div class="lock" id="lock" data-mode="loading">
   <div class="lock-card">
     <span class="seal" aria-hidden="true">JA</span>
-
-    <div id="lockSignIn">
-      <h1>Juniors CRM</h1>
-      <p class="lead">Sign in to open your records.</p>
-      <form id="lockForm" novalidate>
-        <p class="lock-msg" id="lockMsg" role="alert" hidden></p>
-        <div class="field"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="username" required></div>
-        <div class="field"><label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password" required></div>
-        <label class="check"><input type="checkbox" id="lKeep" checked> Keep me signed in on this Mac</label>
-        <button type="submit" class="btn btn-primary" id="lSubmit">Sign in</button>
-      </form>
-    </div>
+    <h1>Juniors CRM</h1>
+    <p class="lead" id="gateLead">Opening…</p>
+    <p class="lock-msg" id="lockMsg" role="alert" hidden></p>
+    <form id="lockForm" hidden novalidate>
+      <div class="field"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password" required></div>
+      <button type="submit" class="btn btn-primary" id="lSubmit">Sign in</button>
+      <button type="button" class="linkish" id="gForgot" style="justify-self:center">Forgot my password</button>
+    </form>
+    <form id="nameForm" hidden novalidate>
+      <div class="field"><label for="gName">Your full name</label><input id="gName" type="text" autocomplete="name" required></div>
+      <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+    <button type="button" class="btn btn-light" id="gOut" style="margin-top:12px" hidden>Sign out</button>
   </div>
 </div>
 
@@ -323,11 +329,10 @@
     <div class="side-foot">
       <p class="save-state"><span class="dot" id="saveDot"></span><span><b id="saveTitle">Starting…</b><span id="saveSub"></span></span></p>
       <div class="side-links">
-        <button type="button" id="btnFolder">Choose save folder</button>
-        <button type="button" id="btnLock">Lock the CRM (sign out)</button>
+        <button type="button" id="btnLock">Sign out</button>
         <button type="button" id="btnCsv">Export to Excel (CSV)</button>
         <button type="button" id="btnBackup">Download a backup copy</button>
-        <button type="button" id="btnRestore">Restore from a backup</button>
+        <button type="button" id="btnRestore" hidden>Import records from a file</button>
         <input type="file" id="fileRestore" accept="application/json,.json" hidden>
       </div>
     </div>
@@ -342,11 +347,6 @@
       </button>
     </div>
 
-    <div class="notice" id="notice" hidden>
-      <span id="noticeText"></span>
-      <button type="button" class="btn btn-light btn-small" id="noticeBtn"></button>
-    </div>
-
     <section class="stats" aria-label="Summary">
       <button type="button" class="stat stat--alert" data-view="followups"><b class="num" id="sDue">0</b><span>to call today</span></button>
       <button type="button" class="stat" data-view="leads"><b class="num" id="sLeads">0</b><span>open leads</span></button>
@@ -359,7 +359,8 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input type="search" id="q" placeholder="Search a name, reference or phone" aria-label="Search" autocomplete="off">
       </label>
-      <select id="sort" aria-label="Sort">
+      <select id="scope" aria-label="Whose records" style="margin-left:auto"><option value="all">Whole team</option></select>
+      <select id="sort" aria-label="Sort" style="margin-left:0">
         <option value="auto">Best order for this view</option>
         <option value="recent">Newest first</option>
         <option value="follow">By follow-up date</option>
@@ -407,6 +408,10 @@
           <label><input type="radio" name="status" value="talking"><span>In discussion</span></label>
           <label><input type="radio" name="status" value="booked"><span>Booked</span></label>
           <label><input type="radio" name="status" value="lost"><span>Lost</span></label>
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label for="fOwner">Assigned to</label>
+          <select id="fOwner"><option value="">Not assigned</option></select>
         </div>
         <div class="field" id="fldLost" style="margin-top:12px" hidden>
           <label for="fLost">Why was it lost?</label>
@@ -500,7 +505,7 @@
     </div>
 
     <div class="sheet-foot">
-      <button type="button" class="btn btn-danger" id="btnDelete">Delete</button>
+      <span style="display:flex;align-items:center;gap:12px;min-width:0"><button type="button" class="btn btn-danger" id="btnDelete">Delete</button><small id="sheetBy" style="font-size:.76rem;color:var(--muted)"></small></span>
       <div>
         <button type="button" class="btn btn-light" id="btnCancel">Cancel</button>
         <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
@@ -509,582 +514,502 @@
   </form>
 </dialog>
 
-<!-- ==================== WHERE TO SAVE ==================== -->
-<div class="setup" id="setup" hidden>
-  <div class="setup-card" role="dialog" aria-labelledby="setupTitle">
-    <span class="seal" aria-hidden="true">JA</span>
-    <h2 id="setupTitle"></h2>
-    <div id="setupBody"></div>
-    <div class="setup-actions">
-      <button type="button" class="btn btn-primary" id="setupMain"></button>
-      <button type="button" class="linkish" id="setupAlt"></button>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
-(function () {
-  'use strict';
+<script type="module">
+/* ============================================================
+   SETTINGS — the only part of this file you need to edit.
 
-  /* ============================================================
-     LOGIN — the email and password that open this CRM.
-     The password is stored as a scrambled code, never in clear text,
-     because this file is public on GitHub.
-     ============================================================ */
-  var LOGIN_EMAIL = 'director@juniors.academy';
-  var LOGIN_PASSWORD_CODE = 'pbkdf2$200000$8ae86203c4b6ee151dfc38811180080e$4179df539d838fd317b7822acaf8c4456faa8a9a8376b15db6e2371189b87390';
-  /* ============================================================ */
+   1) FIREBASE_CONFIG: the six values Firebase gives you
+      (Project settings > Your apps > Web app > firebaseConfig).
+   2) DIRECTOR_EMAILS: who can delete records and import a backup.
+      Everyone allowed to open the CRM is listed in the Firestore rules.
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+const DIRECTOR_EMAILS = ['director@juniors.academy'];
+/* ============================================================ */
 
-  /* ==================== Data ==================== */
-  var KEY = 'ja_crm_v1';                 /* quick copy inside the browser, used while the folder connects */
-  var DATA_FILE = 'crm-data.json';       /* the real data, in the folder chosen on the Mac */
-  var KEEP_BACKUPS = 60;
-  var FS_OK = typeof window.showDirectoryPicker === 'function';
-  var state = { seq: {}, bookings: [], currency: 'DA', savedAt: null };
-  var STATUS = { lead: 'New lead', talking: 'In discussion', booked: 'Booked', lost: 'Lost' };
+const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
+const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+const STATUS = { lead: 'New lead', talking: 'In discussion', booked: 'Booked', lost: 'Lost' };
+const state = { seq: {}, bookings: [], currency: 'DA' };
+let fb = null, me = null, profile = null, team = [], unsub = [];
 
-  function normalize(b) {
-    b.payments = b.payments || []; b.calls = b.calls || [];
-    if (b.gender === 'Garçon') b.gender = 'Male'; if (b.gender === 'Fille') b.gender = 'Female';
-    if (!STATUS[b.status]) b.status = (toNum(b.fee) > 0 || b.payments.length) ? 'booked' : 'lead';
-    return b;
-  }
-  function adopt(d) {
-    state.seq = d.seq || {}; state.currency = d.currency || 'DA'; state.savedAt = d.savedAt || null;
-    state.bookings = (d.bookings || []).map(normalize);
-    state.seq = seqFrom(state.bookings, state.seq);
-  }
-  function payload() { return { app: 'juniors-crm', version: 3, savedAt: state.savedAt, currency: state.currency, seq: state.seq, bookings: state.bookings }; }
-  function loadMirror() {
-    try { var d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && Array.isArray(d.bookings)) adopt(d); } catch (e) {}
-  }
-  function mirror() { try { localStorage.setItem(KEY, JSON.stringify(payload())); } catch (e) {} }
-  /* every change goes through here */
-  function commit() { state.savedAt = new Date().toISOString(); mirror(); scheduleWrite(); render(); }
+/* ==================== Helpers ==================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const clone = o => JSON.parse(JSON.stringify(o));
+function todayISO() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+function addDays(iso, n) { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+const dayDiff = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+const frDate = iso => { if (!iso) return ''; const p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; };
+function ago(iso) {
+  const n = dayDiff(iso, todayISO());
+  if (n <= 0) return 'today'; if (n === 1) return 'yesterday';
+  if (n < 30) return n + ' days ago';
+  if (n < 365) { const m = Math.round(n / 30); return m + (m === 1 ? ' month ago' : ' months ago'); }
+  const y = Math.floor(n / 365); return y + (y === 1 ? ' year ago' : ' years ago');
+}
+function ageFrom(dob) {
+  if (!dob) return null;
+  const t = todayISO().split('-').map(Number), b = dob.split('-').map(Number); let a = t[0] - b[0];
+  if (t[1] < b[1] || (t[1] === b[1] && t[2] < b[2])) a--;
+  return (a >= 0 && a < 130) ? a : null;
+}
+const nf = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+const money = n => nf.format(n || 0) + '\u00A0' + state.currency;
+const toNum = v => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? n : 0; };
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const formatNum = (y, n) => 'JA-' + y + '-' + String(n).padStart(4, '0');
+const previewNumber = () => { const y = new Date().getFullYear(); return formatNum(y, (state.seq[y] || 0) + 1); };
+function seqFrom(list, base) {
+  const seq = Object.assign({}, base || {});
+  list.forEach(b => { const m = /^JA-(\d{4})-(\d+)$/.exec(b.num || ''); if (m) seq[m[1]] = Math.max(seq[m[1]] || 0, +m[2]); });
+  return seq;
+}
+function waNumber(phone) {
+  let d = String(phone || '').replace(/\D/g, ''); if (!d) return '';
+  if (d.indexOf('00') === 0) d = d.slice(2); else if (d.charAt(0) === '0') d = '213' + d.slice(1);
+  return d;
+}
+const byDateDesc = (x, y) => (x.date < y.date ? 1 : -1);
+const paid = b => (b.payments || []).reduce((s, p) => s + toNum(p.amount), 0);
+const balance = b => Math.max(0, toNum(b.fee) - paid(b));
+const lastCall = b => (b.calls || []).slice().sort(byDateDesc)[0] || null;
+const lastPayment = b => (b.payments || []).slice().sort(byDateDesc)[0] || null;
+const isOpen = b => b.status === 'lead' || b.status === 'talking';
+const hasFollow = b => b.status !== 'lost' && !!b.followUp;
+const isDue = b => hasFollow(b) && b.followUp <= todayISO();
+function normalize(b) {
+  b.payments = b.payments || []; b.calls = b.calls || [];
+  if (b.gender === 'Garçon') b.gender = 'Male'; if (b.gender === 'Fille') b.gender = 'Female';
+  if (!STATUS[b.status]) b.status = (toNum(b.fee) > 0 || b.payments.length) ? 'booked' : 'lead';
+  return b;
+}
+const ownerName = b => { if (!b.ownerUid) return ''; const t = team.filter(x => x.uid === b.ownerUid)[0]; return t ? t.name : (b.ownerName || ''); };
+const firstName = n => String(n || '').split(' ')[0];
+let toastTimer;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3200); }
 
-  /* ==================== Saving to a folder on the Mac ==================== */
-  var dir = null, writeTimer = null, writeChain = Promise.resolve(), pruned = false, lastWrite = null, writeError = null;
+/* ==================== Firebase: sign in and live data ==================== */
+const stop = () => { unsub.forEach(f => { try { f(); } catch (e) {} }); unsub = []; };
+const leadRef = id => fb.F.doc(fb.db, 'leads', id);
 
-  function idb() {
-    return new Promise(function (res, rej) {
-      var r = indexedDB.open('juniors-crm', 1);
-      r.onupgradeneeded = function () { r.result.createObjectStore('kv'); };
-      r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); };
-    });
-  }
-  function idbGet(k) { return idb().then(function (db) { return new Promise(function (res, rej) { var q = db.transaction('kv').objectStore('kv').get(k); q.onsuccess = function () { res(q.result); }; q.onerror = function () { rej(q.error); }; }); }); }
-  function idbSet(k, v) { return idb().then(function (db) { return new Promise(function (res, rej) { var t = db.transaction('kv', 'readwrite'); t.objectStore('kv').put(v, k); t.oncomplete = function () { res(); }; t.onerror = function () { rej(t.error); }; }); }); }
-
-  async function writeText(d, name, text) {
-    var fh = await d.getFileHandle(name, { create: true });
-    var w = await fh.createWritable(); await w.write(text); await w.close();
-  }
-  async function readDataFile(d) {
-    var fh;
-    try { fh = await d.getFileHandle(DATA_FILE); } catch (e) { if (e && e.name === 'NotFoundError') return { data: null, raw: '' }; throw e; }
-    var raw = await (await fh.getFile()).text();
-    if (!raw.trim()) return { data: null, raw: '' };
-    try { var j = JSON.parse(raw); j = j.data || j; if (!Array.isArray(j.bookings)) throw new Error('shape'); return { data: j, raw: raw }; }
-    catch (e) { return { data: null, raw: raw, unreadable: true }; }
-  }
-  async function prune(bdir) {
-    var names = [];
-    for await (var entry of bdir.values()) { if (entry.kind === 'file' && /^crm-backup-\d{4}-\d{2}-\d{2}\.json$/.test(entry.name)) names.push(entry.name); }
-    names.sort();
-    while (names.length > KEEP_BACKUPS) { await bdir.removeEntry(names.shift()); }
-  }
-  function scheduleWrite() { if (!dir) return; clearTimeout(writeTimer); writeTimer = setTimeout(writeNow, 250); }
-  function writeNow() {
-    clearTimeout(writeTimer); writeTimer = null;
-    if (!dir) return writeChain;
-    var d = dir, text = JSON.stringify(payload(), null, 2);
-    writeChain = writeChain.then(async function () {
-      await writeText(d, DATA_FILE, text);
-      var bdir = await d.getDirectoryHandle('backups', { create: true });
-      await writeText(bdir, 'crm-backup-' + todayISO() + '.json', text);     /* one copy per day, the last 60 days are kept */
-      if (!pruned) { pruned = true; try { await prune(bdir); } catch (e) {} }
-      lastWrite = new Date(); writeError = null; saveStatus();
-    }).catch(function (e) { writeError = e || new Error('write'); saveStatus(); });
-    return writeChain;
-  }
-
-  function sameIds(a, b) {
-    if (a.length !== b.length) return false;
-    var s = {}; a.forEach(function (x) { s[x.id] = 1; });
-    return b.every(function (x) { return s[x.id]; });
-  }
-  /* fresh = the folder was just picked by hand (not simply reopened) */
-  async function connect(handle, fresh) {
-    var f = await readDataFile(handle);
-    var fileHas = !!(f.data && f.data.bookings.length), localHas = state.bookings.length > 0;
-    var useFile = false;
-    if (fileHas && !localHas) useFile = true;
-    else if (fileHas && localHas) {
-      if (fresh && !sameIds(f.data.bookings, state.bookings)) {
-        useFile = confirm('This folder already holds ' + f.data.bookings.length + ' records' + (f.data.savedAt ? ' (saved ' + frDate(f.data.savedAt.slice(0, 10)) + ')' : '') + '.\n\n' +
-          'OK: open the records from the folder (recommended).\nCancel: replace them with the ' + state.bookings.length + ' records currently on screen.');
-      } else useFile = (f.data.savedAt || '') >= (state.savedAt || '');
-    }
-    if ((f.unreadable || (fileHas && !useFile)) && f.raw) {                  /* never overwrite without keeping a copy */
-      var bdir = await handle.getDirectoryHandle('backups', { create: true });
-      await writeText(bdir, 'crm-replaced-' + new Date().toISOString().replace(/[:.]/g, '-') + '.json', f.raw);
-    }
-    if (useFile) { adopt(f.data); mirror(); }
-    dir = handle; pruned = false;
-    try { await idbSet('dir', handle); } catch (e) {}
-    if (!useFile) { if (!state.savedAt) state.savedAt = new Date().toISOString(); await writeNow(); }
-    else { lastWrite = new Date(); writeError = null; }
-    setup(null); render();
-  }
-  async function pickFolder() {
-    var h;
-    try { h = await window.showDirectoryPicker({ id: 'juniors-crm', mode: 'readwrite', startIn: 'documents' }); }
-    catch (e) { if (e && e.name === 'AbortError') return; toast("That folder can't be used. Make a new folder inside Documents and pick it."); return; }
-    try { await connect(h, true); toast('Saving to the folder “' + h.name + '” on this Mac'); }
-    catch (e) { toast("Couldn't open that folder. Try a new folder inside Documents."); }
-  }
-  async function reopen(h) {
-    try {
-      var p = h.requestPermission ? await h.requestPermission({ mode: 'readwrite' }) : 'granted';
-      if (p !== 'granted') { toast('Permission is needed to save to the folder.'); return; }
-      await connect(h, false);
-    } catch (e) { setup('missing', h); }
-  }
-  async function startStorage() {
-    if (!FS_OK) { saveStatus(); render(); return; }
-    var h = null; try { h = await idbGet('dir'); } catch (e) {}
-    if (!h) { setup('first'); saveStatus(); return; }
-    var p = 'prompt'; try { p = h.queryPermission ? await h.queryPermission({ mode: 'readwrite' }) : 'granted'; } catch (e) {}
-    if (p === 'granted') { try { await connect(h, false); } catch (e) { setup('missing', h); } }
-    else setup('reopen', h);
-    saveStatus();
-  }
-
-  /* first | reopen | missing | null */
-  var pendingHandle = null;
-  function setup(mode, h) {
-    var el = $('setup'); pendingHandle = h || null;
-    if (!mode) { el.hidden = true; saveStatus(); return; }
-    el.hidden = false; el.setAttribute('data-mode', mode);
-    if (mode === 'first') {
-      $('setupTitle').textContent = 'Where should your CRM save its data?';
-      $('setupBody').innerHTML = '<p>Pick a folder on this Mac. Every change is written there straight away, and a dated backup copy is kept for each day.</p>' +
-        '<ol><li>Click <b>Choose folder</b>.</li><li>Open <b>Documents</b>, click <b>New Folder</b> and name it <b>Juniors CRM</b>.</li><li>Select it, then allow the CRM to edit files in it.</li></ol>';
-      $('setupMain').textContent = 'Choose folder'; $('setupAlt').textContent = 'Not now';
-    } else if (mode === 'reopen') {
-      $('setupTitle').textContent = 'Open your data';
-      $('setupBody').innerHTML = '<p>Your records are in the folder <b>' + esc(h.name) + '</b> on this Mac. Click below to open them.</p>' +
-        '<p>If Chrome asks, choose <b>Allow on every visit</b> and you will not see this step again.</p>';
-      $('setupMain').textContent = 'Open my data'; $('setupAlt').textContent = 'Use a different folder';
-    } else {
-      $('setupTitle').textContent = "The save folder can't be found";
-      $('setupBody').innerHTML = '<p>The folder <b>' + esc(h ? h.name : '') + '</b> was moved, renamed or deleted. Pick it again, or pick a new one. Nothing on screen is lost.</p>';
-      $('setupMain').textContent = 'Choose folder'; $('setupAlt').textContent = 'Not now';
-    }
-  }
-
-  function saveStatus() {
-    var dot = $('saveDot'), t = $('saveTitle'), s = $('saveSub'), n = $('notice');
-    $('btnFolder').hidden = !FS_OK;
-    $('btnFolder').textContent = dir ? 'Change save folder' : 'Choose save folder';
-    n.hidden = true; n.classList.remove('bad');
-    if (!FS_OK) {
-      dot.className = 'dot'; t.textContent = 'Saved in this browser only'; s.textContent = 'Open in Google Chrome to save to your Mac';
-      n.hidden = false; $('noticeText').textContent = "This browser can't save to a folder on your Mac. Open the CRM in Google Chrome to turn that on. Until then, download a backup copy regularly.";
-      $('noticeBtn').textContent = 'Download a backup'; $('noticeBtn').onclick = backup;
-    } else if (writeError) {
-      dot.className = 'dot bad'; t.textContent = "Couldn't save to the folder"; s.textContent = 'Your changes are safe on screen';
-      n.hidden = false; n.classList.add('bad'); $('noticeText').textContent = "The last change couldn't be written to the folder on your Mac (moved, renamed, or permission removed). Reconnect it to keep saving.";
-      $('noticeBtn').textContent = 'Reconnect folder'; $('noticeBtn').onclick = pickFolder;
-    } else if (dir) {
-      dot.className = 'dot ok'; t.textContent = 'Saved on this Mac';
-      s.textContent = (dir.name ? 'Folder “' + dir.name + '”' : 'In your chosen folder') + (lastWrite ? ', ' + lastWrite.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '');
-    } else {
-      dot.className = 'dot'; t.textContent = 'Not saved to your Mac yet'; s.textContent = 'Kept in this browser for now';
-      if ($('setup').hidden) {
-        n.hidden = false; $('noticeText').textContent = 'Your records are only inside this browser for now. Choose a folder on your Mac so they are saved for good.';
-        $('noticeBtn').textContent = 'Choose folder'; $('noticeBtn').onclick = pickFolder;
-      }
-    }
-  }
-
-  /* ==================== Helpers ==================== */
-  function $(id) { return document.getElementById(id); }
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function todayISO() { var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
-  function addDays(iso, n) { var d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
-  function dayDiff(a, b) { return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000); }
-  function frDate(iso) { if (!iso) return ''; var p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
-  function ago(iso) {
-    var n = dayDiff(iso, todayISO());
-    if (n <= 0) return 'today'; if (n === 1) return 'yesterday';
-    if (n < 30) return n + ' days ago';
-    if (n < 365) { var m = Math.round(n / 30); return m + (m === 1 ? ' month ago' : ' months ago'); }
-    var y = Math.floor(n / 365); return y + (y === 1 ? ' year ago' : ' years ago');
-  }
-  function ageFrom(dob) {
-    if (!dob) return null;
-    var t = todayISO().split('-').map(Number), b = dob.split('-').map(Number), a = t[0] - b[0];
-    if (t[1] < b[1] || (t[1] === b[1] && t[2] < b[2])) a--;
-    return (a >= 0 && a < 130) ? a : null;
-  }
-  var nf = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
-  function money(n) { return nf.format(n || 0) + '\u00A0' + state.currency; }
-  function toNum(v) { var n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? n : 0; }
-  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
-  function formatNum(y, n) { return 'JA-' + y + '-' + String(n).padStart(4, '0'); }
-  function nextNumber(commitIt) { var y = new Date().getFullYear(), n = (state.seq[y] || 0) + 1; if (commitIt) state.seq[y] = n; return formatNum(y, n); }
-  function seqFrom(list, base) {
-    var seq = Object.assign({}, base || {});
-    list.forEach(function (b) { var m = /^JA-(\d{4})-(\d+)$/.exec(b.num || ''); if (m) seq[m[1]] = Math.max(seq[m[1]] || 0, +m[2]); });
-    return seq;
-  }
-  function waNumber(phone) {
-    var d = String(phone || '').replace(/\D/g, ''); if (!d) return '';
-    if (d.indexOf('00') === 0) d = d.slice(2); else if (d.charAt(0) === '0') d = '213' + d.slice(1);
-    return d;
-  }
-  function byDateDesc(x, y) { return x.date < y.date ? 1 : -1; }
-  function paid(b) { return (b.payments || []).reduce(function (s, p) { return s + toNum(p.amount); }, 0); }
-  function balance(b) { return Math.max(0, toNum(b.fee) - paid(b)); }
-  function lastCall(b) { return (b.calls || []).slice().sort(byDateDesc)[0] || null; }
-  function lastPayment(b) { return (b.payments || []).slice().sort(byDateDesc)[0] || null; }
-  function isOpen(b) { return b.status === 'lead' || b.status === 'talking'; }
-  function hasFollow(b) { return b.status !== 'lost' && !!b.followUp; }
-  function isDue(b) { return hasFollow(b) && b.followUp <= todayISO(); }
-
-  /* ==================== Views ==================== */
-  var VIEWS = {
-    followups: { title: 'Follow-ups', sub: 'Who to call, most overdue first', test: hasFollow, sort: 'follow',
-                 empty: ['Nobody to follow up', 'Set a follow-up date on a lead or booking and it shows up here on the right day.'] },
-    leads:     { title: 'Leads', sub: 'People who have not booked yet', test: isOpen, sort: 'recent',
-                 empty: ['No open leads', 'Add everyone who asks about a program, even if they are only curious.'] },
-    bookings:  { title: 'Bookings', sub: 'Confirmed programs and their payments', test: function (b) { return b.status === 'booked'; }, sort: 'recent',
-                 empty: ['No bookings yet', 'When a lead confirms, open their record and set the status to Booked.'] },
-    lost:      { title: 'Lost leads', sub: 'Why people did not book', test: function (b) { return b.status === 'lost'; }, sort: 'recent',
-                 empty: ['No lost leads', 'When someone decides not to book, mark them Lost and note why. It is worth calling them again next season.'] },
-    all:       { title: 'Everyone', sub: 'All leads, bookings and lost leads', test: function () { return true; }, sort: 'recent',
-                 empty: ['Nothing here yet', 'Add your first lead. The reference number is created for you.'] }
-  };
-  var view = 'followups', query = '', sortBy = 'auto';
-
-  function visible() {
-    var v = VIEWS[view], q = query.trim().toLowerCase(), qd = q.replace(/\D/g, '');
-    var list = state.bookings.filter(function (b) {
-      if (!q) return v.test(b);                       /* a search looks through everyone */
-      if ([b.num, b.name, b.email, b.program, b.phone].join(' ').toLowerCase().indexOf(q) !== -1) return true;
-      return qd.length >= 3 && String(b.phone || '').replace(/\D/g, '').indexOf(qd) !== -1;
-    });
-    var s = sortBy === 'auto' ? v.sort : sortBy;
-    list.sort(function (a, b) {
-      if (s === 'name') return String(a.name).localeCompare(String(b.name), 'en');
-      if (s === 'balance') return balance(b) - balance(a);
-      if (s === 'follow') {
-        var fa = hasFollow(a) ? a.followUp : '', fb = hasFollow(b) ? b.followUp : '';
-        if (!fa && !fb) return 0; if (!fa) return 1; if (!fb) return -1;
-        return fa < fb ? -1 : fa > fb ? 1 : 0;
-      }
-      return (b.createdAt || '') < (a.createdAt || '') ? -1 : 1;
-    });
-    return list;
-  }
-  function followTag(b) {
-    if (b.status === 'lost') return '<span class="sub">' + esc(b.lostReason || 'No reason noted') + '</span>';
-    if (!b.followUp) return '<span class="sub">—</span>';
-    var n = dayDiff(todayISO(), b.followUp);
-    if (n < 0) return '<span class="tag tag-late">' + (-n) + (n === -1 ? ' day late' : ' days late') + '</span><span class="sub">' + frDate(b.followUp) + '</span>';
-    if (n === 0) return '<span class="tag tag-today">Today</span>';
-    return '<span class="tag tag-soon">' + (n === 1 ? 'Tomorrow' : 'In ' + n + ' days') + '</span><span class="sub">' + frDate(b.followUp) + '</span>';
-  }
-
-  function render() {
-    var all = state.bookings, t = todayISO();
-    var due = all.filter(isDue).length, open = all.filter(isOpen), booked = all.filter(VIEWS.bookings.test), lost = all.filter(VIEWS.lost.test);
-    $('sDue').textContent = due; $('sLeads').textContent = open.length;
-    $('sValue').textContent = money(booked.reduce(function (s, b) { return s + toNum(b.fee); }, 0));
-    var decided = booked.length + lost.length;
-    $('sValueSub').textContent = 'from ' + booked.length + (booked.length === 1 ? ' booking' : ' bookings') + (decided ? ', ' + Math.round(booked.length / decided * 100) + '% of decided leads won' : '');
-    $('sBal').textContent = money(booked.reduce(function (s, b) { return s + balance(b); }, 0));
-    $('nFollow').textContent = due; $('nFollow').className = 'count' + (due ? ' hot' : '');
-    $('nLeads').textContent = open.length; $('nBooked').textContent = booked.length; $('nLost').textContent = lost.length; $('nAll').textContent = all.length;
-    document.querySelectorAll('.cur').forEach(function (el) { el.textContent = state.currency; });
-    $('currency').value = state.currency;
-
-    var v = VIEWS[view], searching = !!query.trim();
-    $('viewTitle').firstChild.nodeValue = searching ? 'Search results' : v.title;
-    $('viewSub').textContent = searching ? 'Looking through everyone' : v.sub;
-    $('thFollow').textContent = view === 'lost' && !searching ? 'Reason' : 'Follow-up';
-    $('btnNewLabel').textContent = view === 'bookings' ? 'New booking' : 'New lead';
-    document.querySelectorAll('.nav button').forEach(function (b) { if (b.getAttribute('data-view') === view && !searching) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
-
-    var list = visible();
-    $('rows').innerHTML = list.map(function (b) {
-      var lc = lastCall(b), bal = balance(b), age = ageFrom(b.dob), settled = toNum(b.fee) > 0 && bal <= 0;
-      var meta = [b.program, age != null ? age + ' yrs' : '', b.gender].filter(Boolean).join(', ');
-      var wa = waNumber(b.phone);
-      var contact = b.phone
-        ? '<span>' + esc(b.phone) + '</span><span class="links"><a class="link-pill" href="tel:' + esc(String(b.phone).replace(/[^\d+]/g, '')) + '">Call</a>' +
-          (wa ? '<a class="link-pill" href="https://wa.me/' + wa + '" target="_blank" rel="noopener noreferrer">WhatsApp</a>' : '') + '</span>'
-        : '<span class="sub">—</span>';
-      if (b.email) contact += '<span class="sub">' + esc(b.email) + '</span>';
-      var cls = hasFollow(b) ? (b.followUp < t ? 'is-due' : b.followUp === t ? 'is-today' : '') : '';
-      var balSub = '';
-      if (b.status === 'booked' && bal > 0 && b.dueDate) balSub = '<span class="sub' + (b.dueDate < t ? '" style="color:var(--accent-text);font-weight:600' : '') + '">due ' + frDate(b.dueDate) + '</span>';
-      else if (settled) balSub = '<span class="sub">paid in full</span>';
-      return '<tr class="' + cls + '" data-id="' + esc(b.id) + '" tabindex="0" aria-label="Open ' + esc(b.name) + '">' +
-        '<td class="c-num hide-m">' + esc(b.num) + '</td>' +
-        '<td class="c-name"><span class="sub only-m">' + esc(b.num) + '</span><strong>' + esc(b.name) + '</strong>' + (meta ? '<span class="sub">' + esc(meta) + '</span>' : '') + '</td>' +
-        '<td><span class="tag st-' + b.status + '">' + STATUS[b.status] + '</span></td>' +
-        '<td class="hide-m">' + contact + '</td>' +
-        '<td class="hide-m c-last">' + (lc ? '<span>' + ago(lc.date) + '</span><span class="sub">' + esc(lc.note || frDate(lc.date)) + '</span>' : '<span class="sub">Never called</span>') + '</td>' +
-        '<td>' + followTag(b) + '</td>' +
-        '<td class="t-right"><span class="bal num ' + (settled ? 'bal-zero' : '') + '">' + (toNum(b.fee) ? money(bal) : '—') + '</span>' + (toNum(b.fee) ? '<span class="sub num">of ' + money(b.fee) + '</span>' : '') + balSub + '</td>' +
-      '</tr>';
-    }).join('');
-
-    var none = list.length === 0;
-    $('table').hidden = none; $('empty').hidden = !none;
-    if (none) {
-      $('emptyTitle').textContent = searching ? 'No match' : v.empty[0];
-      $('emptyText').textContent = searching ? 'Nobody matches “' + query.trim() + '”. Try part of the name or phone number.' : v.empty[1];
-      $('btnNew2').hidden = searching || view === 'lost' || view === 'followups';
-      $('btnNew2').textContent = view === 'bookings' ? 'New booking' : 'New lead';
-    }
-  }
-
-  /* ==================== Record sheet ==================== */
-  var sheet = $('sheet'), draft = null, isNew = false, dirty = false;
-
-  function openSheet(id) {
-    var found = id && state.bookings.filter(function (b) { return b.id === id; })[0];
-    isNew = !found;
-    draft = found ? JSON.parse(JSON.stringify(found)) : normalize({
-      id: uid(), num: '', createdAt: new Date().toISOString(), status: view === 'bookings' ? 'booked' : 'lead',
-      name: '', phone: '', email: '', gender: '', dob: '', program: '', lostReason: '',
-      fee: '', dueDate: '', payments: [], calls: [], followUp: '', comments: ''
-    });
-    $('sheetTitle').textContent = isNew ? (draft.status === 'booked' ? 'New booking' : 'New lead') : draft.name;
-    $('sheetNum').textContent = 'Ref ' + (isNew ? nextNumber(false) : draft.num);
-    $('fName').value = draft.name; $('fPhone').value = draft.phone || ''; $('fEmail').value = draft.email || '';
-    $('fDob').value = draft.dob || ''; $('fProgram').value = draft.program || '';
-    $('fFee').value = (draft.fee === '' || draft.fee == null) ? '' : draft.fee; $('fDue').value = draft.dueDate || '';
-    $('fFollow').value = draft.followUp || ''; $('fComments').value = draft.comments || ''; $('fLost').value = draft.lostReason || '';
-    if ($('fLost').value !== (draft.lostReason || '')) $('fLost').value = 'Other';
-    document.querySelectorAll('input[name="gender"]').forEach(function (r) { r.checked = r.value === draft.gender; });
-    document.querySelectorAll('input[name="status"]').forEach(function (r) { r.checked = r.value === draft.status; });
-    $('fldLost').hidden = draft.status !== 'lost';
-    $('cDate').value = todayISO(); $('cNote').value = ''; $('pDate').value = todayISO(); $('pAmount').value = ''; $('pNote').value = '';
-    $('fldName').classList.remove('invalid'); $('btnDelete').hidden = isNew; dirty = false;
-    renderAge(); renderCalls(); renderPays();
-    sheet.showModal(); if (isNew) $('fName').focus();
-    $('form').querySelector('.sheet-body').scrollTop = 0;
-  }
-  function closeSheet(force) { if (!force && dirty && !confirm('Close without saving your changes?')) return; sheet.close(); draft = null; }
-  function renderAge() { var a = ageFrom($('fDob').value); $('fAge').textContent = a == null ? '—' : a + ' years old'; }
-  function renderCalls() {
-    draft.calls.sort(byDateDesc); var lc = draft.calls[0];
-    $('fLast').textContent = lc ? frDate(lc.date) + ' (' + ago(lc.date) + ')' : 'No call logged yet';
-    $('callLog').innerHTML = draft.calls.map(function (c, i) {
-      return '<li><span class="when">' + frDate(c.date) + '</span><span class="what">' + esc(c.note || 'Call') + '</span><button type="button" data-del-call="' + i + '" aria-label="Remove this call">×</button></li>';
-    }).join('');
-  }
-  function renderPays() {
-    draft.payments.sort(byDateDesc);
-    var fee = toNum($('fFee').value), p = paid(draft), bal = Math.max(0, fee - p);
-    $('mFee').textContent = money(fee); $('mPaid').textContent = money(p); $('mBal').textContent = money(bal);
-    $('mBalBox').className = fee > 0 ? (bal > 0 ? 'is-due' : 'is-paid') : '';
-    $('payLog').innerHTML = draft.payments.map(function (x, i) {
-      return '<li><span class="when">' + frDate(x.date) + '</span><span class="what">' + esc(x.note || 'Payment') + '</span><span class="amt num">' + money(x.amount) + '</span><button type="button" data-del-pay="' + i + '" aria-label="Remove this payment">×</button></li>';
-    }).join('');
-  }
-  function addCall() { draft.calls.push({ date: $('cDate').value || todayISO(), note: $('cNote').value.trim() }); $('cNote').value = ''; dirty = true; renderCalls(); }
-  function addPay() {
-    var amt = toNum($('pAmount').value);
-    if (amt <= 0) { $('pAmount').focus(); toast('Enter the amount paid.'); return; }
-    draft.payments.push({ date: $('pDate').value || todayISO(), amount: amt, note: $('pNote').value.trim() });
-    $('pAmount').value = ''; $('pNote').value = ''; dirty = true; renderPays();
-  }
-  function save() {
-    var name = $('fName').value.trim();
-    if (!name) { $('fldName').classList.add('invalid'); $('fName').focus(); return; }
-    if ($('cNote').value.trim()) addCall();                       /* typed but not yet "added" still counts */
-    if (toNum($('pAmount').value) > 0) addPay();
-    var g = document.querySelector('input[name="gender"]:checked'), st = document.querySelector('input[name="status"]:checked');
-    var before = draft.status;
-    draft.name = name; draft.phone = $('fPhone').value.trim(); draft.email = $('fEmail').value.trim();
-    draft.gender = g ? g.value : ''; draft.dob = $('fDob').value; draft.program = $('fProgram').value.trim();
-    draft.status = st ? st.value : 'lead';
-    draft.lostReason = draft.status === 'lost' ? $('fLost').value : '';
-    draft.fee = $('fFee').value === '' ? '' : toNum($('fFee').value); draft.dueDate = $('fDue').value;
-    draft.followUp = draft.status === 'lost' ? '' : $('fFollow').value;
-    draft.comments = $('fComments').value.trim(); draft.updatedAt = new Date().toISOString();
-    if (draft.status === 'booked' && !draft.bookedAt) draft.bookedAt = todayISO();
-    if (draft.status === 'lost' && !draft.lostAt) draft.lostAt = todayISO();
-    if (isNew) { draft.num = nextNumber(true); state.bookings.push(draft); }
-    else { var i = state.bookings.findIndex(function (b) { return b.id === draft.id; }); if (i === -1) state.bookings.push(draft); else state.bookings[i] = draft; }
-    var msg = draft.name + ' saved';
-    if (!isNew && before !== draft.status) msg = draft.name + ' moved to ' + (draft.status === 'booked' ? 'Bookings' : draft.status === 'lost' ? 'Lost leads' : 'Leads');
-    closeSheet(true); commit(); toast(msg);
-  }
-  function removeRecord() {
-    if (!draft || isNew) return;
-    if (!confirm('Delete ' + draft.name + ' (' + draft.num + ') for good?\n\nTip: if they simply did not book, set the status to Lost instead.')) return;
-    var id = draft.id, name = draft.name;
-    state.bookings = state.bookings.filter(function (b) { return b.id !== id; });
-    closeSheet(true); commit(); toast(name + ' deleted');
-  }
-
-  /* ==================== Export, backup, restore ==================== */
-  function download(name, text, type) {
-    var blob = new Blob([text], { type: type }), a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
-  }
-  function exportCsv() {
-    if (!state.bookings.length) { toast('Nothing to export yet.'); return; }
-    var head = ['Ref', 'Status', 'Lost reason', 'Full name', 'Phone', 'Email', 'Gender', 'Date of birth', 'Age', 'Program', 'Last contact', 'Last note', 'Follow up on', 'Calls logged', 'Comments',
-                'Fee (' + state.currency + ')', 'Paid', 'Balance', 'Last payment', 'Payment due by', 'Created'];
-    function cell(v) { v = String(v == null ? '' : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
-    var lines = [head.map(cell).join(',')];
-    state.bookings.forEach(function (b) {
-      var lc = lastCall(b), lp = lastPayment(b), a = ageFrom(b.dob);
-      lines.push([b.num, STATUS[b.status], b.lostReason, b.name, b.phone, b.email, b.gender, frDate(b.dob), a == null ? '' : a, b.program,
-        lc ? frDate(lc.date) : '', lc ? lc.note : '', frDate(b.followUp), (b.calls || []).length, b.comments,
-        toNum(b.fee), paid(b), balance(b), lp ? frDate(lp.date) : '', frDate(b.dueDate), frDate((b.createdAt || '').slice(0, 10))].map(cell).join(','));
-    });
-    download('juniors-crm-' + todayISO() + '.csv', '\uFEFF' + lines.join('\r\n'), 'text/csv;charset=utf-8');
-    toast('Spreadsheet downloaded');
-  }
-  function backup() {
-    if (!state.bookings.length) { toast('Nothing to back up yet.'); return; }
-    download('juniors-crm-backup-' + todayISO() + '.json', JSON.stringify(payload(), null, 2), 'application/json');
-    toast('Backup copy downloaded');
-  }
-  function restore(file) {
-    var r = new FileReader();
-    r.onload = function () {
-      var d; try { d = JSON.parse(r.result); d = d.data || d; if (!d || !Array.isArray(d.bookings)) throw new Error('shape'); }
-      catch (e) { alert('That file is not a Juniors CRM backup. Pick a “crm-backup-….json” or “crm-data.json” file.'); return; }
-      var msg = 'Restore ' + d.bookings.length + ' records from this file?';
-      if (state.bookings.length) msg += '\n\nThe ' + state.bookings.length + ' records on screen will be replaced. (Today’s copy in the backups folder is kept.)';
-      if (!confirm(msg)) return;
-      adopt(d); commit(); toast(d.bookings.length + ' records restored');
-    };
-    r.readAsText(file);
-  }
-
-  /* ==================== Misc ==================== */
-  var toastTimer;
-  function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('on'); }, 3200); }
-  function setView(v) { view = v; if (query) { query = ''; $('q').value = ''; } render(); window.scrollTo(0, 0); }
-
-  /* ==================== Events ==================== */
-  document.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { setView(b.getAttribute('data-view')); }); });
-  $('btnNew').addEventListener('click', function () { openSheet(null); });
-  $('btnNew2').addEventListener('click', function () { openSheet(null); });
-  $('btnCsv').addEventListener('click', exportCsv);
-  $('btnBackup').addEventListener('click', backup);
-  $('btnFolder').addEventListener('click', pickFolder);
-  $('btnRestore').addEventListener('click', function () { $('fileRestore').click(); });
-  $('fileRestore').addEventListener('change', function () { if (this.files[0]) restore(this.files[0]); this.value = ''; });
-  $('q').addEventListener('input', function () { query = this.value; render(); });
-  $('sort').addEventListener('change', function () { sortBy = this.value; render(); });
-  $('currency').addEventListener('change', function () { state.currency = this.value; commit(); });
-
-  $('rows').addEventListener('click', function (e) { if (e.target.closest('a')) return; var tr = e.target.closest('tr'); if (tr) openSheet(tr.getAttribute('data-id')); });
-  $('rows').addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.tagName === 'TR') { e.preventDefault(); openSheet(e.target.getAttribute('data-id')); } });
-
-  $('form').addEventListener('submit', function (e) { e.preventDefault(); save(); });
-  $('form').addEventListener('input', function () { dirty = true; });
-  document.querySelectorAll('input[name="status"]').forEach(function (r) { r.addEventListener('change', function () { $('fldLost').hidden = r.value !== 'lost' || !r.checked; }); });
-  $('fName').addEventListener('input', function () { $('fldName').classList.remove('invalid'); });
-  $('fDob').addEventListener('input', renderAge);
-  $('fFee').addEventListener('input', renderPays);
-  $('btnAddCall').addEventListener('click', addCall);
-  $('btnAddPay').addEventListener('click', addPay);
-  $('cNote').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addCall(); } });
-  $('pAmount').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addPay(); } });
-  $('pNote').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); addPay(); } });
-  $('callLog').addEventListener('click', function (e) { var b = e.target.closest('[data-del-call]'); if (!b) return; draft.calls.splice(+b.getAttribute('data-del-call'), 1); dirty = true; renderCalls(); });
-  $('payLog').addEventListener('click', function (e) { var b = e.target.closest('[data-del-pay]'); if (!b) return; draft.payments.splice(+b.getAttribute('data-del-pay'), 1); dirty = true; renderPays(); });
-  document.querySelectorAll('[data-follow]').forEach(function (btn) { btn.addEventListener('click', function () { var n = +btn.getAttribute('data-follow'); $('fFollow').value = n ? addDays(todayISO(), n) : ''; dirty = true; }); });
-  $('btnClose').addEventListener('click', function () { closeSheet(false); });
-  $('btnCancel').addEventListener('click', function () { closeSheet(false); });
-  $('btnDelete').addEventListener('click', removeRecord);
-  sheet.addEventListener('cancel', function (e) { e.preventDefault(); closeSheet(false); });
-  sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(false); });
-
-  $('setupMain').addEventListener('click', function () { if ($('setup').getAttribute('data-mode') === 'reopen' && pendingHandle) reopen(pendingHandle); else pickFolder(); });
-  $('setupAlt').addEventListener('click', function () { if ($('setup').getAttribute('data-mode') === 'reopen') pickFolder(); else setup(null); });
-
-  /* make sure the last change reaches the disk when the window is closed or hidden */
-  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden' && writeTimer) writeNow(); });
-  window.addEventListener('pagehide', function () { if (writeTimer) writeNow(); });
-
-  /* lets the installed app open with no internet */
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-    navigator.serviceWorker.register('sw.js').catch(function () {});
-  }
-
-  /* ==================== Login ==================== */
-  var SESSION = 'ja_crm_session', fails = 0, lockedUntil = 0;
-  function hexToBytes(h) { var a = new Uint8Array(h.length / 2); for (var i = 0; i < a.length; i++) a[i] = parseInt(h.substr(i * 2, 2), 16); return a; }
-  function bytesToHex(b) { return Array.prototype.map.call(b, function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''); }
-  async function derive(password, saltHex, iterations) {
-    var key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
-    var bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: hexToBytes(saltHex), iterations: iterations }, key, 256);
-    return bytesToHex(new Uint8Array(bits));
-  }
-  function parseCode(c) { var p = String(c || '').split('$'); return (p.length === 4 && p[0] === 'pbkdf2') ? { it: +p[1], salt: p[2], hash: p[3] } : null; }
-  function sessionMark() { var c = parseCode(LOGIN_PASSWORD_CODE); return c ? c.hash.slice(0, 24) : ''; }
-  function hasSession() {
-    var m = sessionMark(); if (!m) return false;
-    try { return sessionStorage.getItem(SESSION) === m || localStorage.getItem(SESSION) === m; } catch (e) { return false; }
-  }
-  function showLogin() { setTimeout(function () { $('lEmail').focus(); }, 50); }
-  function unlock() { $('lock').hidden = true; $('app').hidden = false; boot(); }
-  function lockMsg(id, text) { var el = $(id); el.textContent = text || ''; el.hidden = !text; }
-
-  $('lockForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    var wait = Math.ceil((lockedUntil - Date.now()) / 1000);
-    if (wait > 0) { lockMsg('lockMsg', 'Too many tries. Wait ' + wait + ' seconds, then try again.'); return; }
-    var c = parseCode(LOGIN_PASSWORD_CODE), btn = $('lSubmit');
-    if (!window.crypto || !crypto.subtle) { lockMsg('lockMsg', 'Open the CRM from https://www.juniors.academy/crm so the password can be checked.'); return; }
-    btn.disabled = true; btn.textContent = 'Checking…';
-    var ok = false;
-    try {
-      var h = await derive($('lPass').value, c.salt, c.it);
-      ok = h === c.hash && $('lEmail').value.trim().toLowerCase() === LOGIN_EMAIL.trim().toLowerCase();
-    } catch (err) {}
-    btn.disabled = false; btn.textContent = 'Sign in';
-    if (!ok) {
-      fails++; if (fails >= 5) { lockedUntil = Date.now() + 30000; fails = 0; }
-      $('lPass').value = ''; lockMsg('lockMsg', 'That email or password is not right.'); $('lPass').focus(); return;
-    }
-    try { ($('lKeep').checked ? localStorage : sessionStorage).setItem(SESSION, sessionMark()); } catch (err) {}
-    $('lPass').value = ''; lockMsg('lockMsg', ''); unlock();
-  });
-  $('btnLock').addEventListener('click', function () {
-    if (writeTimer) writeNow();
-    try { localStorage.removeItem(SESSION); sessionStorage.removeItem(SESSION); } catch (e) {}
-    writeChain.then(function () { location.reload(); });
-  });
-
-  /* ==================== Start ==================== */
-  var booted = false;
-  function boot() {
-    if (booted) return; booted = true;
-    loadMirror();
-    if (state.bookings.some(isDue)) view = 'followups'; else if (state.bookings.length) view = 'all';
+function gate(mode, msg, info) {
+  const g = $('lock'); g.hidden = mode === 'off'; g.setAttribute('data-mode', mode);
+  $('lockForm').hidden = mode !== 'signin'; $('nameForm').hidden = mode !== 'name'; $('gOut').hidden = mode !== 'name';
+  $('gateLead').textContent = { loading: 'Opening…', signin: 'Sign in with your work email and password.', name: 'One thing before you start: how should your name appear to the team?' }[mode] || '';
+  $('gateLead').hidden = !$('gateLead').textContent;
+  $('lockMsg').textContent = msg || ''; $('lockMsg').hidden = !msg; $('lockMsg').classList.toggle('info', !!info);
+  if (mode === 'signin') setTimeout(() => $('lEmail').focus(), 50);
+  if (mode === 'name') setTimeout(() => $('gName').focus(), 50);
+}
+function authMessage(e) {
+  const c = (e && e.code) || '';
+  if (/invalid-credential|wrong-password|user-not-found|invalid-email|missing-password/.test(c)) return 'That email or password is not right.';
+  if (/too-many-requests/.test(c)) return 'Too many tries. Wait a few minutes, then try again.';
+  if (/network-request-failed/.test(c)) return 'No internet connection.';
+  if (/user-disabled/.test(c)) return 'This account has been turned off.';
+  return "Couldn't sign in. Try again.";
+}
+async function start() {
+  if (!READY) { gate('setup', 'The online database is not connected yet. Paste your Firebase settings into FIREBASE_CONFIG near the bottom of index.html.', true); return; }
+  gate('loading');
+  try {
+    const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
+    const app = A0.initializeApp(FIREBASE_CONFIG);
+    let db;
+    try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); }
+    catch (e) { db = F.getFirestore(app); }
+    fb = { auth: A.getAuth(app), db, A, F };
+    A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
+  } catch (e) { gate('setup', "Couldn't reach the online database. Check the internet connection, then reload the page."); }
+}
+function signedOut() {
+  stop(); me = null; profile = null; team = []; state.bookings = []; state.seq = {};
+  $('app').hidden = true; if ($('sheet').open) $('sheet').close();
+  if ($('lock').getAttribute('data-mode') !== 'signin') gate('signin');
+}
+function denied(err) {
+  if (!err || err.code !== 'permission-denied') return;
+  fb.A.signOut(fb.auth);
+  gate('signin', 'This email is not on the CRM team list. Ask the Managing Director to add it to the Firestore rules.');
+}
+async function signedIn(u) {
+  const email = (u.email || '').toLowerCase();
+  me = { uid: u.uid, email, isDirector: DIRECTOR_EMAILS.map(x => x.toLowerCase()).includes(email) };
+  gate('loading');
+  try {
+    const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'crmUsers', u.uid));
+    if (!snap.exists()) { gate('name'); return; }
+    profile = snap.data(); openApp();
+  } catch (e) { if (e && e.code === 'permission-denied') denied(e); else gate('signin', "Couldn't load your profile. Check the connection and try again."); }
+}
+function openApp() {
+  const { F, db } = fb;
+  gate('off'); $('app').hidden = false;
+  $('saveTitle').textContent = 'Saved online'; $('saveSub').textContent = profile.name + (me.isDirector ? ' (Managing Director)' : '');
+  $('saveDot').className = 'dot ok';
+  $('btnRestore').hidden = !me.isDirector;
+  stop();
+  let first = true;
+  unsub.push(F.onSnapshot(F.collection(db, 'leads'), snap => {
+    state.bookings = snap.docs.map(d => normalize(d.data()));
+    if (first) { first = false; if (pool().some(isDue)) view = 'followups'; else if (state.bookings.length) view = 'all'; }
     render();
-    startStorage();
+  }, denied));
+  unsub.push(F.onSnapshot(F.collection(db, 'crmUsers'), snap => { team = snap.docs.map(d => d.data()).sort((a, b) => String(a.name).localeCompare(String(b.name), 'en')); fillOwners(); render(); }, () => {}));
+  unsub.push(F.onSnapshot(F.doc(db, 'crmMeta', 'counters'), d => { state.seq = (d.exists() && d.data().seq) || {}; }, () => {}));
+  unsub.push(F.onSnapshot(F.doc(db, 'crmMeta', 'settings'), d => { if (d.exists() && d.data().currency) { state.currency = d.data().currency; render(); } }, () => {}));
+  render();
+}
+function fillOwners() {
+  const opts = '<option value="">Not assigned</option>' + team.map(t => '<option value="' + esc(t.uid) + '">' + esc(t.name) + '</option>').join('');
+  const keep = $('fOwner').value; $('fOwner').innerHTML = opts; $('fOwner').value = keep;
+}
+
+/* ---------- writing ---------- */
+async function storeSave(b, isNew) {
+  const { F, db } = fb, data = clone(b);
+  data.updatedAt = new Date().toISOString(); data.updatedBy = profile.name;
+  if (isNew) {
+    /* the reference number is given by the database, so two people can never get the same one */
+    const y = String(new Date().getFullYear()), ref = F.doc(db, 'crmMeta', 'counters');
+    return F.runTransaction(db, async tx => {
+      const c = await tx.get(ref), seq = Object.assign({}, (c.exists() && c.data().seq) || {});
+      seq[y] = (seq[y] || 0) + 1; data.num = formatNum(y, seq[y]);
+      tx.set(ref, { seq }); tx.set(leadRef(data.id), data);
+      return data.num;
+    });
   }
-  if (hasSession()) unlock();
-  else showLogin();
-})();
+  F.setDoc(leadRef(data.id), data).catch(() => toast("That change couldn't be saved. Check the connection."));
+  return data.num;
+}
+async function importRecords(list) {
+  const { F, db } = fb, clean = clone(list).map(normalize);
+  for (let i = 0; i < clean.length; i += 400) {
+    const batch = F.writeBatch(db);
+    clean.slice(i, i + 400).forEach(b => { if (!b.id) b.id = uid(); if (!b.ownerUid) { b.ownerUid = me.uid; b.ownerName = profile.name; } batch.set(leadRef(b.id), b); });
+    await batch.commit();
+  }
+  const ref = F.doc(db, 'crmMeta', 'counters');
+  await F.runTransaction(db, async tx => { const c = await tx.get(ref); tx.set(ref, { seq: seqFrom(clean, (c.exists() && c.data().seq) || {}) }); });
+}
+
+/* ==================== Views ==================== */
+const VIEWS = {
+  followups: { title: 'Follow-ups', sub: 'Who to call, most overdue first', test: hasFollow, sort: 'follow',
+               empty: ['Nobody to follow up', 'Set a follow-up date on a lead or booking and it shows up here on the right day.'] },
+  leads:     { title: 'Leads', sub: 'People who have not booked yet', test: isOpen, sort: 'recent',
+               empty: ['No open leads', 'Add everyone who asks about a program, even if they are only curious.'] },
+  bookings:  { title: 'Bookings', sub: 'Confirmed programs and their payments', test: b => b.status === 'booked', sort: 'recent',
+               empty: ['No bookings yet', 'When a lead confirms, open their record and set the status to Booked.'] },
+  lost:      { title: 'Lost leads', sub: 'Why people did not book', test: b => b.status === 'lost', sort: 'recent',
+               empty: ['No lost leads', 'When someone decides not to book, mark them Lost and note why. It is worth calling them again next season.'] },
+  all:       { title: 'Everyone', sub: 'All leads, bookings and lost leads', test: () => true, sort: 'recent',
+               empty: ['Nothing here yet', 'Add your first lead. The reference number is created for you.'] }
+};
+let view = 'followups', query = '', sortBy = 'auto', scope = 'all';
+/* the records the screen works with: the whole team's, one person's, or the unassigned ones */
+function pool() {
+  if (scope === 'all') return state.bookings;
+  if (scope === 'none') return state.bookings.filter(b => !b.ownerUid);
+  const who = scope === 'mine' ? (me && me.uid) : scope;
+  return state.bookings.filter(b => b.ownerUid === who);
+}
+function visible() {
+  const v = VIEWS[view], q = query.trim().toLowerCase(), qd = q.replace(/\D/g, '');
+  const list = (q ? state.bookings : pool()).filter(b => {
+    if (!q) return v.test(b);                       /* a search looks through everyone */
+    if ([b.num, b.name, b.email, b.program, b.phone, ownerName(b)].join(' ').toLowerCase().indexOf(q) !== -1) return true;
+    return qd.length >= 3 && String(b.phone || '').replace(/\D/g, '').indexOf(qd) !== -1;
+  });
+  const s = sortBy === 'auto' ? v.sort : sortBy;
+  list.sort((a, b) => {
+    if (s === 'name') return String(a.name).localeCompare(String(b.name), 'en');
+    if (s === 'balance') return balance(b) - balance(a);
+    if (s === 'follow') {
+      const fa = hasFollow(a) ? a.followUp : '', fb2 = hasFollow(b) ? b.followUp : '';
+      if (!fa && !fb2) return 0; if (!fa) return 1; if (!fb2) return -1;
+      return fa < fb2 ? -1 : fa > fb2 ? 1 : 0;
+    }
+    return (b.createdAt || '') < (a.createdAt || '') ? -1 : 1;
+  });
+  return list;
+}
+function followTag(b) {
+  if (b.status === 'lost') return '<span class="sub">' + esc(b.lostReason || 'No reason noted') + '</span>';
+  if (!b.followUp) return '<span class="sub">—</span>';
+  const n = dayDiff(todayISO(), b.followUp);
+  if (n < 0) return '<span class="tag tag-late">' + (-n) + (n === -1 ? ' day late' : ' days late') + '</span><span class="sub">' + frDate(b.followUp) + '</span>';
+  if (n === 0) return '<span class="tag tag-today">Today</span>';
+  return '<span class="tag tag-soon">' + (n === 1 ? 'Tomorrow' : 'In ' + n + ' days') + '</span><span class="sub">' + frDate(b.followUp) + '</span>';
+}
+function render() {
+  if (!me) return;
+  const all = pool(), t = todayISO();
+  const due = all.filter(isDue).length, open = all.filter(isOpen), booked = all.filter(VIEWS.bookings.test), lost = all.filter(VIEWS.lost.test);
+  $('sDue').textContent = due; $('sLeads').textContent = open.length;
+  $('sValue').textContent = money(booked.reduce((s, b) => s + toNum(b.fee), 0));
+  const decided = booked.length + lost.length;
+  $('sValueSub').textContent = 'from ' + booked.length + (booked.length === 1 ? ' booking' : ' bookings') + (decided ? ', ' + Math.round(booked.length / decided * 100) + '% of decided leads won' : '');
+  $('sBal').textContent = money(booked.reduce((s, b) => s + balance(b), 0));
+  $('nFollow').textContent = due; $('nFollow').className = 'count' + (due ? ' hot' : '');
+  $('nLeads').textContent = open.length; $('nBooked').textContent = booked.length; $('nLost').textContent = lost.length; $('nAll').textContent = all.length;
+  document.querySelectorAll('.cur').forEach(el => { el.textContent = state.currency; });
+  $('currency').value = state.currency;
+
+  /* whose records */
+  const keepScope = scope;
+  $('scope').innerHTML = '<option value="all">Whole team</option><option value="mine">My records</option>' +
+    team.filter(x => x.uid !== me.uid).map(x => '<option value="' + esc(x.uid) + '">' + esc(firstName(x.name)) + "'s records</option>").join('') +
+    (state.bookings.some(b => !b.ownerUid) ? '<option value="none">Not assigned</option>' : '');
+  $('scope').value = keepScope; if ($('scope').value !== keepScope) { scope = 'all'; $('scope').value = 'all'; }
+
+  const v = VIEWS[view], searching = !!query.trim();
+  $('viewTitle').firstChild.nodeValue = searching ? 'Search results' : v.title;
+  $('viewSub').textContent = searching ? 'Looking through the whole team' : v.sub + (scope === 'all' ? '' : scope === 'mine' ? ' (yours only)' : ' (filtered)');
+  $('thFollow').textContent = view === 'lost' && !searching ? 'Reason' : 'Follow-up';
+  $('btnNewLabel').textContent = view === 'bookings' ? 'New booking' : 'New lead';
+  document.querySelectorAll('.nav button').forEach(b => { if (b.getAttribute('data-view') === view && !searching) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+
+  const list = visible();
+  $('rows').innerHTML = list.map(b => {
+    const lc = lastCall(b), bal = balance(b), age = ageFrom(b.dob), settled = toNum(b.fee) > 0 && bal <= 0;
+    const meta = [b.program, age != null ? age + ' yrs' : '', b.gender].filter(Boolean).join(', ');
+    const wa = waNumber(b.phone), on = ownerName(b);
+    let contact = b.phone
+      ? '<span>' + esc(b.phone) + '</span><span class="links"><a class="link-pill" href="tel:' + esc(String(b.phone).replace(/[^\d+]/g, '')) + '">Call</a>' +
+        (wa ? '<a class="link-pill" href="https://wa.me/' + wa + '" target="_blank" rel="noopener noreferrer">WhatsApp</a>' : '') + '</span>'
+      : '<span class="sub">—</span>';
+    if (b.email) contact += '<span class="sub">' + esc(b.email) + '</span>';
+    const cls = hasFollow(b) ? (b.followUp < t ? 'is-due' : b.followUp === t ? 'is-today' : '') : '';
+    let balSub = '';
+    if (b.status === 'booked' && bal > 0 && b.dueDate) balSub = '<span class="sub' + (b.dueDate < t ? '" style="color:var(--accent-text);font-weight:600' : '') + '">due ' + frDate(b.dueDate) + '</span>';
+    else if (settled) balSub = '<span class="sub">paid in full</span>';
+    return '<tr class="' + cls + '" data-id="' + esc(b.id) + '" tabindex="0" aria-label="Open ' + esc(b.name) + '">' +
+      '<td class="c-num hide-m">' + esc(b.num) + '</td>' +
+      '<td class="c-name"><span class="sub only-m">' + esc(b.num) + '</span><strong>' + esc(b.name) + '</strong>' + (meta ? '<span class="sub">' + esc(meta) + '</span>' : '') + '</td>' +
+      '<td><span class="tag st-' + b.status + '">' + STATUS[b.status] + '</span><span class="sub owner' + (on ? '' : ' none') + '">' + (on ? esc(firstName(on)) : 'Not assigned') + '</span></td>' +
+      '<td class="hide-m">' + contact + '</td>' +
+      '<td class="hide-m c-last">' + (lc ? '<span>' + ago(lc.date) + (lc.by ? ' · ' + esc(firstName(lc.by)) : '') + '</span><span class="sub">' + esc(lc.note || frDate(lc.date)) + '</span>' : '<span class="sub">Never called</span>') + '</td>' +
+      '<td>' + followTag(b) + '</td>' +
+      '<td class="t-right"><span class="bal num ' + (settled ? 'bal-zero' : '') + '">' + (toNum(b.fee) ? money(bal) : '—') + '</span>' + (toNum(b.fee) ? '<span class="sub num">of ' + money(b.fee) + '</span>' : '') + balSub + '</td>' +
+    '</tr>';
+  }).join('');
+
+  const none = list.length === 0;
+  $('table').hidden = none; $('empty').hidden = !none;
+  if (none) {
+    $('emptyTitle').textContent = searching ? 'No match' : v.empty[0];
+    $('emptyText').textContent = searching ? 'Nobody matches “' + query.trim() + '”. Try part of the name or phone number.' : v.empty[1];
+    $('btnNew2').hidden = searching || view === 'lost' || view === 'followups';
+    $('btnNew2').textContent = view === 'bookings' ? 'New booking' : 'New lead';
+  }
+}
+
+/* ==================== Record sheet ==================== */
+const sheet = $('sheet');
+let draft = null, isNew = false, dirty = false, saving = false;
+
+function openSheet(id) {
+  const found = id && state.bookings.filter(b => b.id === id)[0];
+  isNew = !found;
+  draft = found ? clone(found) : normalize({
+    id: uid(), num: '', createdAt: new Date().toISOString(), createdBy: profile.name, status: view === 'bookings' ? 'booked' : 'lead',
+    name: '', phone: '', email: '', gender: '', dob: '', program: '', lostReason: '', ownerUid: me.uid, ownerName: profile.name,
+    fee: '', dueDate: '', payments: [], calls: [], followUp: '', comments: ''
+  });
+  $('sheetTitle').textContent = isNew ? (draft.status === 'booked' ? 'New booking' : 'New lead') : draft.name;
+  $('sheetNum').textContent = 'Ref ' + (isNew ? previewNumber() : draft.num);
+  $('fName').value = draft.name; $('fPhone').value = draft.phone || ''; $('fEmail').value = draft.email || '';
+  $('fDob').value = draft.dob || ''; $('fProgram').value = draft.program || '';
+  $('fFee').value = (draft.fee === '' || draft.fee == null) ? '' : draft.fee; $('fDue').value = draft.dueDate || '';
+  $('fFollow').value = draft.followUp || ''; $('fComments').value = draft.comments || ''; $('fLost').value = draft.lostReason || '';
+  if ($('fLost').value !== (draft.lostReason || '')) $('fLost').value = 'Other';
+  fillOwners(); $('fOwner').value = draft.ownerUid || '';
+  document.querySelectorAll('input[name="gender"]').forEach(r => { r.checked = r.value === draft.gender; });
+  document.querySelectorAll('input[name="status"]').forEach(r => { r.checked = r.value === draft.status; });
+  $('fldLost').hidden = draft.status !== 'lost';
+  $('cDate').value = todayISO(); $('cNote').value = ''; $('pDate').value = todayISO(); $('pAmount').value = ''; $('pNote').value = '';
+  $('fldName').classList.remove('invalid'); $('btnDelete').hidden = isNew || !me.isDirector; dirty = false;
+  $('sheetBy').textContent = isNew ? '' : 'Last changed ' + (draft.updatedAt ? frDate(draft.updatedAt.slice(0, 10)) : '') + (draft.updatedBy ? ' by ' + draft.updatedBy : '');
+  renderAge(); renderCalls(); renderPays();
+  sheet.showModal(); if (isNew) $('fName').focus();
+  $('form').querySelector('.sheet-body').scrollTop = 0;
+}
+function closeSheet(force) { if (saving) return; if (!force && dirty && !confirm('Close without saving your changes?')) return; sheet.close(); draft = null; }
+function renderAge() { const a = ageFrom($('fDob').value); $('fAge').textContent = a == null ? '—' : a + ' years old'; }
+function renderCalls() {
+  draft.calls.sort(byDateDesc); const lc = draft.calls[0];
+  $('fLast').textContent = lc ? frDate(lc.date) + ' (' + ago(lc.date) + ')' : 'No call logged yet';
+  $('callLog').innerHTML = draft.calls.map((c, i) =>
+    '<li><span class="when">' + frDate(c.date) + '</span><span class="what">' + esc(c.note || 'Call') + (c.by ? '<small class="by"> ' + esc(firstName(c.by)) + '</small>' : '') + '</span><button type="button" data-del-call="' + i + '" aria-label="Remove this call">×</button></li>').join('');
+}
+function renderPays() {
+  draft.payments.sort(byDateDesc);
+  const fee = toNum($('fFee').value), p = paid(draft), bal = Math.max(0, fee - p);
+  $('mFee').textContent = money(fee); $('mPaid').textContent = money(p); $('mBal').textContent = money(bal);
+  $('mBalBox').className = fee > 0 ? (bal > 0 ? 'is-due' : 'is-paid') : '';
+  $('payLog').innerHTML = draft.payments.map((x, i) =>
+    '<li><span class="when">' + frDate(x.date) + '</span><span class="what">' + esc(x.note || 'Payment') + (x.by ? '<small class="by"> ' + esc(firstName(x.by)) + '</small>' : '') + '</span><span class="amt num">' + money(x.amount) + '</span><button type="button" data-del-pay="' + i + '" aria-label="Remove this payment">×</button></li>').join('');
+}
+function addCall() { draft.calls.push({ date: $('cDate').value || todayISO(), note: $('cNote').value.trim(), by: profile.name }); $('cNote').value = ''; dirty = true; renderCalls(); }
+function addPay() {
+  const amt = toNum($('pAmount').value);
+  if (amt <= 0) { $('pAmount').focus(); toast('Enter the amount paid.'); return; }
+  draft.payments.push({ date: $('pDate').value || todayISO(), amount: amt, note: $('pNote').value.trim(), by: profile.name });
+  $('pAmount').value = ''; $('pNote').value = ''; dirty = true; renderPays();
+}
+async function save() {
+  if (saving) return;
+  const name = $('fName').value.trim();
+  if (!name) { $('fldName').classList.add('invalid'); $('fName').focus(); return; }
+  if ($('cNote').value.trim()) addCall();                       /* typed but not yet "added" still counts */
+  if (toNum($('pAmount').value) > 0) addPay();
+  const g = document.querySelector('input[name="gender"]:checked'), st = document.querySelector('input[name="status"]:checked');
+  const before = draft.status, o = team.filter(t => t.uid === $('fOwner').value)[0];
+  draft.name = name; draft.phone = $('fPhone').value.trim(); draft.email = $('fEmail').value.trim();
+  draft.gender = g ? g.value : ''; draft.dob = $('fDob').value; draft.program = $('fProgram').value.trim();
+  draft.status = st ? st.value : 'lead';
+  draft.lostReason = draft.status === 'lost' ? $('fLost').value : '';
+  draft.ownerUid = o ? o.uid : ''; draft.ownerName = o ? o.name : '';
+  draft.fee = $('fFee').value === '' ? '' : toNum($('fFee').value); draft.dueDate = $('fDue').value;
+  draft.followUp = draft.status === 'lost' ? '' : $('fFollow').value;
+  draft.comments = $('fComments').value.trim();
+  if (draft.status === 'booked' && !draft.bookedAt) draft.bookedAt = todayISO();
+  if (draft.status === 'lost' && !draft.lostAt) draft.lostAt = todayISO();
+  const btn = $('btnSave'); saving = true; btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    await storeSave(draft, isNew);
+    let msg = draft.name + ' saved';
+    if (!isNew && before !== draft.status) msg = draft.name + ' moved to ' + (draft.status === 'booked' ? 'Bookings' : draft.status === 'lost' ? 'Lost leads' : 'Leads');
+    saving = false; closeSheet(true); toast(msg);
+  } catch (e) { saving = false; toast("Couldn't save. An internet connection is needed to create a record."); }
+  finally { btn.disabled = false; btn.textContent = 'Save'; }
+}
+function removeRecord() {
+  if (!draft || isNew || !me.isDirector) return;
+  if (!confirm('Delete ' + draft.name + ' (' + draft.num + ') for good?\n\nTip: if they simply did not book, set the status to Lost instead.')) return;
+  const id = draft.id, name = draft.name;
+  fb.F.deleteDoc(leadRef(id)).then(() => toast(name + ' deleted')).catch(() => toast("Couldn't delete. Check the connection."));
+  closeSheet(true);
+}
+
+/* ==================== Export, backup, import ==================== */
+function download(name, text, type) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+function exportCsv() {
+  if (!state.bookings.length) { toast('Nothing to export yet.'); return; }
+  const head = ['Ref', 'Status', 'Assigned to', 'Lost reason', 'Full name', 'Phone', 'Email', 'Gender', 'Date of birth', 'Age', 'Program', 'Last contact', 'Last note', 'Follow up on', 'Calls logged', 'Comments',
+                'Fee (' + state.currency + ')', 'Paid', 'Balance', 'Last payment', 'Payment due by', 'Created'];
+  const cell = v => { v = String(v == null ? '' : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const lines = [head.map(cell).join(',')];
+  state.bookings.forEach(b => {
+    const lc = lastCall(b), lp = lastPayment(b), a = ageFrom(b.dob);
+    lines.push([b.num, STATUS[b.status], ownerName(b), b.lostReason, b.name, b.phone, b.email, b.gender, frDate(b.dob), a == null ? '' : a, b.program,
+      lc ? frDate(lc.date) : '', lc ? lc.note : '', frDate(b.followUp), (b.calls || []).length, b.comments,
+      toNum(b.fee), paid(b), balance(b), lp ? frDate(lp.date) : '', frDate(b.dueDate), frDate((b.createdAt || '').slice(0, 10))].map(cell).join(','));
+  });
+  download('juniors-crm-' + todayISO() + '.csv', '\uFEFF' + lines.join('\r\n'), 'text/csv;charset=utf-8');
+  toast('Spreadsheet downloaded');
+}
+function backup() {
+  if (!state.bookings.length) { toast('Nothing to back up yet.'); return; }
+  download('juniors-crm-backup-' + todayISO() + '.json', JSON.stringify({ app: 'juniors-crm', version: 4, savedAt: new Date().toISOString(), currency: state.currency, seq: state.seq, bookings: state.bookings }, null, 2), 'application/json');
+  toast('Backup copy downloaded');
+}
+function importFile(file) {
+  const r = new FileReader();
+  r.onload = async () => {
+    let d; try { d = JSON.parse(r.result); d = d.data || d; if (!d || !Array.isArray(d.bookings)) throw new Error('shape'); }
+    catch (e) { alert('That file is not a Juniors CRM file. Pick “crm-data.json” from your Juniors CRM folder, or a “crm-backup-….json” file.'); return; }
+    if (!d.bookings.length) { toast('That file has no records in it.'); return; }
+    if (!confirm('Bring ' + d.bookings.length + ' records from this file into the online CRM?\n\nRecords already online with the same reference are updated. Nothing is deleted. Records with no owner are assigned to you.')) return;
+    toast('Importing ' + d.bookings.length + ' records…');
+    try { await importRecords(d.bookings); toast(d.bookings.length + ' records are now online'); }
+    catch (e) { toast("The import didn't finish. Check the connection and try again."); }
+  };
+  r.readAsText(file);
+}
+
+/* ==================== Events ==================== */
+function setView(v) { view = v; if (query) { query = ''; $('q').value = ''; } render(); window.scrollTo(0, 0); }
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => setView(b.getAttribute('data-view'))));
+$('btnNew').addEventListener('click', () => openSheet(null));
+$('btnNew2').addEventListener('click', () => openSheet(null));
+$('btnCsv').addEventListener('click', exportCsv);
+$('btnBackup').addEventListener('click', backup);
+$('btnRestore').addEventListener('click', () => $('fileRestore').click());
+$('fileRestore').addEventListener('change', function () { if (this.files[0]) importFile(this.files[0]); this.value = ''; });
+$('q').addEventListener('input', function () { query = this.value; render(); });
+$('sort').addEventListener('change', function () { sortBy = this.value; render(); });
+$('scope').addEventListener('change', function () { scope = this.value; render(); });
+$('currency').addEventListener('change', function () { state.currency = this.value; fb.F.setDoc(fb.F.doc(fb.db, 'crmMeta', 'settings'), { currency: this.value }, { merge: true }).catch(() => {}); render(); });
+
+$('rows').addEventListener('click', e => { if (e.target.closest('a')) return; const tr = e.target.closest('tr'); if (tr) openSheet(tr.getAttribute('data-id')); });
+$('rows').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.tagName === 'TR') { e.preventDefault(); openSheet(e.target.getAttribute('data-id')); } });
+
+$('form').addEventListener('submit', e => { e.preventDefault(); save(); });
+$('form').addEventListener('input', () => { dirty = true; });
+document.querySelectorAll('input[name="status"]').forEach(r => r.addEventListener('change', () => { $('fldLost').hidden = r.value !== 'lost' || !r.checked; }));
+$('fName').addEventListener('input', () => $('fldName').classList.remove('invalid'));
+$('fDob').addEventListener('input', renderAge);
+$('fFee').addEventListener('input', renderPays);
+$('btnAddCall').addEventListener('click', addCall);
+$('btnAddPay').addEventListener('click', addPay);
+$('cNote').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addCall(); } });
+$('pAmount').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addPay(); } });
+$('pNote').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addPay(); } });
+$('callLog').addEventListener('click', e => { const b = e.target.closest('[data-del-call]'); if (!b) return; draft.calls.splice(+b.getAttribute('data-del-call'), 1); dirty = true; renderCalls(); });
+$('payLog').addEventListener('click', e => { const b = e.target.closest('[data-del-pay]'); if (!b) return; draft.payments.splice(+b.getAttribute('data-del-pay'), 1); dirty = true; renderPays(); });
+document.querySelectorAll('[data-follow]').forEach(btn => btn.addEventListener('click', () => { const n = +btn.getAttribute('data-follow'); $('fFollow').value = n ? addDays(todayISO(), n) : ''; dirty = true; }));
+$('btnClose').addEventListener('click', () => closeSheet(false));
+$('btnCancel').addEventListener('click', () => closeSheet(false));
+$('btnDelete').addEventListener('click', removeRecord);
+sheet.addEventListener('cancel', e => { e.preventDefault(); closeSheet(false); });
+sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(false); });
+
+/* sign in, name, sign out */
+$('lockForm').addEventListener('submit', async e => {
+  e.preventDefault(); const btn = $('lSubmit'); btn.disabled = true; btn.textContent = 'Signing in…';
+  try { await fb.A.signInWithEmailAndPassword(fb.auth, $('lEmail').value.trim(), $('lPass').value); $('lPass').value = ''; }
+  catch (err) { gate('signin', authMessage(err)); }
+  finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+});
+$('gForgot').addEventListener('click', async () => {
+  const email = $('lEmail').value.trim();
+  if (!email) { gate('signin', 'Type your email first, then click “Forgot my password” again.', true); return; }
+  try { await fb.A.sendPasswordResetEmail(fb.auth, email); } catch (e) {}
+  gate('signin', 'If that account exists, an email to choose a new password is on its way.', true);
+});
+$('nameForm').addEventListener('submit', async e => {
+  e.preventDefault(); const name = $('gName').value.trim(); if (name.length < 2) { $('gName').focus(); return; }
+  const p = { uid: me.uid, name, email: me.email, joinedAt: todayISO() };
+  try { await fb.F.setDoc(fb.F.doc(fb.db, 'crmUsers', me.uid), p); profile = p; openApp(); }
+  catch (err) { if (err && err.code === 'permission-denied') denied(err); else gate('name', "Couldn't save your name. Check the connection and try again."); }
+});
+$('btnLock').addEventListener('click', () => { if (confirm('Sign out of the CRM?')) fb.A.signOut(fb.auth); });
+$('gOut').addEventListener('click', () => fb.A.signOut(fb.auth));
+
+/* lets the installed app open with no internet */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+/* follow-ups become due at midnight: refresh the day */
+let lastDay = todayISO();
+setInterval(() => { if (me && todayISO() !== lastDay) { lastDay = todayISO(); render(); } }, 60000);
+
+start();
 </script>
 </body>
 </html>
