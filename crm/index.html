@@ -147,6 +147,7 @@
     .st-talking { background: var(--highlight-soft); color: #6B5200; }
     .st-booked { background: var(--ok-soft); color: var(--ok); }
     .st-lost { background: rgba(20,24,29,.08); color: var(--muted); }
+    .st-alumni { background: var(--ink); color: #fff; }
     .bal { font-weight: 700; white-space: nowrap; }
     .bal-zero { color: var(--ok); }
 
@@ -188,6 +189,7 @@
     .seg input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
     .seg--status input[value="booked"]:checked + span { background: var(--ok); border-color: var(--ok); }
     .seg--status input[value="lost"]:checked + span { background: var(--muted); border-color: var(--muted); }
+    .seg--status { flex-wrap: wrap; } .seg--status label { flex: 1 1 30%; }
 
     .quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
     .add-row { display: grid; gap: 8px; align-items: end; margin-top: 4px; }
@@ -319,6 +321,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg>
         Lost leads <span class="count" id="nLost">0</span>
       </button>
+      <button type="button" data-view="alumni">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.2V16c0 1.6 2.7 3 6 3s6-1.4 6-3v-4.8M22 9v5.5"/></svg>
+        Alumni <span class="count" id="nAlumni">0</span>
+      </button>
       <hr>
       <button type="button" data-view="all">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -408,6 +414,7 @@
           <label><input type="radio" name="status" value="talking"><span>In discussion</span></label>
           <label><input type="radio" name="status" value="booked"><span>Booked</span></label>
           <label><input type="radio" name="status" value="lost"><span>Lost</span></label>
+          <label><input type="radio" name="status" value="alumni"><span>Alumni</span></label>
         </div>
         <div class="field" style="margin-top:12px">
           <label for="fOwner">Assigned to</label>
@@ -538,7 +545,7 @@ const DIRECTOR_EMAILS = ['director@juniors.academy'];
 
 const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
 const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
-const STATUS = { lead: 'New lead', talking: 'In discussion', booked: 'Booked', lost: 'Lost' };
+const STATUS = { lead: 'New lead', talking: 'In discussion', booked: 'Booked', lost: 'Lost', alumni: 'Alumni' };
 const state = { seq: {}, bookings: [], currency: 'DA' };
 let fb = null, me = null, profile = null, team = [], unsub = [];
 
@@ -713,7 +720,9 @@ const VIEWS = {
                empty: ['No bookings yet', 'When a lead confirms, open their record and set the status to Booked.'] },
   lost:      { title: 'Lost leads', sub: 'Why people did not book', test: b => b.status === 'lost', sort: 'recent',
                empty: ['No lost leads', 'When someone decides not to book, mark them Lost and note why. It is worth calling them again next season.'] },
-  all:       { title: 'Everyone', sub: 'All leads, bookings and lost leads', test: () => true, sort: 'recent',
+  alumni:    { title: 'Alumni', sub: 'Students who completed a program with Juniors Academy', test: b => b.status === 'alumni', sort: 'recent',
+               empty: ['No alumni yet', 'When a student comes back from their program, open their booking and set the status to Alumni. They are your best source of referrals and repeat bookings.'] },
+  all:       { title: 'Everyone', sub: 'All leads, bookings, lost leads and alumni', test: () => true, sort: 'recent',
                empty: ['Nothing here yet', 'Add your first lead. The reference number is created for you.'] }
 };
 let view = 'followups', query = '', sortBy = 'auto', scope = 'all';
@@ -755,14 +764,14 @@ function followTag(b) {
 function render() {
   if (!me) return;
   const all = pool(), t = todayISO();
-  const due = all.filter(isDue).length, open = all.filter(isOpen), booked = all.filter(VIEWS.bookings.test), lost = all.filter(VIEWS.lost.test);
+  const due = all.filter(isDue).length, open = all.filter(isOpen), booked = all.filter(VIEWS.bookings.test), lost = all.filter(VIEWS.lost.test), alumni = all.filter(VIEWS.alumni.test);
   $('sDue').textContent = due; $('sLeads').textContent = open.length;
   $('sValue').textContent = money(booked.reduce((s, b) => s + toNum(b.fee), 0));
-  const decided = booked.length + lost.length;
-  $('sValueSub').textContent = 'from ' + booked.length + (booked.length === 1 ? ' booking' : ' bookings') + (decided ? ', ' + Math.round(booked.length / decided * 100) + '% of decided leads won' : '');
-  $('sBal').textContent = money(booked.reduce((s, b) => s + balance(b), 0));
+  const won = booked.length + alumni.length, decided = won + lost.length;
+  $('sValueSub').textContent = 'from ' + booked.length + (booked.length === 1 ? ' booking' : ' bookings') + (decided ? ', ' + Math.round(won / decided * 100) + '% of decided leads won' : '');
+  $('sBal').textContent = money(booked.concat(alumni).reduce((s, b) => s + balance(b), 0));
   $('nFollow').textContent = due; $('nFollow').className = 'count' + (due ? ' hot' : '');
-  $('nLeads').textContent = open.length; $('nBooked').textContent = booked.length; $('nLost').textContent = lost.length; $('nAll').textContent = all.length;
+  $('nLeads').textContent = open.length; $('nBooked').textContent = booked.length; $('nLost').textContent = lost.length; $('nAlumni').textContent = alumni.length; $('nAll').textContent = all.length;
   document.querySelectorAll('.cur').forEach(el => { el.textContent = state.currency; });
   $('currency').value = state.currency;
 
@@ -777,7 +786,7 @@ function render() {
   $('viewTitle').firstChild.nodeValue = searching ? 'Search results' : v.title;
   $('viewSub').textContent = searching ? 'Looking through the whole team' : v.sub + (scope === 'all' ? '' : scope === 'mine' ? ' (yours only)' : ' (filtered)');
   $('thFollow').textContent = view === 'lost' && !searching ? 'Reason' : 'Follow-up';
-  $('btnNewLabel').textContent = view === 'bookings' ? 'New booking' : 'New lead';
+  $('btnNewLabel').textContent = view === 'bookings' ? 'New booking' : view === 'alumni' ? 'Add alumni' : 'New lead';
   document.querySelectorAll('.nav button').forEach(b => { if (b.getAttribute('data-view') === view && !searching) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
 
   const list = visible();
@@ -797,7 +806,7 @@ function render() {
     return '<tr class="' + cls + '" data-id="' + esc(b.id) + '" tabindex="0" aria-label="Open ' + esc(b.name) + '">' +
       '<td class="c-num hide-m">' + esc(b.num) + '</td>' +
       '<td class="c-name"><span class="sub only-m">' + esc(b.num) + '</span><strong>' + esc(b.name) + '</strong>' + (meta ? '<span class="sub">' + esc(meta) + '</span>' : '') + '</td>' +
-      '<td><span class="tag st-' + b.status + '">' + STATUS[b.status] + '</span><span class="sub owner' + (on ? '' : ' none') + '">' + (on ? esc(firstName(on)) : 'Not assigned') + '</span></td>' +
+      '<td><span class="tag st-' + b.status + '">' + STATUS[b.status] + '</span>' + (b.status === 'alumni' && b.alumniAt ? '<span class="sub">since ' + b.alumniAt.slice(0, 4) + '</span>' : '') + '<span class="sub owner' + (on ? '' : ' none') + '">' + (on ? esc(firstName(on)) : 'Not assigned') + '</span></td>' +
       '<td class="hide-m">' + contact + '</td>' +
       '<td class="hide-m c-last">' + (lc ? '<span>' + ago(lc.date) + (lc.by ? ' · ' + esc(firstName(lc.by)) : '') + '</span><span class="sub">' + esc(lc.note || frDate(lc.date)) + '</span>' : '<span class="sub">Never called</span>') + '</td>' +
       '<td>' + followTag(b) + '</td>' +
@@ -811,7 +820,7 @@ function render() {
     $('emptyTitle').textContent = searching ? 'No match' : v.empty[0];
     $('emptyText').textContent = searching ? 'Nobody matches “' + query.trim() + '”. Try part of the name or phone number.' : v.empty[1];
     $('btnNew2').hidden = searching || view === 'lost' || view === 'followups';
-    $('btnNew2').textContent = view === 'bookings' ? 'New booking' : 'New lead';
+    $('btnNew2').textContent = view === 'bookings' ? 'New booking' : view === 'alumni' ? 'Add alumni' : 'New lead';
   }
 }
 
@@ -823,11 +832,11 @@ function openSheet(id) {
   const found = id && state.bookings.filter(b => b.id === id)[0];
   isNew = !found;
   draft = found ? clone(found) : normalize({
-    id: uid(), num: '', createdAt: new Date().toISOString(), createdBy: profile.name, status: view === 'bookings' ? 'booked' : 'lead',
+    id: uid(), num: '', createdAt: new Date().toISOString(), createdBy: profile.name, status: view === 'bookings' ? 'booked' : view === 'alumni' ? 'alumni' : 'lead',
     name: '', phone: '', email: '', gender: '', dob: '', program: '', lostReason: '', ownerUid: me.uid, ownerName: profile.name,
     fee: '', dueDate: '', payments: [], calls: [], followUp: '', comments: ''
   });
-  $('sheetTitle').textContent = isNew ? (draft.status === 'booked' ? 'New booking' : 'New lead') : draft.name;
+  $('sheetTitle').textContent = isNew ? (draft.status === 'booked' ? 'New booking' : draft.status === 'alumni' ? 'New alumni' : 'New lead') : draft.name;
   $('sheetNum').textContent = 'Ref ' + (isNew ? previewNumber() : draft.num);
   $('fName').value = draft.name; $('fPhone').value = draft.phone || ''; $('fEmail').value = draft.email || '';
   $('fDob').value = draft.dob || ''; $('fProgram').value = draft.program || '';
@@ -886,11 +895,12 @@ async function save() {
   draft.comments = $('fComments').value.trim();
   if (draft.status === 'booked' && !draft.bookedAt) draft.bookedAt = todayISO();
   if (draft.status === 'lost' && !draft.lostAt) draft.lostAt = todayISO();
+  if (draft.status === 'alumni' && !draft.alumniAt) draft.alumniAt = todayISO();
   const btn = $('btnSave'); saving = true; btn.disabled = true; btn.textContent = 'Saving…';
   try {
     await storeSave(draft, isNew);
     let msg = draft.name + ' saved';
-    if (!isNew && before !== draft.status) msg = draft.name + ' moved to ' + (draft.status === 'booked' ? 'Bookings' : draft.status === 'lost' ? 'Lost leads' : 'Leads');
+    if (!isNew && before !== draft.status) msg = draft.name + ' moved to ' + (draft.status === 'booked' ? 'Bookings' : draft.status === 'lost' ? 'Lost leads' : draft.status === 'alumni' ? 'Alumni' : 'Leads');
     saving = false; closeSheet(true); toast(msg);
   } catch (e) { saving = false; toast("Couldn't save. An internet connection is needed to create a record."); }
   finally { btn.disabled = false; btn.textContent = 'Save'; }
