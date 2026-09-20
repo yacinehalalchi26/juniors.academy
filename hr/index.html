@@ -116,6 +116,15 @@
     .tasks li span { flex: 1; word-break: break-word; }
     .tasks button { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 0; background: transparent; color: var(--muted); font-size: 1.05rem; line-height: 1; }
     .tasks button:hover { background: var(--accent-soft); color: var(--accent-text); }
+    .lab-hint { font-weight: 400; color: var(--muted); }
+    .exps li::before { content: "+"; font-size: .8rem; }
+    .exps li b { flex: none; font-weight: 700; white-space: nowrap; }
+    .addexp { display: grid; grid-template-columns: minmax(0, 1fr) 150px auto; gap: 8px; margin: 0 0 12px; }
+    .exp-total { margin: 0 0 16px; font-size: .95rem; }
+    .exp-total b { font-family: var(--display); font-size: 1.15rem; }
+    .rep-refund { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 4px 0 0; }
+    .cell small.x-due { color: var(--accent-text); font-weight: 600; }
+    .sheet .sum small { display: block; font-family: 'Inter', sans-serif; font-weight: 500; font-size: .74rem; color: var(--muted); }
     .addtask { display: flex; gap: 8px; margin: 0 0 16px; }
     .addtask .field { flex: 1; }
     .df-err { margin: -8px 0 14px; font-size: .84rem; color: var(--accent-text); font-weight: 500; }
@@ -139,7 +148,7 @@
     .weektotal b { color: var(--ink); }
 
     /* ---------- Director ---------- */
-    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 18px; }
+    .stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0 0 18px; }
     .stat { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
     .stat b { display: block; font-family: var(--display); font-size: clamp(1.3rem, 2.2vw, 1.8rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
     .stat span { display: block; margin-top: 3px; font-size: .82rem; color: var(--muted); }
@@ -200,9 +209,11 @@
     .toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 800; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-weight: 600; font-size: .9rem; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
     .toast.on { opacity: 1; transform: translate(-50%, 0); }
 
+    @media (max-width: 1080px) { .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 820px) { .stats { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) {
       .times { grid-template-columns: 1fr 1fr; } .times .field:last-child { grid-column: 1 / -1; }
+      .addexp { grid-template-columns: 1fr 1fr; } .addexp .field:first-child { grid-column: 1 / -1; }
       .day { min-height: 68px; padding: 8px 2px 6px; border-radius: 12px; } .day b { font-size: 1rem; } .day small, .day span { font-size: .66rem; }
       .df-action, .df-foot .btn-big { width: 100%; }
       .top .btn span.lbl { display: none; }
@@ -272,6 +283,7 @@
     <div class="stat"><b class="num" id="kMissing">0</b><span id="kMissingLab">not filled in today</span></div>
     <div class="stat"><b class="num" id="kWeek">0 h</b><span>team hours this week</span></div>
     <div class="stat"><b class="num" id="kWeekend">0 h</b><span>of which weekend hours</span></div>
+    <div class="stat"><b class="num" id="kRefund">0</b><span id="kRefundLab">expenses to refund this week</span></div>
   </section>
 
   <div class="weeknav">
@@ -351,6 +363,8 @@ const DIRECTOR_EMAILS = ['director@juniors.academy'];
 
 /* Staff can correct their own days this many days back. Older days are locked (the director can still edit them). */
 const EDIT_WINDOW_DAYS = 7;
+/* Currency shown for expenses. */
+const CURRENCY = 'DA';
 /* Time off: how many days one request can cover, and how far ahead it can start. */
 const TIME_OFF_MAX_DAYS = 7;
 const TIME_OFF_MAX_AHEAD = 90;
@@ -388,6 +402,9 @@ function minutes(e) {
   if (b == null) { if (e.date !== todayISO()) return 0; b = hm2min(nowHM()); }
   return Math.max(0, b - a - (Number(e.breakMin) || 0));
 }
+const nfMoney = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+const money = n => nfMoney.format(n || 0) + '\u00A0' + CURRENCY;
+const expTotal = e => ((e && e.expenses) || []).reduce((s, x) => s + (Number(x.amount) || 0), 0);
 const hText = m => Math.floor(m / 60) + ' h ' + String(m % 60).padStart(2, '0');
 const hDec = m => (Math.round(m / 6) / 10).toFixed(1);
 let toastTimer;
@@ -462,7 +479,7 @@ function saveEntry(uid, date, entry) {
 /* ==================== The day form (used by staff and by the director) ==================== */
 function mountDay(box, ctx) {
   /* ctx: { uid, name, email, date, entry, editable, lockedNote, save(entry), clear() } */
-  const blank = () => ({ uid: ctx.uid, name: ctx.name, email: ctx.email, date: ctx.date, status: 'office', start: '', end: '', breakMin: 0, tasks: [], notes: '' });
+  const blank = () => ({ uid: ctx.uid, name: ctx.name, email: ctx.email, date: ctx.date, status: 'office', start: '', end: '', breakMin: 0, tasks: [], expenses: [], notes: '' });
   let e = ctx.entry ? Object.assign(blank(), clone(ctx.entry)) : blank();
   let exists = !!ctx.entry, timer = null, err = '';
   const today = ctx.date === todayISO();
@@ -534,7 +551,14 @@ function mountDay(box, ctx) {
           '<span class="lab">What I did today</span>' +
           '<ul class="tasks">' + e.tasks.map((t, i) => '<li><span>' + esc(t) + '</span>' + (ed ? '<button type="button" data-del="' + i + '" aria-label="Remove this task">×</button>' : '') + '</li>').join('') + '</ul>' +
           (ed ? '<div class="addtask"><div class="field"><input type="text" data-f="newtask" placeholder="Called 12 leads from the brochure form" aria-label="New task" autocomplete="off"></div><button type="button" class="btn btn-light" data-act="add">Add</button></div>'
-              : (e.tasks.length ? '' : '<p style="margin:0 0 16px;color:var(--muted);font-size:.9rem">No tasks written.</p>'))
+              : (e.tasks.length ? '' : '<p style="margin:0 0 16px;color:var(--muted);font-size:.9rem">No tasks written.</p>')) +
+          '<span class="lab">Expenses to refund <span class="lab-hint">' + (ed ? 'taxi, printing, supplies… leave empty if none' : '') + '</span></span>' +
+          '<ul class="tasks exps">' + (e.expenses || []).map((x, i) => '<li><span>' + esc(x.reason) + '</span><b class="num">' + money(x.amount) + '</b>' + (ed ? '<button type="button" data-delx="' + i + '" aria-label="Remove this expense">×</button>' : '') + '</li>').join('') + '</ul>' +
+          (ed ? '<div class="addexp"><div class="field"><input type="text" data-f="newexp" placeholder="Taxi to the embassy" aria-label="Reason for the expense" autocomplete="off"></div>' +
+                '<div class="field"><input type="number" data-f="newamt" min="0" step="any" inputmode="decimal" placeholder="Amount in ' + CURRENCY + '" aria-label="Amount to refund"></div>' +
+                '<button type="button" class="btn btn-light" data-act="addx">Add</button></div>'
+              : ((e.expenses || []).length ? '' : '<p style="margin:0 0 16px;color:var(--muted);font-size:.9rem">No expenses.</p>')) +
+          ((e.expenses || []).length ? '<p class="exp-total">To refund: <b class="num">' + money(expTotal(e)) + '</b>' + (e.refunded ? ' <span class="tag tag-ok">Refunded</span>' : '') + '</p>' : '')
         : '') +
         '<div class="field"><label class="lab">' + (work ? 'Notes, or anything blocking you' : 'Note') + '</label><textarea data-f="notes" placeholder="' + (!ed ? '' : work ? 'Waiting on the partner school for dates' : 'Back on Sunday') + '"' + dis + '>' + esc(e.notes) + '</textarea></div>' +
         '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day <span class="df-saved"></span></div><span class="df-action">' + actionHTML() + '</span>' +
@@ -547,6 +571,17 @@ function mountDay(box, ctx) {
     const el = box.querySelector('.df-err');
     if (!!el !== !!err) { const f = document.activeElement && document.activeElement.getAttribute('data-f'); draw(); if (f) { const n = box.querySelector('[data-f="' + f + '"]'); if (n) n.focus(); } }
   }
+  /* returns false when something is typed but incomplete */
+  function addExpense(silent) {
+    const r = box.querySelector('[data-f="newexp"]'), a = box.querySelector('[data-f="newamt"]'); if (!r || !a) return true;
+    const reason = r.value.trim(), amt = Math.round((Number(a.value) || 0) * 100) / 100;
+    if (!reason && !amt) { if (!silent) r.focus(); return true; }
+    if (!reason) { err = 'Write what the expense was for.'; draw(); const n = box.querySelector('[data-f="newexp"]'); if (n) { n.focus(); } const m = box.querySelector('[data-f="newamt"]'); if (m) m.value = amt || ''; return false; }
+    if (amt <= 0) { err = 'Enter the amount to refund for “' + reason + '”.'; draw(); const n = box.querySelector('[data-f="newexp"]'); if (n) n.value = reason; const m = box.querySelector('[data-f="newamt"]'); if (m) m.focus(); return false; }
+    e.expenses = e.expenses || []; e.expenses.push({ reason, amount: amt }); err = '';
+    if (!silent) { push(true); draw(); const n = box.querySelector('[data-f="newexp"]'); if (n) n.focus(); }
+    return true;
+  }
   function addTask() {
     const inp = box.querySelector('[data-f="newtask"]'); if (!inp) return;
     const v = inp.value.trim(); if (!v) { inp.focus(); return; }
@@ -555,7 +590,7 @@ function mountDay(box, ctx) {
   }
   box.oninput = ev => {
     if (!canEdit()) return;
-    const f = ev.target.getAttribute && ev.target.getAttribute('data-f'); if (!f || f === 'newtask') return;
+    const f = ev.target.getAttribute && ev.target.getAttribute('data-f'); if (!f || f === 'newtask' || f === 'newexp' || f === 'newamt') return;
     e[f] = f === 'breakMin' ? Math.max(0, Math.round(Number(ev.target.value) || 0)) : ev.target.value;
     if (f !== 'notes') { checkTimes(); refresh(); }
     push(false);
@@ -563,26 +598,35 @@ function mountDay(box, ctx) {
   box.onchange = ev => {
     if (ev.target.type !== 'radio' || !canEdit()) return;
     e.status = ev.target.value;
-    if (!isWorkStatus(e.status)) { e.start = ''; e.end = ''; e.breakMin = 0; err = ''; }
+    if (!isWorkStatus(e.status)) { e.start = ''; e.end = ''; e.breakMin = 0; e.expenses = []; err = ''; }
     push(true); draw();
   };
-  box.onkeydown = ev => { if (ev.key === 'Enter' && ev.target.getAttribute && ev.target.getAttribute('data-f') === 'newtask') { ev.preventDefault(); addTask(); } };
+  box.onkeydown = ev => {
+    const f = ev.key === 'Enter' && ev.target.getAttribute && ev.target.getAttribute('data-f');
+    if (f === 'newtask') { ev.preventDefault(); addTask(); }
+    if (f === 'newexp' || f === 'newamt') { ev.preventDefault(); addExpense(false); }
+  };
   box.onclick = ev => {
     const del = ev.target.closest('[data-del]'), act = ev.target.closest('[data-act]');
     if (!canEdit()) return;
     if (del) { e.tasks.splice(+del.getAttribute('data-del'), 1); push(true); draw(); return; }
+    const delx = ev.target.closest('[data-delx]');
+    if (delx) { e.expenses.splice(+delx.getAttribute('data-delx'), 1); push(true); draw(); return; }
     if (!act) return;
     const a = act.getAttribute('data-act');
     if (a === 'add') addTask();
+    if (a === 'addx') addExpense(false);
     if (a === 'in') { e.start = nowHM(); e.end = ''; push(true); draw(); toast('Clocked in at ' + e.start); }
     if (a === 'out') {
       const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
+      if (isWorkStatus(e.status) && !addExpense(true)) return;
       if (!e.tasks.length) { err = 'Add at least one thing you did today, then clock out.'; draw(); const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus(); return; }
       if (!boss && !confirm('Clock out and send your day?\n\nAfter this you will not be able to change it.')) { draw(); return; }
       e.end = nowHM(); send();
     }
     if (a === 'send') {
       const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
+      if (isWorkStatus(e.status) && !addExpense(true)) return;
       const s1 = hm2min(e.start), s2 = hm2min(e.end);
       if (isWorkStatus(e.status)) {
         if (s1 == null || s2 == null) err = 'Fill in both the start and the end time.';
@@ -652,7 +696,9 @@ function staffStrip() {
       '<small>' + DAYS[dow(d)] + '</small><b>' + (+d.slice(8)) + '</b><span class="' + m[1] + '">' + esc(m[0]) + '</span></button>';
   }).join('');
   let work = 0, we = 0; weekDates(sWeek).forEach(d => { const m = minutes(sEntries[d]); if (isWeekend(d)) we += m; else work += m; });
-  $('sWeekTotal').innerHTML = 'This week: <b class="num">' + hText(work + we) + '</b>' + (we ? ' (including ' + hText(we) + ' at the weekend)' : '');
+  $('sWeekTotal').innerHTML = 'This week: <b class="num">' + hText(work + we) + '</b>' + (we ? ' (including ' + hText(we) + ' at the weekend)' : '') +
+    (() => { let x = 0, due = 0; weekDates(sWeek).forEach(d => { const v = expTotal(sEntries[d]); x += v; if (sEntries[d] && !sEntries[d].refunded) due += v; });
+             return x ? '<br>Expenses this week: <b class="num">' + money(x) + '</b>' + (!due ? ', all refunded' : due === x ? ', to be refunded' : ', ' + money(due) + ' still to be refunded') : ''; })();
 }
 function staffDay() {
   const d = sDate, t = todayISO();
@@ -774,7 +820,8 @@ function cellHTML(s, d) {
     if (e.status === 'leave') return ['<span class="tag tag-warn">Leave</span>', ''];
     if (e.status === 'sick') return ['<span class="tag tag-warn">Sick</span>', ''];
     if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h<small>since ' + esc(e.start) + '</small>', 'live'] : ['<span class="tag tag-bad">No clock-out</span>', ''];
-    if (e.start && e.end) return [hDec(minutes(e)) + ' h<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + (e.submitted ? '' : ', not sent') + '</small>', ''];
+    const xl = expTotal(e) ? '<small class="' + (e.refunded ? '' : 'x-due') + '">' + (e.refunded ? 'refunded ' : '+ ') + money(expTotal(e)) + '</small>' : '';
+    if (e.start && e.end) return [hDec(minutes(e)) + ' h' + xl + '<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + (e.submitted ? '' : ', not sent') + '</small>', ''];
     return ['<span class="tag tag-mute">Started</span>', ''];
   }
   if (d > t) return ['', 'off'];
@@ -792,23 +839,26 @@ function bossRender() {
   $('kMissingLab').textContent = isWeekend(t) ? 'to chase (weekend today)' : 'not filled in today';
   let tot = 0, we = 0; Object.values(bEntries).forEach(e => { const m = minutes(e); tot += m; if (isWeekend(e.date)) we += m; });
   $('kWeek').textContent = hDec(tot) + ' h'; $('kWeekend').textContent = hDec(we) + ' h';
+  let xAll = 0, xDue = 0; Object.values(bEntries).forEach(e => { const v = expTotal(e); xAll += v; if (!e.refunded) xDue += v; });
+  $('kRefund').textContent = money(xDue); $('kRefund').className = 'num' + (xDue ? ' bad' : '');
+  $('kRefundLab').textContent = xAll && !xDue ? 'all expenses refunded this week' : 'expenses to refund this week';
   $('bWeekLabel').textContent = weekLabel(bWeek);
 
   $('sheetEmpty').hidden = rows.length > 0; $('sheet').hidden = rows.length === 0;
   const colTot = dates.map(() => 0);
   const body = rows.map(s => {
-    let sum = 0;
+    let sum = 0, xs = 0;
     const tds = dates.map((d, i) => {
-      const m = minutes(bEntries[s.uid + '_' + d]); sum += m; colTot[i] += m;
+      const m = minutes(bEntries[s.uid + '_' + d]); sum += m; colTot[i] += m; xs += expTotal(bEntries[s.uid + '_' + d]);
       const c = cellHTML(s, d);
       return '<td class="' + (isWeekend(d) ? 'we' : '') + '"><button type="button" class="cell ' + c[1] + '" data-uid="' + esc(s.uid) + '" data-d="' + d + '" aria-label="' + esc(s.name + ', ' + niceDate(d)) + '">' + c[0] + '</button></td>';
     }).join('');
-    return '<tr><td><button type="button" class="who" data-staff="' + esc(s.uid) + '"><b>' + esc(s.name) + '</b>' + todayLine(s) + '</button></td>' + tds + '<td class="sum num">' + hDec(sum) + ' h</td></tr>';
+    return '<tr><td><button type="button" class="who" data-staff="' + esc(s.uid) + '"><b>' + esc(s.name) + '</b>' + todayLine(s) + '</button></td>' + tds + '<td class="sum num">' + hDec(sum) + ' h' + (xs ? '<small>' + money(xs) + '</small>' : '') + '</td></tr>';
   }).join('');
   $('sheet').innerHTML =
     '<thead><tr><th>Staff</th>' + dates.map(d => '<th class="' + (isWeekend(d) ? 'we ' : '') + (d === t ? 'is-today' : '') + '">' + DAYS[dow(d)] + '<small>' + shortDate(d) + '</small></th>').join('') + '<th>Week</th></tr></thead>' +
     '<tbody>' + body + '</tbody>' +
-    '<tfoot><tr><td>Team total</td>' + colTot.map((m, i) => '<td class="num ' + (isWeekend(dates[i]) ? 'we' : '') + '">' + (m ? hDec(m) + ' h' : '') + '</td>').join('') + '<td class="num">' + hDec(tot) + ' h</td></tr></tfoot>';
+    '<tfoot><tr><td>Team total</td>' + colTot.map((m, i) => '<td class="num ' + (isWeekend(dates[i]) ? 'we' : '') + '">' + (m ? hDec(m) + ' h' : '') + '</td>').join('') + '<td class="num">' + hDec(tot) + ' h' + (xAll ? '<small style="display:block;font-weight:500;color:var(--muted)">' + money(xAll) + '</small>' : '') + '</td></tr></tfoot>';
 }
 $('sheet').addEventListener('click', e => {
   const cell = e.target.closest('.cell'), who = e.target.closest('[data-staff]');
@@ -838,6 +888,12 @@ function reportHTML(s, d, e) {
     '</div>' +
     (work ? '<span class="lab">What ' + first + ' did</span>' +
       ((e.tasks || []).length ? '<ul class="tasks">' + e.tasks.map(t => '<li><span>' + esc(t) + '</span></li>').join('') + '</ul>' : '<p style="margin:0 0 14px;color:var(--muted);font-size:.92rem">No tasks written yet.</p>') : '') +
+    ((e.expenses || []).length ?
+      '<span class="lab" style="margin-top:14px">Expenses to refund</span>' +
+      '<ul class="tasks exps">' + e.expenses.map(x => '<li><span>' + esc(x.reason) + '</span><b class="num">' + money(x.amount) + '</b></li>').join('') + '</ul>' +
+      '<div class="rep-refund"><p class="exp-total" style="margin:0">Total: <b class="num">' + money(expTotal(e)) + '</b> ' + (e.refunded ? '<span class="tag tag-ok">Refunded</span>' : '<span class="tag tag-bad">To refund</span>') + '</p>' +
+      '<button type="button" class="btn btn-light btn-small" data-refund="' + (e.refunded ? '0' : '1') + '">' + (e.refunded ? 'Undo refunded' : 'Mark as refunded') + '</button></div>'
+    : '') +
     (e.notes ? '<span class="lab" style="margin-top:14px">' + (work ? 'Notes or blockers' : 'Note') + '</span><p class="rep-note">' + esc(e.notes) + '</p>' : '') +
     '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day</div>' +
       (e.submitted ? '<button type="button" class="btn btn-light" data-reopen>Let ' + first + ' correct this day</button>' : '') + '</div>' +
@@ -853,6 +909,12 @@ function openDay(uid, d) {
   const render = entry => { box.innerHTML = reportHTML(s, d, entry || null); };
   box.oninput = box.onchange = box.onkeydown = null;
   box.onclick = ev => {
+    const rf = ev.target.closest('[data-refund]');
+    if (rf) {
+      const c0 = bEntries[uid + '_' + d]; if (!c0) return;
+      const c1 = clone(c0); c1.refunded = rf.getAttribute('data-refund') === '1'; c1.refundedAt = c1.refunded ? new Date().toISOString() : '';
+      saveEntry(uid, d, c1); toast(c1.refunded ? money(expTotal(c1)) + ' marked as refunded' : 'Marked as not refunded yet'); return;
+    }
     if (!ev.target.closest('[data-reopen]')) return;
     const cur = bEntries[uid + '_' + d]; if (!cur) return;
     const copy = clone(cur); copy.submitted = false;
@@ -887,10 +949,10 @@ function download(name, text) {
 function toCsv(list) {
   const names = {}; bStaff.forEach(s => { names[s.uid] = s.name; });
   const cell = v => { v = String(v == null ? '' : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-  const head = ['Date', 'Day', 'Weekend', 'Staff', 'Email', 'Status', 'Start', 'End', 'Break (min)', 'Hours', 'Sent', 'Tasks', 'Notes'];
+  const head = ['Date', 'Day', 'Weekend', 'Staff', 'Email', 'Status', 'Start', 'End', 'Break (min)', 'Hours', 'Sent', 'Expenses (' + CURRENCY + ')', 'Refunded', 'Expense details', 'Tasks', 'Notes'];
   const rows = list.slice().sort((a, b) => (a.date + (names[a.uid] || a.name)).localeCompare(b.date + (names[b.uid] || b.name))).map(e =>
     [e.date, DAYS_LONG[dow(e.date)], isWeekend(e.date) ? 'yes' : '', names[e.uid] || e.name, e.email, STATUS[e.status] || e.status, e.start, e.end, e.breakMin || 0,
-     (minutes(e) / 60).toFixed(2), e.submitted ? 'yes' : '', (e.tasks || []).join(' | '), e.notes].map(cell).join(','));
+     (minutes(e) / 60).toFixed(2), e.submitted ? 'yes' : '', expTotal(e) || '', expTotal(e) ? (e.refunded ? 'yes' : 'no') : '', (e.expenses || []).map(x => x.reason + ': ' + x.amount).join(' | '), (e.tasks || []).join(' | '), e.notes].map(cell).join(','));
   return '\uFEFF' + [head.join(',')].concat(rows).join('\r\n');
 }
 $('bCsvWeek').addEventListener('click', () => {
