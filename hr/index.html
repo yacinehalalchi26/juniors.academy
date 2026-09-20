@@ -122,7 +122,7 @@
     .df-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
     .df-total { font-size: .9rem; color: var(--muted); }
     .df-total b { display: block; font-family: var(--display); font-size: 1.5rem; color: var(--ink); letter-spacing: -.02em; line-height: 1.1; }
-    .df-saved { font-size: .8rem; color: var(--muted); }
+    .df-saved { display: block; margin-top: 2px; font-size: .82rem; font-weight: 600; color: var(--ok); }
     .df-lock { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: var(--highlight-soft); font-size: .88rem; }
     .weektotal { margin: 14px 2px 0; font-size: .9rem; color: var(--muted); }
     .weektotal b { color: var(--ink); }
@@ -193,7 +193,7 @@
     @media (max-width: 560px) {
       .times { grid-template-columns: 1fr 1fr; } .times .field:last-child { grid-column: 1 / -1; }
       .day { min-height: 68px; padding: 8px 2px 6px; border-radius: 12px; } .day b { font-size: 1rem; } .day small, .day span { font-size: .66rem; }
-      .df-foot .btn-big { width: 100%; }
+      .df-action, .df-foot .btn-big { width: 100%; }
       .top .btn span.lbl { display: none; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
@@ -447,15 +447,20 @@ function mountDay(box, ctx) {
     if (e.start && e.end) return '<span class="tag tag-ok">Done</span>';
     return '<span class="tag tag-mute">No hours yet</span>';
   }
+  function actionHTML() {
+    const work = isWorkStatus(e.status);
+    if (!ctx.editable) return '';
+    if (work && today && !e.start) return '<button type="button" class="btn btn-primary btn-big" data-act="in">Clock in now</button>';
+    if (work && today && e.start && !e.end) return '<button type="button" class="btn btn-ink btn-big" data-act="out">Clock out and send</button>';
+    return '<button type="button" class="btn btn-primary btn-big" data-act="send">Save my day</button>';
+  }
   function refresh() {
     const p = box.querySelector('.df-pill'), t = box.querySelector('.df-total b');
     if (p) p.innerHTML = pill(); if (t) t.textContent = hText(minutes(e));
+    const act = box.querySelector('.df-action'); if (act) { const h = actionHTML(); if (act._h !== h) { act.innerHTML = h; act._h = h; } }
   }
   function draw() {
     const ed = ctx.editable, dis = ed ? '' : ' disabled', work = isWorkStatus(e.status);
-    let action = '';
-    if (ed && work && today && !e.start) action = '<button type="button" class="btn btn-primary btn-big" data-act="in">Clock in now</button>';
-    else if (ed && work && today && e.start && !e.end) action = '<button type="button" class="btn btn-ink btn-big" data-act="out">Clock out and send</button>';
     box.innerHTML =
       '<div class="dayform">' +
         '<div class="df-head"><div><h2>' + esc(niceDate(ctx.date)) + '</h2><p>' + (isWeekend(ctx.date) ? 'Weekend: only fill this in if you worked' : 'Working day') + '</p></div><span class="df-pill">' + pill() + '</span></div>' +
@@ -476,7 +481,7 @@ function mountDay(box, ctx) {
               : (e.tasks.length ? '' : '<p style="margin:0 0 16px;color:var(--muted);font-size:.9rem">No tasks written.</p>'))
         : '') +
         '<div class="field"><label class="lab">' + (work ? 'Notes, or anything blocking you' : 'Note') + '</label><textarea data-f="notes" placeholder="' + (work ? 'Waiting on the partner school for dates' : 'Back on Sunday') + '"' + dis + '>' + esc(e.notes) + '</textarea></div>' +
-        '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day <span class="df-saved"></span></div>' + action +
+        '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day <span class="df-saved"></span></div><span class="df-action">' + actionHTML() + '</span>' +
           (ed && exists && ctx.clear ? '<button type="button" class="linkish" data-act="clear">Clear this day</button>' : '') + '</div>' +
       '</div>';
   }
@@ -516,6 +521,19 @@ function mountDay(box, ctx) {
       const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
       if (!e.tasks.length) { err = 'Add at least one thing you did today, then clock out.'; draw(); const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus(); return; }
       err = ''; e.end = nowHM(); push(true); draw(); toast('Clocked out at ' + e.end + '. ' + hText(minutes(e)) + ' today.');
+    }
+    if (a === 'send') {
+      const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
+      const s1 = hm2min(e.start), s2 = hm2min(e.end);
+      if (isWorkStatus(e.status)) {
+        if (s1 == null || s2 == null) err = 'Fill in both the start and the end time.';
+        else if (s2 <= s1) err = 'The end time is before the start time.';
+        else if (!e.tasks.length) err = 'Add at least one thing you did, then save.';
+        else err = '';
+        if (err) { draw(); return; }
+      }
+      err = ''; push(true); draw(); stamp('Saved ' + nowHM() + ', the director can see it');
+      toast('Day saved. The director can see it.');
     }
     if (a === 'clear' && confirm('Clear everything written for ' + niceDate(ctx.date) + '?')) { clearTimeout(timer); timer = null; ctx.clear(); }
   };
