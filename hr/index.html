@@ -259,7 +259,7 @@
 <!-- Staff -->
 <main class="wrap wrap--narrow" id="staffView" hidden>
   <h1 class="page" id="hello">My week</h1>
-  <p class="page-sub">Fill in and send each day you work before midnight. Sunday to Thursday are working days, Friday and Saturday are the weekend.</p>
+  <p class="page-sub">Complete and submit your report for each working day before midnight. Sunday to Thursday are working days, Friday and Saturday are the weekend.</p>
   <div class="weeknav">
     <button type="button" class="round" id="sPrev" aria-label="Previous week">‹</button>
     <b id="sWeekLabel"></b>
@@ -326,7 +326,7 @@
     </div>
     <div class="field"><label class="lab" for="offNote">Note for the director (optional)</label><textarea id="offNote" placeholder="Family trip, back on Sunday"></textarea></div>
     <p class="off-sum" id="offSum" aria-live="polite"></p>
-    <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary" id="offSend">Send time off</button></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary" id="offSend">Submit time off</button></div>
   </form>
 </dialog>
 
@@ -487,17 +487,16 @@ function mountDay(box, ctx) {
   /* once a day is sent, staff can no longer change it; the director still can, and can reopen it */
   const sent = () => !!e.submitted;
   const canEdit = () => ctx.editable && (boss || !sent());
+  /* wording of the confirmation shown once a day has been submitted */
   function farewell() {
-    if (e.status === 'sick') return 'Get well soon.';
-    if (e.status === 'leave') return 'Enjoy your time off.';
-    if (!today) return 'Thank you.';
-    const next = addDays(ctx.date, 1);
-    return isWeekend(next) ? 'Enjoy your weekend. See you on Sunday!' : 'See you tomorrow!';
+    if (e.status === 'sick') return 'Sick leave recorded';
+    if (e.status === 'leave') return 'Leave recorded';
+    return 'Daily report submitted';
   }
   function send() {
     e.submitted = true; e.submittedAt = new Date().toISOString(); e.reopened = false;
     err = ''; push(true); draw();
-    toast('Day sent. ' + farewell());
+    toast(farewell() + '.');
   }
 
   function push(now) {
@@ -509,11 +508,11 @@ function mountDay(box, ctx) {
   function stamp(t) { const s = box.querySelector('.df-saved'); if (s) s.textContent = t; }
   function pill() {
     if (!exists) return '<span class="tag tag-mute">Not filled in</span>';
-    if (sent()) return '<span class="tag tag-ok">Sent</span>';
+    if (sent()) return '<span class="tag tag-ok">Submitted</span>';
     if (e.status === 'leave') return '<span class="tag tag-warn">On leave</span>';
     if (e.status === 'sick') return '<span class="tag tag-warn">Sick</span>';
     if (e.start && !e.end) return today ? '<span class="tag tag-live">Clocked in ' + esc(e.start) + '</span>' : '<span class="tag tag-bad">No clock-out time</span>';
-    if (e.start && e.end) return '<span class="tag tag-warn">Not sent yet</span>';
+    if (e.start && e.end) return '<span class="tag tag-warn">Not submitted yet</span>';
     return '<span class="tag tag-mute">No hours yet</span>';
   }
   function actionHTML() {
@@ -521,8 +520,8 @@ function mountDay(box, ctx) {
     if (!canEdit()) return '';
     if (boss && sent()) return '<button type="button" class="btn btn-light" data-act="reopen">Reopen for changes</button>';
     if (work && today && !e.start) return '<button type="button" class="btn btn-primary btn-big" data-act="in">Clock in now</button>';
-    if (work && today && e.start && !e.end) return '<button type="button" class="btn btn-ink btn-big" data-act="out">Clock out and send</button>';
-    return '<button type="button" class="btn btn-primary btn-big" data-act="send">' + (boss ? 'Mark as sent' : 'Save my day') + '</button>';
+    if (work && today && e.start && !e.end) return '<button type="button" class="btn btn-ink btn-big" data-act="out">Clock out and submit</button>';
+    return '<button type="button" class="btn btn-primary btn-big" data-act="send">' + (boss ? 'Mark as submitted' : 'Submit my report') + '</button>';
   }
   function refresh() {
     const p = box.querySelector('.df-pill'), t = box.querySelector('.df-total b');
@@ -535,7 +534,7 @@ function mountDay(box, ctx) {
     box.innerHTML =
       '<div class="dayform">' +
         '<div class="df-head"><div><h2>' + esc(niceDate(ctx.date)) + '</h2><p>' + (isWeekend(ctx.date) ? 'Weekend: only fill this in if you worked' : 'Working day') + '</p></div><span class="df-pill">' + pill() + '</span></div>' +
-        (sent() && !boss ? '<div class="df-sent" role="status"><b>' + esc(farewell()) + '</b><span>Your day was sent to the director' + (when ? ' at ' + when : '') + ' and can no longer be changed. Spotted a mistake? Ask the director to reopen it.</span></div>' : '') +
+        (sent() && !boss ? '<div class="df-sent" role="status"><b>' + esc(farewell()) + '</b><span>Thank you. Your ' + (isWorkStatus(e.status) ? 'report' : 'absence') + ' for ' + esc(niceDate(ctx.date)) + ' was received' + (when ? ' at ' + when : '') + ' and is now locked. If a correction is needed, please ask the director to reopen it.</span></div>' : '') +
         (sent() && boss ? '<p class="df-lock">Sent by ' + esc(ctx.name.split(' ')[0]) + (when ? ' at ' + when : '') + '. They can no longer change it. You still can, or you can reopen it for them.</p>' : '') +
         (ctx.lockedNote ? '<p class="df-lock">' + esc(ctx.lockedNote) + '</p>' : '') +
         '<span class="lab">Where are you today</span>' +
@@ -620,8 +619,8 @@ function mountDay(box, ctx) {
     if (a === 'out') {
       const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
       if (isWorkStatus(e.status) && !addExpense(true)) return;
-      if (!e.tasks.length) { err = 'Add at least one thing you did today, then clock out.'; draw(); const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus(); return; }
-      if (!boss && !confirm('Clock out and send your day?\n\nAfter this you will not be able to change it.')) { draw(); return; }
+      if (!e.tasks.length) { err = 'Add at least one task before clocking out.'; draw(); const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus(); return; }
+      if (!boss && !confirm('Clock out and submit your daily report?\n\nOnce submitted, it can no longer be changed.')) { draw(); return; }
       e.end = nowHM(); send();
     }
     if (a === 'send') {
@@ -631,11 +630,11 @@ function mountDay(box, ctx) {
       if (isWorkStatus(e.status)) {
         if (s1 == null || s2 == null) err = 'Fill in both the start and the end time.';
         else if (s2 <= s1) err = 'The end time is before the start time.';
-        else if (!e.tasks.length) err = 'Add at least one thing you did, then save.';
+        else if (!e.tasks.length) err = 'Add at least one task before submitting.';
         else err = '';
         if (err) { draw(); return; }
       }
-      if (!boss && !confirm('Send your day to the director?\n\nAfter this you will not be able to change it.')) { draw(); return; }
+      if (!boss && !confirm('Submit your daily report to the director?\n\nOnce submitted, it can no longer be changed.')) { draw(); return; }
       send();
     }
     if (a === 'reopen') { e.submitted = false; push(true); draw(); toast(ctx.name.split(' ')[0] + ' can change this day again'); }
@@ -706,8 +705,8 @@ function staffDay() {
   const d = sDate, t = todayISO();
   let note = '';
   if (d > t) note = 'This day has not happened yet.';
-  else if (!canEdit(d) && !(sEntries[d] && sEntries[d].submitted)) note = 'The deadline for this day was midnight, so it is locked. Ask the director to reopen it for you.';
-  else if (d < t && canEdit(d)) note = 'The director reopened this day for you. Fill it in and send it.';
+  else if (!canEdit(d) && !(sEntries[d] && sEntries[d].submitted)) note = 'The submission deadline for this day (midnight) has passed, so it is locked. Please ask the director to reopen it.';
+  else if (d < t && canEdit(d)) note = 'The director has reopened this day. Please complete and submit it.';
   sForm = mountDay($('staffDay'), {
     uid: me.uid, name: profile.name, email: me.email, date: d, entry: sEntries[d] || null, role: 'staff',
     editable: canEdit(d), lockedNote: note,
@@ -757,7 +756,7 @@ $('offForm').addEventListener('submit', async ev => {
   const p = offPlan(); if (p.error) { offSummary(); return; }
   const type = document.querySelector('input[name="offType"]:checked').value, note = $('offNote').value.trim();
   const n = p.days.length;
-  if (!confirm('Send ' + n + (n === 1 ? ' day' : ' days') + ' of ' + (type === 'sick' ? 'sick leave' : 'leave') + ' to the director?\n\nAfter this you will not be able to change them.')) return;
+  if (!confirm('Submit ' + n + (n === 1 ? ' day' : ' days') + ' of ' + (type === 'sick' ? 'sick leave' : 'leave') + ' to the director?\n\nOnce submitted, these days can no longer be changed.')) return;
   const btn = $('offSend'); btn.disabled = true; btn.textContent = 'Sending…';
   let done = 0, firstDone = null; const kept = [];
   try {
@@ -771,11 +770,11 @@ $('offForm').addEventListener('submit', async ev => {
       done++;
     }
     $('offPop').close();
-    toast(done ? done + (done === 1 ? ' day' : ' days') + ' off sent.' + (kept.length ? ' ' + kept.length + ' already filled in, left as they were.' : '') + (type === 'sick' ? ' Get well soon.' : ' Enjoy your time off.')
+    toast(done ? done + (done === 1 ? ' day' : ' days') + ' of ' + (type === 'sick' ? 'sick leave' : 'leave') + ' recorded.' + (kept.length ? ' ' + kept.length + (kept.length === 1 ? ' day was' : ' days were') + ' already filled in and left unchanged.' : '')
                : 'Those days were already filled in, so nothing changed.');
     if (done) { sDate = firstDone; staffWeek(weekStart(sDate)); }
   } catch (e) { toast("Couldn't send the time off. Check the connection and try again."); }
-  finally { btn.disabled = false; btn.textContent = 'Send time off'; }
+  finally { btn.disabled = false; btn.textContent = 'Submit time off'; }
 });
 
 /* ==================== Director ==================== */
@@ -812,7 +811,7 @@ function todayLine(s) {
   if (e) {
     if (e.status === 'leave') return '<span class="away">On leave today</span>'; if (e.status === 'sick') return '<span class="away">Sick today</span>';
     if (isLive(e)) return '<span class="on">' + (e.status === 'remote' ? 'Remote, working since ' : 'Working since ') + esc(e.start) + '</span>';
-    if (e.start && e.end) return '<span>' + (e.submitted ? 'Day sent, finished at ' : 'Finished at ') + esc(e.end) + '</span>';
+    if (e.start && e.end) return '<span>' + (e.submitted ? 'Report submitted, finished at ' : 'Finished at ') + esc(e.end) + '</span>';
     return '<span>Started filling in</span>';
   }
   return isWeekend(t) ? '<span>Weekend</span>' : '<span class="no">Nothing filled in yet</span>';
@@ -824,7 +823,7 @@ function cellHTML(s, d) {
     if (e.status === 'sick') return ['<span class="tag tag-warn">Sick</span>', ''];
     if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h<small>since ' + esc(e.start) + '</small>', 'live'] : ['<span class="tag tag-bad">No clock-out</span>', ''];
     const xl = expTotal(e) ? '<small class="' + (e.refunded ? '' : 'x-due') + '">' + (e.refunded ? 'refunded ' : '+ ') + money(expTotal(e)) + '</small>' : '';
-    if (e.start && e.end) return [hDec(minutes(e)) + ' h' + xl + '<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + (e.submitted ? '' : ', not sent') + '</small>', ''];
+    if (e.start && e.end) return [hDec(minutes(e)) + ' h' + xl + '<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + (e.submitted ? '' : ', not submitted') + '</small>', ''];
     return [e.reopened ? '<span class="tag tag-warn">Reopened</span>' : '<span class="tag tag-mute">Started</span>', ''];
   }
   if (d > t) return ['', 'off'];
@@ -880,12 +879,12 @@ function reportHTML(s, d, e) {
   }
   const work = isWorkStatus(e.status), when = e.submittedAt ? new Date(e.submittedAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
   let tag;
-  if (e.submitted) tag = '<span class="tag tag-ok">Sent' + (when ? ' at ' + when : '') + '</span>';
+  if (e.submitted) tag = '<span class="tag tag-ok">Submitted' + (when ? ' at ' + when : '') + '</span>';
   else if (isLive(e)) tag = '<span class="tag tag-live">Working now</span>';
   else if (work && e.start && !e.end) tag = '<span class="tag tag-bad">No clock-out time</span>';
   else if (e.reopened) tag = '<span class="tag tag-warn">Reopened for ' + first + '</span>';
-  else if (d < todayISO()) tag = '<span class="tag tag-bad">Not sent before midnight</span>';
-  else tag = '<span class="tag tag-warn">Not sent yet</span>';
+  else if (d < todayISO()) tag = '<span class="tag tag-bad">Not submitted before midnight</span>';
+  else tag = '<span class="tag tag-warn">Not submitted yet</span>';
   const fact = (k, v) => '<div><span>' + k + '</span><b>' + v + '</b></div>';
   return '<div class="dayform">' + head(tag) +
     '<div class="rep-facts">' +
