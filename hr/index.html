@@ -259,7 +259,7 @@
 <!-- Staff -->
 <main class="wrap wrap--narrow" id="staffView" hidden>
   <h1 class="page" id="hello">My week</h1>
-  <p class="page-sub">Fill in each day you work. Sunday to Thursday are working days, Friday and Saturday are the weekend.</p>
+  <p class="page-sub">Fill in and send each day you work before midnight. Sunday to Thursday are working days, Friday and Saturday are the weekend.</p>
   <div class="weeknav">
     <button type="button" class="round" id="sPrev" aria-label="Previous week">‹</button>
     <b id="sWeekLabel"></b>
@@ -361,8 +361,8 @@ const FIREBASE_CONFIG = {
 };
 const DIRECTOR_EMAILS = ['director@juniors.academy'];
 
-/* Staff can correct their own days this many days back. Older days are locked (the director can still edit them). */
-const EDIT_WINDOW_DAYS = 7;
+/* Deadline: a day can only be filled in on the day itself. At midnight it locks.
+   After that, only the director can give the day back (button in the day's report). */
 /* Currency shown for expenses. */
 const CURRENCY = 'DA';
 /* Time off: how many days one request can cover, and how far ahead it can start. */
@@ -495,7 +495,7 @@ function mountDay(box, ctx) {
     return isWeekend(next) ? 'Enjoy your weekend. See you on Sunday!' : 'See you tomorrow!';
   }
   function send() {
-    e.submitted = true; e.submittedAt = new Date().toISOString();
+    e.submitted = true; e.submittedAt = new Date().toISOString(); e.reopened = false;
     err = ''; push(true); draw();
     toast('Day sent. ' + farewell());
   }
@@ -651,13 +651,14 @@ function mountDay(box, ctx) {
       if (typing) refresh(); else draw();
     },
     flush() { if (timer) { clearTimeout(timer); timer = null; ctx.save(clone(e)); } },
+    editable: ctx.editable,
     tick: refresh
   };
 }
 
 /* ==================== Staff ==================== */
 let sWeek = null, sDate = null, sEntries = {}, sForm = null;
-const canEdit = d => d <= todayISO() && d >= addDays(todayISO(), -EDIT_WINDOW_DAYS);
+const canEdit = d => d === todayISO() || (d < todayISO() && !!sEntries[d] && sEntries[d].reopened === true);
 
 function staffStart() {
   $('hello').textContent = 'Hello ' + profile.name.split(' ')[0];
@@ -670,7 +671,8 @@ function staffWeek(ws) {
   weekDates(ws).forEach(d => {
     unsub.push(fb.F.onSnapshot(entryRef(me.uid, d), snap => {
       if (snap.exists()) sEntries[d] = snap.data(); else delete sEntries[d];
-      staffStrip(); if (d === sDate && sForm) sForm.update(sEntries[d] || null);
+      staffStrip();
+      if (d === sDate && sForm) { if (sForm.editable !== canEdit(d)) staffDay(); else sForm.update(sEntries[d] || null); }
     }, () => {}));
   });
   staffStrip(); staffDay();
@@ -681,7 +683,7 @@ function dayMark(e, d) {
     if (e.status === 'leave') return ['Leave', 's-warn']; if (e.status === 'sick') return ['Sick', 's-warn'];
     if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h', 's-ok'] : ['No end', 's-bad'];
     if (e.start && e.end) return [hDec(minutes(e)) + ' h', e.submitted ? 's-ok' : 's-warn'];
-    return ['Started', 's-mute'];
+    return e.reopened ? ['Reopened', 's-warn'] : ['Started', 's-mute'];
   }
   if (isWeekend(d)) return ['off', 's-mute'];
   if (d < t && d >= (profile.joinedAt || '0')) return ['Missing', 's-bad'];
@@ -704,7 +706,8 @@ function staffDay() {
   const d = sDate, t = todayISO();
   let note = '';
   if (d > t) note = 'This day has not happened yet.';
-  else if (!canEdit(d)) note = 'Days older than ' + EDIT_WINDOW_DAYS + ' days are locked. Ask the director to correct them.';
+  else if (!canEdit(d) && !(sEntries[d] && sEntries[d].submitted)) note = 'The deadline for this day was midnight, so it is locked. Ask the director to reopen it for you.';
+  else if (d < t && canEdit(d)) note = 'The director reopened this day for you. Fill it in and send it.';
   sForm = mountDay($('staffDay'), {
     uid: me.uid, name: profile.name, email: me.email, date: d, entry: sEntries[d] || null, role: 'staff',
     editable: canEdit(d), lockedNote: note,
@@ -722,7 +725,7 @@ function offPlan() {
   const a = $('offFrom').value, b = $('offTo').value, t = todayISO();
   if (!a || !b) return { error: 'Choose the first and the last day off.' };
   if (b < a) return { error: 'The last day is before the first day.' };
-  if (a < addDays(t, -EDIT_WINDOW_DAYS)) return { error: 'The first day is too far back. Ask the director to add older days.' };
+  if (a < t) return { error: 'Time off starts today at the earliest. For a day that has passed, ask the director to reopen it.' };
   if (a > addDays(t, TIME_OFF_MAX_AHEAD)) return { error: 'That is more than ' + TIME_OFF_MAX_AHEAD + ' days ahead.' };
   const span = dayDiffISO(a, b) + 1;
   if (span > TIME_OFF_MAX_DAYS) return { error: 'One request covers ' + TIME_OFF_MAX_DAYS + ' days at most (you chose ' + span + '). Send a second request for the rest.' };
@@ -743,7 +746,7 @@ function offSummary() {
 $('sOff').addEventListener('click', () => {
   const start = sDate && sDate >= todayISO() ? sDate : todayISO();
   $('offFrom').value = start; $('offTo').value = start; $('offNote').value = '';
-  $('offFrom').min = addDays(todayISO(), -EDIT_WINDOW_DAYS); $('offFrom').max = addDays(todayISO(), TIME_OFF_MAX_AHEAD);
+  $('offFrom').min = todayISO(); $('offFrom').max = addDays(todayISO(), TIME_OFF_MAX_AHEAD);
   document.querySelector('input[name="offType"][value="leave"]').checked = true;
   offSummary(); $('offPop').showModal();
 });
@@ -822,7 +825,7 @@ function cellHTML(s, d) {
     if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h<small>since ' + esc(e.start) + '</small>', 'live'] : ['<span class="tag tag-bad">No clock-out</span>', ''];
     const xl = expTotal(e) ? '<small class="' + (e.refunded ? '' : 'x-due') + '">' + (e.refunded ? 'refunded ' : '+ ') + money(expTotal(e)) + '</small>' : '';
     if (e.start && e.end) return [hDec(minutes(e)) + ' h' + xl + '<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + (e.submitted ? '' : ', not sent') + '</small>', ''];
-    return ['<span class="tag tag-mute">Started</span>', ''];
+    return [e.reopened ? '<span class="tag tag-warn">Reopened</span>' : '<span class="tag tag-mute">Started</span>', ''];
   }
   if (d > t) return ['', 'off'];
   if (isWeekend(d)) return ['off', 'off'];
@@ -872,13 +875,16 @@ function reportHTML(s, d, e) {
   if (!e) {
     const t = todayISO();
     const why = d > t ? 'This day has not happened yet.' : isWeekend(d) ? first + ' did not work this weekend day.' : d === t ? first + ' has not filled in today yet.' : first + ' did not fill in this day.';
-    return '<div class="dayform">' + head(d < t && !isWeekend(d) ? '<span class="tag tag-bad">Missing</span>' : '<span class="tag tag-mute">Nothing filled in</span>') + '<p style="margin:0;color:var(--muted)">' + why + '</p></div>';
+    return '<div class="dayform">' + head(d < t && !isWeekend(d) ? '<span class="tag tag-bad">Missing</span>' : '<span class="tag tag-mute">Nothing filled in</span>') + '<p style="margin:0;color:var(--muted)">' + why + '</p>' +
+      (d < t ? '<div class="df-foot"><span></span><button type="button" class="btn btn-light" data-reopen>Reopen this day for ' + first + '</button></div><p class="rep-hint">The deadline was midnight, so ' + first + ' can no longer fill it in. Reopening lets them complete and send it.</p>' : '') + '</div>';
   }
   const work = isWorkStatus(e.status), when = e.submittedAt ? new Date(e.submittedAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
   let tag;
   if (e.submitted) tag = '<span class="tag tag-ok">Sent' + (when ? ' at ' + when : '') + '</span>';
   else if (isLive(e)) tag = '<span class="tag tag-live">Working now</span>';
   else if (work && e.start && !e.end) tag = '<span class="tag tag-bad">No clock-out time</span>';
+  else if (e.reopened) tag = '<span class="tag tag-warn">Reopened for ' + first + '</span>';
+  else if (d < todayISO()) tag = '<span class="tag tag-bad">Not sent before midnight</span>';
   else tag = '<span class="tag tag-warn">Not sent yet</span>';
   const fact = (k, v) => '<div><span>' + k + '</span><b>' + v + '</b></div>';
   return '<div class="dayform">' + head(tag) +
@@ -896,9 +902,12 @@ function reportHTML(s, d, e) {
     : '') +
     (e.notes ? '<span class="lab" style="margin-top:14px">' + (work ? 'Notes or blockers' : 'Note') + '</span><p class="rep-note">' + esc(e.notes) + '</p>' : '') +
     '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day</div>' +
-      (e.submitted ? '<button type="button" class="btn btn-light" data-reopen>Let ' + first + ' correct this day</button>' : '') + '</div>' +
+      (e.submitted ? '<button type="button" class="btn btn-light" data-reopen>Let ' + first + ' correct this day</button>'
+        : (d < todayISO() && !e.reopened ? '<button type="button" class="btn btn-light" data-reopen>Reopen this day for ' + first + '</button>' : '')) + '</div>' +
     (e.submitted ? '<p class="rep-hint">This report is locked. If ' + first + ' made a mistake, the button above gives the day back to them to fix and send again.</p>'
-                 : '<p class="rep-hint">' + first + ' can still change this day until it is sent.</p>') +
+      : e.reopened ? '<p class="rep-hint">You reopened this day. ' + first + ' can fill it in and send it; it locks again once sent.</p>'
+      : d < todayISO() ? '<p class="rep-hint">This day was not sent before the midnight deadline, so ' + first + ' can no longer change it.</p>'
+      : '<p class="rep-hint">' + first + ' can change this day until it is sent, or until midnight.</p>') +
   '</div>';
 }
 function openDay(uid, d) {
@@ -916,9 +925,10 @@ function openDay(uid, d) {
       saveEntry(uid, d, c1); toast(c1.refunded ? money(expTotal(c1)) + ' marked as refunded' : 'Marked as not refunded yet'); return;
     }
     if (!ev.target.closest('[data-reopen]')) return;
-    const cur = bEntries[uid + '_' + d]; if (!cur) return;
-    const copy = clone(cur); copy.submitted = false;
-    saveEntry(uid, d, copy); toast(String(s.name).split(' ')[0] + ' can change this day again');
+    const cur = bEntries[uid + '_' + d];
+    const copy = cur ? clone(cur) : { uid, name: s.name, email: s.email || '', date: d, status: 'office', start: '', end: '', breakMin: 0, tasks: [], expenses: [], notes: '' };
+    copy.submitted = false; copy.reopened = true;
+    saveEntry(uid, d, copy); toast(String(s.name).split(' ')[0] + ' can now fill in ' + niceDate(d));
   };
   popForm = { update: render, flush() {}, tick() { render(bEntries[uid + '_' + d]); } };
   render(bEntries[popKey]);
