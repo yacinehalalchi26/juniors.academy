@@ -24,6 +24,7 @@
       --accent: #FF3B6B; --accent-soft: rgba(255,59,107,.1); --accent-text: #C8184A;
       --highlight: #FFD23F; --highlight-soft: rgba(255,210,63,.32); --highlight-text: #6B5200;
       --ok: #1E8E5A; --ok-soft: rgba(30,142,90,.12);
+      --blue: #2B6FD6;
       --muted: #6B737D; --body: #3D444C; --line: rgba(20,24,29,.1); --weekend: #F1F0EA;
       --ease: cubic-bezier(.16, 1, .3, 1);
       --display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
@@ -156,6 +157,74 @@
     .stat--live b { color: var(--highlight); } .stat--live span { color: rgba(255,255,255,.7); }
     .stat .bad { color: var(--accent-text); }
 
+    .pagehead { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    .viewtabs { display: inline-flex; padding: 4px; border-radius: 999px; background: #fff; border: 1px solid var(--line); margin: 2px 0 14px; }
+    .viewtabs button { min-height: 36px; padding: 6px 18px; border: 0; border-radius: 999px; background: transparent; font-weight: 600; font-size: .9rem; color: var(--body); }
+    .viewtabs button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .stat small { display: block; margin-top: 2px; font-size: .78rem; color: var(--muted); }
+    .stat--live small { color: rgba(255,255,255,.6); }
+
+    .viz-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 14px; }
+    .viz { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; margin: 0 0 14px; min-width: 0; }
+    .viz-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; margin: 0 0 14px; }
+    .viz h2 { margin: 0; font-family: var(--display); font-size: 1.08rem; letter-spacing: -.01em; }
+    .legend { display: flex; gap: 6px 14px; flex-wrap: wrap; margin: 0; font-size: .78rem; color: var(--muted); }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+    .legend .lg-we { background: var(--weekend); border: 1px solid var(--line); }
+
+    /* bar chart */
+    .bars { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; height: 210px; padding: 0 0 26px 38px; }
+    .bars .axis { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--line); font-size: .7rem; color: var(--muted); pointer-events: none; }
+    .bars .axis span { position: absolute; left: 0; top: -8px; background: var(--card); padding-right: 6px; }
+    .bar { position: relative; display: flex; flex-direction: column; justify-content: flex-end; border-radius: 5px 5px 0 0; min-width: 0; }
+    .bar.we { background: var(--weekend); }
+    .bar i { display: block; width: 100%; }
+    .bar i.o { background: var(--ink); } .bar i.r { background: var(--blue); }
+    .bar i:first-of-type { border-radius: 4px 4px 0 0; }
+    .bar:hover i { opacity: .8; }
+    .bar em { position: absolute; left: 50%; bottom: -22px; transform: translateX(-50%); font-style: normal; font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .bar.today em { color: var(--accent-text); font-weight: 700; }
+    .bar.future { opacity: .45; }
+
+    /* split */
+    .split-bar { display: flex; height: 16px; border-radius: 999px; overflow: hidden; background: var(--weekend); margin: 0 0 14px; }
+    .split-bar i { display: block; height: 100%; }
+    .split-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+    .split-list li { display: flex; align-items: center; gap: 9px; font-size: .9rem; }
+    .split-list i { flex: none; width: 11px; height: 11px; border-radius: 3px; }
+    .split-list b { margin-left: auto; font-variant-numeric: tabular-nums; }
+    .split-list small { color: var(--muted); font-size: .78rem; min-width: 38px; text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* attendance calendar */
+    table.heat { border-collapse: separate; border-spacing: 3px; }
+    .heat th { font-size: .66rem; font-weight: 600; color: var(--muted); padding: 0 0 2px; text-align: center; line-height: 1.25; }
+    .heat th.t { color: var(--accent-text); }
+    .heat td.n { position: sticky; left: 0; background: var(--card); padding: 0 12px 0 0; font-size: .86rem; font-weight: 600; white-space: nowrap; text-align: left; z-index: 1; }
+    .heat td { padding: 0; }
+    .hm { display: block; width: 22px; height: 22px; border-radius: 5px; border: 0; padding: 0; background: rgba(20,24,29,.04); }
+    button.hm:hover { outline: 2px solid var(--ink); outline-offset: 1px; }
+    .hm.w1 { background: rgba(20,24,29,.28); } .hm.w2 { background: rgba(20,24,29,.58); } .hm.w3 { background: var(--ink); }
+    .hm.r1 { background: rgba(43,111,214,.3); } .hm.r2 { background: rgba(43,111,214,.62); } .hm.r3 { background: var(--blue); }
+    .hm.lv { background: var(--highlight); } .hm.sk { background: #F2994A; }
+    .hm.ms { background: #fff; box-shadow: inset 0 0 0 2px var(--accent); }
+    .hm.ns { background: repeating-linear-gradient(45deg, rgba(20,24,29,.5) 0 3px, rgba(20,24,29,.2) 3px 6px); }
+    .hm.we { background: var(--weekend); } .hm.fu { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+
+    /* by person */
+    table.ptable { width: 100%; border-collapse: collapse; min-width: 820px; }
+    .ptable th { font-size: .76rem; font-weight: 600; color: var(--muted); text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .ptable td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; font-size: .92rem; }
+    .ptable th:first-child, .ptable td:first-child { text-align: left; padding-left: 0; }
+    .ptable tr:last-child td { border-bottom: 0; }
+    .ptable tfoot td { font-weight: 700; border-top: 1px solid var(--line); border-bottom: 0; }
+    .ptable .hbar { display: flex; align-items: center; gap: 10px; min-width: 200px; }
+    .ptable .hbar span { flex: 1; height: 8px; border-radius: 999px; background: rgba(20,24,29,.07); overflow: hidden; display: flex; }
+    .ptable .hbar i { display: block; height: 100%; }
+    .ptable .hbar b { min-width: 58px; text-align: right; }
+    .ptable .warn { color: var(--accent-text); font-weight: 700; }
+    .ptable .muted { color: var(--muted); }
+
     .sheet-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
     .sheet-scroll { overflow-x: auto; }
     table.sheet { width: 100%; border-collapse: collapse; min-width: 760px; }
@@ -209,13 +278,15 @@
     .toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 800; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-weight: 600; font-size: .9rem; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
     .toast.on { opacity: 1; transform: translate(-50%, 0); }
 
-    @media (max-width: 1080px) { .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 1080px) { .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } .viz-grid { grid-template-columns: 1fr; } }
     @media (max-width: 820px) { .stats { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) {
       .times { grid-template-columns: 1fr 1fr; } .times .field:last-child { grid-column: 1 / -1; }
       .addexp { grid-template-columns: 1fr 1fr; } .addexp .field:first-child { grid-column: 1 / -1; }
       .day { min-height: 68px; padding: 8px 2px 6px; border-radius: 12px; } .day b { font-size: 1rem; } .day small, .day span { font-size: .66rem; }
       .df-action, .df-foot .btn-big { width: 100%; }
+      .bars { gap: 2px; padding-left: 30px; } .bar:not(.l5) em { display: none; }
+      .viz { padding: 16px 14px; }
       .top .btn span.lbl { display: none; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
@@ -275,9 +346,18 @@
 
 <!-- Director -->
 <main class="wrap" id="bossView" hidden>
-  <h1 class="page">Team</h1>
-  <p class="page-sub">Updates by itself as your staff clock in, add tasks and send their day. Click a day to read the report.</p>
+  <div class="pagehead">
+    <div>
+      <h1 class="page">Team</h1>
+      <p class="page-sub" id="bossSub">Updates by itself as your staff clock in, add tasks and submit their day. Click a day to read the report.</p>
+    </div>
+    <div class="viewtabs" role="group" aria-label="View">
+      <button type="button" data-bview="week" aria-pressed="true">Week</button>
+      <button type="button" data-bview="month" aria-pressed="false">Month</button>
+    </div>
+  </div>
 
+  <div id="weekPane">
   <section class="stats" aria-label="Today">
     <div class="stat stat--live"><b class="num" id="kNow">0</b><span>working right now</span></div>
     <div class="stat"><b class="num" id="kMissing">0</b><span id="kMissingLab">not filled in today</span></div>
@@ -302,6 +382,45 @@
       <h2>No staff yet</h2>
       <p>Create an account for each person in Firebase (Authentication, Users, Add user) and give them their email and password. They appear here the first time they sign in.</p>
     </div>
+  </div>
+  </div>
+
+  <!-- ==================== MONTH OVERVIEW ==================== -->
+  <div id="monthPane" hidden>
+    <div class="weeknav">
+      <button type="button" class="round" id="mPrev" aria-label="Previous month">‹</button>
+      <b id="mLabel"></b>
+      <button type="button" class="round" id="mNext" aria-label="Next month">›</button>
+      <button type="button" class="btn btn-light btn-small" id="mThis">This month</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-light btn-small" id="mCsv">Export this month</button>
+    </div>
+
+    <section class="stats" aria-label="Month summary" id="mStats"></section>
+
+    <div class="viz-grid">
+      <section class="viz viz--wide">
+        <div class="viz-head"><h2>Team hours per day</h2>
+          <p class="legend"><span><i style="background:var(--ink)"></i>Office</span><span><i style="background:var(--blue)"></i>Remote</span><span><i class="lg-we"></i>Weekend</span></p></div>
+        <div class="bars" id="mBars" role="img" aria-label="Bar chart of team hours for each day of the month"></div>
+      </section>
+      <section class="viz">
+        <div class="viz-head"><h2>How the days were spent</h2></div>
+        <div id="mSplit"></div>
+      </section>
+    </div>
+
+    <section class="viz">
+      <div class="viz-head"><h2>Attendance calendar</h2>
+        <p class="legend"><span><i class="hm w3"></i>Office</span><span><i class="hm r3"></i>Remote</span><span><i class="hm lv"></i>Leave</span><span><i class="hm sk"></i>Sick</span><span><i class="hm ms"></i>Missing</span><span><i class="hm ns"></i>Not submitted</span><span><i class="hm we"></i>Weekend</span></p></div>
+      <div class="sheet-scroll"><table class="heat" id="mHeat"></table></div>
+      <p class="rep-hint">Darker means more hours. Click any square to read that day's report.</p>
+    </section>
+
+    <section class="viz">
+      <div class="viz-head"><h2>By person</h2></div>
+      <div class="sheet-scroll"><table class="ptable" id="mPeople"></table></div>
+    </section>
   </div>
 </main>
 
@@ -448,6 +567,7 @@ async function start() {
 }
 function signedOut() {
   stop(); me = null; profile = null;
+  if (typeof mUnsub === 'function') { try { mUnsub(); } catch (e) {} } mUnsub = null;
   if (staffUnsub) { try { staffUnsub(); } catch (e) {} staffUnsub = null; }
   if (todayUnsub) { try { todayUnsub(); } catch (e) {} todayUnsub = null; }
   $('top').hidden = true; $('staffView').hidden = true; $('bossView').hidden = true;
@@ -778,11 +898,12 @@ $('offForm').addEventListener('submit', async ev => {
 });
 
 /* ==================== Director ==================== */
+let bView = 'week', mMonth = null, mEntries = {}, mUnsub = null;
 let bWeek = null, bStaff = [], bEntries = {}, bToday = {}, popForm = null, popKey = null, editUid = null;
 
 function bossStart() {
   const { F, db } = fb;
-  staffUnsub = F.onSnapshot(F.collection(db, 'staff'), snap => { bStaff = snap.docs.map(d => d.data()); bossRender(); }, err => bossDenied(err));
+  staffUnsub = F.onSnapshot(F.collection(db, 'staff'), snap => { bStaff = snap.docs.map(d => d.data()); bossRender(); if (bView === 'month') monthRender(); }, err => bossDenied(err));
   /* today's entries drive "working right now", whatever week is on screen */
   const t = todayISO();
   todayUnsub = F.onSnapshot(F.query(F.collection(db, 'entries'), F.where('date', '==', t)), snap => { bToday = {}; snap.docs.forEach(d => { const e = d.data(); bToday[e.uid] = e; }); bossRender(); }, () => {});
@@ -797,7 +918,7 @@ function bossWeek(ws) {
   unsub.push(F.onSnapshot(F.query(F.collection(db, 'entries'), F.where('date', '>=', ws), F.where('date', '<=', addDays(ws, 6))), snap => {
     bEntries = {}; snap.docs.forEach(d => { const e = d.data(); bEntries[e.uid + '_' + e.date] = e; });
     bossRender();
-    if (popForm && popKey) popForm.update(bEntries[popKey] || null);
+    if (popForm && popKey && bView === 'week') popForm.update(bEntries[popKey] || null);
   }, err => bossDenied(err)));
   bossRender();
 }
@@ -909,6 +1030,7 @@ function reportHTML(s, d, e) {
       : '<p class="rep-hint">' + first + ' can change this day until it is sent, or until midnight.</p>') +
   '</div>';
 }
+const entryOf = k => (bView === 'month' ? mEntries[k] : bEntries[k]);
 function openDay(uid, d) {
   const s = bStaff.filter(x => x.uid === uid)[0]; if (!s) return;
   popKey = uid + '_' + d;
@@ -919,18 +1041,18 @@ function openDay(uid, d) {
   box.onclick = ev => {
     const rf = ev.target.closest('[data-refund]');
     if (rf) {
-      const c0 = bEntries[uid + '_' + d]; if (!c0) return;
+      const c0 = entryOf(uid + '_' + d); if (!c0) return;
       const c1 = clone(c0); c1.refunded = rf.getAttribute('data-refund') === '1'; c1.refundedAt = c1.refunded ? new Date().toISOString() : '';
       saveEntry(uid, d, c1); toast(c1.refunded ? money(expTotal(c1)) + ' marked as refunded' : 'Marked as not refunded yet'); return;
     }
     if (!ev.target.closest('[data-reopen]')) return;
-    const cur = bEntries[uid + '_' + d];
+    const cur = entryOf(uid + '_' + d);
     const copy = cur ? clone(cur) : { uid, name: s.name, email: s.email || '', date: d, status: 'office', start: '', end: '', breakMin: 0, tasks: [], expenses: [], notes: '' };
     copy.submitted = false; copy.reopened = true;
     saveEntry(uid, d, copy); toast(String(s.name).split(' ')[0] + ' can now fill in ' + niceDate(d));
   };
-  popForm = { update: render, flush() {}, tick() { render(bEntries[uid + '_' + d]); } };
-  render(bEntries[popKey]);
+  popForm = { update: render, flush() {}, tick() { render(entryOf(uid + '_' + d)); } };
+  render(entryOf(popKey));
   $('dayPop').showModal();
 }
 function openStaff(uid) {
@@ -949,6 +1071,126 @@ document.querySelectorAll('dialog.pop').forEach(d => d.addEventListener('click',
 $('bPrev').addEventListener('click', () => bossWeek(addDays(bWeek, -7)));
 $('bNext').addEventListener('click', () => bossWeek(addDays(bWeek, 7)));
 $('bToday').addEventListener('click', () => bossWeek(weekStart(todayISO())));
+
+
+/* ==================== Director: month overview ==================== */
+const ymOf = iso => iso.slice(0, 7);
+const ymShift = (ym, n) => { const d = new Date(Date.UTC(+ym.slice(0, 4), +ym.slice(5, 7) - 1 + n, 1)); return d.toISOString().slice(0, 7); };
+const ymDays = ym => { const n = new Date(Date.UTC(+ym.slice(0, 4), +ym.slice(5, 7), 0)).getUTCDate(); return Array.from({ length: n }, (_, i) => ym + '-' + String(i + 1).padStart(2, '0')); };
+const ymLabel = ym => MONTHS[+ym.slice(5, 7) - 1] + ' ' + ym.slice(0, 4);
+
+function setBossView(v) {
+  bView = v;
+  document.querySelectorAll('[data-bview]').forEach(b => b.setAttribute('aria-pressed', b.getAttribute('data-bview') === v ? 'true' : 'false'));
+  $('weekPane').hidden = v !== 'week'; $('monthPane').hidden = v !== 'month';
+  $('bossSub').textContent = v === 'week'
+    ? 'Updates by itself as your staff clock in, add tasks and submit their day. Click a day to read the report.'
+    : 'Hours, attendance, absences and expenses for the whole month. Use the arrows to look back at earlier months.';
+  if (v === 'month') bossMonth(mMonth || ymOf(todayISO()));
+  else if (mUnsub) { mUnsub(); mUnsub = null; }
+}
+function bossMonth(ym) {
+  if (mUnsub) { mUnsub(); mUnsub = null; }
+  mMonth = ym; mEntries = {};
+  const { F, db } = fb;
+  mUnsub = F.onSnapshot(F.query(F.collection(db, 'entries'), F.where('date', '>=', ym + '-01'), F.where('date', '<=', ym + '-31')), snap => {
+    mEntries = {}; snap.docs.forEach(d => { const e = d.data(); mEntries[e.uid + '_' + e.date] = e; });
+    monthRender();
+    if (popForm && popKey && bView === 'month') popForm.update(mEntries[popKey] || null);
+  }, err => bossDenied(err));
+  monthRender();
+}
+/* numbers for one person in the month on screen */
+function personMonth(s, days, t) {
+  const r = { s, min: 0, office: 0, remote: 0, leave: 0, sick: 0, missing: 0, unsent: 0, expected: 0, onTime: 0, worked: 0, weekendMin: 0, exp: 0, expDue: 0, officeMin: 0, remoteMin: 0 };
+  days.forEach(d => {
+    const e = mEntries[s.uid + '_' + d], we = isWeekend(d);
+    const due = !we && d <= t && d >= (s.joinedAt || '0') && (s.active !== false || !!e);
+    if (due) r.expected++;
+    if (!e) { if (due && d < t) r.missing++; return; }
+    const m = minutes(e); r.min += m; if (we) r.weekendMin += m;
+    if (e.status === 'leave') r.leave++; else if (e.status === 'sick') r.sick++;
+    else if (e.start) { r.worked++; if (e.status === 'remote') { r.remote++; r.remoteMin += m; } else { r.office++; r.officeMin += m; } }
+    if (e.submitted) { if (due) r.onTime++; } else if (d < t && !e.reopened) r.unsent++;
+    const x = expTotal(e); r.exp += x; if (!e.refunded) r.expDue += x;
+  });
+  return r;
+}
+function monthRender() {
+  if (!me || !me.isDirector || bView !== 'month' || !mMonth) return;
+  const t = todayISO(), days = ymDays(mMonth);
+  $('mLabel').textContent = ymLabel(mMonth);
+  const has = {}; Object.values(mEntries).forEach(e => { has[e.uid] = 1; });
+  const people = bStaff.filter(s => s.active !== false || has[s.uid]).sort((a, b) => String(a.name).localeCompare(String(b.name), 'en')).map(s => personMonth(s, days, t));
+  const sum = k => people.reduce((n, p) => n + p[k], 0);
+  const tot = sum('min'), worked = sum('worked'), expected = sum('expected'), onTime = sum('onTime'), leave = sum('leave'), sick = sum('sick'), missing = sum('missing'), exp = sum('exp'), expDue = sum('expDue');
+  const rate = expected ? Math.round(onTime / expected * 100) : null;
+
+  $('mStats').innerHTML =
+    '<div class="stat stat--live"><b class="num">' + hDec(tot) + ' h</b><span>worked in ' + esc(MONTHS[+mMonth.slice(5, 7) - 1]) + '</span><small>' + (sum('weekendMin') ? hDec(sum('weekendMin')) + ' h at weekends' : 'no weekend work') + '</small></div>' +
+    '<div class="stat"><b class="num">' + (worked ? hDec(tot / worked) + ' h' : '—') + '</b><span>average working day</span><small>' + worked + (worked === 1 ? ' day worked' : ' days worked') + '</small></div>' +
+    '<div class="stat"><b class="num' + (rate !== null && rate < 80 ? ' bad' : '') + '">' + (rate === null ? '—' : rate + '%') + '</b><span>reports submitted on time</span><small>' + onTime + ' of ' + expected + ' expected</small></div>' +
+    '<div class="stat"><b class="num' + (missing ? ' bad' : '') + '">' + missing + '</b><span>' + (missing === 1 ? 'working day missing' : 'working days missing') + '</span><small>' + leave + ' leave, ' + sick + ' sick</small></div>' +
+    '<div class="stat"><b class="num">' + money(exp) + '</b><span>expenses claimed</span><small class="' + (expDue ? 'bad' : '') + '">' + (exp ? (expDue ? money(expDue) + ' still to refund' : 'all refunded') : 'none this month') + '</small></div>';
+
+  /* ---- team hours per day ---- */
+  const perDay = days.map(d => { let o = 0, r = 0; people.forEach(p => { const e = mEntries[p.s.uid + '_' + d]; if (!e) return; const m = minutes(e); if (e.status === 'remote') r += m; else o += m; }); return { d, o, r }; });
+  const peak = Math.max(60, ...perDay.map(x => x.o + x.r)), top = Math.ceil(peak / 60 / 4) * 4 * 60 || 240;
+  $('mBars').innerHTML =
+    [1, .5, 0].map(f => '<div class="axis" style="bottom:calc(26px + ' + (f * 100) + '% - ' + (f * 26) + 'px)"><span>' + Math.round(top * f / 60) + ' h</span></div>').join('') +
+    perDay.map(x => { const all = x.o + x.r;
+      return '<div class="bar' + (isWeekend(x.d) ? ' we' : '') + (x.d === t ? ' today' : '') + (x.d > t ? ' future' : '') + ((+x.d.slice(8)) === 1 || (+x.d.slice(8)) % 5 === 0 || x.d === t ? ' l5' : '') + '" title="' + esc(niceDate(x.d) + ': ' + hText(all) + (x.r ? ' (' + hText(x.r) + ' remote)' : '')) + '">' +
+        (x.o ? '<i class="o" style="height:' + (x.o / top * 100) + '%"></i>' : '') + (x.r ? '<i class="r" style="height:' + (x.r / top * 100) + '%"></i>' : '') +
+        '<em>' + (+x.d.slice(8)) + '</em></div>'; }).join('');
+
+  /* ---- how the days were spent ---- */
+  const parts = [['Office', sum('office'), 'var(--ink)'], ['Remote', sum('remote'), 'var(--blue)'], ['Leave', leave, 'var(--highlight)'], ['Sick', sick, '#F2994A'], ['Missing', missing, 'var(--accent)']];
+  const allDays = parts.reduce((n, p) => n + p[1], 0);
+  $('mSplit').innerHTML = allDays
+    ? '<div class="split-bar">' + parts.map(p => p[1] ? '<i style="width:' + (p[1] / allDays * 100) + '%;background:' + p[2] + '" title="' + p[0] + ': ' + p[1] + '"></i>' : '').join('') + '</div>' +
+      '<ul class="split-list">' + parts.map(p => '<li><i style="background:' + p[2] + '"></i>' + p[0] + '<b>' + p[1] + (p[1] === 1 ? ' day' : ' days') + '</b><small>' + Math.round(p[1] / allDays * 100) + '%</small></li>').join('') + '</ul>'
+    : '<p style="margin:0;color:var(--muted);font-size:.92rem">Nothing recorded for this month.</p>';
+
+  /* ---- attendance calendar ---- */
+  function square(p, d) {
+    const e = mEntries[p.s.uid + '_' + d], we = isWeekend(d), label = p.s.name + ', ' + niceDate(d);
+    let c = 'fu', tip = 'not yet';
+    if (e) {
+      const m = minutes(e), lvl = m > 420 ? 3 : m > 240 ? 2 : 1;
+      if (e.status === 'leave') { c = 'lv'; tip = 'leave'; } else if (e.status === 'sick') { c = 'sk'; tip = 'sick'; }
+      else if (!e.start) { c = 'ns'; tip = e.reopened ? 'reopened, not filled in yet' : 'started, no hours'; }
+      else if (!e.submitted && d < t) { c = 'ns'; tip = hText(m) + ', not submitted'; }
+      else { c = (e.status === 'remote' ? 'r' : 'w') + lvl; tip = hText(m) + (e.status === 'remote' ? ' remote' : ' at the office') + (expTotal(e) ? ', ' + money(expTotal(e)) + ' expenses' : ''); }
+    } else if (we) { c = 'we'; tip = 'weekend'; }
+    else if (d < t && d >= (p.s.joinedAt || '0') && p.s.active !== false) { c = 'ms'; tip = 'missing'; }
+    else if (d === t) { c = 'fu'; tip = 'not filled in yet'; }
+    return '<td><button type="button" class="hm ' + c + '" data-uid="' + esc(p.s.uid) + '" data-d="' + d + '" title="' + esc(label + ': ' + tip) + '" aria-label="' + esc(label + ': ' + tip) + '"></button></td>';
+  }
+  $('mHeat').innerHTML = people.length
+    ? '<thead><tr><th></th>' + days.map(d => '<th class="' + (d === t ? 't' : '') + '">' + DAYS[dow(d)].charAt(0) + '<br>' + (+d.slice(8)) + '</th>').join('') + '</tr></thead><tbody>' +
+      people.map(p => '<tr><td class="n">' + esc(p.s.name) + '</td>' + days.map(d => square(p, d)).join('') + '</tr>').join('') + '</tbody>'
+    : '<tbody><tr><td class="n" style="font-weight:400;color:var(--muted)">No staff yet.</td></tr></tbody>';
+
+  /* ---- by person ---- */
+  const maxMin = Math.max(1, ...people.map(p => p.min));
+  const num = (v, cls) => '<td class="' + (v ? (cls || '') : 'muted') + '">' + (v || '—') + '</td>';
+  $('mPeople').innerHTML =
+    '<thead><tr><th>Staff</th><th style="text-align:left">Hours</th><th>Days worked</th><th>Average day</th><th>Remote</th><th>Leave</th><th>Sick</th><th>Missing</th><th>Not submitted</th><th>Expenses</th></tr></thead><tbody>' +
+    people.map(p => '<tr><td><b>' + esc(p.s.name) + '</b>' + (p.s.active === false ? ' <span class="muted">(inactive)</span>' : '') + '</td>' +
+      '<td><div class="hbar"><span><i style="width:' + (p.officeMin / maxMin * 100) + '%;background:var(--ink)"></i><i style="width:' + (p.remoteMin / maxMin * 100) + '%;background:var(--blue)"></i></span><b>' + hDec(p.min) + ' h</b></div></td>' +
+      num(p.worked) + '<td class="' + (p.worked ? '' : 'muted') + '">' + (p.worked ? hDec(p.min / p.worked) + ' h' : '—') + '</td>' + num(p.remote) + num(p.leave) + num(p.sick) + num(p.missing, 'warn') + num(p.unsent, 'warn') +
+      '<td class="' + (p.exp ? '' : 'muted') + '">' + (p.exp ? '<span style="white-space:nowrap">' + money(p.exp) + '</span>' + (p.expDue ? '<small class="warn" style="display:block;font-size:.76rem;white-space:nowrap">' + money(p.expDue) + ' to refund</small>' : '') : '—') + '</td></tr>').join('') +
+    '</tbody>' + (people.length > 1 ? '<tfoot><tr><td>Team</td><td><div class="hbar"><span style="background:none"></span><b>' + hDec(tot) + ' h</b></div></td><td>' + worked + '</td><td>' + (worked ? hDec(tot / worked) + ' h' : '—') + '</td><td>' + sum('remote') + '</td><td>' + leave + '</td><td>' + sick + '</td><td>' + missing + '</td><td>' + sum('unsent') + '</td><td>' + (exp ? money(exp) : '—') + '</td></tr></tfoot>' : '');
+}
+document.querySelectorAll('[data-bview]').forEach(b => b.addEventListener('click', () => setBossView(b.getAttribute('data-bview'))));
+$('mPrev').addEventListener('click', () => bossMonth(ymShift(mMonth, -1)));
+$('mNext').addEventListener('click', () => bossMonth(ymShift(mMonth, 1)));
+$('mThis').addEventListener('click', () => bossMonth(ymOf(todayISO())));
+$('mHeat').addEventListener('click', e => { const c = e.target.closest('.hm[data-uid]'); if (c) openDay(c.getAttribute('data-uid'), c.getAttribute('data-d')); });
+$('mCsv').addEventListener('click', () => {
+  const list = Object.values(mEntries); if (!list.length) { toast('Nothing recorded for ' + ymLabel(mMonth) + '.'); return; }
+  download('juniors-hr-' + mMonth + '.csv', toCsv(list)); toast(ymLabel(mMonth) + ' exported');
+});
 
 /* ---------- Export ---------- */
 function download(name, text) {
@@ -1009,7 +1251,7 @@ let lastDay = todayISO();
 setInterval(() => {
   if (!me) return;
   if (todayISO() !== lastDay) { location.reload(); return; }
-  if (me.isDirector) bossRender(); else { staffStrip(); if (sForm) sForm.tick(); }
+  if (me.isDirector) { bossRender(); if (bView === 'month') monthRender(); } else { staffStrip(); if (sForm) sForm.tick(); }
   if (popForm) popForm.tick();
 }, 30000);
 window.addEventListener('pagehide', () => { if (sForm) sForm.flush(); if (popForm) popForm.flush(); });
