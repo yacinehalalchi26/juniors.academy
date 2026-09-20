@@ -123,7 +123,18 @@
     .df-total { font-size: .9rem; color: var(--muted); }
     .df-total b { display: block; font-family: var(--display); font-size: 1.5rem; color: var(--ink); letter-spacing: -.02em; line-height: 1.1; }
     .df-saved { display: block; margin-top: 2px; font-size: .82rem; font-weight: 600; color: var(--ok); }
+    .df-sent { margin: 0 0 16px; padding: 16px 18px; border-radius: 16px; background: var(--ink); color: #fff; }
+    .df-sent b { display: block; font-family: var(--display); font-size: 1.35rem; letter-spacing: -.01em; color: var(--highlight); margin: 0 0 4px; }
+    .df-sent span { display: block; font-size: .9rem; line-height: 1.5; color: rgba(255,255,255,.8); }
     .df-lock { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: var(--highlight-soft); font-size: .88rem; }
+    .rep-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin: 0 0 18px; }
+    .rep-facts div { padding: 10px 12px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); }
+    .rep-facts span { display: block; font-size: .76rem; color: var(--muted); }
+    .rep-facts b { display: block; font-family: var(--display); font-size: 1.1rem; letter-spacing: -.01em; }
+    .rep-note { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); font-size: .93rem; white-space: pre-wrap; word-break: break-word; }
+    .rep-hint { margin: 12px 0 0; font-size: .82rem; color: var(--muted); }
+    .off-sum { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--highlight-soft); font-size: .9rem; line-height: 1.5; }
+    .off-sum.bad { background: var(--accent-soft); color: var(--accent-text); font-weight: 500; }
     .weektotal { margin: 14px 2px 0; font-size: .9rem; color: var(--muted); }
     .weektotal b { color: var(--ink); }
 
@@ -244,6 +255,7 @@
     <button type="button" class="round" id="sNext" aria-label="Next week">›</button>
     <span class="spacer"></span>
     <button type="button" class="btn btn-light btn-small" id="sToday">Today</button>
+    <button type="button" class="btn btn-ink btn-small" id="sOff">Book time off</button>
   </div>
   <div class="strip" id="strip" role="group" aria-label="Days of the week"></div>
   <div id="staffDay"></div>
@@ -253,7 +265,7 @@
 <!-- Director -->
 <main class="wrap" id="bossView" hidden>
   <h1 class="page">Team</h1>
-  <p class="page-sub">Updates by itself as your staff clock in, add tasks and clock out.</p>
+  <p class="page-sub">Updates by itself as your staff clock in, add tasks and send their day. Click a day to read the report.</p>
 
   <section class="stats" aria-label="Today">
     <div class="stat stat--live"><b class="num" id="kNow">0</b><span>working right now</span></div>
@@ -284,6 +296,26 @@
 <dialog class="pop" id="dayPop" aria-labelledby="dayPopTitle">
   <div class="pop-head"><div><h2 id="dayPopTitle"></h2><p id="dayPopSub"></p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
   <div class="pop-body" id="dayPopBody"></div>
+</dialog>
+
+<dialog class="pop" id="offPop" aria-labelledby="offTitle" style="width:min(480px,calc(100vw - 24px))">
+  <div class="pop-head"><div><h2 id="offTitle">Book time off</h2><p>Up to 7 days in one go</p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <form class="pop-body" id="offForm" style="display:grid;gap:14px;padding:18px" novalidate>
+    <div>
+      <span class="lab">Reason</span>
+      <div class="seg" style="margin:0" role="radiogroup" aria-label="Reason">
+        <label><input type="radio" name="offType" value="leave" checked><span>Leave</span></label>
+        <label><input type="radio" name="offType" value="sick"><span>Sick</span></label>
+      </div>
+    </div>
+    <div class="times" style="grid-template-columns:1fr 1fr;margin:0">
+      <div class="field"><label class="lab" for="offFrom">First day off</label><input type="date" id="offFrom" required></div>
+      <div class="field"><label class="lab" for="offTo">Last day off</label><input type="date" id="offTo" required></div>
+    </div>
+    <div class="field"><label class="lab" for="offNote">Note for the director (optional)</label><textarea id="offNote" placeholder="Family trip, back on Sunday"></textarea></div>
+    <p class="off-sum" id="offSum" aria-live="polite"></p>
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary" id="offSend">Send time off</button></div>
+  </form>
 </dialog>
 
 <dialog class="pop" id="staffPop" aria-labelledby="staffPopTitle" style="width:min(440px,calc(100vw - 24px))">
@@ -319,6 +351,9 @@ const DIRECTOR_EMAILS = ['director@juniors.academy'];
 
 /* Staff can correct their own days this many days back. Older days are locked (the director can still edit them). */
 const EDIT_WINDOW_DAYS = 7;
+/* Time off: how many days one request can cover, and how far ahead it can start. */
+const TIME_OFF_MAX_DAYS = 7;
+const TIME_OFF_MAX_AHEAD = 90;
 /* ============================================================ */
 
 const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
@@ -431,6 +466,22 @@ function mountDay(box, ctx) {
   let e = ctx.entry ? Object.assign(blank(), clone(ctx.entry)) : blank();
   let exists = !!ctx.entry, timer = null, err = '';
   const today = ctx.date === todayISO();
+  const boss = ctx.role === 'director';
+  /* once a day is sent, staff can no longer change it; the director still can, and can reopen it */
+  const sent = () => !!e.submitted;
+  const canEdit = () => ctx.editable && (boss || !sent());
+  function farewell() {
+    if (e.status === 'sick') return 'Get well soon.';
+    if (e.status === 'leave') return 'Enjoy your time off.';
+    if (!today) return 'Thank you.';
+    const next = addDays(ctx.date, 1);
+    return isWeekend(next) ? 'Enjoy your weekend. See you on Sunday!' : 'See you tomorrow!';
+  }
+  function send() {
+    e.submitted = true; e.submittedAt = new Date().toISOString();
+    err = ''; push(true); draw();
+    toast('Day sent. ' + farewell());
+  }
 
   function push(now) {
     exists = true; e.name = ctx.name; e.email = ctx.email;
@@ -441,18 +492,20 @@ function mountDay(box, ctx) {
   function stamp(t) { const s = box.querySelector('.df-saved'); if (s) s.textContent = t; }
   function pill() {
     if (!exists) return '<span class="tag tag-mute">Not filled in</span>';
+    if (sent()) return '<span class="tag tag-ok">Sent</span>';
     if (e.status === 'leave') return '<span class="tag tag-warn">On leave</span>';
     if (e.status === 'sick') return '<span class="tag tag-warn">Sick</span>';
     if (e.start && !e.end) return today ? '<span class="tag tag-live">Clocked in ' + esc(e.start) + '</span>' : '<span class="tag tag-bad">No clock-out time</span>';
-    if (e.start && e.end) return '<span class="tag tag-ok">Done</span>';
+    if (e.start && e.end) return '<span class="tag tag-warn">Not sent yet</span>';
     return '<span class="tag tag-mute">No hours yet</span>';
   }
   function actionHTML() {
     const work = isWorkStatus(e.status);
-    if (!ctx.editable) return '';
+    if (!canEdit()) return '';
+    if (boss && sent()) return '<button type="button" class="btn btn-light" data-act="reopen">Reopen for changes</button>';
     if (work && today && !e.start) return '<button type="button" class="btn btn-primary btn-big" data-act="in">Clock in now</button>';
     if (work && today && e.start && !e.end) return '<button type="button" class="btn btn-ink btn-big" data-act="out">Clock out and send</button>';
-    return '<button type="button" class="btn btn-primary btn-big" data-act="send">Save my day</button>';
+    return '<button type="button" class="btn btn-primary btn-big" data-act="send">' + (boss ? 'Mark as sent' : 'Save my day') + '</button>';
   }
   function refresh() {
     const p = box.querySelector('.df-pill'), t = box.querySelector('.df-total b');
@@ -460,10 +513,13 @@ function mountDay(box, ctx) {
     const act = box.querySelector('.df-action'); if (act) { const h = actionHTML(); if (act._h !== h) { act.innerHTML = h; act._h = h; } }
   }
   function draw() {
-    const ed = ctx.editable, dis = ed ? '' : ' disabled', work = isWorkStatus(e.status);
+    const ed = canEdit(), dis = ed ? '' : ' disabled', work = isWorkStatus(e.status);
+    const when = e.submittedAt ? new Date(e.submittedAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
     box.innerHTML =
       '<div class="dayform">' +
         '<div class="df-head"><div><h2>' + esc(niceDate(ctx.date)) + '</h2><p>' + (isWeekend(ctx.date) ? 'Weekend: only fill this in if you worked' : 'Working day') + '</p></div><span class="df-pill">' + pill() + '</span></div>' +
+        (sent() && !boss ? '<div class="df-sent" role="status"><b>' + esc(farewell()) + '</b><span>Your day was sent to the director' + (when ? ' at ' + when : '') + ' and can no longer be changed. Spotted a mistake? Ask the director to reopen it.</span></div>' : '') +
+        (sent() && boss ? '<p class="df-lock">Sent by ' + esc(ctx.name.split(' ')[0]) + (when ? ' at ' + when : '') + '. They can no longer change it. You still can, or you can reopen it for them.</p>' : '') +
         (ctx.lockedNote ? '<p class="df-lock">' + esc(ctx.lockedNote) + '</p>' : '') +
         '<span class="lab">Where are you today</span>' +
         '<div class="seg" role="radiogroup" aria-label="Status">' + Object.keys(STATUS).map(k =>
@@ -480,7 +536,7 @@ function mountDay(box, ctx) {
           (ed ? '<div class="addtask"><div class="field"><input type="text" data-f="newtask" placeholder="Called 12 leads from the brochure form" aria-label="New task" autocomplete="off"></div><button type="button" class="btn btn-light" data-act="add">Add</button></div>'
               : (e.tasks.length ? '' : '<p style="margin:0 0 16px;color:var(--muted);font-size:.9rem">No tasks written.</p>'))
         : '') +
-        '<div class="field"><label class="lab">' + (work ? 'Notes, or anything blocking you' : 'Note') + '</label><textarea data-f="notes" placeholder="' + (work ? 'Waiting on the partner school for dates' : 'Back on Sunday') + '"' + dis + '>' + esc(e.notes) + '</textarea></div>' +
+        '<div class="field"><label class="lab">' + (work ? 'Notes, or anything blocking you' : 'Note') + '</label><textarea data-f="notes" placeholder="' + (!ed ? '' : work ? 'Waiting on the partner school for dates' : 'Back on Sunday') + '"' + dis + '>' + esc(e.notes) + '</textarea></div>' +
         '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day <span class="df-saved"></span></div><span class="df-action">' + actionHTML() + '</span>' +
           (ed && exists && ctx.clear ? '<button type="button" class="linkish" data-act="clear">Clear this day</button>' : '') + '</div>' +
       '</div>';
@@ -498,13 +554,14 @@ function mountDay(box, ctx) {
     const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus();
   }
   box.oninput = ev => {
+    if (!canEdit()) return;
     const f = ev.target.getAttribute && ev.target.getAttribute('data-f'); if (!f || f === 'newtask') return;
     e[f] = f === 'breakMin' ? Math.max(0, Math.round(Number(ev.target.value) || 0)) : ev.target.value;
     if (f !== 'notes') { checkTimes(); refresh(); }
     push(false);
   };
   box.onchange = ev => {
-    if (ev.target.type !== 'radio') return;
+    if (ev.target.type !== 'radio' || !canEdit()) return;
     e.status = ev.target.value;
     if (!isWorkStatus(e.status)) { e.start = ''; e.end = ''; e.breakMin = 0; err = ''; }
     push(true); draw();
@@ -512,6 +569,7 @@ function mountDay(box, ctx) {
   box.onkeydown = ev => { if (ev.key === 'Enter' && ev.target.getAttribute && ev.target.getAttribute('data-f') === 'newtask') { ev.preventDefault(); addTask(); } };
   box.onclick = ev => {
     const del = ev.target.closest('[data-del]'), act = ev.target.closest('[data-act]');
+    if (!canEdit()) return;
     if (del) { e.tasks.splice(+del.getAttribute('data-del'), 1); push(true); draw(); return; }
     if (!act) return;
     const a = act.getAttribute('data-act');
@@ -520,7 +578,8 @@ function mountDay(box, ctx) {
     if (a === 'out') {
       const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
       if (!e.tasks.length) { err = 'Add at least one thing you did today, then clock out.'; draw(); const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus(); return; }
-      err = ''; e.end = nowHM(); push(true); draw(); toast('Clocked out at ' + e.end + '. ' + hText(minutes(e)) + ' today.');
+      if (!boss && !confirm('Clock out and send your day?\n\nAfter this you will not be able to change it.')) { draw(); return; }
+      e.end = nowHM(); send();
     }
     if (a === 'send') {
       const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
@@ -532,9 +591,10 @@ function mountDay(box, ctx) {
         else err = '';
         if (err) { draw(); return; }
       }
-      err = ''; push(true); draw(); stamp('Saved ' + nowHM() + ', the director can see it');
-      toast('Day saved. The director can see it.');
+      if (!boss && !confirm('Send your day to the director?\n\nAfter this you will not be able to change it.')) { draw(); return; }
+      send();
     }
+    if (a === 'reopen') { e.submitted = false; push(true); draw(); toast(ctx.name.split(' ')[0] + ' can change this day again'); }
     if (a === 'clear' && confirm('Clear everything written for ' + niceDate(ctx.date) + '?')) { clearTimeout(timer); timer = null; ctx.clear(); }
   };
   draw();
@@ -576,7 +636,7 @@ function dayMark(e, d) {
   if (e) {
     if (e.status === 'leave') return ['Leave', 's-warn']; if (e.status === 'sick') return ['Sick', 's-warn'];
     if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h', 's-ok'] : ['No end', 's-bad'];
-    if (e.start && e.end) return [hDec(minutes(e)) + ' h', 's-ok'];
+    if (e.start && e.end) return [hDec(minutes(e)) + ' h', e.submitted ? 's-ok' : 's-warn'];
     return ['Started', 's-mute'];
   }
   if (isWeekend(d)) return ['off', 's-mute'];
@@ -600,7 +660,7 @@ function staffDay() {
   if (d > t) note = 'This day has not happened yet.';
   else if (!canEdit(d)) note = 'Days older than ' + EDIT_WINDOW_DAYS + ' days are locked. Ask the director to correct them.';
   sForm = mountDay($('staffDay'), {
-    uid: me.uid, name: profile.name, email: me.email, date: d, entry: sEntries[d] || null,
+    uid: me.uid, name: profile.name, email: me.email, date: d, entry: sEntries[d] || null, role: 'staff',
     editable: canEdit(d), lockedNote: note,
     save: entry => saveEntry(me.uid, d, entry),
     clear: () => fb.F.deleteDoc(entryRef(me.uid, d)).then(() => toast('Day cleared')).catch(() => toast("Couldn't clear the day. Check the connection."))
@@ -610,6 +670,64 @@ $('strip').addEventListener('click', e => { const b = e.target.closest('[data-d]
 $('sPrev').addEventListener('click', () => staffWeek(addDays(sWeek, -7)));
 $('sNext').addEventListener('click', () => staffWeek(addDays(sWeek, 7)));
 $('sToday').addEventListener('click', () => { sDate = todayISO(); staffWeek(weekStart(sDate)); });
+
+/* ---------- Book time off: several days in one go ---------- */
+function offPlan() {
+  const a = $('offFrom').value, b = $('offTo').value, t = todayISO();
+  if (!a || !b) return { error: 'Choose the first and the last day off.' };
+  if (b < a) return { error: 'The last day is before the first day.' };
+  if (a < addDays(t, -EDIT_WINDOW_DAYS)) return { error: 'The first day is too far back. Ask the director to add older days.' };
+  if (a > addDays(t, TIME_OFF_MAX_AHEAD)) return { error: 'That is more than ' + TIME_OFF_MAX_AHEAD + ' days ahead.' };
+  const span = dayDiffISO(a, b) + 1;
+  if (span > TIME_OFF_MAX_DAYS) return { error: 'One request covers ' + TIME_OFF_MAX_DAYS + ' days at most (you chose ' + span + '). Send a second request for the rest.' };
+  const all = []; for (let i = 0; i < span; i++) all.push(addDays(a, i));
+  const days = all.filter(d => !isWeekend(d));
+  if (!days.length) return { error: 'Those days are Friday and Saturday, which are already the weekend.' };
+  return { days, skipped: all.length - days.length };
+}
+const dayDiffISO = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+function offSummary() {
+  const p = offPlan(), el = $('offSum');
+  el.classList.toggle('bad', !!p.error);
+  if (p.error) { el.textContent = p.error; return; }
+  const n = p.days.length;
+  el.textContent = n + (n === 1 ? ' working day off: ' : ' working days off: ') + p.days.map(d => DAYS[dow(d)] + ' ' + shortDate(d)).join(', ') + '.' +
+    (p.skipped ? ' Friday and Saturday are skipped, they are already the weekend.' : '');
+}
+$('sOff').addEventListener('click', () => {
+  const start = sDate && sDate >= todayISO() ? sDate : todayISO();
+  $('offFrom').value = start; $('offTo').value = start; $('offNote').value = '';
+  $('offFrom').min = addDays(todayISO(), -EDIT_WINDOW_DAYS); $('offFrom').max = addDays(todayISO(), TIME_OFF_MAX_AHEAD);
+  document.querySelector('input[name="offType"][value="leave"]').checked = true;
+  offSummary(); $('offPop').showModal();
+});
+$('offFrom').addEventListener('input', () => { if ($('offTo').value < $('offFrom').value) $('offTo').value = $('offFrom').value; offSummary(); });
+$('offTo').addEventListener('input', offSummary);
+$('offForm').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  const p = offPlan(); if (p.error) { offSummary(); return; }
+  const type = document.querySelector('input[name="offType"]:checked').value, note = $('offNote').value.trim();
+  const n = p.days.length;
+  if (!confirm('Send ' + n + (n === 1 ? ' day' : ' days') + ' of ' + (type === 'sick' ? 'sick leave' : 'leave') + ' to the director?\n\nAfter this you will not be able to change them.')) return;
+  const btn = $('offSend'); btn.disabled = true; btn.textContent = 'Sending…';
+  let done = 0, firstDone = null; const kept = [];
+  try {
+    for (const d of p.days) {
+      /* a day that already has hours, or was already sent, is left alone */
+      const snap = await fb.F.getDoc(entryRef(me.uid, d)), old = snap.exists() ? snap.data() : null;
+      if (old && (old.submitted || old.start)) { kept.push(d); continue; }
+      await fb.F.setDoc(entryRef(me.uid, d), { uid: me.uid, name: profile.name, email: me.email, date: d, weekend: false, status: type, start: '', end: '', breakMin: 0, tasks: [], notes: note,
+        timeOff: true, submitted: true, submittedAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+      if (!done) firstDone = d;
+      done++;
+    }
+    $('offPop').close();
+    toast(done ? done + (done === 1 ? ' day' : ' days') + ' off sent.' + (kept.length ? ' ' + kept.length + ' already filled in, left as they were.' : '') + (type === 'sick' ? ' Get well soon.' : ' Enjoy your time off.')
+               : 'Those days were already filled in, so nothing changed.');
+    if (done) { sDate = firstDone; staffWeek(weekStart(sDate)); }
+  } catch (e) { toast("Couldn't send the time off. Check the connection and try again."); }
+  finally { btn.disabled = false; btn.textContent = 'Send time off'; }
+});
 
 /* ==================== Director ==================== */
 let bWeek = null, bStaff = [], bEntries = {}, bToday = {}, popForm = null, popKey = null, editUid = null;
@@ -645,7 +763,7 @@ function todayLine(s) {
   if (e) {
     if (e.status === 'leave') return '<span class="away">On leave today</span>'; if (e.status === 'sick') return '<span class="away">Sick today</span>';
     if (isLive(e)) return '<span class="on">' + (e.status === 'remote' ? 'Remote, working since ' : 'Working since ') + esc(e.start) + '</span>';
-    if (e.start && e.end) return '<span>Finished at ' + esc(e.end) + '</span>';
+    if (e.start && e.end) return '<span>' + (e.submitted ? 'Day sent, finished at ' : 'Finished at ') + esc(e.end) + '</span>';
     return '<span>Started filling in</span>';
   }
   return isWeekend(t) ? '<span>Weekend</span>' : '<span class="no">Nothing filled in yet</span>';
@@ -656,7 +774,7 @@ function cellHTML(s, d) {
     if (e.status === 'leave') return ['<span class="tag tag-warn">Leave</span>', ''];
     if (e.status === 'sick') return ['<span class="tag tag-warn">Sick</span>', ''];
     if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h<small>since ' + esc(e.start) + '</small>', 'live'] : ['<span class="tag tag-bad">No clock-out</span>', ''];
-    if (e.start && e.end) return [hDec(minutes(e)) + ' h<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + '</small>', ''];
+    if (e.start && e.end) return [hDec(minutes(e)) + ' h<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + (e.submitted ? '' : ', not sent') + '</small>', ''];
     return ['<span class="tag tag-mute">Started</span>', ''];
   }
   if (d > t) return ['', 'off'];
@@ -697,16 +815,51 @@ $('sheet').addEventListener('click', e => {
   if (cell) openDay(cell.getAttribute('data-uid'), cell.getAttribute('data-d'));
   else if (who) openStaff(who.getAttribute('data-staff'));
 });
+/* The director's view of a day is a report: it can be read, not edited. */
+function reportHTML(s, d, e) {
+  const first = esc(String(s.name).split(' ')[0]);
+  const head = tag => '<div class="df-head"><div><h2>' + esc(niceDate(d)) + '</h2><p>' + (isWeekend(d) ? 'Weekend' : 'Working day') + '</p></div><span>' + tag + '</span></div>';
+  if (!e) {
+    const t = todayISO();
+    const why = d > t ? 'This day has not happened yet.' : isWeekend(d) ? first + ' did not work this weekend day.' : d === t ? first + ' has not filled in today yet.' : first + ' did not fill in this day.';
+    return '<div class="dayform">' + head(d < t && !isWeekend(d) ? '<span class="tag tag-bad">Missing</span>' : '<span class="tag tag-mute">Nothing filled in</span>') + '<p style="margin:0;color:var(--muted)">' + why + '</p></div>';
+  }
+  const work = isWorkStatus(e.status), when = e.submittedAt ? new Date(e.submittedAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+  let tag;
+  if (e.submitted) tag = '<span class="tag tag-ok">Sent' + (when ? ' at ' + when : '') + '</span>';
+  else if (isLive(e)) tag = '<span class="tag tag-live">Working now</span>';
+  else if (work && e.start && !e.end) tag = '<span class="tag tag-bad">No clock-out time</span>';
+  else tag = '<span class="tag tag-warn">Not sent yet</span>';
+  const fact = (k, v) => '<div><span>' + k + '</span><b>' + v + '</b></div>';
+  return '<div class="dayform">' + head(tag) +
+    '<div class="rep-facts">' +
+      fact('Status', STATUS[e.status] || esc(e.status)) +
+      (work ? fact('Start', esc(e.start) || '—') + fact('End', esc(e.end) || (isLive(e) ? 'still working' : '—')) + fact('Break', (Number(e.breakMin) || 0) + ' min') : '') +
+    '</div>' +
+    (work ? '<span class="lab">What ' + first + ' did</span>' +
+      ((e.tasks || []).length ? '<ul class="tasks">' + e.tasks.map(t => '<li><span>' + esc(t) + '</span></li>').join('') + '</ul>' : '<p style="margin:0 0 14px;color:var(--muted);font-size:.92rem">No tasks written yet.</p>') : '') +
+    (e.notes ? '<span class="lab" style="margin-top:14px">' + (work ? 'Notes or blockers' : 'Note') + '</span><p class="rep-note">' + esc(e.notes) + '</p>' : '') +
+    '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day</div>' +
+      (e.submitted ? '<button type="button" class="btn btn-light" data-reopen>Let ' + first + ' correct this day</button>' : '') + '</div>' +
+    (e.submitted ? '<p class="rep-hint">This report is locked. If ' + first + ' made a mistake, the button above gives the day back to them to fix and send again.</p>'
+                 : '<p class="rep-hint">' + first + ' can still change this day until it is sent.</p>') +
+  '</div>';
+}
 function openDay(uid, d) {
   const s = bStaff.filter(x => x.uid === uid)[0]; if (!s) return;
   popKey = uid + '_' + d;
   $('dayPopTitle').textContent = s.name; $('dayPopSub').textContent = s.email || '';
-  popForm = mountDay($('dayPopBody'), {
-    uid, name: s.name, email: s.email || '', date: d, entry: bEntries[popKey] || null,
-    editable: d <= todayISO(), lockedNote: d > todayISO() ? 'This day has not happened yet.' : '',
-    save: entry => saveEntry(uid, d, entry),
-    clear: () => fb.F.deleteDoc(entryRef(uid, d)).then(() => { toast('Day cleared'); $('dayPop').close(); }).catch(() => toast("Couldn't clear the day."))
-  });
+  const box = $('dayPopBody');
+  const render = entry => { box.innerHTML = reportHTML(s, d, entry || null); };
+  box.oninput = box.onchange = box.onkeydown = null;
+  box.onclick = ev => {
+    if (!ev.target.closest('[data-reopen]')) return;
+    const cur = bEntries[uid + '_' + d]; if (!cur) return;
+    const copy = clone(cur); copy.submitted = false;
+    saveEntry(uid, d, copy); toast(String(s.name).split(' ')[0] + ' can change this day again');
+  };
+  popForm = { update: render, flush() {}, tick() { render(bEntries[uid + '_' + d]); } };
+  render(bEntries[popKey]);
   $('dayPop').showModal();
 }
 function openStaff(uid) {
@@ -734,10 +887,10 @@ function download(name, text) {
 function toCsv(list) {
   const names = {}; bStaff.forEach(s => { names[s.uid] = s.name; });
   const cell = v => { v = String(v == null ? '' : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-  const head = ['Date', 'Day', 'Weekend', 'Staff', 'Email', 'Status', 'Start', 'End', 'Break (min)', 'Hours', 'Tasks', 'Notes'];
+  const head = ['Date', 'Day', 'Weekend', 'Staff', 'Email', 'Status', 'Start', 'End', 'Break (min)', 'Hours', 'Sent', 'Tasks', 'Notes'];
   const rows = list.slice().sort((a, b) => (a.date + (names[a.uid] || a.name)).localeCompare(b.date + (names[b.uid] || b.name))).map(e =>
     [e.date, DAYS_LONG[dow(e.date)], isWeekend(e.date) ? 'yes' : '', names[e.uid] || e.name, e.email, STATUS[e.status] || e.status, e.start, e.end, e.breakMin || 0,
-     (minutes(e) / 60).toFixed(2), (e.tasks || []).join(' | '), e.notes].map(cell).join(','));
+     (minutes(e) / 60).toFixed(2), e.submitted ? 'yes' : '', (e.tasks || []).join(' | '), e.notes].map(cell).join(','));
   return '\uFEFF' + [head.join(',')].concat(rows).join('\r\n');
 }
 $('bCsvWeek').addEventListener('click', () => {
