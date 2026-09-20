@@ -324,7 +324,7 @@
       <div class="field"><label class="lab" for="offFrom">First day off</label><input type="date" id="offFrom" required></div>
       <div class="field"><label class="lab" for="offTo">Last day off</label><input type="date" id="offTo" required></div>
     </div>
-    <div class="field"><label class="lab" for="offNote">Note for the director (optional)</label><textarea id="offNote" placeholder="Family trip, back on Sunday"></textarea></div>
+    <div class="field"><label class="lab" for="offNote">Note for the Managing Director (optional)</label><textarea id="offNote" placeholder="Family trip, back on Sunday"></textarea></div>
     <p class="off-sum" id="offSum" aria-live="polite"></p>
     <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary" id="offSend">Submit time off</button></div>
   </form>
@@ -462,9 +462,9 @@ async function signedIn(u) {
     const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'staff', u.uid));
     if (!snap.exists()) { gate('name'); return; }
     profile = snap.data();
-    if (profile.active === false) { gate('blocked', 'Your access has been turned off. Speak to the director.'); return; }
+    if (profile.active === false) { gate('blocked', 'Your access has been turned off. Please speak to the Managing Director.'); return; }
     openApp(); staffStart();
-  } catch (e) { gate('blocked', "Couldn't load your profile. Check the connection and reload. If it keeps happening, tell the director."); }
+  } catch (e) { gate('blocked', "Couldn't load your profile. Check the connection and reload. If it keeps happening, please inform the Managing Director."); }
 }
 function openApp() {
   gate('off'); $('top').hidden = false;
@@ -534,7 +534,7 @@ function mountDay(box, ctx) {
     box.innerHTML =
       '<div class="dayform">' +
         '<div class="df-head"><div><h2>' + esc(niceDate(ctx.date)) + '</h2><p>' + (isWeekend(ctx.date) ? 'Weekend: only fill this in if you worked' : 'Working day') + '</p></div><span class="df-pill">' + pill() + '</span></div>' +
-        (sent() && !boss ? '<div class="df-sent" role="status"><b>' + esc(farewell()) + '</b><span>Thank you. Your ' + (isWorkStatus(e.status) ? 'report' : 'absence') + ' for ' + esc(niceDate(ctx.date)) + ' was received' + (when ? ' at ' + when : '') + ' and is now locked. If a correction is needed, please ask the director to reopen it.</span></div>' : '') +
+        (sent() && !boss ? '<div class="df-sent" role="status"><b>' + esc(farewell()) + '</b><span>Thank you. Your ' + (isWorkStatus(e.status) ? 'report' : 'absence') + ' for ' + esc(niceDate(ctx.date)) + ' was received' + (when ? ' at ' + when : '') + ' and is now locked. If a correction is needed, please ask the Managing Director to modify it.</span></div>' : '') +
         (sent() && boss ? '<p class="df-lock">Sent by ' + esc(ctx.name.split(' ')[0]) + (when ? ' at ' + when : '') + '. They can no longer change it. You still can, or you can reopen it for them.</p>' : '') +
         (ctx.lockedNote ? '<p class="df-lock">' + esc(ctx.lockedNote) + '</p>' : '') +
         '<span class="lab">Where are you today</span>' +
@@ -634,7 +634,7 @@ function mountDay(box, ctx) {
         else err = '';
         if (err) { draw(); return; }
       }
-      if (!boss && !confirm('Submit your daily report to the director?\n\nOnce submitted, it can no longer be changed.')) { draw(); return; }
+      if (!boss && !confirm('Submit your daily report to the Managing Director?\n\nOnce submitted, it can no longer be changed.')) { draw(); return; }
       send();
     }
     if (a === 'reopen') { e.submitted = false; push(true); draw(); toast(ctx.name.split(' ')[0] + ' can change this day again'); }
@@ -705,8 +705,8 @@ function staffDay() {
   const d = sDate, t = todayISO();
   let note = '';
   if (d > t) note = 'This day has not happened yet.';
-  else if (!canEdit(d) && !(sEntries[d] && sEntries[d].submitted)) note = 'The submission deadline for this day (midnight) has passed, so it is locked. Please ask the director to reopen it.';
-  else if (d < t && canEdit(d)) note = 'The director has reopened this day. Please complete and submit it.';
+  else if (!canEdit(d) && !(sEntries[d] && sEntries[d].submitted)) note = 'The submission deadline for this day (midnight) has passed, so it is locked. Please ask the Managing Director to reopen it.';
+  else if (d < t && canEdit(d)) note = 'The Managing Director has reopened this day. Please complete and submit it.';
   sForm = mountDay($('staffDay'), {
     uid: me.uid, name: profile.name, email: me.email, date: d, entry: sEntries[d] || null, role: 'staff',
     editable: canEdit(d), lockedNote: note,
@@ -724,7 +724,7 @@ function offPlan() {
   const a = $('offFrom').value, b = $('offTo').value, t = todayISO();
   if (!a || !b) return { error: 'Choose the first and the last day off.' };
   if (b < a) return { error: 'The last day is before the first day.' };
-  if (a < t) return { error: 'Time off starts today at the earliest. For a day that has passed, ask the director to reopen it.' };
+  if (a < t) return { error: 'Time off starts today at the earliest. For a day that has passed, please ask the Managing Director to reopen it.' };
   if (a > addDays(t, TIME_OFF_MAX_AHEAD)) return { error: 'That is more than ' + TIME_OFF_MAX_AHEAD + ' days ahead.' };
   const span = dayDiffISO(a, b) + 1;
   if (span > TIME_OFF_MAX_DAYS) return { error: 'One request covers ' + TIME_OFF_MAX_DAYS + ' days at most (you chose ' + span + '). Send a second request for the rest.' };
@@ -756,7 +756,7 @@ $('offForm').addEventListener('submit', async ev => {
   const p = offPlan(); if (p.error) { offSummary(); return; }
   const type = document.querySelector('input[name="offType"]:checked').value, note = $('offNote').value.trim();
   const n = p.days.length;
-  if (!confirm('Submit ' + n + (n === 1 ? ' day' : ' days') + ' of ' + (type === 'sick' ? 'sick leave' : 'leave') + ' to the director?\n\nOnce submitted, these days can no longer be changed.')) return;
+  if (!confirm('Submit ' + n + (n === 1 ? ' day' : ' days') + ' of ' + (type === 'sick' ? 'sick leave' : 'leave') + ' to the Managing Director?\n\nOnce submitted, these days can no longer be changed.')) return;
   const btn = $('offSend'); btn.disabled = true; btn.textContent = 'Sending…';
   let done = 0, firstDone = null; const kept = [];
   try {
