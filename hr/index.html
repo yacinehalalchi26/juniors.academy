@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Juniors HR</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#14181D">
+  <link rel="icon" type="image/jpeg" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
+  <link rel="apple-touch-icon" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       JUNIORS HR — daily check-in for staff, live week sheet for
+       the director. Data is saved online (Firebase). The only thing
+       to edit is the SETTINGS block at the bottom of this file.
+       ============================================================ */
+    :root {
+      --ink: #14181D; --paper: #FAFAF7; --card: #fff;
+      --accent: #FF3B6B; --accent-soft: rgba(255,59,107,.1); --accent-text: #C8184A;
+      --highlight: #FFD23F; --highlight-soft: rgba(255,210,63,.32); --highlight-text: #6B5200;
+      --ok: #1E8E5A; --ok-soft: rgba(30,142,90,.12);
+      --muted: #6B737D; --body: #3D444C; --line: rgba(20,24,29,.1); --weekend: #F1F0EA;
+      --ease: cubic-bezier(.16, 1, .3, 1);
+      --display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+    .num { font-variant-numeric: tabular-nums; }
+    [hidden] { display: none !important; }
+
+    /* ---------- Top bar ---------- */
+    .top { position: sticky; top: 0; z-index: 50; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px clamp(14px, 3vw, 32px); padding-top: calc(11px + env(safe-area-inset-top, 0px)); }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .seal { flex: none; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: .95rem; transform: rotate(-5deg); color: #fff; }
+    .brand b { display: block; font-family: var(--display); font-size: 1.1rem; letter-spacing: -.01em; line-height: 1.1; }
+    .brand div span { display: block; font-size: .76rem; color: rgba(255,255,255,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46vw; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 999px; border: 1px solid transparent; font-weight: 600; font-size: .9rem; white-space: nowrap; transition: transform .2s var(--ease), background .2s, border-color .2s; }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .6; cursor: default; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #f02a5c; }
+    .btn-ink { background: var(--ink); color: #fff; }
+    .btn-dark { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.22); color: #fff; }
+    .btn-dark:hover { background: rgba(255,255,255,.2); }
+    .btn-light { background: #fff; border-color: var(--line); color: var(--ink); }
+    .btn-light:hover { border-color: rgba(20,24,29,.3); }
+    .btn-small { min-height: 34px; padding: 5px 13px; font-size: .84rem; }
+    .btn-big { min-height: 52px; padding: 12px 26px; font-size: 1rem; }
+    .linkish { background: none; border: 0; padding: 0; color: var(--muted); font-weight: 600; text-decoration: underline; font-size: .88rem; }
+
+    .wrap { max-width: 1240px; margin: 0 auto; padding: clamp(14px, 2.4vw, 28px) clamp(14px, 3vw, 32px) 60px; }
+    .wrap--narrow { max-width: 620px; }
+    h1.page { margin: 0 0 4px; font-family: var(--display); font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: -.02em; line-height: 1.1; }
+    p.page-sub { margin: 0 0 18px; color: var(--muted); font-size: .92rem; }
+
+    .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .78rem; font-weight: 700; white-space: nowrap; }
+    .tag-ok { background: var(--ok-soft); color: var(--ok); }
+    .tag-live { background: var(--ok); color: #fff; }
+    .tag-warn { background: var(--highlight-soft); color: var(--highlight-text); }
+    .tag-bad { background: var(--accent-soft); color: var(--accent-text); }
+    .tag-mute { background: rgba(20,24,29,.07); color: var(--body); }
+
+    /* ---------- Week navigation ---------- */
+    .weeknav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
+    .weeknav b { font-family: var(--display); font-size: 1.05rem; letter-spacing: -.01em; margin: 0 4px; }
+    .round { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: #fff; display: grid; place-items: center; font-size: 1.1rem; line-height: 1; }
+    .round:hover { border-color: rgba(20,24,29,.3); }
+    .weeknav .spacer { flex: 1; }
+
+    /* ---------- Staff: week strip ---------- */
+    .strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 0 0 16px; }
+    .day { border: 1px solid var(--line); background: #fff; border-radius: 14px; padding: 9px 4px 8px; text-align: center; min-height: 74px; }
+    .day:hover { border-color: rgba(20,24,29,.3); }
+    .day.is-weekend { background: var(--weekend); }
+    .day[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .day small { display: block; font-size: .72rem; font-weight: 600; color: var(--muted); }
+    .day[aria-pressed="true"] small { color: rgba(255,255,255,.7); }
+    .day b { display: block; font-family: var(--display); font-size: 1.1rem; line-height: 1.2; }
+    .day span { display: block; margin-top: 3px; font-size: .72rem; font-weight: 700; min-height: 1.1em; }
+    .day .s-ok { color: var(--ok); } .day .s-bad { color: var(--accent-text); } .day .s-warn { color: var(--highlight-text); } .day .s-mute { color: var(--muted); }
+    .day[aria-pressed="true"] span { color: var(--highlight) !important; }
+    .day.is-today { box-shadow: inset 0 -3px 0 var(--accent); }
+
+    /* ---------- Day form ---------- */
+    .dayform { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: clamp(16px, 2.6vw, 24px); }
+    .df-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 0 16px; }
+    .df-head h2 { margin: 0; font-family: var(--display); font-size: 1.25rem; letter-spacing: -.01em; }
+    .df-head p { margin: 2px 0 0; font-size: .86rem; color: var(--muted); }
+    .lab { display: block; font-size: .8rem; font-weight: 600; color: var(--body); margin: 0 0 6px; }
+    .seg { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 16px; }
+    .seg label { flex: 1 1 0; min-width: 72px; margin: 0; }
+    .seg input { position: absolute; opacity: 0; pointer-events: none; }
+    .seg span { display: grid; place-items: center; min-height: 42px; padding: 0 8px; border-radius: 10px; border: 1px solid rgba(20,24,29,.18); font-weight: 600; font-size: .9rem; cursor: pointer; }
+    .seg input:checked + span { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .seg input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .seg input:disabled + span { cursor: default; opacity: .7; }
+    .times { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 16px; }
+    .field input, .field textarea { width: 100%; min-height: 44px; padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(20,24,29,.18); background: #fff; }
+    .field textarea { min-height: 70px; resize: vertical; }
+    .field input:focus, .field textarea:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(20,24,29,.08); }
+    .field input:disabled, .field textarea:disabled { background: rgba(20,24,29,.04); color: var(--body); }
+    .tasks { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 6px; }
+    .tasks:empty { display: none; }
+    .tasks li { display: flex; align-items: flex-start; gap: 9px; padding: 9px 10px 9px 12px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); font-size: .93rem; }
+    .tasks li::before { content: "✓"; flex: none; width: 18px; height: 18px; margin-top: 1px; border-radius: 50%; display: grid; place-items: center; background: var(--highlight); font-size: .66rem; font-weight: 800; }
+    .tasks li span { flex: 1; word-break: break-word; }
+    .tasks button { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 0; background: transparent; color: var(--muted); font-size: 1.05rem; line-height: 1; }
+    .tasks button:hover { background: var(--accent-soft); color: var(--accent-text); }
+    .addtask { display: flex; gap: 8px; margin: 0 0 16px; }
+    .addtask .field { flex: 1; }
+    .df-err { margin: -8px 0 14px; font-size: .84rem; color: var(--accent-text); font-weight: 500; }
+    .df-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .df-total { font-size: .9rem; color: var(--muted); }
+    .df-total b { display: block; font-family: var(--display); font-size: 1.5rem; color: var(--ink); letter-spacing: -.02em; line-height: 1.1; }
+    .df-saved { font-size: .8rem; color: var(--muted); }
+    .df-lock { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: var(--highlight-soft); font-size: .88rem; }
+    .weektotal { margin: 14px 2px 0; font-size: .9rem; color: var(--muted); }
+    .weektotal b { color: var(--ink); }
+
+    /* ---------- Director ---------- */
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 18px; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+    .stat b { display: block; font-family: var(--display); font-size: clamp(1.3rem, 2.2vw, 1.8rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+    .stat span { display: block; margin-top: 3px; font-size: .82rem; color: var(--muted); }
+    .stat--live { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .stat--live b { color: var(--highlight); } .stat--live span { color: rgba(255,255,255,.7); }
+    .stat .bad { color: var(--accent-text); }
+
+    .sheet-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .sheet-scroll { overflow-x: auto; }
+    table.sheet { width: 100%; border-collapse: collapse; min-width: 760px; }
+    .sheet th { font-size: .78rem; font-weight: 600; color: var(--muted); padding: 11px 6px; border-bottom: 1px solid var(--line); text-align: center; background: #FCFCFA; white-space: nowrap; }
+    .sheet th small { display: block; font-weight: 500; }
+    .sheet th.is-today { color: var(--ink); box-shadow: inset 0 -3px 0 var(--accent); }
+    .sheet td { padding: 0; border-bottom: 1px solid var(--line); text-align: center; vertical-align: middle; }
+    .sheet tr:last-child td { border-bottom: 0; }
+    .sheet th:first-child, .sheet td:first-child { text-align: left; padding: 10px 8px 10px 16px; width: 210px; }
+    .sheet .we { background: var(--weekend); }
+    .who { display: block; width: 100%; background: none; border: 0; padding: 0; text-align: left; }
+    .who b { display: block; font-weight: 700; }
+    .who:hover b { text-decoration: underline; }
+    .who span { display: block; font-size: .78rem; margin-top: 1px; color: var(--muted); }
+    .who .on { color: var(--ok); font-weight: 600; } .who .no { color: var(--accent-text); font-weight: 600; } .who .away { color: var(--highlight-text); font-weight: 600; }
+    .cell { display: grid; place-items: center; width: 100%; min-height: 56px; padding: 6px 4px; background: none; border: 0; font-size: .9rem; font-weight: 600; }
+    .cell:hover { background: rgba(20,24,29,.04); }
+    .cell.live { color: var(--ok); }
+    .cell.off { color: var(--muted); font-weight: 500; font-size: .8rem; }
+    .cell small { display: block; font-size: .7rem; font-weight: 500; color: var(--muted); }
+    .sheet .sum { font-family: var(--display); font-weight: 800; font-size: 1rem; padding: 0 12px; white-space: nowrap; }
+    .sheet tfoot td { background: #FCFCFA; font-weight: 700; font-size: .86rem; padding: 10px 6px; border-top: 1px solid var(--line); }
+    .sheet tfoot td:first-child { padding-left: 16px; }
+    .empty { padding: clamp(30px, 5vw, 60px) 20px; text-align: center; }
+    .empty h2 { font-family: var(--display); font-size: 1.3rem; margin: 0 0 8px; }
+    .empty p { margin: 0 auto; max-width: 52ch; color: var(--muted); }
+
+    dialog.pop { border: 0; padding: 0; border-radius: 22px; width: min(620px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--paper); color: var(--ink); box-shadow: 0 30px 80px rgba(20,24,29,.35); }
+    dialog.pop::backdrop { background: rgba(20,24,29,.5); }
+    .pop-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; background: var(--ink); color: #fff; position: sticky; top: 0; z-index: 2; }
+    .pop-head h2 { margin: 0; font-family: var(--display); font-size: 1.1rem; }
+    .pop-head p { margin: 1px 0 0; font-size: .8rem; color: rgba(255,255,255,.65); }
+    .x { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; font-size: 1.25rem; line-height: 1; }
+    .pop-body { padding: 14px; }
+    .pop-body .dayform { border-radius: 16px; }
+    .check { display: flex; align-items: center; gap: 9px; font-size: .92rem; margin: 4px 0 0; }
+    .check input { width: 18px; height: 18px; accent-color: var(--ink); }
+
+    /* ---------- Sign in ---------- */
+    .gate { position: fixed; inset: 0; z-index: 700; background: var(--ink); display: grid; place-items: center; padding: 20px; overflow-y: auto; }
+    .gate-card { width: min(100%, 400px); background: var(--paper); border-radius: 24px; padding: 30px 26px 24px; }
+    .gate-card .seal { width: 46px; height: 46px; border-radius: 13px; font-size: 1.1rem; margin: 0 auto 14px; }
+    .gate-card h1 { margin: 0 0 6px; font-family: var(--display); font-size: 1.5rem; letter-spacing: -.02em; text-align: center; }
+    .gate-card .lead { margin: 0 0 18px; text-align: center; color: var(--muted); font-size: .9rem; }
+    .gate-card form { display: grid; gap: 14px; }
+    .gate-card .btn { width: 100%; min-height: 46px; }
+    .gate-card .linkish { justify-self: center; }
+    .gate-msg { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-text); font-size: .88rem; font-weight: 500; }
+    .gate-msg.info { background: var(--highlight-soft); color: var(--highlight-text); }
+
+    .toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 800; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-weight: 600; font-size: .9rem; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
+    .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 820px) { .stats { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) {
+      .times { grid-template-columns: 1fr 1fr; } .times .field:last-child { grid-column: 1 / -1; }
+      .day { min-height: 68px; padding: 8px 2px 6px; border-radius: 12px; } .day b { font-size: 1rem; } .day small, .day span { font-size: .66rem; }
+      .df-foot .btn-big { width: 100%; }
+      .top .btn span.lbl { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<!-- ==================== SIGN IN ==================== -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <span class="seal" aria-hidden="true">JA</span>
+    <h1 id="gateTitle">Juniors HR</h1>
+    <p class="lead" id="gateLead">Opening…</p>
+    <p class="gate-msg" id="gateMsg" role="alert" hidden></p>
+
+    <form id="signForm" hidden novalidate>
+      <div class="field"><label class="lab" for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="username" required></div>
+      <div class="field"><label class="lab" for="gPass">Password</label><input id="gPass" type="password" autocomplete="current-password" required></div>
+      <button type="submit" class="btn btn-primary" id="gSubmit">Sign in</button>
+      <button type="button" class="linkish" id="gForgot">Forgot my password</button>
+    </form>
+
+    <form id="nameForm" hidden novalidate>
+      <div class="field"><label class="lab" for="gName">Your full name</label><input id="gName" type="text" autocomplete="name" required></div>
+      <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+
+    <button type="button" class="btn btn-light" id="gOut" hidden>Sign out</button>
+  </div>
+</div>
+
+<!-- ==================== APP ==================== -->
+<header class="top" id="top" hidden>
+  <div class="brand">
+    <span class="seal" aria-hidden="true">JA</span>
+    <div><b>Juniors HR</b><span id="whoami"></span></div>
+  </div>
+  <button type="button" class="btn btn-dark btn-small" id="btnOut">Sign out</button>
+</header>
+
+<!-- Staff -->
+<main class="wrap wrap--narrow" id="staffView" hidden>
+  <h1 class="page" id="hello">My week</h1>
+  <p class="page-sub">Fill in each day you work. Sunday to Thursday are working days, Friday and Saturday are the weekend.</p>
+  <div class="weeknav">
+    <button type="button" class="round" id="sPrev" aria-label="Previous week">‹</button>
+    <b id="sWeekLabel"></b>
+    <button type="button" class="round" id="sNext" aria-label="Next week">›</button>
+    <span class="spacer"></span>
+    <button type="button" class="btn btn-light btn-small" id="sToday">Today</button>
+  </div>
+  <div class="strip" id="strip" role="group" aria-label="Days of the week"></div>
+  <div id="staffDay"></div>
+  <p class="weektotal" id="sWeekTotal"></p>
+</main>
+
+<!-- Director -->
+<main class="wrap" id="bossView" hidden>
+  <h1 class="page">Team</h1>
+  <p class="page-sub">Updates by itself as your staff clock in, add tasks and clock out.</p>
+
+  <section class="stats" aria-label="Today">
+    <div class="stat stat--live"><b class="num" id="kNow">0</b><span>working right now</span></div>
+    <div class="stat"><b class="num" id="kMissing">0</b><span id="kMissingLab">not filled in today</span></div>
+    <div class="stat"><b class="num" id="kWeek">0 h</b><span>team hours this week</span></div>
+    <div class="stat"><b class="num" id="kWeekend">0 h</b><span>of which weekend hours</span></div>
+  </section>
+
+  <div class="weeknav">
+    <button type="button" class="round" id="bPrev" aria-label="Previous week">‹</button>
+    <b id="bWeekLabel"></b>
+    <button type="button" class="round" id="bNext" aria-label="Next week">›</button>
+    <button type="button" class="btn btn-light btn-small" id="bToday">This week</button>
+    <span class="spacer"></span>
+    <button type="button" class="btn btn-light btn-small" id="bCsvWeek">Export this week</button>
+    <button type="button" class="btn btn-light btn-small" id="bCsvMonth">Export the month</button>
+  </div>
+
+  <div class="sheet-card">
+    <div class="sheet-scroll"><table class="sheet" id="sheet"></table></div>
+    <div class="empty" id="sheetEmpty" hidden>
+      <h2>No staff yet</h2>
+      <p>Create an account for each person in Firebase (Authentication, Users, Add user) and give them their email and password. They appear here the first time they sign in.</p>
+    </div>
+  </div>
+</main>
+
+<dialog class="pop" id="dayPop" aria-labelledby="dayPopTitle">
+  <div class="pop-head"><div><h2 id="dayPopTitle"></h2><p id="dayPopSub"></p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <div class="pop-body" id="dayPopBody"></div>
+</dialog>
+
+<dialog class="pop" id="staffPop" aria-labelledby="staffPopTitle" style="width:min(440px,calc(100vw - 24px))">
+  <div class="pop-head"><div><h2 id="staffPopTitle">Staff member</h2><p id="staffPopSub"></p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <form class="pop-body" id="staffForm" style="display:grid;gap:14px;padding:18px" novalidate>
+    <div class="field"><label class="lab" for="spName">Name shown in the sheet</label><input id="spName" type="text" required></div>
+    <label class="check"><input type="checkbox" id="spActive"> Active (can sign in and fill in days)</label>
+    <p style="margin:0;font-size:.84rem;color:var(--muted)">Turn this off when someone leaves. Their past days stay in the exports.</p>
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+/* ============================================================
+   SETTINGS — the only part of this file you need to edit.
+
+   1) FIREBASE_CONFIG: paste the six values Firebase gives you
+      (Project settings > Your apps > Web app > firebaseConfig).
+   2) DIRECTOR_EMAILS: the email(s) that see the whole team.
+      Use the same email(s) in the Firestore rules.
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDmyii3wnWFYOyMgcPlNV_pv0nheItSoOA",
+  authDomain: "juniors-hr.firebaseapp.com",
+  projectId: "juniors-hr",
+  storageBucket: "juniors-hr.firebasestorage.app",
+  messagingSenderId: "1016858488358",
+  appId: "1:1016858488358:web:7ebc640f9491e0c19a00e7"
+};
+const DIRECTOR_EMAILS = ['director@juniors.academy'];
+
+/* Staff can correct their own days this many days back. Older days are locked (the director can still edit them). */
+const EDIT_WINDOW_DAYS = 7;
+/* ============================================================ */
+
+const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
+const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+const STATUS = { office: 'Office', remote: 'Remote', leave: 'Leave', sick: 'Sick' };
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAYS_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+/* ==================== Helpers ==================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const clone = o => JSON.parse(JSON.stringify(o));
+function todayISO() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+function nowHM() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+function addDays(iso, n) { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+const dow = iso => new Date(iso + 'T00:00:00Z').getUTCDay();          /* 0 = Sunday */
+const isWeekend = iso => dow(iso) === 5 || dow(iso) === 6;               /* Friday, Saturday */
+const weekStart = iso => addDays(iso, -dow(iso));                        /* the week starts on Sunday */
+const weekDates = ws => [0, 1, 2, 3, 4, 5, 6].map(i => addDays(ws, i));
+const niceDate = iso => { const p = iso.split('-'); return DAYS_LONG[dow(iso)] + ' ' + (+p[2]) + ' ' + MONTHS[+p[1] - 1]; };
+const shortDate = iso => { const p = iso.split('-'); return (+p[2]) + ' ' + MONTHS[+p[1] - 1].slice(0, 3); };
+const weekLabel = ws => shortDate(ws) + ' to ' + shortDate(addDays(ws, 6));
+const hm2min = t => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ''); return m ? (+m[1]) * 60 + (+m[2]) : null; };
+const isWorkStatus = s => s === 'office' || s === 'remote';
+const isLive = e => !!e && isWorkStatus(e.status) && !!e.start && !e.end && e.date === todayISO();
+/* minutes worked: finished days use start/end; today's open day counts up to now */
+function minutes(e) {
+  if (!e || !isWorkStatus(e.status)) return 0;
+  const a = hm2min(e.start); if (a == null) return 0;
+  let b = hm2min(e.end);
+  if (b == null) { if (e.date !== todayISO()) return 0; b = hm2min(nowHM()); }
+  return Math.max(0, b - a - (Number(e.breakMin) || 0));
+}
+const hText = m => Math.floor(m / 60) + ' h ' + String(m % 60).padStart(2, '0');
+const hDec = m => (Math.round(m / 6) / 10).toFixed(1);
+let toastTimer;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3200); }
+
+/* ==================== Firebase ==================== */
+let fb = null, me = null, profile = null, unsub = [], staffUnsub = null, todayUnsub = null;
+const stop = () => { unsub.forEach(f => { try { f(); } catch (e) {} }); unsub = []; };
+const entryRef = (uid, date) => fb.F.doc(fb.db, 'entries', uid + '_' + date);
+
+function gate(mode, msg, info) {
+  const g = $('gate'); g.hidden = mode === 'off'; g.setAttribute('data-mode', mode);
+  $('signForm').hidden = mode !== 'signin'; $('nameForm').hidden = mode !== 'name'; $('gOut').hidden = !(mode === 'blocked' || mode === 'name');
+  $('gateTitle').textContent = mode === 'name' ? 'Welcome' : 'Juniors HR';
+  $('gateLead').textContent = { loading: 'Opening…', signin: 'Sign in with the email and password you were given.', name: 'One thing before you start: how should your name appear?', blocked: '', setup: '' }[mode] || '';
+  $('gateLead').hidden = !$('gateLead').textContent;
+  $('gateMsg').textContent = msg || ''; $('gateMsg').hidden = !msg; $('gateMsg').classList.toggle('info', !!info);
+  if (mode === 'signin') setTimeout(() => $('gEmail').focus(), 50);
+  if (mode === 'name') setTimeout(() => $('gName').focus(), 50);
+}
+function authMessage(e) {
+  const c = (e && e.code) || '';
+  if (/invalid-credential|wrong-password|user-not-found|invalid-email|missing-password/.test(c)) return 'That email or password is not right.';
+  if (/too-many-requests/.test(c)) return 'Too many tries. Wait a few minutes, then try again.';
+  if (/network-request-failed/.test(c)) return 'No internet connection.';
+  if (/user-disabled/.test(c)) return 'This account has been turned off.';
+  return "Couldn't sign in. Try again.";
+}
+async function start() {
+  if (!READY) { gate('setup', 'The online database is not connected yet. Paste your Firebase settings into FIREBASE_CONFIG at the bottom of index.html.', true); return; }
+  gate('loading');
+  try {
+    const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
+    const app = A0.initializeApp(FIREBASE_CONFIG);
+    let db;
+    try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); }
+    catch (e) { db = F.getFirestore(app); }
+    fb = { auth: A.getAuth(app), db, A, F };
+    A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
+  } catch (e) { gate('setup', "Couldn't reach the online database. Check the internet connection, then reload the page."); }
+}
+function signedOut() {
+  stop(); me = null; profile = null;
+  if (staffUnsub) { try { staffUnsub(); } catch (e) {} staffUnsub = null; }
+  if (todayUnsub) { try { todayUnsub(); } catch (e) {} todayUnsub = null; }
+  $('top').hidden = true; $('staffView').hidden = true; $('bossView').hidden = true;
+  if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin');
+}
+async function signedIn(u) {
+  const email = (u.email || '').toLowerCase();
+  me = { uid: u.uid, email, isDirector: DIRECTOR_EMAILS.map(x => x.toLowerCase()).includes(email) };
+  if (me.isDirector) { openApp(); bossStart(); return; }
+  gate('loading');
+  try {
+    const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'staff', u.uid));
+    if (!snap.exists()) { gate('name'); return; }
+    profile = snap.data();
+    if (profile.active === false) { gate('blocked', 'Your access has been turned off. Speak to the director.'); return; }
+    openApp(); staffStart();
+  } catch (e) { gate('blocked', "Couldn't load your profile. Check the connection and reload. If it keeps happening, tell the director."); }
+}
+function openApp() {
+  gate('off'); $('top').hidden = false;
+  $('whoami').textContent = me.isDirector ? 'Director, ' + me.email : (profile.name + ', ' + me.email);
+  $('staffView').hidden = me.isDirector; $('bossView').hidden = !me.isDirector;
+}
+function saveEntry(uid, date, entry) {
+  const data = clone(entry); data.uid = uid; data.date = date; data.weekend = isWeekend(date); data.updatedAt = new Date().toISOString();
+  return fb.F.setDoc(entryRef(uid, date), data).catch(() => toast("That change couldn't be saved. Check the connection."));
+}
+
+/* ==================== The day form (used by staff and by the director) ==================== */
+function mountDay(box, ctx) {
+  /* ctx: { uid, name, email, date, entry, editable, lockedNote, save(entry), clear() } */
+  const blank = () => ({ uid: ctx.uid, name: ctx.name, email: ctx.email, date: ctx.date, status: 'office', start: '', end: '', breakMin: 0, tasks: [], notes: '' });
+  let e = ctx.entry ? Object.assign(blank(), clone(ctx.entry)) : blank();
+  let exists = !!ctx.entry, timer = null, err = '';
+  const today = ctx.date === todayISO();
+
+  function push(now) {
+    exists = true; e.name = ctx.name; e.email = ctx.email;
+    clearTimeout(timer); timer = null;
+    const go = () => { timer = null; ctx.save(clone(e)); stamp('Saved ' + nowHM()); };
+    if (now) go(); else { stamp('Saving…'); timer = setTimeout(go, 600); }
+  }
+  function stamp(t) { const s = box.querySelector('.df-saved'); if (s) s.textContent = t; }
+  function pill() {
+    if (!exists) return '<span class="tag tag-mute">Not filled in</span>';
+    if (e.status === 'leave') return '<span class="tag tag-warn">On leave</span>';
+    if (e.status === 'sick') return '<span class="tag tag-warn">Sick</span>';
+    if (e.start && !e.end) return today ? '<span class="tag tag-live">Clocked in ' + esc(e.start) + '</span>' : '<span class="tag tag-bad">No clock-out time</span>';
+    if (e.start && e.end) return '<span class="tag tag-ok">Done</span>';
+    return '<span class="tag tag-mute">No hours yet</span>';
+  }
+  function refresh() {
+    const p = box.querySelector('.df-pill'), t = box.querySelector('.df-total b');
+    if (p) p.innerHTML = pill(); if (t) t.textContent = hText(minutes(e));
+  }
+  function draw() {
+    const ed = ctx.editable, dis = ed ? '' : ' disabled', work = isWorkStatus(e.status);
+    let action = '';
+    if (ed && work && today && !e.start) action = '<button type="button" class="btn btn-primary btn-big" data-act="in">Clock in now</button>';
+    else if (ed && work && today && e.start && !e.end) action = '<button type="button" class="btn btn-ink btn-big" data-act="out">Clock out and send</button>';
+    box.innerHTML =
+      '<div class="dayform">' +
+        '<div class="df-head"><div><h2>' + esc(niceDate(ctx.date)) + '</h2><p>' + (isWeekend(ctx.date) ? 'Weekend: only fill this in if you worked' : 'Working day') + '</p></div><span class="df-pill">' + pill() + '</span></div>' +
+        (ctx.lockedNote ? '<p class="df-lock">' + esc(ctx.lockedNote) + '</p>' : '') +
+        '<span class="lab">Where are you today</span>' +
+        '<div class="seg" role="radiogroup" aria-label="Status">' + Object.keys(STATUS).map(k =>
+          '<label><input type="radio" name="st-' + esc(ctx.uid + ctx.date) + '" value="' + k + '"' + (e.status === k ? ' checked' : '') + dis + '><span>' + STATUS[k] + '</span></label>').join('') + '</div>' +
+        (work ?
+          '<div class="times">' +
+            '<div class="field"><label class="lab">Start</label><input type="time" data-f="start" value="' + esc(e.start) + '"' + dis + '></div>' +
+            '<div class="field"><label class="lab">End</label><input type="time" data-f="end" value="' + esc(e.end) + '"' + dis + '></div>' +
+            '<div class="field"><label class="lab">Break (minutes)</label><input type="number" data-f="breakMin" min="0" max="600" step="5" inputmode="numeric" value="' + esc(e.breakMin || 0) + '"' + dis + '></div>' +
+          '</div>' +
+          (err ? '<p class="df-err" role="alert">' + esc(err) + '</p>' : '') +
+          '<span class="lab">What I did today</span>' +
+          '<ul class="tasks">' + e.tasks.map((t, i) => '<li><span>' + esc(t) + '</span>' + (ed ? '<button type="button" data-del="' + i + '" aria-label="Remove this task">×</button>' : '') + '</li>').join('') + '</ul>' +
+          (ed ? '<div class="addtask"><div class="field"><input type="text" data-f="newtask" placeholder="Called 12 leads from the brochure form" aria-label="New task" autocomplete="off"></div><button type="button" class="btn btn-light" data-act="add">Add</button></div>'
+              : (e.tasks.length ? '' : '<p style="margin:0 0 16px;color:var(--muted);font-size:.9rem">No tasks written.</p>'))
+        : '') +
+        '<div class="field"><label class="lab">' + (work ? 'Notes, or anything blocking you' : 'Note') + '</label><textarea data-f="notes" placeholder="' + (work ? 'Waiting on the partner school for dates' : 'Back on Sunday') + '"' + dis + '>' + esc(e.notes) + '</textarea></div>' +
+        '<div class="df-foot"><div class="df-total"><b class="num">' + hText(minutes(e)) + '</b>worked this day <span class="df-saved"></span></div>' + action +
+          (ed && exists && ctx.clear ? '<button type="button" class="linkish" data-act="clear">Clear this day</button>' : '') + '</div>' +
+      '</div>';
+  }
+  function checkTimes() {
+    const a = hm2min(e.start), b = hm2min(e.end);
+    err = (a != null && b != null && b <= a) ? 'The end time is before the start time.' : '';
+    const el = box.querySelector('.df-err');
+    if (!!el !== !!err) { const f = document.activeElement && document.activeElement.getAttribute('data-f'); draw(); if (f) { const n = box.querySelector('[data-f="' + f + '"]'); if (n) n.focus(); } }
+  }
+  function addTask() {
+    const inp = box.querySelector('[data-f="newtask"]'); if (!inp) return;
+    const v = inp.value.trim(); if (!v) { inp.focus(); return; }
+    e.tasks.push(v); push(true); draw();
+    const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus();
+  }
+  box.oninput = ev => {
+    const f = ev.target.getAttribute && ev.target.getAttribute('data-f'); if (!f || f === 'newtask') return;
+    e[f] = f === 'breakMin' ? Math.max(0, Math.round(Number(ev.target.value) || 0)) : ev.target.value;
+    if (f !== 'notes') { checkTimes(); refresh(); }
+    push(false);
+  };
+  box.onchange = ev => {
+    if (ev.target.type !== 'radio') return;
+    e.status = ev.target.value;
+    if (!isWorkStatus(e.status)) { e.start = ''; e.end = ''; e.breakMin = 0; err = ''; }
+    push(true); draw();
+  };
+  box.onkeydown = ev => { if (ev.key === 'Enter' && ev.target.getAttribute && ev.target.getAttribute('data-f') === 'newtask') { ev.preventDefault(); addTask(); } };
+  box.onclick = ev => {
+    const del = ev.target.closest('[data-del]'), act = ev.target.closest('[data-act]');
+    if (del) { e.tasks.splice(+del.getAttribute('data-del'), 1); push(true); draw(); return; }
+    if (!act) return;
+    const a = act.getAttribute('data-act');
+    if (a === 'add') addTask();
+    if (a === 'in') { e.start = nowHM(); e.end = ''; push(true); draw(); toast('Clocked in at ' + e.start); }
+    if (a === 'out') {
+      const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
+      if (!e.tasks.length) { err = 'Add at least one thing you did today, then clock out.'; draw(); const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus(); return; }
+      err = ''; e.end = nowHM(); push(true); draw(); toast('Clocked out at ' + e.end + '. ' + hText(minutes(e)) + ' today.');
+    }
+    if (a === 'clear' && confirm('Clear everything written for ' + niceDate(ctx.date) + '?')) { clearTimeout(timer); timer = null; ctx.clear(); }
+  };
+  draw();
+  return {
+    /* a change arrived from the database (another device, or the director) */
+    update(entry) {
+      if (timer) return;
+      const typing = box.contains(document.activeElement) && /INPUT|TEXTAREA/.test(document.activeElement.tagName) && document.activeElement.type !== 'radio';
+      exists = !!entry; e = entry ? Object.assign(blank(), clone(entry)) : blank();
+      if (typing) refresh(); else draw();
+    },
+    flush() { if (timer) { clearTimeout(timer); timer = null; ctx.save(clone(e)); } },
+    tick: refresh
+  };
+}
+
+/* ==================== Staff ==================== */
+let sWeek = null, sDate = null, sEntries = {}, sForm = null;
+const canEdit = d => d <= todayISO() && d >= addDays(todayISO(), -EDIT_WINDOW_DAYS);
+
+function staffStart() {
+  $('hello').textContent = 'Hello ' + profile.name.split(' ')[0];
+  sDate = todayISO(); staffWeek(weekStart(sDate));
+}
+function staffWeek(ws) {
+  if (sForm) sForm.flush();
+  stop(); sWeek = ws; sEntries = {}; sForm = null;
+  if (weekStart(sDate) !== ws) sDate = ws === weekStart(todayISO()) ? todayISO() : ws;
+  weekDates(ws).forEach(d => {
+    unsub.push(fb.F.onSnapshot(entryRef(me.uid, d), snap => {
+      if (snap.exists()) sEntries[d] = snap.data(); else delete sEntries[d];
+      staffStrip(); if (d === sDate && sForm) sForm.update(sEntries[d] || null);
+    }, () => {}));
+  });
+  staffStrip(); staffDay();
+}
+function dayMark(e, d) {
+  const t = todayISO();
+  if (e) {
+    if (e.status === 'leave') return ['Leave', 's-warn']; if (e.status === 'sick') return ['Sick', 's-warn'];
+    if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h', 's-ok'] : ['No end', 's-bad'];
+    if (e.start && e.end) return [hDec(minutes(e)) + ' h', 's-ok'];
+    return ['Started', 's-mute'];
+  }
+  if (isWeekend(d)) return ['off', 's-mute'];
+  if (d < t && d >= (profile.joinedAt || '0')) return ['Missing', 's-bad'];
+  return ['', 's-mute'];
+}
+function staffStrip() {
+  const t = todayISO();
+  $('sWeekLabel').textContent = weekLabel(sWeek);
+  $('strip').innerHTML = weekDates(sWeek).map(d => {
+    const m = dayMark(sEntries[d], d);
+    return '<button type="button" class="day' + (isWeekend(d) ? ' is-weekend' : '') + (d === t ? ' is-today' : '') + '" data-d="' + d + '" aria-pressed="' + (d === sDate) + '" aria-label="' + esc(niceDate(d)) + '">' +
+      '<small>' + DAYS[dow(d)] + '</small><b>' + (+d.slice(8)) + '</b><span class="' + m[1] + '">' + esc(m[0]) + '</span></button>';
+  }).join('');
+  let work = 0, we = 0; weekDates(sWeek).forEach(d => { const m = minutes(sEntries[d]); if (isWeekend(d)) we += m; else work += m; });
+  $('sWeekTotal').innerHTML = 'This week: <b class="num">' + hText(work + we) + '</b>' + (we ? ' (including ' + hText(we) + ' at the weekend)' : '');
+}
+function staffDay() {
+  const d = sDate, t = todayISO();
+  let note = '';
+  if (d > t) note = 'This day has not happened yet.';
+  else if (!canEdit(d)) note = 'Days older than ' + EDIT_WINDOW_DAYS + ' days are locked. Ask the director to correct them.';
+  sForm = mountDay($('staffDay'), {
+    uid: me.uid, name: profile.name, email: me.email, date: d, entry: sEntries[d] || null,
+    editable: canEdit(d), lockedNote: note,
+    save: entry => saveEntry(me.uid, d, entry),
+    clear: () => fb.F.deleteDoc(entryRef(me.uid, d)).then(() => toast('Day cleared')).catch(() => toast("Couldn't clear the day. Check the connection."))
+  });
+}
+$('strip').addEventListener('click', e => { const b = e.target.closest('[data-d]'); if (!b) return; if (sForm) sForm.flush(); sDate = b.getAttribute('data-d'); staffStrip(); staffDay(); });
+$('sPrev').addEventListener('click', () => staffWeek(addDays(sWeek, -7)));
+$('sNext').addEventListener('click', () => staffWeek(addDays(sWeek, 7)));
+$('sToday').addEventListener('click', () => { sDate = todayISO(); staffWeek(weekStart(sDate)); });
+
+/* ==================== Director ==================== */
+let bWeek = null, bStaff = [], bEntries = {}, bToday = {}, popForm = null, popKey = null, editUid = null;
+
+function bossStart() {
+  const { F, db } = fb;
+  staffUnsub = F.onSnapshot(F.collection(db, 'staff'), snap => { bStaff = snap.docs.map(d => d.data()); bossRender(); }, err => bossDenied(err));
+  /* today's entries drive "working right now", whatever week is on screen */
+  const t = todayISO();
+  todayUnsub = F.onSnapshot(F.query(F.collection(db, 'entries'), F.where('date', '==', t)), snap => { bToday = {}; snap.docs.forEach(d => { const e = d.data(); bToday[e.uid] = e; }); bossRender(); }, () => {});
+  bossWeek(weekStart(t));
+}
+function bossDenied(err) {
+  if (err && err.code === 'permission-denied') { fb.A.signOut(fb.auth); gate('signin', 'This email is listed as a director in index.html but not in the Firestore rules. Add it to the rules, then sign in again.'); }
+}
+function bossWeek(ws) {
+  stop(); bWeek = ws; bEntries = {};
+  const { F, db } = fb;
+  unsub.push(F.onSnapshot(F.query(F.collection(db, 'entries'), F.where('date', '>=', ws), F.where('date', '<=', addDays(ws, 6))), snap => {
+    bEntries = {}; snap.docs.forEach(d => { const e = d.data(); bEntries[e.uid + '_' + e.date] = e; });
+    bossRender();
+    if (popForm && popKey) popForm.update(bEntries[popKey] || null);
+  }, err => bossDenied(err)));
+  bossRender();
+}
+function bossRows() {
+  const inWeek = {}; Object.values(bEntries).forEach(e => { inWeek[e.uid] = 1; });
+  return bStaff.filter(s => s.active !== false || inWeek[s.uid]).sort((a, b) => String(a.name).localeCompare(String(b.name), 'en'));
+}
+function todayLine(s) {
+  const t = todayISO(), e = bToday[s.uid];
+  if (s.active === false) return '<span>No longer active</span>';
+  if (e) {
+    if (e.status === 'leave') return '<span class="away">On leave today</span>'; if (e.status === 'sick') return '<span class="away">Sick today</span>';
+    if (isLive(e)) return '<span class="on">' + (e.status === 'remote' ? 'Remote, working since ' : 'Working since ') + esc(e.start) + '</span>';
+    if (e.start && e.end) return '<span>Finished at ' + esc(e.end) + '</span>';
+    return '<span>Started filling in</span>';
+  }
+  return isWeekend(t) ? '<span>Weekend</span>' : '<span class="no">Nothing filled in yet</span>';
+}
+function cellHTML(s, d) {
+  const t = todayISO(), e = bEntries[s.uid + '_' + d];
+  if (e) {
+    if (e.status === 'leave') return ['<span class="tag tag-warn">Leave</span>', ''];
+    if (e.status === 'sick') return ['<span class="tag tag-warn">Sick</span>', ''];
+    if (e.start && !e.end) return d === t ? [hDec(minutes(e)) + ' h<small>since ' + esc(e.start) + '</small>', 'live'] : ['<span class="tag tag-bad">No clock-out</span>', ''];
+    if (e.start && e.end) return [hDec(minutes(e)) + ' h<small>' + (e.tasks || []).length + (e.tasks && e.tasks.length === 1 ? ' task' : ' tasks') + '</small>', ''];
+    return ['<span class="tag tag-mute">Started</span>', ''];
+  }
+  if (d > t) return ['', 'off'];
+  if (isWeekend(d)) return ['off', 'off'];
+  if (d < (s.joinedAt || '0') || s.active === false) return ['', 'off'];
+  if (d === t) return ['not yet', 'off'];
+  return ['<span class="tag tag-bad">Missing</span>', ''];
+}
+function bossRender() {
+  if (!me || !me.isDirector || !bWeek) return;
+  const t = todayISO(), rows = bossRows(), dates = weekDates(bWeek), active = bStaff.filter(s => s.active !== false);
+  $('kNow').textContent = active.filter(s => isLive(bToday[s.uid])).length + ' of ' + active.length;
+  const missing = isWeekend(t) ? 0 : active.filter(s => !bToday[s.uid] && t >= (s.joinedAt || '0')).length;
+  $('kMissing').textContent = missing; $('kMissing').className = 'num' + (missing ? ' bad' : '');
+  $('kMissingLab').textContent = isWeekend(t) ? 'to chase (weekend today)' : 'not filled in today';
+  let tot = 0, we = 0; Object.values(bEntries).forEach(e => { const m = minutes(e); tot += m; if (isWeekend(e.date)) we += m; });
+  $('kWeek').textContent = hDec(tot) + ' h'; $('kWeekend').textContent = hDec(we) + ' h';
+  $('bWeekLabel').textContent = weekLabel(bWeek);
+
+  $('sheetEmpty').hidden = rows.length > 0; $('sheet').hidden = rows.length === 0;
+  const colTot = dates.map(() => 0);
+  const body = rows.map(s => {
+    let sum = 0;
+    const tds = dates.map((d, i) => {
+      const m = minutes(bEntries[s.uid + '_' + d]); sum += m; colTot[i] += m;
+      const c = cellHTML(s, d);
+      return '<td class="' + (isWeekend(d) ? 'we' : '') + '"><button type="button" class="cell ' + c[1] + '" data-uid="' + esc(s.uid) + '" data-d="' + d + '" aria-label="' + esc(s.name + ', ' + niceDate(d)) + '">' + c[0] + '</button></td>';
+    }).join('');
+    return '<tr><td><button type="button" class="who" data-staff="' + esc(s.uid) + '"><b>' + esc(s.name) + '</b>' + todayLine(s) + '</button></td>' + tds + '<td class="sum num">' + hDec(sum) + ' h</td></tr>';
+  }).join('');
+  $('sheet').innerHTML =
+    '<thead><tr><th>Staff</th>' + dates.map(d => '<th class="' + (isWeekend(d) ? 'we ' : '') + (d === t ? 'is-today' : '') + '">' + DAYS[dow(d)] + '<small>' + shortDate(d) + '</small></th>').join('') + '<th>Week</th></tr></thead>' +
+    '<tbody>' + body + '</tbody>' +
+    '<tfoot><tr><td>Team total</td>' + colTot.map((m, i) => '<td class="num ' + (isWeekend(dates[i]) ? 'we' : '') + '">' + (m ? hDec(m) + ' h' : '') + '</td>').join('') + '<td class="num">' + hDec(tot) + ' h</td></tr></tfoot>';
+}
+$('sheet').addEventListener('click', e => {
+  const cell = e.target.closest('.cell'), who = e.target.closest('[data-staff]');
+  if (cell) openDay(cell.getAttribute('data-uid'), cell.getAttribute('data-d'));
+  else if (who) openStaff(who.getAttribute('data-staff'));
+});
+function openDay(uid, d) {
+  const s = bStaff.filter(x => x.uid === uid)[0]; if (!s) return;
+  popKey = uid + '_' + d;
+  $('dayPopTitle').textContent = s.name; $('dayPopSub').textContent = s.email || '';
+  popForm = mountDay($('dayPopBody'), {
+    uid, name: s.name, email: s.email || '', date: d, entry: bEntries[popKey] || null,
+    editable: d <= todayISO(), lockedNote: d > todayISO() ? 'This day has not happened yet.' : '',
+    save: entry => saveEntry(uid, d, entry),
+    clear: () => fb.F.deleteDoc(entryRef(uid, d)).then(() => { toast('Day cleared'); $('dayPop').close(); }).catch(() => toast("Couldn't clear the day."))
+  });
+  $('dayPop').showModal();
+}
+function openStaff(uid) {
+  const s = bStaff.filter(x => x.uid === uid)[0]; if (!s) return;
+  editUid = uid; $('staffPopTitle').textContent = s.name; $('staffPopSub').textContent = s.email || '';
+  $('spName').value = s.name; $('spActive').checked = s.active !== false; $('staffPop').showModal();
+}
+$('staffForm').addEventListener('submit', e => {
+  e.preventDefault(); const name = $('spName').value.trim(); if (!name) { $('spName').focus(); return; }
+  fb.F.setDoc(fb.F.doc(fb.db, 'staff', editUid), { name, active: $('spActive').checked }, { merge: true }).then(() => toast(name + ' saved')).catch(() => toast("Couldn't save. Check the connection."));
+  $('staffPop').close();
+});
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+$('dayPop').addEventListener('close', () => { if (popForm) popForm.flush(); popForm = null; popKey = null; });
+document.querySelectorAll('dialog.pop').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+$('bPrev').addEventListener('click', () => bossWeek(addDays(bWeek, -7)));
+$('bNext').addEventListener('click', () => bossWeek(addDays(bWeek, 7)));
+$('bToday').addEventListener('click', () => bossWeek(weekStart(todayISO())));
+
+/* ---------- Export ---------- */
+function download(name, text) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' })); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+function toCsv(list) {
+  const names = {}; bStaff.forEach(s => { names[s.uid] = s.name; });
+  const cell = v => { v = String(v == null ? '' : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const head = ['Date', 'Day', 'Weekend', 'Staff', 'Email', 'Status', 'Start', 'End', 'Break (min)', 'Hours', 'Tasks', 'Notes'];
+  const rows = list.slice().sort((a, b) => (a.date + (names[a.uid] || a.name)).localeCompare(b.date + (names[b.uid] || b.name))).map(e =>
+    [e.date, DAYS_LONG[dow(e.date)], isWeekend(e.date) ? 'yes' : '', names[e.uid] || e.name, e.email, STATUS[e.status] || e.status, e.start, e.end, e.breakMin || 0,
+     (minutes(e) / 60).toFixed(2), (e.tasks || []).join(' | '), e.notes].map(cell).join(','));
+  return '\uFEFF' + [head.join(',')].concat(rows).join('\r\n');
+}
+$('bCsvWeek').addEventListener('click', () => {
+  const list = Object.values(bEntries); if (!list.length) { toast('Nothing filled in for this week yet.'); return; }
+  download('juniors-hr-week-' + bWeek + '.csv', toCsv(list)); toast('Week exported');
+});
+$('bCsvMonth').addEventListener('click', async () => {
+  const mid = addDays(bWeek, 3), a = mid.slice(0, 8) + '01', b = mid.slice(0, 8) + '31';
+  try {
+    const snap = await fb.F.getDocs(fb.F.query(fb.F.collection(fb.db, 'entries'), fb.F.where('date', '>=', a), fb.F.where('date', '<=', b)));
+    const list = snap.docs.map(d => d.data()); if (!list.length) { toast('Nothing filled in for ' + MONTHS[+mid.slice(5, 7) - 1] + ' yet.'); return; }
+    download('juniors-hr-' + mid.slice(0, 7) + '.csv', toCsv(list)); toast(MONTHS[+mid.slice(5, 7) - 1] + ' exported');
+  } catch (e) { toast("Couldn't export. Check the connection."); }
+});
+
+/* ==================== Sign in, name, sign out ==================== */
+$('signForm').addEventListener('submit', async e => {
+  e.preventDefault(); const btn = $('gSubmit'); btn.disabled = true; btn.textContent = 'Signing in…';
+  try { await fb.A.signInWithEmailAndPassword(fb.auth, $('gEmail').value.trim(), $('gPass').value); $('gPass').value = ''; }
+  catch (err) { gate('signin', authMessage(err)); }
+  finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+});
+$('gForgot').addEventListener('click', async () => {
+  const email = $('gEmail').value.trim();
+  if (!email) { gate('signin', 'Type your email first, then click “Forgot my password” again.', true); return; }
+  try { await fb.A.sendPasswordResetEmail(fb.auth, email); } catch (e) {}
+  gate('signin', 'If that account exists, an email to choose a new password is on its way.', true);
+});
+$('nameForm').addEventListener('submit', async e => {
+  e.preventDefault(); const name = $('gName').value.trim(); if (name.length < 2) { $('gName').focus(); return; }
+  const p = { uid: me.uid, name, email: me.email, active: true, joinedAt: todayISO() };
+  try { await fb.F.setDoc(fb.F.doc(fb.db, 'staff', me.uid), p); profile = p; openApp(); staffStart(); }
+  catch (err) { gate('name', "Couldn't save your name. Check the connection and try again."); }
+});
+function signOut() {
+  if (sForm) sForm.flush(); if (popForm) popForm.flush();
+  if (staffUnsub) { staffUnsub(); staffUnsub = null; } if (todayUnsub) { todayUnsub(); todayUnsub = null; }
+  fb.A.signOut(fb.auth);
+}
+$('btnOut').addEventListener('click', signOut);
+$('gOut').addEventListener('click', signOut);
+
+/* keep the running hours and "working right now" fresh, and roll over at midnight */
+let lastDay = todayISO();
+setInterval(() => {
+  if (!me) return;
+  if (todayISO() !== lastDay) { location.reload(); return; }
+  if (me.isDirector) bossRender(); else { staffStrip(); if (sForm) sForm.tick(); }
+  if (popForm) popForm.tick();
+}, 30000);
+window.addEventListener('pagehide', () => { if (sForm) sForm.flush(); if (popForm) popForm.flush(); });
+
+start();
+</script>
+</body>
+</html>
