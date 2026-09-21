@@ -6,8 +6,8 @@
   <title>Juniors HR</title>
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="theme-color" content="#14181D">
-  <link rel="icon" type="image/jpeg" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
-  <link rel="apple-touch-icon" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
+  <link rel="icon" type="image/jpeg" href="../Juniors%20Academy%20Office.jpg?v=1">
+  <link rel="apple-touch-icon" href="../Juniors%20Academy%20Office.jpg?v=1">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,6 +42,8 @@
     .top { position: sticky; top: 0; z-index: 50; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px clamp(14px, 3vw, 32px); padding-top: calc(11px + env(safe-area-inset-top, 0px)); }
     .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
     .seal { flex: none; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: .95rem; transform: rotate(-5deg); color: #fff; }
+    .seal-img { flex: none; display: block; width: 36px; height: 36px; border-radius: 10px; object-fit: cover; background: #fff; }
+    .gate-card .seal-img { width: 54px; height: 54px; border-radius: 14px; margin: 0 auto 14px; box-shadow: 0 6px 18px -8px rgba(20,24,29,.35); }
     .brand b { display: block; font-family: var(--display); font-size: 1.1rem; letter-spacing: -.01em; line-height: 1.1; }
     .brand div span { display: block; font-size: .76rem; color: rgba(255,255,255,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46vw; }
 
@@ -297,7 +299,7 @@
 <!-- ==================== SIGN IN ==================== -->
 <div class="gate" id="gate">
   <div class="gate-card">
-    <span class="seal" aria-hidden="true">JA</span>
+    <img class="seal-img" src="../juniors-academy-logo.jpg" alt="Juniors Academy" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="seal" aria-hidden="true" hidden>JA</span>
     <h1 id="gateTitle">Juniors HR</h1>
     <p class="lead" id="gateLead">Opening…</p>
     <p class="gate-msg" id="gateMsg" role="alert" hidden></p>
@@ -321,7 +323,7 @@
 <!-- ==================== APP ==================== -->
 <header class="top" id="top" hidden>
   <div class="brand">
-    <span class="seal" aria-hidden="true">JA</span>
+    <img class="seal-img" src="../juniors-academy-logo.jpg" alt="Juniors Academy" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="seal" aria-hidden="true" hidden>JA</span>
     <div><b>Juniors HR</b><span id="whoami"></span></div>
   </div>
   <button type="button" class="btn btn-dark btn-small" id="btnOut">Sign out</button>
@@ -501,7 +503,12 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const clone = o => JSON.parse(JSON.stringify(o));
 function todayISO() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
-function nowHM() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+/* the current time in Algiers (HH:MM), whatever time zone the phone or computer is set to */
+function nowHM() {
+  try { const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Algiers', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
+        const h = p.filter(x => x.type === 'hour')[0].value, m = p.filter(x => x.type === 'minute')[0].value; return (h === '24' ? '00' : h) + ':' + m; }
+  catch (e) { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+}
 function addDays(iso, n) { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
 const dow = iso => new Date(iso + 'T00:00:00Z').getUTCDay();          /* 0 = Sunday */
 const isWeekend = iso => dow(iso) === 5 || dow(iso) === 6;               /* Friday, Saturday */
@@ -613,6 +620,17 @@ function mountDay(box, ctx) {
     if (e.status === 'leave') return 'Leave recorded';
     return 'Daily report submitted';
   }
+  /* staff cannot enter a time that has not happened yet (today only, Algiers time) */
+  const future = v => today && !boss && hm2min(v) != null && hm2min(v) > hm2min(nowHM());
+  function timeError() {
+    const a = hm2min(e.start), b = hm2min(e.end);
+    if (future(e.start)) return 'The start time (' + e.start + ') has not happened yet: it is ' + nowHM() + ' in Algiers.';
+    if (future(e.end)) return 'The end time (' + e.end + ') has not happened yet: it is ' + nowHM() + ' in Algiers. You can submit your report once that time has passed.';
+    if (a != null && b != null && b <= a) return 'The end time is before the start time.';
+    return '';
+  }
+  /* what is saved never contains a time that is still in the future */
+  const safe = () => { const c = clone(e); if (future(c.end)) c.end = ''; if (future(c.start)) c.start = ''; return c; };
   function send() {
     e.submitted = true; e.submittedAt = new Date().toISOString(); e.reopened = false;
     err = ''; push(true); draw();
@@ -622,7 +640,7 @@ function mountDay(box, ctx) {
   function push(now) {
     exists = true; e.name = ctx.name; e.email = ctx.email;
     clearTimeout(timer); timer = null;
-    const go = () => { timer = null; ctx.save(clone(e)); stamp('Saved ' + nowHM()); };
+    const go = () => { timer = null; ctx.save(safe()); stamp('Saved ' + nowHM()); };
     if (now) go(); else { stamp('Saving…'); timer = setTimeout(go, 600); }
   }
   function stamp(t) { const s = box.querySelector('.df-saved'); if (s) s.textContent = t; }
@@ -685,9 +703,9 @@ function mountDay(box, ctx) {
       '</div>';
   }
   function checkTimes() {
-    const a = hm2min(e.start), b = hm2min(e.end);
-    err = (a != null && b != null && b <= a) ? 'The end time is before the start time.' : '';
+    err = timeError();
     const el = box.querySelector('.df-err');
+    if (el && err) el.textContent = err;
     if (!!el !== !!err) { const f = document.activeElement && document.activeElement.getAttribute('data-f'); draw(); if (f) { const n = box.querySelector('[data-f="' + f + '"]'); if (n) n.focus(); } }
   }
   /* returns false when something is typed but incomplete */
@@ -739,6 +757,7 @@ function mountDay(box, ctx) {
     if (a === 'out') {
       const pending = box.querySelector('[data-f="newtask"]'); if (pending && pending.value.trim()) e.tasks.push(pending.value.trim());
       if (isWorkStatus(e.status) && !addExpense(true)) return;
+      if (future(e.start)) { err = timeError(); draw(); return; }
       if (!e.tasks.length) { err = 'Add at least one task before clocking out.'; draw(); const n = box.querySelector('[data-f="newtask"]'); if (n) n.focus(); return; }
       if (!boss && !confirm('Clock out and submit your daily report?\n\nOnce submitted, it can no longer be changed.')) { draw(); return; }
       e.end = nowHM(); send();
@@ -749,7 +768,7 @@ function mountDay(box, ctx) {
       const s1 = hm2min(e.start), s2 = hm2min(e.end);
       if (isWorkStatus(e.status)) {
         if (s1 == null || s2 == null) err = 'Fill in both the start and the end time.';
-        else if (s2 <= s1) err = 'The end time is before the start time.';
+        else if (timeError()) err = timeError();
         else if (!e.tasks.length) err = 'Add at least one task before submitting.';
         else err = '';
         if (err) { draw(); return; }
@@ -766,12 +785,14 @@ function mountDay(box, ctx) {
     update(entry) {
       if (timer) return;
       const typing = box.contains(document.activeElement) && /INPUT|TEXTAREA/.test(document.activeElement.tagName) && document.activeElement.type !== 'radio';
+      const keepS = future(e.start) ? e.start : '', keepE = future(e.end) ? e.end : '';
       exists = !!entry; e = entry ? Object.assign(blank(), clone(entry)) : blank();
+      if (keepS && !e.start) e.start = keepS; if (keepE && !e.end) e.end = keepE;
       if (typing) refresh(); else draw();
     },
-    flush() { if (timer) { clearTimeout(timer); timer = null; ctx.save(clone(e)); } },
+    flush() { if (timer) { clearTimeout(timer); timer = null; ctx.save(safe()); } },
     editable: ctx.editable,
-    tick: refresh
+    tick() { if (err) checkTimes(); refresh(); }
   };
 }
 
