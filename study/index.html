@@ -579,60 +579,7 @@
       .sc-ico-fr { opacity: 0; }
     }
   </style>
-  <script>
-    /* Photos : essaie chaque fichier de la liste data-srcs, dans l'ordre, jusqu'à ce qu'un se charge.
-       Safari (iPhone, Mac) affiche le HEIC directement. Chrome, Edge, Firefox et Android ne savent pas
-       le lire : pour eux, le fichier HEIC est converti en JPEG dans le navigateur, et la même photo
-       s'affiche donc partout. (Un vrai fichier .jpg reste plus rapide : il passe toujours en premier.) */
-    var scHeicLib = null;
-    function scLoadHeicLib() {
-      if (!scHeicLib) {
-        scHeicLib = new Promise(function (resolve, reject) {
-          var s = document.createElement('script');
-          s.src = 'https://cdn.jsdelivr.net/npm/heic-to@1.4.2/dist/iife/heic-to.js';
-          s.onload = function () {
-            var lib = window.HeicTo, fn = lib && (lib.heicTo || lib);
-            if (typeof fn === 'function') resolve(fn); else reject(new Error('heic-to indisponible'));
-          };
-          s.onerror = function () { reject(new Error('heic-to non chargé')); };
-          document.head.appendChild(s);
-        });
-      }
-      return scHeicLib;
-    }
-    function scHeicToJpeg(url) {
-      return fetch(url)
-        .then(function (r) { if (!r.ok) throw new Error('introuvable'); return r.blob(); })
-        .then(function (blob) {
-          return scLoadHeicLib().then(function (heicTo) {
-            return heicTo({ blob: blob, type: 'image/jpeg', quality: 0.82 });
-          });
-        })
-        .then(function (jpeg) { return URL.createObjectURL(jpeg); });
-    }
-    function scNextSrc(img) {
-      var cur = img.getAttribute('data-cur') || img.getAttribute('src') || '';
-      function advance() {
-        var list = (img.getAttribute('data-srcs') || '').split('|');
-        var i = +(img.getAttribute('data-i') || 0);
-        if (i < list.length && list[i]) {
-          img.setAttribute('data-i', i + 1);
-          img.setAttribute('data-cur', list[i]);
-          img.src = list[i];
-        } else { img.onerror = null; img.style.display = 'none'; }
-      }
-      /* le fichier qui vient d'échouer est un HEIC : on tente la conversion avant de passer au suivant */
-      if (/\.hei[cf]$/i.test(cur) && window.fetch && window.Promise) {
-        img.setAttribute('data-cur', 'conversion');
-        scHeicToJpeg(cur).then(function (blobUrl) {
-          img.setAttribute('data-cur', 'blob');
-          img.src = blobUrl;
-        }).catch(advance);
-        return;
-      }
-      advance();
-    }
-  </script>
+
 </head>
 <body>
 
@@ -794,8 +741,8 @@
   <!-- Université -->
   <article class="sc-detail sc-reveal" id="sc-universite">
     <div class="sc-panel">
-      <!-- Photo : « Juniors Academy Beijing » (.jpg de préférence, sinon .HEIC), dans /study ou à la racine du site -->
-      <img class="sc-panel-photo" src="Juniors%20Academy%20Beijing.jpg" data-srcs="../Juniors%20Academy%20Beijing.jpg|Juniors%20Academy%20Beijing.HEIC|../Juniors%20Academy%20Beijing.HEIC|../Beijing1.jpg" alt="Étudiants de Juniors Academy à Pékin" loading="lazy" onerror="scNextSrc(this)">
+      <!-- Photo : « Juniors Academy Beijing.jpg » dans le dossier /study -->
+      <img class="sc-panel-photo" src="Juniors%20Academy%20Beijing.jpg" alt="Étudiants de Juniors Academy à Pékin" loading="lazy" decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='../Beijing1.jpg'}else{this.style.display='none'}">
       <span class="sc-panel-mark" aria-hidden="true">大学</span>
       <span class="sc-seal" aria-hidden="true">学</span>
       <div class="sc-stairs" role="img" aria-label="Les niveaux d'études possibles : langue, année préparatoire, licence, master, doctorat">
@@ -829,8 +776,8 @@
   <!-- Langue -->
   <article class="sc-detail sc-reveal" id="sc-langue">
     <div class="sc-panel">
-      <!-- Photo : « Juniors Academy Students » (.jpg de préférence, sinon .heic), dans /study ou à la racine du site -->
-      <img class="sc-panel-photo" src="Juniors%20Academy%20Students.jpg" data-srcs="../Juniors%20Academy%20Students.jpg|Juniors%20Academy%20Students.heic|../Juniors%20Academy%20Students.heic|../chinaembassyalgiers.jpeg" alt="Élèves de Juniors Academy en Chine" loading="lazy" onerror="scNextSrc(this)">
+      <!-- Photo : « Juniors Academy Students.jpg » dans le dossier /study -->
+      <img class="sc-panel-photo" src="Juniors%20Academy%20Students.jpg" alt="Élèves de Juniors Academy en Chine" loading="lazy" decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='../chinaembassyalgiers.jpeg'}else{this.style.display='none'}">
       <span class="sc-panel-mark" aria-hidden="true">汉语</span>
       <span class="sc-seal" aria-hidden="true">语</span>
       <button type="button" class="sc-flash" id="scFlash" aria-label="Carte de vocabulaire : afficher le mot suivant">
@@ -856,8 +803,8 @@
   <!-- Métier -->
   <article class="sc-detail sc-reveal" id="sc-metier">
     <div class="sc-panel">
-      <!-- Photo : « Juniors Academy Shanghai » (.jpg de préférence, sinon .HEIC), dans /study ou à la racine du site -->
-      <img class="sc-panel-photo" src="Juniors%20Academy%20Shanghai.jpg" data-srcs="../Juniors%20Academy%20Shanghai.jpg|Juniors%20Academy%20Shanghai.HEIC|../Juniors%20Academy%20Shanghai.HEIC" alt="Juniors Academy à Shanghai" loading="lazy" onerror="scNextSrc(this)">
+      <!-- Photo : « Juniors Academy Shanghai.jpg » dans le dossier /study -->
+      <img class="sc-panel-photo" src="Juniors%20Academy%20Shanghai.jpg" alt="Juniors Academy à Shanghai" loading="lazy" decoding="async" onerror="this.style.display='none'">
       <span class="sc-panel-mark" aria-hidden="true">工匠</span>
       <span class="sc-seal" aria-hidden="true">工</span>
       <div class="sc-gears" aria-hidden="true">
