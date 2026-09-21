@@ -1,0 +1,10 @@
+# Juniors Academy - https://juniors.academy
+# All public pages may be crawled.
+# The private tools (/crm/ and /hr/) are kept out of Google by the "noindex" tag
+# inside those pages, so they must NOT be blocked here: Google has to be able to
+# open them to read that tag.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://juniors.academy/sitemap.xml
