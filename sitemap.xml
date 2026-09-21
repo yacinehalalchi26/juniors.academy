@@ -2,13 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://juniors.academy/</loc>
-    <lastmod>2025-08-10</lastmod>
-    <priority>1.00</priority>
+    <lastmod>2026-09-21</lastmod>
   </url>
   <url>
-    <loc>https://juniors.academy/contact</loc>
-    <lastmod>2025-08-10</lastmod>
-    <priority>0.80</priority>
+    <loc>https://juniors.academy/study/</loc>
+    <lastmod>2026-09-21</lastmod>
   </url>
-  <!-- Add more pages here -->
+  <url>
+    <loc>https://juniors.academy/brochure/</loc>
+    <lastmod>2026-09-21</lastmod>
+  </url>
 </urlset>
