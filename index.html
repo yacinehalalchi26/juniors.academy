@@ -77,7 +77,7 @@
       text-decoration: none;
       white-space: nowrap;
     }
-    .jah-header-phone:hover { color: #FF3B6B; }
+    .jah-header-phone:hover { color: #DC143C; }
     .jah-header-phone svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
     .jah-logo-text {
       font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
@@ -119,7 +119,7 @@
   .jah-study-seal {
     flex: none; display: grid; place-items: center;
     width: 28px; height: 28px; border-radius: 8px;
-    background: #FF3B6B; color: #fff;
+    background: #DC143C; color: #fff;
     font-family: 'Ma Shan Zheng', 'STKaiti', 'KaiTi', serif; font-size: 1.15rem; line-height: 1;
     transform: rotate(-6deg);
     transition: transform .45s cubic-bezier(.34, 1.56, .64, 1);
@@ -188,7 +188,7 @@
     .jah-study-btn::after, .jah-study-bar::after, .jah-study-bar svg { animation: none !important; }
     .jah-study-btn, .jah-study-seal { transition: none !important; }
   }
-  .jah-study-btn:focus-visible, .jah-study-bar:focus-visible { outline: 3px solid #FF3B6B; outline-offset: 3px; }
+  .jah-study-btn:focus-visible, .jah-study-bar:focus-visible { outline: 3px solid #DC143C; outline-offset: 3px; }
 </style>
 
 <!-- Bandeau téléphone : défile avec la page, l'en-tête reste collé en haut -->
@@ -228,7 +228,7 @@
   .jah-hero, .jah-dests, .jah-details, .jah-contact, .jah-why {
     --jah-ink: #14181D;
     --jah-paper: #FAFAF7;
-    --jah-accent: #FF3B6B;
+    --jah-accent: #DC143C;
     --jah-highlight: #FFD23F;
     --jah-muted: #7A828C;
     --jah-ease: cubic-bezier(.16, 1, .3, 1);
@@ -337,8 +337,8 @@
     cursor: pointer;
   }
   .jah-btn svg { transition: transform .35s var(--jah-ease); }
-  .jah-btn--primary { background: var(--jah-accent); color: #fff; box-shadow: 0 10px 30px rgba(255,59,107,.35); }
-  .jah-btn--primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(255,59,107,.45); }
+  .jah-btn--primary { background: var(--jah-accent); color: #fff; box-shadow: 0 10px 30px rgba(220,20,60,.35); }
+  .jah-btn--primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(220,20,60,.45); }
   .jah-btn--primary:hover svg { transform: translateX(4px); }
   .jah-btn--ghost {
     background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35); color: #fff;
@@ -348,9 +348,9 @@
   .jah-btn:active { transform: scale(.97); }
   .jah-btn--pulse { animation: jah-cta-pulse 2.4s ease-out infinite; }
   @keyframes jah-cta-pulse {
-    0%   { box-shadow: 0 10px 30px rgba(255,59,107,.35), 0 0 0 0 rgba(255,59,107,.5); }
-    70%  { box-shadow: 0 10px 30px rgba(255,59,107,.35), 0 0 0 16px rgba(255,59,107,0); }
-    100% { box-shadow: 0 10px 30px rgba(255,59,107,.35), 0 0 0 0 rgba(255,59,107,0); }
+    0%   { box-shadow: 0 10px 30px rgba(220,20,60,.35), 0 0 0 0 rgba(220,20,60,.5); }
+    70%  { box-shadow: 0 10px 30px rgba(220,20,60,.35), 0 0 0 16px rgba(220,20,60,0); }
+    100% { box-shadow: 0 10px 30px rgba(220,20,60,.35), 0 0 0 0 rgba(220,20,60,0); }
   }
 
   .jah-strip {
@@ -538,7 +538,7 @@
   .jah-why-flight-track {
     position: absolute;
     top: 50%; left: 0; right: 0;
-    border-top: 2px dashed rgba(255, 59, 107, .3);
+    border-top: 2px dashed rgba(220, 20, 60, .3);
     transform: translateY(-50%);
   }
   .jah-why-flight-plane {
@@ -583,7 +583,7 @@
     width: clamp(96px, 9.5vw, 128px);
     height: clamp(96px, 9.5vw, 128px);
     border-radius: 50%;
-    background: rgba(255, 59, 107, .08);
+    background: rgba(220, 20, 60, .08);
     display: grid;
     place-items: center;
     margin: 0 0 22px;
@@ -664,7 +664,7 @@
     top: clamp(10px, 2vw, 22px);
     right: clamp(10px, 2vw, 22px);
     width: clamp(128px, 13vw, 168px);
-    color: var(--jah-accent, #FF3B6B);
+    color: var(--jah-accent, #DC143C);
     opacity: 0;
     transform: scale(1.7) rotate(var(--stamp-rot, -8deg));
     pointer-events: none;
