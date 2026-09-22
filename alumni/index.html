@@ -18,7 +18,7 @@
   <style>
     /* ============================================================
        JUNIORS ALUMNI — private network for Juniors Academy alumni.
-       Own Firebase project (juniors-alumni). The only thing to edit
+       Own Firebase project (juniorsalumni). The only thing to edit
        is the SETTINGS block near the bottom of this file.
        ============================================================ */
     :root {
@@ -490,16 +490,16 @@
 /* ============================================================
    SETTINGS — the only part of this file you need to edit.
    1) FIREBASE_CONFIG: the six values from Firebase
-      (project juniors-alumni > Project settings > Your apps > Web app).
+      (project juniorsalumni > Project settings > Your apps > Web app).
    2) ADMIN_EMAILS: the Managing Director. Use the same email in the rules.
    ============================================================ */
 const FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyCtjl9LE4yoUadLeDtFXXxIS_VxMBoMghM",
+  authDomain: "juniorsalumni.firebaseapp.com",
+  projectId: "juniorsalumni",
+  storageBucket: "juniorsalumni.firebasestorage.app",
+  messagingSenderId: "1021253461021",
+  appId: "1:1021253461021:web:0ebf2c9d25aa8caac312f4"
 };
 const ADMIN_EMAILS = ['director@juniors.academy'];
 /* Private messages: only between two alumni who are both at least this old.
@@ -599,7 +599,7 @@ function authMessage(e) {
   return "Couldn't sign in. Try again.";
 }
 async function start() {
-  if (!READY) { gate('setup', 'The online database is not connected yet. Paste your Firebase settings (project juniors-alumni) into FIREBASE_CONFIG near the bottom of index.html.', true); return; }
+  if (!READY) { gate('setup', 'The online database is not connected yet. Paste your Firebase settings (project juniorsalumni) into FIREBASE_CONFIG near the bottom of index.html.', true); return; }
   gate('loading');
   try {
     const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
@@ -629,7 +629,7 @@ async function signedIn(u) {
     meDoc = snap.data();
     if (meDoc.disabled) { gate('blocked', 'Your access to the alumni network has been paused. Please contact Juniors Academy.'); return; }
     openApp();
-  } catch (e) { gate('blocked', e && e.code === 'permission-denied' ? 'The network rules are not published yet in Firebase (project juniors-alumni). Publish firestore-rules.txt, then reload.' : "Couldn't load your profile. Check the connection and reload."); }
+  } catch (e) { gate('blocked', e && e.code === 'permission-denied' ? 'The network rules are not published yet in Firebase (project juniorsalumni). Publish firestore-rules.txt, then reload.' : "Couldn't load your profile. Check the connection and reload."); }
 }
 function watchPosts(key, q) {
   return fb.F.onSnapshot(q, snap => {
