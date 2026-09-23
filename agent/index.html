@@ -218,6 +218,31 @@
     .fact span { display: block; font-size: .72rem; color: var(--muted); font-weight: 600; }
     .fact b { display: block; font-size: .92rem; margin-top: 1px; overflow-wrap: anywhere; }
     .steps { display: flex; gap: 6px; flex-wrap: wrap; }
+    .flow { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 16px 16px 14px; display: grid; gap: 14px; }
+    .flow-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; }
+    .flow-steps li { position: relative; display: grid; justify-items: center; gap: 6px; text-align: center; font-size: .78rem; font-weight: 600; color: var(--muted); }
+    .flow-steps li::before { content: ""; position: absolute; top: 14px; left: -50%; width: 100%; height: 3px; background: rgba(20,24,29,.1); z-index: 0; }
+    .flow-steps li:first-child::before { display: none; }
+    .flow-steps li.done::before, .flow-steps li.now::before { background: var(--green); }
+    .flow-steps i { position: relative; z-index: 1; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: .8rem; background: #fff; border: 2px solid rgba(20,24,29,.18); color: var(--muted); }
+    .flow-steps li.done i { background: var(--green); border-color: var(--green); color: #fff; }
+    .flow-steps li.now i { background: #fff; border-color: var(--green); color: var(--green); box-shadow: 0 0 0 5px var(--green-soft); }
+    .flow-steps li.done, .flow-steps li.now { color: var(--ink); }
+    .flow-steps li small { display: block; font-weight: 500; font-size: .7rem; color: var(--muted); }
+    .flow.off .flow-steps { opacity: .4; }
+    .flow-now { font-size: .9rem; color: var(--body); text-align: center; }
+    .flow-now b { color: var(--ink); }
+    .flow-act { display: grid; gap: 8px; }
+    .flow-act .btn-big { width: 100%; }
+    .flow-links { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    @media (max-width: 380px) {
+      .flow { padding: 14px 10px 12px; }
+      .flow-steps li { font-size: .68rem; min-width: 0; }
+      .flow-steps i { width: 26px; height: 26px; font-size: .72rem; }
+      .flow-steps li::before { top: 12px; }
+      .flow-steps li small { display: none; }
+    }
+    .cancelled-banner { padding: 10px 14px; border-radius: 12px; background: rgba(20,24,29,.06); color: var(--body); font-size: .88rem; text-align: center; }
     .hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: .84rem; }
     .hist li { display: flex; gap: 10px; }
     .hist li i { flex: none; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--green); }
@@ -749,31 +774,50 @@ function openDetail(id) {
   const pass = { valid: 'Valide', progress: 'En cours de demande', none: 'Pas encore' }[s.passport] || '—';
   $('dpTitle').textContent = s.firstName + ' ' + s.lastName; $('dpSub').textContent = progName(s) + (priceOf(s) ? ' · ' + money(priceOf(s)) : '');
   const fact = (k, v) => '<div class="fact"><span>' + k + '</span><b>' + v + '</b></div>';
-  let h = '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">' + statusPill(s.status) + '<span style="color:var(--muted);font-size:.86rem">' + esc((STATUS[s.status] || {}).hint || '') + '</span></div>' +
+  let h = (isAdmin() ? flowHTML(s) : '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">' + statusPill(s.status) + '<span style="color:var(--muted);font-size:.86rem">' + esc((STATUS[s.status] || {}).hint || '') + '</span></div>') +
     '<div class="facts">' + fact('Élève', esc(s.firstName + ' ' + s.lastName) + (age != null ? ' · ' + age + ' ans' : '')) + fact('Date de naissance', esc(niceDate(s.dob)) || '—') +
       fact('Sexe · niveau', esc([{ F: 'Fille', M: 'Garçon' }[s.gender], s.level].filter(Boolean).join(' · ') || '—')) + fact('Wilaya de résidence', esc(wName(s.studentWilaya))) +
       fact('Parent ou tuteur', esc(s.parentName)) + fact('Téléphone', '<a href="tel:' + esc(s.parentPhone) + '">' + esc(s.parentPhone) + '</a>') + fact('Email', s.parentEmail ? '<a href="mailto:' + esc(s.parentEmail) + '">' + esc(s.parentEmail) + '</a>' : '—') + fact('Passeport', pass) +
       (isAdmin() ? fact('Agent', esc(s.agentName || a.name || '') + '<br><span style="font-weight:500;color:var(--muted)">' + esc(wName(s.agentWilaya)) + (a.phone ? ' · ' + esc(a.phone) : '') + '</span>') : '') + fact('Reçu le', esc(niceDate(s.createdAt))) + '</div>' +
     (s.notes ? '<div class="fact"><span>Remarques</span><b style="font-weight:500;white-space:pre-wrap">' + esc(s.notes) + '</b></div>' : '');
   if (isAdmin()) {
-    h += '<div><span style="font-size:.76rem;font-weight:600;color:var(--body)">Changer le statut</span><div class="steps" style="margin-top:6px">' +
-      ['submitted', 'confirmed', 'paid', 'departed', 'cancelled'].filter(k => k !== s.status).map(k => '<button type="button" class="btn btn-small ' + (k === 'cancelled' ? 'btn-red' : k === ORDER[ORDER.indexOf(s.status) + 1] ? 'btn-green' : 'btn-light') + '" data-setstatus="' + k + '">' + STATUS[k].name + '</button>').join('') + '</div></div>' +
-      '<div class="fld"><label for="dNote">Note (facultatif, visible dans l\u2019historique)</label><input id="dNote" type="text" placeholder="Acompte reçu le 12 octobre"></div>' +
-      '<div class="pop-foot" style="justify-content:flex-start">' + (wa ? '<a class="btn btn-light btn-small" href="https://wa.me/' + wa + '" target="_blank" rel="noopener">' + icon('wa') + 'WhatsApp parent</a>' : '') + '<button type="button" class="btn btn-light btn-small" data-copy="' + esc(s.id) + '">' + icon('copy') + 'Copier pour le CRM</button><span style="flex:1"></span><button type="button" class="linkish" data-delstudent="' + esc(s.id) + '" style="color:var(--red-text)">Supprimer</button></div>';
+    h += '<div class="pop-foot" style="justify-content:flex-start">' + (wa ? '<a class="btn btn-light btn-small" href="https://wa.me/' + wa + '" target="_blank" rel="noopener">' + icon('wa') + 'WhatsApp parent</a>' : '') + '<button type="button" class="btn btn-light btn-small" data-copy="' + esc(s.id) + '">' + icon('copy') + 'Copier pour le CRM</button><span style="flex:1"></span><button type="button" class="linkish" data-delstudent="' + esc(s.id) + '" style="color:var(--red-text)">Supprimer</button></div>';
   }
   const hist = (s.history || []).slice().reverse();
   if (hist.length) h += '<div><span style="font-size:.76rem;font-weight:600;color:var(--body)">Historique</span><ul class="hist" style="margin-top:8px">' + hist.map(x => '<li><i></i><span>' + esc((STATUS[x.status] || {}).name || x.status) + (x.note ? ' · ' + esc(x.note) : '') + '<small>' + esc(x.by || '') + ', ' + esc(niceDate(x.at)) + '</small></span></li>').join('') + '</ul></div>';
   $('dpBody').innerHTML = h; $('dpBody').setAttribute('data-id', id);
   if (!$('detailPop').open) $('detailPop').showModal();
 }
+const NEXT = { submitted: 'Confirmer l\u2019inscription', confirmed: 'Marquer comme payé', paid: 'Marquer comme parti' };
+function flowHTML(s) {
+  const cur = s.status, idx = ORDER.indexOf(cur), off = cur === 'cancelled';
+  const when = st => { const h = (s.history || []).filter(x => x.status === st).pop(); return h ? niceDate(h.at).replace(/ \d{4}$/, '') : ''; };
+  const steps = ORDER.map((st, i) => {
+    const cls = off ? '' : i < idx ? 'done' : i === idx ? 'now' : '';
+    return '<li class="' + cls + '"><i>' + (cls === 'done' ? '✓' : i + 1) + '</i>' + STATUS[st].name + '<small>' + (cls ? esc(when(st)) : '') + '</small></li>';
+  }).join('');
+  let act = '';
+  if (off) {
+    act = '<div class="cancelled-banner">Cette inscription est <b>annulée</b>.</div><button type="button" class="btn btn-light" data-setstatus="submitted">Réactiver l\u2019inscription</button>';
+  } else {
+    const nxt = ORDER[idx + 1], prev = ORDER[idx - 1];
+    act = '<div class="fld"><label for="dNote">Note pour l\u2019historique (facultatif)</label><input id="dNote" type="text" placeholder="' + (cur === 'confirmed' ? 'Paiement reçu en espèces' : cur === 'submitted' ? 'Dossier complet, place réservée' : 'Vol AH 2054 du 5 juillet') + '"></div>' +
+      (nxt ? '<button type="button" class="btn btn-green btn-big" data-setstatus="' + nxt + '">' + NEXT[cur] + '</button>' : '<div class="cancelled-banner" style="background:var(--green-soft);color:var(--green-text)">Parcours terminé : l\u2019élève est parti.</div>') +
+      '<div class="flow-links">' + (prev ? '<button type="button" class="linkish" data-setstatus="' + prev + '">Revenir à « ' + STATUS[prev].name + ' »</button>' : '<span></span>') +
+        '<button type="button" class="linkish" style="color:var(--red-text)" data-setstatus="cancelled">Annuler l\u2019inscription</button></div>';
+  }
+  return '<div class="flow' + (off ? ' off' : '') + '"><ol class="flow-steps" aria-label="Étapes de l\u2019inscription">' + steps + '</ol>' +
+    (off ? '' : '<p class="flow-now" style="margin:0">Étape actuelle : <b>' + STATUS[cur].name + '</b>. ' + esc(STATUS[cur].hint) + '.</p>') + '<div class="flow-act">' + act + '</div></div>';
+}
 async function setStatus(id, st) {
   const s = students[id]; if (!s) return;
   if (st === 'cancelled' && !confirm('Annuler l\u2019inscription de ' + s.firstName + ' ' + s.lastName + ' ?')) return;
+  if (s.status !== 'cancelled' && ORDER.indexOf(st) >= 0 && ORDER.indexOf(st) < ORDER.indexOf(s.status) && !confirm('Revenir à l\u2019étape « ' + STATUS[st].name + ' » ?')) return;
   const now = new Date().toISOString(), note = ($('dNote') ? $('dNote').value.trim() : '');
   try {
     await fb.F.updateDoc(fb.F.doc(fb.db, 'students', id), { status: st, statusAt: now, updatedAt: now, history: fb.F.arrayUnion({ at: now, by: 'Direction', status: st, note }) });
     students[id] = Object.assign({}, s, { status: st, history: (s.history || []).concat({ at: now, by: 'Direction', status: st, note }) });
-    openDetail(id); toast('Statut : ' + STATUS[st].name);
+    const box = $('detailPop'), y = box.scrollTop; openDetail(id); box.scrollTop = y; toast('Statut : ' + STATUS[st].name);
   } catch (e) { toast('Enregistrement impossible. Vérifiez la connexion.'); }
 }
 function crmText(s) {
