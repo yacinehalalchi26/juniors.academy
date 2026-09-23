@@ -15,7 +15,8 @@
   <style>
     /* ============================================================
        JUNIORS TRACKER — files, visas and departures for every booking.
-       Reads the bookings of the CRM (same Firebase project, same logins).
+       Reads the bookings of the CRM (project juniors-academy) and saves its
+       own data in the project juniors-tracker. Same email and password in both.
        The only thing to edit is the SETTINGS block near the bottom.
        ============================================================ */
     :root {
@@ -333,8 +334,12 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script type="module">
 /* ============================================================
-   SETTINGS — same Firebase project and logins as the CRM
-   (juniors.academy/crm). Nothing else to edit.
+   SETTINGS
+   1) FIREBASE_CONFIG: the CRM project (juniors-academy). The tracker
+      reads the bookings and the team from it.
+   2) TRACKER_CONFIG: the tracker project (juniors-tracker). The tracker
+      saves its checklists, visas, dates and notes in it.
+   The same email and password must exist in both projects.
    ============================================================ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyA2FAPTVDsrpOSeDsCsT1FBbaqYzQQbEnA",
@@ -344,12 +349,21 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "376121999841",
   appId: "1:376121999841:web:356c1c7efa76b908aa12a0"
 };
+const TRACKER_CONFIG = {
+  apiKey: "AIzaSyDvAGE7zLM98MdHPNeH8Q9ZfloPUpGWALI",
+  authDomain: "juniors-tracker.firebaseapp.com",
+  projectId: "juniors-tracker",
+  storageBucket: "juniors-tracker.firebasestorage.app",
+  messagingSenderId: "1050315566330",
+  appId: "1:1050315566330:web:49bc06740cb6382a59ad43"
+};
 const DIRECTOR_EMAILS = ['director@juniors.academy'];
 const CRM_URL = '../crm/';
 /* ============================================================ */
 
 const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
-const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId && TRACKER_CONFIG.apiKey && TRACKER_CONFIG.projectId);
+let creds = null;   /* kept in memory only, just long enough to open the second project */
 
 /* ---------- Checklists: one per kind of program ----------
    Each step: [key, label, hint, flags]. flags: 'minor' = only for under-18s. */
@@ -533,20 +547,41 @@ async function start() {
   gate('loading');
   try {
     const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
-    const app = A0.initializeApp(FIREBASE_CONFIG);
+    const app = A0.initializeApp(FIREBASE_CONFIG), tapp = A0.initializeApp(TRACKER_CONFIG, 'tracker');
     let db; try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); } catch (e) { db = F.getFirestore(app); }
-    fb = { auth: A.getAuth(app), db, A, F };
+    let tdb; try { tdb = F.initializeFirestore(tapp, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); } catch (e) { tdb = F.getFirestore(tapp); }
+    fb = { auth: A.getAuth(app), tauth: A.getAuth(tapp), db, tdb, A, F };
     A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
   } catch (e) { gate('blocked', "Couldn't reach the online database. Check the internet connection, then reload."); }
 }
 function signedOut() { stop(); me = null; profile = null; bookings = {}; files = {}; $('app').hidden = true; closeFile(); if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin'); }
 function denied(err) {
-  if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'This account is not allowed to open the CRM and the tracker yet. Ask the Managing Director to add your email to the Firestore rules.'); }
+  if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'This account cannot read the CRM bookings. In Firebase, project juniors-academy, check that this email is listed in the Firestore rules.'); }
+}
+function deniedTracker(err) {
+  if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'The tracker rules are not published yet in Firebase, project juniors-tracker, or this email is not listed in them. Publish firestore-rules.txt there, then reload.'); }
+}
+/* sign in to the tracker project with the same email and password */
+async function connectTracker(email) {
+  if (fb.tauth.authStateReady) await fb.tauth.authStateReady();
+  const cur = fb.tauth.currentUser;
+  if (cur && (cur.email || '').toLowerCase() === email) return true;
+  if (!creds || creds.email !== email) return false;
+  try { await fb.A.signInWithEmailAndPassword(fb.tauth, creds.email, creds.pw); return true; }
+  catch (e) {
+    const c = (e && e.code) || '';
+    if (/invalid-credential|wrong-password|user-not-found/.test(c)) throw new Error('This email and password do not exist yet in the juniors-tracker project. In Firebase, project juniors-tracker, open Authentication, Users, Add user, and create the same email with the same password.');
+    if (/operation-not-allowed/.test(c)) throw new Error('Email and password sign-in is not switched on in the juniors-tracker project. In Firebase, open Authentication, Sign-in method, and enable Email/Password.');
+    throw new Error("Couldn't connect to the tracker project. Check the connection and try again.");
+  } finally { creds = null; }
 }
 async function signedIn(u) {
   const email = (u.email || '').toLowerCase();
   me = { uid: u.uid, email, isDirector: DIRECTOR_EMAILS.map(x => x.toLowerCase()).includes(email) };
   gate('loading');
+  try {
+    if (!(await connectTracker(email))) { gate('signin', 'Please type your password once more to connect the tracker.', true); $('gEmail').value = email; setTimeout(() => $('gPass').focus(), 60); return; }
+  } catch (e) { gate('signin', e.message); $('gEmail').value = email; return; }
   try {
     const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'crmUsers', u.uid));
     if (!snap.exists()) { gate('name'); return; }
@@ -562,7 +597,7 @@ function openApp() {
     render(); if (openId) drawFile();
     const m = /^#f=(.+)$/.exec(location.hash); if (m && bookings[decodeURIComponent(m[1])] && openId !== decodeURIComponent(m[1])) openFile(decodeURIComponent(m[1]));
   }, denied));
-  unsub.push(F.onSnapshot(F.collection(db, 'tracker'), snap => { files = {}; snap.docs.forEach(d => { files[d.id] = d.data(); }); render(); if (openId) drawFile(); }, denied));
+  unsub.push(F.onSnapshot(F.collection(fb.tdb, 'tracker'), snap => { files = {}; snap.docs.forEach(d => { files[d.id] = d.data(); }); render(); if (openId) drawFile(); }, deniedTracker));
   unsub.push(F.onSnapshot(F.collection(db, 'crmUsers'), snap => { team = snap.docs.map(d => d.data()).sort((a, b) => String(a.name).localeCompare(String(b.name), 'en')); fillOwners(); render(); }, () => {}));
   unsub.push(F.onSnapshot(F.doc(db, 'crmMeta', 'settings'), d => { if (d.exists() && d.data().currency) { currency = d.data().currency; render(); } }, () => {}));
 }
@@ -582,7 +617,7 @@ function save(id, patch, logText) {
   Object.keys(patch).forEach(k => { if (patch[k] && typeof patch[k] === 'object' && !Array.isArray(patch[k])) cur[k] = deepMerge(cur[k] || {}, patch[k]); else cur[k] = patch[k]; });
   if (logText) cur.log = (cur.log || []).concat({ at: data.updatedAt, by: profile.name, text: logText });
   render(); drawFile(true);
-  return fb.F.setDoc(fb.F.doc(fb.db, 'tracker', id), data, { merge: true }).catch(e => { toast(e && e.code === 'permission-denied' ? 'Not saved: the tracker rules are not published yet.' : "Not saved. Check the connection."); });
+  return fb.F.setDoc(fb.F.doc(fb.tdb, 'tracker', id), data, { merge: true }).catch(e => { toast(e && e.code === 'permission-denied' ? 'Not saved: publish the tracker rules in the juniors-tracker project.' : "Not saved. Check the connection."); });
 }
 function deepMerge(a, b) { const o = Object.assign({}, a); Object.keys(b).forEach(k => { o[k] = b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) ? deepMerge(a[k] || {}, b[k]) : b[k]; }); return o; }
 
@@ -753,8 +788,8 @@ document.addEventListener('click', e => {
   if ((el = q('[data-item]'))) { openItem = openItem === el.getAttribute('data-item') ? null : el.getAttribute('data-item'); return drawFile(true); }
   if ((el = q('[data-na]'))) { const k = el.getAttribute('data-na'), rec = ((fileOf(openId).t.items || {})[k]) || {}; const p = { items: {} }; p.items[k] = { na: !rec.na, done: false }; save(openId, p, (rec.na ? 'Needed again: ' : 'Not needed: ') + labelOf(openId, k)); return; }
   if ((el = q('[data-rmstep]'))) { const k = el.getAttribute('data-rmstep'), t = files[openId] || {}; if (!confirm('Remove this step?')) return; openItem = null; save(openId, { custom: (t.custom || []).filter(c => c.key !== k) }, 'Removed a step: ' + labelOf(openId, k)); return; }
-  if (e.target.id === 'btnOut') { if (confirm('Sign out of the tracker?')) fb.A.signOut(fb.auth); return; }
-  if (e.target.id === 'gOut') fb.A.signOut(fb.auth);
+  if (e.target.id === 'btnOut') { if (confirm('Sign out of the tracker?')) { fb.A.signOut(fb.tauth).catch(() => {}); fb.A.signOut(fb.auth); } return; }
+  if (e.target.id === 'gOut') { fb.A.signOut(fb.tauth).catch(() => {}); fb.A.signOut(fb.auth); }
 });
 /* dates, selects and text fields in the drawer save on change */
 const pending = {};
@@ -797,13 +832,20 @@ window.addEventListener('hashchange', () => { const m = /^#f=(.+)$/.exec(locatio
 /* sign in */
 $('signForm').addEventListener('submit', async e => {
   e.preventDefault(); const btn = $('gSubmit'); btn.disabled = true; btn.textContent = 'Signing in…';
-  try { await fb.A.signInWithEmailAndPassword(fb.auth, $('gEmail').value.trim(), $('gPass').value); $('gPass').value = ''; }
-  catch (err) { gate('signin', authMessage(err)); } finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+  const email = $('gEmail').value.trim().toLowerCase(), pw = $('gPass').value;
+  creds = { email, pw };
+  try {
+    const cur = fb.auth.currentUser;
+    if (cur && (cur.email || '').toLowerCase() === email) { await signedIn(cur); }   /* already in the CRM: only the tracker was missing */
+    else await fb.A.signInWithEmailAndPassword(fb.auth, email, pw);
+    $('gPass').value = '';
+  }
+  catch (err) { creds = null; gate('signin', authMessage(err)); } finally { btn.disabled = false; btn.textContent = 'Sign in'; }
 });
 $('gForgot').addEventListener('click', async () => {
   const email = $('gEmail').value.trim(); if (!email) { gate('signin', 'Type your email first, then click “Forgot my password” again.', true); return; }
   try { await fb.A.sendPasswordResetEmail(fb.auth, email); } catch (e) {}
-  gate('signin', 'If that account exists, an email to choose a new password is on its way.', true);
+  gate('signin', 'If that account exists, an email to choose a new password is on its way. Use the same new password in the juniors-tracker project (Authentication, Users).', true);
 });
 $('nameForm').addEventListener('submit', async e => {
   e.preventDefault(); const name = $('gName').value.trim(); if (name.length < 2) return;
