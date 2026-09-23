@@ -205,17 +205,17 @@
     .jah-blog-btn { padding: 8px 12px 8px 10px; font-size: .8rem; gap: 6px; }
     .jah-blog-btn svg { width: 16px; height: 16px; }
   }
-  .jah-tel-short { display: none; }
   @media (max-width: 400px) {
-    .jah-tel-full { display: none; } .jah-tel-short { display: inline; }
+    .jah-header { gap: 10px; padding-left: 10px; padding-right: 10px; }
     .jah-header-right { gap: 6px; }
-    .jah-header-phone { font-size: .76rem; padding: 8px 11px; gap: 6px; }
+    .jah-blog-btn { padding: 8px 10px 8px 9px; font-size: .76rem; gap: 5px; }
+    .jah-blog-btn svg { width: 15px; height: 15px; }
   }
   @media (max-width: 360px) {
     .jah-header { gap: 10px; padding: 8px 12px; }
     .jah-header-logo img { height: 38px; }
-    .jah-header-phone { font-size: .72rem; padding: 8px 10px; gap: 5px; }
-    .jah-blog-btn { padding: 8px 10px 8px 9px; font-size: .74rem; gap: 5px; }
+    .jah-header-phone { font-size: .74rem; padding: 8px 11px; gap: 6px; }
+    .jah-blog-btn { padding: 8px 9px 8px 8px; font-size: .74rem; gap: 5px; }
     .jah-blog-btn svg { width: 15px; height: 15px; }
     .jah-study-bar { font-size: .78rem; gap: 8px; }
   }
@@ -256,7 +256,7 @@
       <span class="jah-blog-dot" aria-hidden="true"></span>
     </a>
     <a href="tel:+213550527722" class="jah-header-phone" aria-label="Appeler Juniors Academy">
-      <span class="jah-tel-full">+213 550 52 77 22</span><span class="jah-tel-short">0550 52 77 22</span>
+      <span>+213 550 52 77 22</span>
       <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
     </a>
   </div>
@@ -693,14 +693,14 @@
     background: transparent;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     text-align: center;
-    padding: 4px 16px 26px;
+    padding: 34px 16px 40px;
   }
-  .jah-footer-links { margin-bottom: 8px !important; }
-  .jah-footer-links a { color: #14181D; font-weight: 600; text-decoration: none; }
-  .jah-footer-links a:hover { color: #DC143C; }
+  .jah-footer-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin: 0 0 10px; font-size: .88rem; font-weight: 600; }
+  .jah-footer-nav a { color: #7A828C; text-decoration: none; }
+  .jah-footer-nav a:hover { color: #14181D; }
   .jah-footer p {
     margin: 0;
-    font-size: .82rem;
+    font-size: .85rem;
     font-weight: 500;
     color: #7A828C;
   }
@@ -1381,7 +1381,7 @@
 
 <!-- ==================== 5. COPYRIGHT ==================== -->
 <footer class="jah-footer">
-  <p class="jah-footer-links"><a href="/blog/">Blog : conseils pour les parents</a> · <a href="/study/">Étudier en Chine</a> · <a href="/brochure/">Brochure gratuite</a></p>
+  <nav class="jah-footer-nav" aria-label="Liens du site"><a href="/">Nos séjours</a><a href="/study/">Étudier en Chine</a><a href="/blog/">Blog</a><a href="/brochure/">Brochure gratuite</a></nav>
   <p>&copy; 2026 Juniors Academy. Tous droits réservés.</p>
 </footer>
 
