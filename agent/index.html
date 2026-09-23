@@ -242,6 +242,11 @@
       .flow-steps li::before { top: 12px; }
       .flow-steps li small { display: none; }
     }
+    .choice { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; background: #fff; border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer; font-size: .9rem; }
+    .choice:has(input:checked) { border-color: var(--green); background: #F7FCF9; }
+    .choice input { margin-top: 3px; accent-color: var(--green); flex: none; }
+    .choice b { display: block; } .choice small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+    .choice select { margin-top: 8px; width: 100%; min-height: 38px; padding: 6px 10px; border-radius: 10px; border: 1px solid rgba(20,24,29,.16); background: #fff; }
     .cancelled-banner { padding: 10px 14px; border-radius: 12px; background: rgba(20,24,29,.06); color: var(--body); font-size: .88rem; text-align: center; }
     .hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: .84rem; }
     .hist li { display: flex; gap: 10px; }
@@ -365,7 +370,23 @@
       <div class="fld full"><label for="aPhone">Téléphone</label><input id="aPhone" type="tel"></div>
     </div>
     <p class="err" id="aErr" hidden></p>
-    <div class="pop-foot"><button type="button" class="btn btn-red" id="aSuspend" hidden>Suspendre</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green" id="aSave">Créer l'agent</button></div>
+    <div class="pop-foot"><button type="button" class="btn btn-red" id="aSuspend" hidden>Suspendre</button><button type="button" class="linkish" id="aDelete" style="color:var(--red-text)" hidden>Supprimer</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green" id="aSave">Créer l'agent</button></div>
+  </form>
+</dialog>
+
+<!-- Supprimer un agent (direction) -->
+<dialog class="pop" id="delPop" aria-labelledby="dlTitle" style="width:min(540px,calc(100vw - 24px))">
+  <div class="pop-head"><div><h2 id="dlTitle">Supprimer l'agent</h2><p id="dlSub"></p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <form class="pop-body" id="delForm" novalidate>
+    <div id="dlChoices" style="display:grid;gap:8px">
+      <span style="font-size:.86rem;font-weight:600">Que faire de ses inscriptions ?</span>
+      <label class="choice"><input type="radio" name="dlWhat" value="keep" checked><span><b>Les garder à son nom</b><small>Elles restent dans vos chiffres, la carte et les exports, marquées « ancien agent ». Recommandé.</small></span></label>
+      <label class="choice"><input type="radio" name="dlWhat" value="move"><span><b>Les transférer à un autre agent</b><small>Elles comptent désormais pour l'agent choisi.</small><select id="dlTo" aria-label="Agent qui reçoit les inscriptions"></select></span></label>
+      <label class="choice"><input type="radio" name="dlWhat" value="delete"><span><b>Les supprimer aussi</b><small>Pour les comptes de test. Ces élèves disparaissent de vos chiffres.</small></span></label>
+    </div>
+    <label class="check"><input type="checkbox" id="dlSure"> <span>Je comprends que la suppression est définitive. L'agent ne pourra plus se connecter.</span></label>
+    <p class="err" id="dlErr" hidden></p>
+    <div class="pop-foot"><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-ink" id="dlGo" style="background:var(--red)">Supprimer définitivement</button></div>
   </form>
 </dialog>
 
@@ -470,7 +491,7 @@ const wilayaOptions = (sel, blank) => (blank ? '<option value="">' + esc(blank) 
 
 /* ==================== État ==================== */
 let fb = null, me = null, profile = null, unsub = [];
-let agents = {}, programs = {}, students = {}, board = null;
+let agents = {}, programs = {}, students = {}, board = null, requests = {}, waitUnsub = null, activating = null;
 let tab = '', filt = { q: '', status: '', prog: '', agent: '', wilaya: '' }, period = 'all', metric = 'count', mapView = 'north', selWilaya = null;
 const isAdmin = () => !!me && me.isAdmin;
 const stop = () => { unsub.forEach(f => { try { f(); } catch (e) {} }); unsub = []; };
@@ -504,7 +525,7 @@ async function start() {
     A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
   } catch (e) { gate('blocked', 'Impossible de joindre la base de données. Vérifiez la connexion puis rechargez la page.'); }
 }
-function signedOut() { stop(); me = null; profile = null; agents = {}; programs = {}; students = {}; $('app').hidden = true; if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin'); }
+function signedOut() { stop(); if (waitUnsub) { waitUnsub(); waitUnsub = null; } me = null; profile = null; agents = {}; programs = {}; students = {}; requests = {}; $('app').hidden = true; if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin'); }
 async function signedIn(u) {
   const email = (u.email || '').toLowerCase();
   me = { uid: u.uid, email, isAdmin: ADMIN_EMAILS.map(x => x.toLowerCase()).includes(email) };
@@ -512,7 +533,15 @@ async function signedIn(u) {
   gate('loading');
   try {
     const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'agents', u.uid));
-    if (!snap.exists()) { gate('blocked', 'Votre compte n\u2019est pas encore activé. Contactez Juniors Academy.'); return; }
+    if (!snap.exists()) {
+      const gone = await fb.F.getDoc(fb.F.doc(fb.db, 'removed', u.uid)).catch(() => null);
+      if (gone && gone.exists()) { gate('blocked', 'Votre accès à l\u2019espace agents a été supprimé. Contactez Juniors Academy si c\u2019est une erreur.'); return; }
+      fb.F.setDoc(fb.F.doc(fb.db, 'requests', u.uid), { uid: u.uid, email, at: new Date().toISOString() }).catch(() => {});
+      gate('blocked', 'Votre compte est bien connecté, mais Juniors Academy doit encore l\u2019activer. La direction vient d\u2019être prévenue : cette page s\u2019ouvrira toute seule dès l\u2019activation.', true);
+      if (waitUnsub) waitUnsub();
+      waitUnsub = fb.F.onSnapshot(fb.F.doc(fb.db, 'agents', u.uid), d => { if (d.exists()) { waitUnsub(); waitUnsub = null; signedIn(u); } }, () => {});
+      return;
+    }
     profile = snap.data();
     if (profile.active === false) { gate('blocked', 'Votre accès a été suspendu. Contactez Juniors Academy.'); return; }
     if (!profile.wilaya || !profile.phone) {
@@ -533,6 +562,7 @@ function openApp() {
   if (isAdmin()) {
     unsub.push(F.onSnapshot(F.collection(db, 'agents'), s => { agents = {}; s.docs.forEach(d => { agents[d.id] = Object.assign({ uid: d.id }, d.data()); }); paint(); publishBoard(); }, deny));
     unsub.push(F.onSnapshot(F.collection(db, 'students'), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); publishBoard(); }, deny));
+    unsub.push(F.onSnapshot(F.collection(db, 'requests'), s => { requests = {}; s.docs.forEach(d => { const r = d.data(); if (!agents[d.id]) requests[d.id] = Object.assign({ uid: d.id }, r); }); paint(); }, () => {}));
   } else {
     unsub.push(F.onSnapshot(F.doc(db, 'agents', me.uid), d => { if (d.exists()) { profile = d.data(); if (profile.active === false) { fb.A.signOut(fb.auth); gate('signin', 'Votre accès a été suspendu. Contactez Juniors Academy.'); } paint(); } }, () => {}));
     unsub.push(F.onSnapshot(F.query(F.collection(db, 'students'), F.where('agentUid', '==', me.uid)), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); }, deny));
@@ -580,7 +610,8 @@ function byWilaya() {
 let painting = false;
 function paint() { if (painting || !me) return; painting = true; requestAnimationFrame(() => { painting = false; render(); }); }
 function render() {
-  const T = isAdmin() ? [['national', 'Vue nationale'], ['students', 'Inscriptions'], ['agents', 'Agents'], ['programs', 'Programmes']] : [['home', 'Mes élèves'], ['programs', 'Programmes']];
+  const nReq = Object.keys(requests).filter(k => !agents[k]).length;
+  const T = isAdmin() ? [['national', 'Vue nationale'], ['students', 'Inscriptions'], ['agents', 'Agents' + (nReq ? ' (' + nReq + ')' : '')], ['programs', 'Programmes']] : [['home', 'Mes élèves'], ['programs', 'Programmes']];
   $('tabs').innerHTML = T.map(t => '<button type="button" data-tab="' + t[0] + '" aria-pressed="' + (tab === t[0]) + '">' + t[1] + '</button>').join('');
   const m = $('main'), y = window.scrollY;
   const keep = document.activeElement && document.activeElement.id === 'fQ' ? document.activeElement.selectionStart : null;
@@ -707,12 +738,16 @@ function studentsView() {
       '<select data-f="wilaya" aria-label="Wilaya">' + wilayaOptions(filt.wilaya, 'Toutes les wilayas') + '</select></div>' +
     (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Élève</th><th>Programme</th><th>Agent</th><th>Parent</th><th>Statut</th><th>Reçu le</th><th style="text-align:right">Prix</th></tr></thead><tbody>' +
       list.map(s => '<tr data-open="' + esc(s.id) + '"><td><div class="person"><span class="av" style="--c:' + colorOf(s.id) + '">' + esc(initials(s.firstName + ' ' + s.lastName)) + '</span><span><b>' + esc(s.firstName + ' ' + s.lastName) + '</b><small>' + (ageFrom(s.dob) != null ? ageFrom(s.dob) + ' ans · ' : '') + esc(W[s.studentWilaya] ? W[s.studentWilaya].name : '') + '</small></span></div></td>' +
-        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.agentName || '') + '<small>' + esc(wName(s.agentWilaya)) + '</small></td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '</td><td>' + esc(niceDate(s.createdAt)) + '</td><td class="num" style="text-align:right">' + (priceOf(s) ? esc(money(priceOf(s))) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
+        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.agentName || '') + '<small>' + esc(wName(s.agentWilaya)) + (agents[s.agentUid] ? '' : ' · ancien agent') + '</small></td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '</td><td>' + esc(niceDate(s.createdAt)) + '</td><td class="num" style="text-align:right">' + (priceOf(s) ? esc(money(priceOf(s))) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
       : '<div class="empty"><h2>Aucune inscription</h2><p>' + (Object.keys(students).length ? 'Aucune inscription ne correspond à ces filtres.' : 'Les inscriptions envoyées par vos agents apparaîtront ici en direct.') + '</p></div>');
 }
 function agentsView() {
   const list = Object.values(agents).map(a => Object.assign({ a }, agentStats(a.uid))).sort((x, y) => (x.a.active === false) - (y.a.active === false) || y.won - x.won || y.total - x.total);
-  return '<div class="head"><div><h1>Agents</h1><p>' + list.filter(r => r.a.active !== false).length + ' agents actifs · commission calculée sur les inscriptions payées.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-green" id="addAgent">' + icon('plus') + 'Ajouter un agent</button></div></div>' +
+  const waiting = Object.values(requests).filter(r => !agents[r.uid]);
+  const pend = waiting.length ? '<section class="card pad" style="margin:0 0 14px;border-color:rgba(242,169,59,.6);background:#FFFBF1"><h3 class="h">Comptes en attente d\u2019activation <small>' + waiting.length + '</small></h3>' +
+    waiting.map(r => { const old = Object.values(agents).find(a => (a.email || '').toLowerCase() === (r.email || '').toLowerCase());
+      return '<div class="person" style="justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px"><span><b>' + esc(r.email) + '</b><small style="display:block;color:var(--muted)">S\u2019est connecté le ' + esc(niceDate(r.at)) + (old ? ' · ancienne fiche : ' + esc(old.name) : '') + '</small></span><button type="button" class="btn btn-green btn-small" data-activate="' + esc(r.uid) + '">Activer</button></div>'; }).join('') + '</section>' : '';
+  return pend + '<div class="head"><div><h1>Agents</h1><p>' + list.filter(r => r.a.active !== false).length + ' agents actifs · commission calculée sur les inscriptions payées.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-green" id="addAgent">' + icon('plus') + 'Ajouter un agent</button></div></div>' +
     (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Agent</th><th>Wilaya</th><th style="text-align:right">Inscrits</th><th style="text-align:right">Payés</th><th style="text-align:right">Conversion</th><th style="text-align:right">Chiffre d\u2019affaires</th><th style="text-align:right">Commission</th><th>Dernière inscription</th></tr></thead><tbody>' +
       list.map(r => '<tr data-agent="' + esc(r.a.uid) + '"' + (r.a.active === false ? ' style="opacity:.55"' : '') + '><td><div class="person"><span class="av" style="--c:' + colorOf(r.a.uid) + '">' + esc(initials(r.a.name)) + '</span><span><b>' + esc(r.a.name || r.a.email) + (r.a.active === false ? ' <span class="st st-cancelled">Suspendu</span>' : '') + '</b><small>' + esc(r.a.email || '') + (r.a.phone ? ' · ' + esc(r.a.phone) : '') + '</small></span></div></td>' +
         '<td>' + (r.a.wilaya ? esc(wName(r.a.wilaya)) : '<span style="color:var(--muted)">à choisir</span>') + '</td><td class="num" style="text-align:right">' + r.total + '</td><td class="num" style="text-align:right">' + r.won + '</td><td class="num" style="text-align:right">' + r.conv + ' %</td><td class="num" style="text-align:right">' + esc(money(r.rev)) + '</td><td class="num" style="text-align:right">' + esc(money(r.com)) + '<small>' + r.rate + ' %</small></td><td>' + (r.last ? esc(niceDate(r.last)) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
@@ -831,12 +866,24 @@ function csv() {
   a.download = 'inscriptions-agents-' + todayISO() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); toast(rows.length + ' inscriptions exportées');
 }
 let editAgent = null;
+function openActivate(uid) {
+  const r = requests[uid]; if (!r) return;
+  const old = Object.values(agents).find(a => (a.email || '').toLowerCase() === (r.email || '').toLowerCase() && a.uid !== uid);
+  openAgent(null); activating = { uid, email: r.email, old: old || null }; $('aDelete').hidden = true;
+  $('apTitle').textContent = 'Activer ' + r.email; $('aEmailF').hidden = $('aPassF').hidden = true; $('aSave').textContent = 'Activer l\u2019agent';
+  if (old) {
+    $('aName').value = old.name || ''; $('aWilaya').innerHTML = wilayaOptions(old.wilaya, 'L\u2019agent la choisira'); $('aRate').value = old.rate ?? 10; $('aPhone').value = old.phone || '';
+    const n = Object.values(students).filter(s => s.agentUid === old.uid).length;
+    $('aErr').className = 'info'; $('aErr').textContent = 'Ce compte remplace l\u2019ancienne fiche de ' + (old.name || old.email) + (n ? ' : ses ' + n + ' inscription' + (n > 1 ? 's' : '') + ' lui seront rattachées.' : '.'); $('aErr').hidden = false;
+  }
+}
 function openAgent(uid) {
+  activating = null; $('aErr').className = 'err';
   const a = uid ? agents[uid] : null; editAgent = a;
   $('apTitle').textContent = a ? a.name || a.email : 'Ajouter un agent';
   $('aName').value = a ? a.name || '' : ''; $('aEmail').value = ''; $('aPass').value = ''; $('aEmailF').hidden = $('aPassF').hidden = !!a;
   $('aWilaya').innerHTML = wilayaOptions(a ? a.wilaya : '', a ? 'Non choisie' : 'L\u2019agent la choisira'); $('aRate').value = a ? (a.rate ?? 10) : 10; $('aPhone').value = a ? a.phone || '' : '';
-  $('aSuspend').hidden = !a; $('aSuspend').textContent = a && a.active === false ? 'Réactiver' : 'Suspendre'; $('aSave').textContent = a ? 'Enregistrer' : 'Créer l\u2019agent'; $('aErr').hidden = true;
+  $('aSuspend').hidden = !a; $('aDelete').hidden = !a; $('aSuspend').textContent = a && a.active === false ? 'Réactiver' : 'Suspendre'; $('aSave').textContent = a ? 'Enregistrer' : 'Créer l\u2019agent'; $('aErr').hidden = true;
   $('agentPop').showModal();
 }
 async function saveAgent() {
@@ -845,6 +892,16 @@ async function saveAgent() {
   if (name.length < 2) return err('Indiquez le nom de l\u2019agent.');
   $('aSave').disabled = true;
   try {
+    if (activating) {
+      const A = activating, old = A.old, now = new Date().toISOString();
+      await fb.F.setDoc(fb.F.doc(fb.db, 'agents', A.uid), { uid: A.uid, name, email: A.email, phone: phone || (old && old.phone) || '', agency: (old && old.agency) || '', wilaya: wil ? +wil : null, rate, active: true, createdAt: (old && old.createdAt) || now });
+      if (old) {
+        for (const st of Object.values(students).filter(x => x.agentUid === old.uid)) await fb.F.setDoc(fb.F.doc(fb.db, 'students', st.id), { agentUid: A.uid, agentName: name }, { merge: true });
+        await fb.F.deleteDoc(fb.F.doc(fb.db, 'agents', old.uid)).catch(() => {});
+      }
+      await fb.F.deleteDoc(fb.F.doc(fb.db, 'requests', A.uid)).catch(() => {});
+      activating = null; $('agentPop').close(); toast(name + ' est activé : sa page s\u2019ouvre toute seule.'); return;
+    }
     if (editAgent) { await fb.F.setDoc(fb.F.doc(fb.db, 'agents', editAgent.uid), { name, wilaya: wil ? +wil : null, rate, phone }, { merge: true }); $('agentPop').close(); toast(name + ' enregistré'); return; }
     const email = $('aEmail').value.trim().toLowerCase(), pass = $('aPass').value;
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('Indiquez un email valide.');
@@ -855,8 +912,42 @@ async function saveAgent() {
     $('agentPop').close(); toast(name + ' ajouté. Envoyez-lui son email et son mot de passe.');
   } catch (e) {
     const c = (e && e.code) || '';
-    err(/email-already-in-use/.test(c) ? 'Un compte existe déjà avec cet email.' : /operation-not-allowed|admin-restricted/.test(c) ? 'Firebase bloque la création de comptes : dans Authentication, Paramètres, Actions utilisateur, cochez « Activer la création (inscription) ».' : 'Enregistrement impossible. Vérifiez la connexion.');
+    err(/email-already-in-use/.test(c) ? 'Une connexion existe déjà avec cet email. Si c\u2019est un agent supprimé, effacez d\u2019abord sa connexion dans Firebase (juniors-agent > Authentication > Users > trois points > Delete account), puis réessayez. Sinon, demandez-lui simplement de se connecter : il apparaîtra dans « Comptes en attente ».' : /operation-not-allowed|admin-restricted/.test(c) ? 'Firebase bloque la création de comptes : dans Authentication, Paramètres, Actions utilisateur, cochez « Activer la création (inscription) ».' : 'Enregistrement impossible. Vérifiez la connexion.');
   } finally { $('aSave').disabled = false; }
+}
+let deleting = null;
+function openDelete(a) {
+  deleting = a; const mine = Object.values(students).filter(x => x.agentUid === a.uid), n = mine.length;
+  $('dlTitle').textContent = 'Supprimer ' + (a.name || a.email);
+  $('dlSub').textContent = (a.email || '') + (n ? ' · ' + n + ' inscription' + (n > 1 ? 's' : '') : ' · aucune inscription');
+  $('dlChoices').hidden = !n;
+  document.querySelector('input[name=dlWhat][value=keep]').checked = true;
+  const others = Object.values(agents).filter(x => x.uid !== a.uid && x.active !== false).sort((x, y) => String(x.name).localeCompare(String(y.name), 'fr'));
+  $('dlTo').innerHTML = others.length ? others.map(x => '<option value="' + esc(x.uid) + '">' + esc(x.name) + ' · ' + esc(wName(x.wilaya)) + '</option>').join('') : '<option value="">Aucun autre agent actif</option>';
+  $('dlSure').checked = false; $('dlErr').hidden = true;
+  $('agentPop').close(); $('delPop').showModal();
+}
+async function doDelete() {
+  const a = deleting; if (!a) return;
+  const err = t => { $('dlErr').textContent = t; $('dlErr').hidden = false; };
+  if (!$('dlSure').checked) return err('Cochez la case pour confirmer la suppression.');
+  const what = (document.querySelector('input[name=dlWhat]:checked') || {}).value || 'keep', mine = Object.values(students).filter(x => x.agentUid === a.uid);
+  const to = agents[$('dlTo').value];
+  if (mine.length && what === 'move' && !to) return err('Choisissez l\u2019agent qui reçoit les inscriptions.');
+  $('dlGo').disabled = true;
+  try {
+    const now = new Date().toISOString();
+    for (const st of mine) {
+      if (what === 'delete') await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', st.id));
+      else if (what === 'move') await fb.F.setDoc(fb.F.doc(fb.db, 'students', st.id), { agentUid: to.uid, agentName: to.name, agentWilaya: +to.wilaya || st.agentWilaya, history: fb.F.arrayUnion({ at: now, by: 'Direction', status: st.status, note: 'Transféré de ' + (a.name || a.email) }) }, { merge: true });
+    }
+    await fb.F.setDoc(fb.F.doc(fb.db, 'removed', a.uid), { uid: a.uid, email: a.email || '', name: a.name || '', at: now });
+    await fb.F.deleteDoc(fb.F.doc(fb.db, 'agents', a.uid));
+    await fb.F.deleteDoc(fb.F.doc(fb.db, 'requests', a.uid)).catch(() => {});
+    $('delPop').close(); deleting = null;
+    toast((a.name || a.email) + ' supprimé. Pour réutiliser son email, supprimez aussi sa connexion dans Firebase.');
+  } catch (e) { err('Suppression impossible. Vérifiez que les nouvelles règles Firebase sont publiées.'); }
+  finally { $('dlGo').disabled = false; }
 }
 let editProg = null;
 function openProg(id) {
@@ -884,6 +975,7 @@ document.addEventListener('click', async e => {
   if ((el = q('[data-new]'))) return openStudent(null, el.getAttribute('data-new') || '');
   if ((el = q('[data-open]'))) return openDetail(el.getAttribute('data-open'));
   if ((el = q('[data-agent]'))) return openAgent(el.getAttribute('data-agent'));
+  if ((el = q('[data-activate]'))) return openActivate(el.getAttribute('data-activate'));
   if ((el = q('[data-prog]')) && isAdmin()) return openProg(el.getAttribute('data-prog'));
   if (q('#addAgent') || q('#addAgent2')) return openAgent(null);
   if (q('#addProg') || q('#addProg2')) return openProg(null);
@@ -917,6 +1009,9 @@ $('sDelete').addEventListener('click', async () => {
   try { await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', editing.id)); $('studentPop').close(); toast('Inscription retirée'); } catch (x) { toast('Impossible : l\u2019inscription a déjà été traitée.'); }
 });
 $('agentForm').addEventListener('submit', e => { e.preventDefault(); saveAgent(); });
+$('aDelete').addEventListener('click', () => { if (editAgent) openDelete(editAgent); });
+$('delForm').addEventListener('submit', e => { e.preventDefault(); doDelete(); });
+$('dlTo').addEventListener('change', () => { document.querySelector('input[name=dlWhat][value=move]').checked = true; });
 $('aSuspend').addEventListener('click', async () => {
   const a = editAgent; if (!a) return;
   if (a.active !== false && !confirm('Suspendre ' + (a.name || a.email) + ' ? Il ne pourra plus se connecter. Ses inscriptions restent visibles.')) return;
