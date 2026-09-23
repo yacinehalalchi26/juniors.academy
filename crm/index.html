@@ -163,6 +163,8 @@
     .sheet form { display: flex; flex-direction: column; height: 100%; }
     .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; background: var(--ink); color: #fff; }
     .sheet-head h2 { margin: 0; font-family: var(--display); font-size: 1.2rem; letter-spacing: -.01em; }
+    .track-link { margin-left: auto; margin-right: 10px; display: inline-flex; align-items: center; min-height: 34px; padding: 5px 14px; border-radius: 999px; background: #2B6FD6; color: #fff; font-weight: 600; font-size: .82rem; text-decoration: none; white-space: nowrap; }
+    .track-link:hover { background: #3a7de0; }
     .sheet-head p { margin: 2px 0 0; font-size: .82rem; color: var(--highlight); font-weight: 600; }
     .x { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; font-size: 1.3rem; line-height: 1; }
     .sheet-body { flex: 1; overflow-y: auto; padding: 18px 20px 30px; }
@@ -403,6 +405,7 @@
   <form id="form" novalidate>
     <div class="sheet-head">
       <div><h2 id="sheetTitle">New lead</h2><p id="sheetNum"></p></div>
+      <a class="track-link" id="btnTrack" href="../tracker/" hidden>Track this file →</a>
       <button type="button" class="x" id="btnClose" aria-label="Close">×</button>
     </div>
 
@@ -671,6 +674,8 @@ function openApp() {
     state.bookings = snap.docs.map(d => normalize(d.data()));
     if (first) { first = false; if (pool().some(isDue)) view = 'followups'; else if (state.bookings.length) view = 'all'; }
     render();
+    const link = /^#open=(.+)$/.exec(location.hash);
+    if (link) { const id = decodeURIComponent(link[1]); history.replaceState(null, '', location.pathname); if (state.bookings.some(b => b.id === id)) { view = 'all'; render(); openSheet(id); } }
   }, denied));
   unsub.push(F.onSnapshot(F.collection(db, 'crmUsers'), snap => { team = snap.docs.map(d => d.data()).sort((a, b) => String(a.name).localeCompare(String(b.name), 'en')); fillOwners(); render(); }, () => {}));
   unsub.push(F.onSnapshot(F.doc(db, 'crmMeta', 'counters'), d => { state.seq = (d.exists() && d.data().seq) || {}; }, () => {}));
@@ -851,6 +856,7 @@ function openSheet(id) {
   $('fldName').classList.remove('invalid'); $('btnDelete').hidden = isNew || !me.isDirector; dirty = false;
   $('sheetBy').textContent = isNew ? '' : 'Last changed ' + (draft.updatedAt ? frDate(draft.updatedAt.slice(0, 10)) : '') + (draft.updatedBy ? ' by ' + draft.updatedBy : '');
   renderAge(); renderCalls(); renderPays();
+  $('btnTrack').hidden = isNew || draft.status !== 'booked'; $('btnTrack').href = '../tracker/#f=' + encodeURIComponent(draft.id);
   sheet.showModal(); if (isNew) $('fName').focus();
   $('form').querySelector('.sheet-body').scrollTop = 0;
 }
