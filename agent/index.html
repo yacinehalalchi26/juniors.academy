@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Juniors Agents</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#14181D">
+  <!-- Tab icon: green map pin, built into the page (CRM pink, HR purple, Chat teal, Alumni gold, Tracker blue) -->
+  <link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+  <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       JUNIORS AGENTS — portail des agents partenaires (juniors.academy/agent)
+       Les agents inscrivent leurs élèves ; la direction suit l'activité
+       par wilaya. Seul le bloc SETTINGS en bas de page est à modifier.
+       ============================================================ */
+    :root {
+      --ink: #14181D; --paper: #F6F6F2; --card: #fff;
+      --green: #0B7A4B; --green-2: #15A064; --green-soft: rgba(11,122,75,.1); --green-text: #07633C;
+      --red: #DC143C; --red-soft: rgba(220,20,60,.09); --red-text: #B0102F;
+      --amber: #B7791F; --amber-soft: rgba(242,169,59,.18); --amber-text: #8A5A00;
+      --blue: #2B6FD6; --blue-soft: rgba(43,111,214,.1); --blue-text: #1F58B0;
+      --muted: #6B737D; --body: #3D444C; --line: rgba(20,24,29,.09);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+      --display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 14.5px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--green); outline-offset: 2px; border-radius: 8px; }
+    [hidden] { display: none !important; }
+    .num { font-variant-numeric: tabular-nums; }
+    svg.i { width: 18px; height: 18px; flex: none; }
+
+    /* top bar */
+    .top { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 14px; padding: 10px clamp(12px, 3vw, 28px); padding-top: calc(10px + env(safe-area-inset-top, 0px)); background: var(--ink); color: #fff; }
+    .brand { display: flex; align-items: center; gap: 11px; flex: none; }
+    .pin { position: relative; width: 32px; height: 32px; border-radius: 50% 50% 50% 4px; background: var(--green); transform: rotate(-45deg); display: grid; place-items: center; flex: none; }
+    .pin b { transform: rotate(45deg); font-family: var(--display); font-size: .72rem; font-weight: 800; color: #fff; }
+    .brand strong { display: block; font-family: var(--display); font-size: 1.1rem; letter-spacing: -.01em; }
+    .brand small { display: block; font-size: .72rem; color: rgba(255,255,255,.55); }
+    .tabs { display: flex; gap: 4px; margin-left: 18px; }
+    .tabs button { min-height: 36px; padding: 6px 14px; border: 0; border-radius: 999px; background: none; color: rgba(255,255,255,.66); font-weight: 600; font-size: .88rem; white-space: nowrap; }
+    .tabs button:hover { color: #fff; }
+    .tabs button[aria-pressed="true"] { background: rgba(255,255,255,.12); color: #fff; }
+    .top-r { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .who { text-align: right; font-size: .78rem; color: rgba(255,255,255,.6); line-height: 1.25; white-space: nowrap; }
+    .who b { display: block; color: #fff; font-size: .86rem; }
+    .tbtn { min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.07); color: #fff; font-weight: 600; font-size: .84rem; white-space: nowrap; }
+    .tbtn:hover { background: rgba(255,255,255,.16); }
+
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 22px clamp(12px, 3vw, 28px) 70px; }
+    .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; margin: 0 0 18px; }
+    .head h1 { margin: 0; font-family: var(--display); font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -.02em; line-height: 1.1; }
+    .head p { margin: 4px 0 0; color: var(--muted); font-size: .92rem; }
+    .head-acts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 999px; border: 1px solid transparent; font-weight: 600; font-size: .9rem; white-space: nowrap; text-decoration: none; transition: transform .2s var(--ease), background .2s, border-color .2s; }
+    .btn:active { transform: scale(.97); } .btn:disabled { opacity: .55; cursor: default; }
+    .btn svg { width: 17px; height: 17px; }
+    .btn-green { background: var(--green); color: #fff; } .btn-green:hover { background: #0a6b42; }
+    .btn-ink { background: var(--ink); color: #fff; }
+    .btn-light { background: #fff; border-color: var(--line); color: var(--ink); } .btn-light:hover { border-color: rgba(20,24,29,.3); }
+    .btn-red { background: transparent; border-color: rgba(220,20,60,.4); color: var(--red-text); }
+    .btn-small { min-height: 34px; padding: 5px 13px; font-size: .84rem; }
+    .btn-big { min-height: 50px; padding: 12px 24px; font-size: 1rem; }
+    .linkish { background: none; border: 0; padding: 0; color: var(--muted); font-weight: 600; font-size: .84rem; text-decoration: underline; }
+
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; }
+    .pad { padding: 16px 18px; }
+    .h { margin: 0 0 12px; font-family: var(--display); font-size: 1.05rem; letter-spacing: -.01em; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .h small { font-family: 'Inter', sans-serif; font-weight: 500; font-size: .8rem; color: var(--muted); }
+
+    /* stats */
+    .stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
+    .stats.s4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .stat { padding: 14px 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
+    .stat b { display: block; font-family: var(--display); font-size: clamp(1.35rem, 2.2vw, 1.85rem); letter-spacing: -.02em; line-height: 1.05; }
+    .stat span { display: block; margin-top: 3px; font-size: .8rem; color: var(--muted); font-weight: 500; }
+    .stat small { display: block; margin-top: 2px; font-size: .74rem; color: var(--muted); }
+    .stat.dark { background: var(--ink); color: #fff; border-color: var(--ink); } .stat.dark span, .stat.dark small { color: rgba(255,255,255,.65); } .stat.dark b { color: #6FE0A6; }
+
+    /* status pills */
+    .st { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: .74rem; font-weight: 700; white-space: nowrap; }
+    .st::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .st-submitted { background: var(--blue-soft); color: var(--blue-text); }
+    .st-confirmed { background: var(--amber-soft); color: var(--amber-text); }
+    .st-paid { background: var(--green-soft); color: var(--green-text); }
+    .st-departed { background: var(--ink); color: #fff; }
+    .st-cancelled { background: rgba(20,24,29,.07); color: var(--muted); }
+
+    /* national view */
+    .nat { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 14px; margin: 0 0 14px; }
+    .mapcard { position: relative; overflow: hidden; }
+    .map-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 18px 0; }
+    .map-top h2 { margin: 0; font-family: var(--display); font-size: 1.05rem; }
+    .seg { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); }
+    .seg button { min-height: 30px; padding: 4px 12px; border: 0; border-radius: 999px; background: none; font-weight: 600; font-size: .8rem; color: var(--body); white-space: nowrap; }
+    .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .map-top .seg:first-of-type { margin-left: auto; }
+    .mapbox { position: relative; padding: 6px 12px 12px; }
+    .mapbox svg { display: block; width: 100%; height: auto; }
+    .land { fill: #EEF1EA; stroke: #C9D3C4; stroke-width: 1.2; stroke-linejoin: round; }
+    .sea { fill: #E6EEF3; }
+    .coast-label { font-size: 11px; fill: #8AA2B2; font-style: italic; letter-spacing: .12em; }
+    .dot-none { fill: #CBD2C8; }
+    .dot-agent { fill: #fff; stroke: var(--green); stroke-width: 2; }
+    .bub { fill: var(--green); fill-opacity: .78; stroke: #fff; stroke-width: 1.5; cursor: pointer; transition: fill-opacity .2s; }
+    .bub:hover, .bub.sel { fill-opacity: 1; stroke: var(--ink); stroke-width: 2.2; }
+    .bub-lab { font-size: 10.5px; font-weight: 700; fill: #fff; pointer-events: none; text-anchor: middle; dominant-baseline: central; }
+    .wl-name { font-size: 10px; font-weight: 600; fill: var(--body); pointer-events: none; }
+    .tip { position: absolute; z-index: 5; pointer-events: none; padding: 9px 12px; border-radius: 12px; background: var(--ink); color: #fff; font-size: .8rem; line-height: 1.4; box-shadow: 0 14px 30px -12px rgba(0,0,0,.5); transform: translate(-50%, calc(-100% - 12px)); white-space: nowrap; opacity: 0; transition: opacity .15s; }
+    .tip.on { opacity: 1; }
+    .tip b { display: block; font-size: .88rem; }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 0 18px 14px; font-size: .76rem; color: var(--muted); }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+    .rank { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+    .rank li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 6px; border-radius: 12px; }
+    .rank li:hover { background: var(--paper); }
+    .rank .pos { font-family: var(--display); font-weight: 800; color: var(--muted); text-align: center; }
+    .rank li:nth-child(1) .pos { color: #C9951B; } .rank li:nth-child(2) .pos { color: #8E9AA8; } .rank li:nth-child(3) .pos { color: #B87333; }
+    .rank .nm b { display: block; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rank .nm small { display: block; font-size: .74rem; color: var(--muted); }
+    .rank .bar { height: 6px; border-radius: 999px; background: rgba(20,24,29,.07); margin-top: 5px; overflow: hidden; }
+    .rank .bar i { display: block; height: 100%; background: var(--green); border-radius: inherit; }
+    .rank .val { text-align: right; font-weight: 700; font-size: .9rem; }
+    .rank .val small { display: block; font-weight: 500; font-size: .72rem; color: var(--muted); }
+
+    .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0 0 14px; }
+    .funnel { display: grid; gap: 8px; }
+    .fstep { display: grid; grid-template-columns: 96px minmax(0, 1fr) 44px; gap: 10px; align-items: center; font-size: .86rem; }
+    .fstep .track { height: 26px; border-radius: 8px; background: var(--paper); overflow: hidden; }
+    .fstep .track i { display: block; height: 100%; border-radius: 8px; }
+    .fstep b { text-align: right; font-variant-numeric: tabular-nums; }
+    .hbars { display: grid; gap: 9px; }
+    .hb { display: grid; grid-template-columns: minmax(0, 1fr) 36px; gap: 8px; align-items: center; font-size: .84rem; }
+    .hb span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+    .hb .track { height: 8px; border-radius: 999px; background: var(--paper); overflow: hidden; }
+    .hb .track i { display: block; height: 100%; background: var(--ink); border-radius: inherit; }
+    .hb b { text-align: right; font-variant-numeric: tabular-nums; }
+    .months { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; align-items: end; height: 150px; padding-top: 10px; }
+    .mo { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 5px; font-size: .7rem; color: var(--muted); }
+    .mo i { width: 100%; max-width: 30px; border-radius: 6px 6px 3px 3px; background: var(--green); min-height: 2px; }
+    .mo b { font-size: .72rem; color: var(--ink); }
+    .gaps { display: flex; flex-wrap: wrap; gap: 6px; }
+    .gap { padding: 4px 10px; border-radius: 999px; background: var(--red-soft); color: var(--red-text); font-size: .78rem; font-weight: 600; }
+    .wdetail { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--green-soft); font-size: .86rem; }
+    .wdetail b { font-family: var(--display); font-size: 1rem; }
+
+    /* tables */
+    .bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; }
+    .bar input[type=search], .bar select { min-height: 38px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: .86rem; }
+    .bar input[type=search] { flex: 1; min-width: 200px; }
+    .tablewrap { background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+    .tscroll { overflow-x: auto; }
+    table.list { width: 100%; border-collapse: collapse; min-width: 880px; }
+    .list th { text-align: left; font-size: .74rem; font-weight: 600; color: var(--muted); padding: 11px 12px; border-bottom: 1px solid var(--line); background: #FCFCFA; white-space: nowrap; }
+    .list td { padding: 11px 12px; border-bottom: 1px solid var(--line); font-size: .87rem; vertical-align: middle; }
+    .list tr:last-child td { border-bottom: 0; }
+    .list tbody tr { cursor: pointer; } .list tbody tr:hover { background: #FAFAF8; }
+    .list td small { display: block; color: var(--muted); font-size: .76rem; }
+    .av { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: .74rem; color: #fff; background: var(--c, #556); }
+    .person { display: flex; align-items: center; gap: 10px; }
+    .empty { text-align: center; padding: 50px 20px; background: #fff; border: 1px solid var(--line); border-radius: 20px; }
+    .empty h2 { margin: 12px 0 6px; font-family: var(--display); font-size: 1.3rem; }
+    .empty p { margin: 0 auto 16px; max-width: 46ch; color: var(--muted); }
+
+    /* agent home */
+    .hello { position: relative; overflow: hidden; margin: 0 0 16px; padding: 22px 24px; border-radius: 24px; background: var(--ink); color: #fff; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .hello h1 { margin: 0 0 4px; font-family: var(--display); font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: -.02em; }
+    .hello p { margin: 0; color: rgba(255,255,255,.7); }
+    .hello .grow { flex: 1; min-width: 240px; }
+    .hello .rankbox { text-align: center; padding: 10px 16px; border-radius: 16px; background: rgba(255,255,255,.08); }
+    .hello .rankbox b { display: block; font-family: var(--display); font-size: 2rem; color: #6FE0A6; line-height: 1; }
+    .hello .rankbox small { color: rgba(255,255,255,.65); font-size: .78rem; }
+    .progs { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .prog { padding: 16px 18px; background: #fff; border: 1px solid var(--line); border-radius: 18px; display: flex; flex-direction: column; gap: 6px; }
+    .prog b { font-family: var(--display); font-size: 1.08rem; }
+    .prog .meta { font-size: .84rem; color: var(--muted); }
+    .prog .price { font-family: var(--display); font-size: 1.2rem; color: var(--green-text); margin-top: 4px; }
+    .prog .full { align-self: flex-start; }
+
+    /* dialogs */
+    dialog.pop { border: 0; padding: 0; border-radius: 24px; width: min(640px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--paper); color: var(--ink); box-shadow: 0 40px 90px -20px rgba(20,24,29,.5); }
+    dialog.pop::backdrop { background: rgba(20,24,29,.55); }
+    dialog.pop[open] { animation: rise .3s var(--ease); }
+    @keyframes rise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+    .pop-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; background: var(--ink); color: #fff; position: sticky; top: 0; z-index: 2; }
+    .pop-head h2 { margin: 0; font-family: var(--display); font-size: 1.1rem; }
+    .pop-head p { margin: 1px 0 0; font-size: .8rem; color: rgba(255,255,255,.6); }
+    .x { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; font-size: 1.25rem; line-height: 1; flex: none; }
+    .pop-body { display: grid; gap: 14px; padding: 18px; }
+    .fs { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .fs legend { padding: 0; margin: 0 0 4px; font-family: var(--display); font-weight: 700; font-size: .98rem; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .fld { display: grid; gap: 4px; min-width: 0; }
+    .fld.full { grid-column: 1 / -1; }
+    .fld label { font-size: .76rem; font-weight: 600; color: var(--body); }
+    .fld input, .fld select, .fld textarea { width: 100%; min-height: 42px; padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(20,24,29,.16); background: #fff; }
+    .fld textarea { min-height: 80px; resize: vertical; }
+    .fld input:focus, .fld select:focus, .fld textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .fld .hint { font-size: .74rem; color: var(--muted); }
+    .check { display: flex; gap: 10px; align-items: flex-start; font-size: .88rem; padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+    .check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--green); flex: none; }
+    .err { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--red-soft); color: var(--red-text); font-size: .86rem; font-weight: 500; }
+    .info { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--green-soft); color: var(--green-text); font-size: .86rem; font-weight: 500; }
+    .pop-foot { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+    .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .fact { padding: 9px 12px; border-radius: 12px; background: #fff; border: 1px solid var(--line); }
+    .fact span { display: block; font-size: .72rem; color: var(--muted); font-weight: 600; }
+    .fact b { display: block; font-size: .92rem; margin-top: 1px; overflow-wrap: anywhere; }
+    .steps { display: flex; gap: 6px; flex-wrap: wrap; }
+    .hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: .84rem; }
+    .hist li { display: flex; gap: 10px; }
+    .hist li i { flex: none; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--green); }
+    .hist small { display: block; color: var(--muted); font-size: .74rem; }
+
+    /* sign in */
+    .gate { position: fixed; inset: 0; z-index: 700; display: grid; place-items: center; padding: 20px; overflow-y: auto; background: radial-gradient(900px 500px at 15% -10%, rgba(11,122,75,.4), transparent 60%), var(--ink); }
+    .gate-card { width: min(100%, 420px); background: var(--paper); border-radius: 26px; padding: 32px 26px 24px; box-shadow: 0 40px 100px -30px rgba(0,0,0,.7); }
+    .gate-card .pin { margin: 4px auto 18px; width: 46px; height: 46px; } .gate-card .pin b { font-size: .95rem; }
+    .gate-card h1 { margin: 0 0 6px; font-family: var(--display); font-size: 1.55rem; letter-spacing: -.02em; text-align: center; }
+    .gate-card .lead { margin: 0 0 18px; text-align: center; color: var(--muted); font-size: .9rem; }
+    .gate-card form { display: grid; gap: 12px; }
+    .gate-card .btn { width: 100%; min-height: 46px; }
+    .gate-card .err, .gate-card .info { margin: 0 0 12px; }
+
+    .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 800; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-weight: 600; font-size: .88rem; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
+    .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1150px) { .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } .nat { grid-template-columns: 1fr; } .grid3 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 760px) {
+      .top { flex-wrap: wrap; } .tabs { order: 3; width: 100%; margin: 0; overflow-x: auto; } .who { display: none; } .brand small { display: none; }
+      .stats, .stats.s4 { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .grid3 { grid-template-columns: 1fr; }
+      .fields, .facts { grid-template-columns: 1fr; }
+      .map-top .seg:first-of-type { margin-left: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.7-.1 1.4z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
+</svg>
+
+<!-- ==================== CONNEXION ==================== -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <span class="pin" aria-hidden="true"><b>JA</b></span>
+    <h1 id="gTitle">Espace agents</h1>
+    <p class="lead" id="gLead">Ouverture…</p>
+    <p class="err" id="gMsg" role="alert" hidden></p>
+    <form id="signForm" hidden novalidate>
+      <div class="fld"><label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="username" required></div>
+      <div class="fld"><label for="gPass">Mot de passe</label><input id="gPass" type="password" autocomplete="current-password" required></div>
+      <button type="submit" class="btn btn-green" id="gSubmit">Se connecter</button>
+      <button type="button" class="linkish" id="gForgot" style="justify-self:center">Mot de passe oublié</button>
+    </form>
+    <form id="profileForm" hidden novalidate>
+      <div class="fld"><label for="pName">Nom complet</label><input id="pName" type="text" autocomplete="name" required></div>
+      <div class="fld"><label for="pAgency">Agence ou école (facultatif)</label><input id="pAgency" type="text" placeholder="Agence Horizon, Sétif"></div>
+      <div class="fld"><label for="pPhone">Téléphone</label><input id="pPhone" type="tel" autocomplete="tel" placeholder="0550 12 34 56" required></div>
+      <div class="fld"><label for="pWilaya">Votre wilaya</label><select id="pWilaya" required></select><span class="hint">C'est la région que vous représentez. Seule la direction pourra la modifier ensuite.</span></div>
+      <button type="submit" class="btn btn-green">Continuer</button>
+    </form>
+    <button type="button" class="btn btn-light" id="gOut" style="margin-top:12px" hidden>Se déconnecter</button>
+  </div>
+</div>
+
+<!-- ==================== APPLICATION ==================== -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="brand"><span class="pin" aria-hidden="true"><b>JA</b></span><span><strong>Juniors Agents</strong><small id="brandSub">Espace agents</small></span></div>
+    <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+    <div class="top-r"><span class="who" id="who"></span><button type="button" class="tbtn" id="btnOut">Déconnexion</button></div>
+  </header>
+  <main class="wrap" id="main"></main>
+</div>
+
+<!-- Fiche d'inscription (agent) -->
+<dialog class="pop" id="studentPop" aria-labelledby="spTitle">
+  <div class="pop-head"><div><h2 id="spTitle">Inscrire un élève</h2><p id="spSub">Les champs marqués * sont obligatoires</p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <form class="pop-body" id="studentForm" novalidate>
+    <fieldset class="fs"><legend>Programme</legend>
+      <div class="fld full"><label for="sProg">Programme choisi *</label><select id="sProg" required></select><span class="hint" id="sProgInfo"></span></div>
+    </fieldset>
+    <fieldset class="fs"><legend>Élève</legend>
+      <div class="fields">
+        <div class="fld"><label for="sFirst">Prénom *</label><input id="sFirst" type="text" required></div>
+        <div class="fld"><label for="sLast">Nom *</label><input id="sLast" type="text" required></div>
+        <div class="fld"><label for="sDob">Date de naissance *</label><input id="sDob" type="date" required><span class="hint" id="sAge"></span></div>
+        <div class="fld"><label for="sGender">Sexe</label><select id="sGender"><option value="">—</option><option value="F">Fille</option><option value="M">Garçon</option></select></div>
+        <div class="fld"><label for="sLevel">Niveau scolaire</label><select id="sLevel"><option value="">—</option><option>Primaire</option><option>Collège (CEM)</option><option>Lycée</option><option>Université</option><option>Autre</option></select></div>
+        <div class="fld"><label for="sWilaya">Wilaya de résidence *</label><select id="sWilaya" required></select></div>
+        <div class="fld full"><label for="sPass">Passeport</label><select id="sPass"><option value="valid">Valide</option><option value="progress">En cours de demande</option><option value="none">Pas encore</option></select></div>
+      </div>
+    </fieldset>
+    <fieldset class="fs"><legend>Parent ou tuteur</legend>
+      <div class="fields">
+        <div class="fld"><label for="sParent">Nom complet *</label><input id="sParent" type="text" required></div>
+        <div class="fld"><label for="sPhone">Téléphone *</label><input id="sPhone" type="tel" placeholder="0550 12 34 56" required></div>
+        <div class="fld full"><label for="sEmail">Email</label><input id="sEmail" type="email" placeholder="parent@email.com"></div>
+      </div>
+    </fieldset>
+    <div class="fld"><label for="sNotes">Remarques</label><textarea id="sNotes" maxlength="800" placeholder="Allergies, frère ou sœur inscrit, disponibilités…"></textarea></div>
+    <label class="check"><input type="checkbox" id="sConsent"> <span>Les parents ont accepté que ces informations soient transmises à Juniors Academy pour l'inscription de leur enfant. *</span></label>
+    <p class="err" id="sErr" hidden></p>
+    <div class="pop-foot"><button type="button" class="btn btn-red" id="sDelete" hidden>Retirer cette inscription</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green" id="sSave">Envoyer l'inscription</button></div>
+  </form>
+</dialog>
+
+<!-- Détail d'une inscription (direction) -->
+<dialog class="pop" id="detailPop" aria-labelledby="dpTitle">
+  <div class="pop-head"><div><h2 id="dpTitle"></h2><p id="dpSub"></p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="pop-body" id="dpBody"></div>
+</dialog>
+
+<!-- Agent (direction) -->
+<dialog class="pop" id="agentPop" aria-labelledby="apTitle" style="width:min(520px,calc(100vw - 24px))">
+  <div class="pop-head"><div><h2 id="apTitle">Ajouter un agent</h2><p>Il se connectera avec cet email et ce mot de passe</p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <form class="pop-body" id="agentForm" novalidate>
+    <div class="fields">
+      <div class="fld full"><label for="aName">Nom complet</label><input id="aName" type="text" required></div>
+      <div class="fld" id="aEmailF"><label for="aEmail">Email (identifiant)</label><input id="aEmail" type="email" autocomplete="off"></div>
+      <div class="fld" id="aPassF"><label for="aPass">Premier mot de passe (6+)</label><input id="aPass" type="text" autocomplete="off"></div>
+      <div class="fld"><label for="aWilaya">Wilaya</label><select id="aWilaya"></select><span class="hint">Laissez vide : l'agent la choisira à sa première connexion.</span></div>
+      <div class="fld"><label for="aRate">Commission (%)</label><input id="aRate" type="number" min="0" max="50" step="0.5" value="10"></div>
+      <div class="fld full"><label for="aPhone">Téléphone</label><input id="aPhone" type="tel"></div>
+    </div>
+    <p class="err" id="aErr" hidden></p>
+    <div class="pop-foot"><button type="button" class="btn btn-red" id="aSuspend" hidden>Suspendre</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green" id="aSave">Créer l'agent</button></div>
+  </form>
+</dialog>
+
+<!-- Programme (direction) -->
+<dialog class="pop" id="progPop" aria-labelledby="ppTitle" style="width:min(520px,calc(100vw - 24px))">
+  <div class="pop-head"><div><h2 id="ppTitle">Nouveau programme</h2><p>Visible par tous les agents</p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <form class="pop-body" id="progForm" novalidate>
+    <div class="fields">
+      <div class="fld full"><label for="pgName">Programme</label><input id="pgName" type="text" placeholder="Séjour linguistique Angleterre" required></div>
+      <div class="fld"><label for="pgDest">Destination</label><input id="pgDest" type="text" placeholder="Oundle, Angleterre"></div>
+      <div class="fld"><label for="pgAges">Âges</label><input id="pgAges" type="text" placeholder="10 à 17 ans"></div>
+      <div class="fld"><label for="pgStart">Départ</label><input id="pgStart" type="date"></div>
+      <div class="fld"><label for="pgEnd">Retour</label><input id="pgEnd" type="date"></div>
+      <div class="fld"><label for="pgPrice">Prix (DA)</label><input id="pgPrice" type="number" min="0" step="1000" placeholder="450000"></div>
+      <div class="fld"><label for="pgSeats">Places</label><input id="pgSeats" type="number" min="0" step="1" placeholder="30"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="pgOpen" checked> <span>Ouvert aux inscriptions</span></label>
+    <p class="err" id="pgErr" hidden></p>
+    <div class="pop-foot"><button type="button" class="btn btn-red" id="pgDelete" hidden>Supprimer</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green">Enregistrer</button></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module">
+/* ============================================================
+   SETTINGS — la seule partie à modifier.
+   1) FIREBASE_CONFIG : les six valeurs du projet Firebase des agents
+      (juniors-agent > Paramètres du projet > Vos applications > Web).
+   2) ADMIN_EMAILS : la direction (mêmes emails que dans les règles).
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyABlPcP25gg_3H6TTTOUlrOGL5LPRwdkuA",
+  authDomain: "juniors-agent.firebaseapp.com",
+  projectId: "juniors-agent",
+  storageBucket: "juniors-agent.firebasestorage.app",
+  messagingSenderId: "706189832999",
+  appId: "1:706189832999:web:c3bdd46dc7d07ed2c3af02"
+};
+const ADMIN_EMAILS = ['director@juniors.academy'];
+const CURRENCY = 'DA';
+/* ============================================================ */
+
+const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
+const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+
+/* ---------- Les 69 wilayas (loi n° 26-06 du 4 avril 2026) : code, nom, latitude, longitude du chef-lieu ---------- */
+const WILAYAS = [
+  [1,'Adrar',27.87,-0.29],[2,'Chlef',36.16,1.33],[3,'Laghouat',33.80,2.87],[4,'Oum El Bouaghi',35.88,7.11],[5,'Batna',35.56,6.17],
+  [6,'Béjaïa',36.75,5.08],[7,'Biskra',34.85,5.73],[8,'Béchar',31.62,-2.22],[9,'Blida',36.47,2.83],[10,'Bouira',36.37,3.90],
+  [11,'Tamanrasset',22.79,5.52],[12,'Tébessa',35.40,8.12],[13,'Tlemcen',34.88,-1.32],[14,'Tiaret',35.37,1.32],[15,'Tizi Ouzou',36.71,4.05],
+  [16,'Alger',36.75,3.06],[17,'Djelfa',34.67,3.26],[18,'Jijel',36.82,5.77],[19,'Sétif',36.19,5.41],[20,'Saïda',34.83,0.15],
+  [21,'Skikda',36.88,6.91],[22,'Sidi Bel Abbès',35.19,-0.63],[23,'Annaba',36.90,7.77],[24,'Guelma',36.46,7.43],[25,'Constantine',36.37,6.61],
+  [26,'Médéa',36.26,2.75],[27,'Mostaganem',35.93,0.09],[28,"M'Sila",35.70,4.54],[29,'Mascara',35.40,0.14],[30,'Ouargla',31.95,5.33],
+  [31,'Oran',35.70,-0.63],[32,'El Bayadh',33.68,1.02],[33,'Illizi',26.48,8.47],[34,'Bordj Bou Arréridj',36.07,4.76],[35,'Boumerdès',36.76,3.48],
+  [36,'El Tarf',36.77,8.31],[37,'Tindouf',27.67,-8.15],[38,'Tissemsilt',35.61,1.81],[39,'El Oued',33.37,6.87],[40,'Khenchela',35.44,7.14],
+  [41,'Souk Ahras',36.29,7.95],[42,'Tipaza',36.59,2.45],[43,'Mila',36.45,6.26],[44,'Aïn Defla',36.26,1.97],[45,'Naâma',33.27,-0.31],
+  [46,'Aïn Témouchent',35.30,-1.14],[47,'Ghardaïa',32.49,3.67],[48,'Relizane',35.74,0.56],[49,'Timimoun',29.26,0.23],[50,'Bordj Badji Mokhtar',21.33,0.95],
+  [51,'Ouled Djellal',34.42,5.07],[52,'Béni Abbès',30.13,-2.17],[53,'In Salah',27.19,2.46],[54,'In Guezzam',19.57,5.77],[55,'Touggourt',33.10,6.07],
+  [56,'Djanet',24.55,9.48],[57,"El M'Ghair",33.95,5.92],[58,'El Meniaa',30.58,2.88],[59,'Aflou',34.11,2.10],[60,'Barika',35.39,5.37],
+  [61,'El Kantara',35.22,5.71],[62,'Bir El Ater',34.74,8.06],[63,'El Aricha',34.22,-1.26],[64,'Ksar Chellala',35.21,2.32],[65,'Aïn Oussara',35.45,2.91],
+  [66,'Messaad',34.15,3.50],[67,'Ksar El Boukhari',35.89,2.75],[68,'Bou Saâda',35.21,4.18],[69,'El Abiodh Sidi Cheikh',32.90,0.55]
+].map(w => ({ code: w[0], name: w[1], lat: w[2], lon: w[3] }));
+const W = {}; WILAYAS.forEach(w => { W[w.code] = w; });
+const wName = c => (W[c] ? String(c).padStart(2, '0') + ' ' + W[c].name : '—');
+/* big wilayas to cover first (population) */
+const PRIORITY = [16, 31, 19, 17, 25, 5, 9, 13, 2, 15, 28, 6, 7, 26, 14, 34, 23, 35, 10, 21, 22, 30, 29, 27, 42, 39, 18, 43, 48, 44];
+/* simplified border of Algeria (longitude, latitude) */
+const BORDER = [[-2.2,35.1],[-1.3,35.3],[-0.6,35.75],[0.1,35.95],[0.9,36.35],[1.35,36.53],[2.4,36.62],[3.06,36.78],[3.9,36.92],[4.8,36.88],[5.1,36.78],[5.8,36.84],[6.55,37.02],[6.95,36.9],[7.8,36.97],[8.62,36.94],[8.43,36.5],[8.26,35.9],[8.34,35.3],[8.3,34.6],[7.52,34.1],[7.62,33.4],[8.3,32.9],[9.05,32.1],[9.52,30.23],[9.85,29.5],[9.82,28.3],[9.5,27.2],[9.72,26.5],[10.2,25.35],[10.9,24.55],[11.55,24.3],[11.98,23.52],[9.7,22.1],[7.45,20.85],[5.8,19.45],[4.25,19.15],[3.23,19.05],[3.2,19.9],[1.8,20.3],[1.1,20.75],[-4.82,25.0],[-8.67,27.29],[-8.67,27.67],[-8.68,28.7],[-6.9,29.5],[-5.3,29.95],[-3.65,30.05],[-3.7,30.85],[-2.9,31.55],[-1.9,31.85],[-1.22,32.1],[-1.25,32.7],[-1.55,33.1],[-1.75,34.4],[-2.2,35.1]];
+const PROGRAMS_SEED = []; /* programmes créés par la direction */
+
+const STATUS = {
+  submitted: { name: 'Soumis', hint: 'Reçu par Juniors Academy, en cours de vérification' },
+  confirmed: { name: 'Confirmé', hint: 'Place confirmée, en attente du paiement' },
+  paid: { name: 'Payé', hint: 'Inscription payée' },
+  departed: { name: 'Parti', hint: 'L\u2019élève est parti' },
+  cancelled: { name: 'Annulé', hint: 'Inscription annulée' }
+};
+const ORDER = ['submitted', 'confirmed', 'paid', 'departed'];
+const WON = s => s === 'paid' || s === 'departed';
+const COLORS = ['#0B7A4B', '#2B6FD6', '#8E5BD9', '#D9772B', '#C8184A', '#0E8C8C', '#5B6B2B', '#9B3FA8'];
+
+/* ==================== Helpers ==================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const icon = n => '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"/></svg>';
+const nf = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
+const money = n => nf.format(Math.round(n || 0)) + '\u00A0' + CURRENCY;
+const shortMoney = n => n >= 1e6 ? (Math.round(n / 1e5) / 10).toString().replace('.', ',') + '\u00A0M' : n >= 1e3 ? Math.round(n / 1e3) + '\u00A0k' : String(Math.round(n || 0));
+function todayISO() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+const MON = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+const niceDate = iso => { if (!iso) return ''; const p = String(iso).slice(0, 10).split('-'); return (+p[2]) + ' ' + MON[+p[1] - 1] + ' ' + p[0]; };
+const initials = n => { const p = String(n || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase(); };
+const colorOf = id => { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length]; };
+const firstName = n => String(n || '').split(' ')[0];
+function ageFrom(dob) { if (!dob) return null; const t = todayISO().split('-').map(Number), b = dob.split('-').map(Number); let a = t[0] - b[0]; if (t[1] < b[1] || (t[1] === b[1] && t[2] < b[2])) a--; return a >= 0 && a < 120 ? a : null; }
+const phoneOk = p => /^(\+?213|0)[5-7]\d{8}$/.test(String(p || '').replace(/[\s.-]/g, ''));
+function waNumber(phone) { let d = String(phone || '').replace(/\D/g, ''); if (!d) return ''; if (d.indexOf('00') === 0) d = d.slice(2); else if (d.charAt(0) === '0') d = '213' + d.slice(1); return d; }
+const newId = () => String(9e15 - Date.now()).padStart(16, '0') + Math.random().toString(36).slice(2, 6);
+let toastTimer;
+function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3200); }
+const wilayaOptions = (sel, blank) => (blank ? '<option value="">' + esc(blank) + '</option>' : '') + WILAYAS.map(w => '<option value="' + w.code + '"' + (+sel === w.code ? ' selected' : '') + '>' + String(w.code).padStart(2, '0') + ' · ' + esc(w.name) + '</option>').join('');
+
+/* ==================== État ==================== */
+let fb = null, me = null, profile = null, unsub = [];
+let agents = {}, programs = {}, students = {}, board = null;
+let tab = '', filt = { q: '', status: '', prog: '', agent: '', wilaya: '' }, period = 'all', metric = 'count', mapView = 'north', selWilaya = null;
+const isAdmin = () => !!me && me.isAdmin;
+const stop = () => { unsub.forEach(f => { try { f(); } catch (e) {} }); unsub = []; };
+
+/* ==================== Connexion ==================== */
+function gate(mode, msg, info) {
+  $('gate').hidden = mode === 'off'; $('gate').setAttribute('data-mode', mode);
+  $('signForm').hidden = mode !== 'signin'; $('profileForm').hidden = mode !== 'profile'; $('gOut').hidden = !(mode === 'profile' || mode === 'blocked');
+  $('gTitle').textContent = mode === 'profile' ? 'Bienvenue' : 'Espace agents';
+  $('gLead').textContent = { loading: 'Ouverture…', signin: 'Connectez-vous avec l\u2019email et le mot de passe fournis par Juniors Academy.', profile: 'Complétez votre profil. Il ne vous sera demandé qu\u2019une fois.' }[mode] || '';
+  $('gLead').hidden = !$('gLead').textContent;
+  $('gMsg').textContent = msg || ''; $('gMsg').hidden = !msg; $('gMsg').className = info ? 'info' : 'err';
+  if (mode === 'signin') setTimeout(() => $('gEmail').focus(), 50);
+}
+function authMessage(e) {
+  const c = (e && e.code) || '';
+  if (/invalid-credential|wrong-password|user-not-found|invalid-email|missing-password/.test(c)) return 'Email ou mot de passe incorrect.';
+  if (/too-many-requests/.test(c)) return 'Trop d\u2019essais. Patientez quelques minutes.';
+  if (/network-request-failed/.test(c)) return 'Pas de connexion internet.';
+  if (/user-disabled/.test(c)) return 'Ce compte a été désactivé.';
+  return 'Connexion impossible. Réessayez.';
+}
+async function start() {
+  if (!READY) { gate('blocked', 'La base de données n\u2019est pas encore connectée : collez les réglages Firebase (projet juniors-agent) dans FIREBASE_CONFIG, en bas du fichier index.html.', true); return; }
+  gate('loading');
+  try {
+    const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
+    const app = A0.initializeApp(FIREBASE_CONFIG);
+    let db; try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); } catch (e) { db = F.getFirestore(app); }
+    fb = { auth: A.getAuth(app), db, A, F, A0 };
+    A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
+  } catch (e) { gate('blocked', 'Impossible de joindre la base de données. Vérifiez la connexion puis rechargez la page.'); }
+}
+function signedOut() { stop(); me = null; profile = null; agents = {}; programs = {}; students = {}; $('app').hidden = true; if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin'); }
+async function signedIn(u) {
+  const email = (u.email || '').toLowerCase();
+  me = { uid: u.uid, email, isAdmin: ADMIN_EMAILS.map(x => x.toLowerCase()).includes(email) };
+  if (me.isAdmin) { profile = { name: 'Direction', uid: u.uid }; openApp(); return; }
+  gate('loading');
+  try {
+    const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'agents', u.uid));
+    if (!snap.exists()) { gate('blocked', 'Votre compte n\u2019est pas encore activé. Contactez Juniors Academy.'); return; }
+    profile = snap.data();
+    if (profile.active === false) { gate('blocked', 'Votre accès a été suspendu. Contactez Juniors Academy.'); return; }
+    if (!profile.wilaya || !profile.phone) {
+      $('pName').value = profile.name || ''; $('pAgency').value = profile.agency || ''; $('pPhone').value = profile.phone || '';
+      $('pWilaya').innerHTML = wilayaOptions(profile.wilaya, 'Choisir votre wilaya'); $('pWilaya').disabled = !!profile.wilaya;
+      gate('profile'); return;
+    }
+    openApp();
+  } catch (e) { gate('blocked', e && e.code === 'permission-denied' ? 'Les règles Firebase ne sont pas encore publiées (projet juniors-agent).' : 'Impossible de charger votre profil. Rechargez la page.'); }
+}
+function openApp() {
+  const { F, db } = fb;
+  gate('off'); $('app').hidden = false; stop();
+  $('who').innerHTML = isAdmin() ? '<b>Direction</b>' + esc(me.email) : '<b>' + esc(profile.name) + '</b>' + esc(wName(profile.wilaya));
+  $('brandSub').textContent = isAdmin() ? 'Vue nationale' : 'Espace agents';
+  tab = tab || (isAdmin() ? 'national' : 'home');
+  unsub.push(F.onSnapshot(F.collection(db, 'programs'), s => { programs = {}; s.docs.forEach(d => { programs[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); }, deny));
+  if (isAdmin()) {
+    unsub.push(F.onSnapshot(F.collection(db, 'agents'), s => { agents = {}; s.docs.forEach(d => { agents[d.id] = Object.assign({ uid: d.id }, d.data()); }); paint(); publishBoard(); }, deny));
+    unsub.push(F.onSnapshot(F.collection(db, 'students'), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); publishBoard(); }, deny));
+  } else {
+    unsub.push(F.onSnapshot(F.doc(db, 'agents', me.uid), d => { if (d.exists()) { profile = d.data(); if (profile.active === false) { fb.A.signOut(fb.auth); gate('signin', 'Votre accès a été suspendu. Contactez Juniors Academy.'); } paint(); } }, () => {}));
+    unsub.push(F.onSnapshot(F.query(F.collection(db, 'students'), F.where('agentUid', '==', me.uid)), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); }, deny));
+    unsub.push(F.onSnapshot(F.doc(db, 'meta', 'board'), d => { board = d.exists() ? d.data() : null; paint(); }, () => {}));
+  }
+}
+function deny(err) { if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'Accès refusé par les règles Firebase. Vérifiez que les règles sont publiées dans le projet juniors-agent.'); } }
+/* classement anonyme lu par les agents : seulement des identifiants et des nombres */
+let boardTimer = null;
+function publishBoard() {
+  clearTimeout(boardTimer);
+  boardTimer = setTimeout(() => {
+    const y = String(new Date().getFullYear()), score = {};
+    Object.values(agents).filter(a => a.active !== false).forEach(a => { score[a.uid] = 0; });
+    Object.values(students).forEach(s => { if (String(s.createdAt || '').slice(0, 4) === y && s.status !== 'cancelled' && s.status !== 'submitted' && score[s.agentUid] != null) score[s.agentUid]++; });
+    const ranking = Object.keys(score).sort((a, b) => score[b] - score[a]).map(uid => ({ uid, n: score[uid] }));
+    const data = { year: y, ranking, updatedAt: new Date().toISOString() };
+    if (board && JSON.stringify(board.ranking) === JSON.stringify(ranking)) return;
+    board = data; fb.F.setDoc(fb.F.doc(fb.db, 'meta', 'board'), data).catch(() => {});
+  }, 1500);
+}
+
+/* ==================== Calculs ==================== */
+const inPeriod = s => period === 'all' || String(s.createdAt || '').slice(0, 4) === String(new Date().getFullYear());
+const live = () => Object.values(students).filter(s => s.status !== 'cancelled' && inPeriod(s));
+const priceOf = s => +(s.price || (programs[s.programId] || {}).price || 0);
+function agentStats(uid) {
+  const all = Object.values(students).filter(s => s.agentUid === uid && inPeriod(s)), act = all.filter(s => s.status !== 'cancelled');
+  const won = act.filter(s => WON(s.status)), rev = won.reduce((n, s) => n + priceOf(s), 0), rate = +((agents[uid] || profile || {}).rate ?? 10);
+  const last = act.map(s => s.createdAt).sort().pop();
+  return { total: act.length, conf: act.filter(s => s.status !== 'submitted').length, won: won.length, rev, com: rev * rate / 100, rate, conv: act.length ? Math.round(won.length / act.length * 100) : 0, last };
+}
+function byWilaya() {
+  const out = {};
+  WILAYAS.forEach(w => { out[w.code] = { count: 0, rev: 0, res: 0, agents: 0 }; });
+  Object.values(agents).forEach(a => { if (a.active !== false && out[a.wilaya]) out[a.wilaya].agents++; });
+  live().forEach(s => {
+    if (out[s.agentWilaya]) { out[s.agentWilaya].count++; if (WON(s.status)) out[s.agentWilaya].rev += priceOf(s); }
+    if (out[s.studentWilaya]) out[s.studentWilaya].res++;
+  });
+  return out;
+}
+
+/* ==================== Rendu ==================== */
+let painting = false;
+function paint() { if (painting || !me) return; painting = true; requestAnimationFrame(() => { painting = false; render(); }); }
+function render() {
+  const T = isAdmin() ? [['national', 'Vue nationale'], ['students', 'Inscriptions'], ['agents', 'Agents'], ['programs', 'Programmes']] : [['home', 'Mes élèves'], ['programs', 'Programmes']];
+  $('tabs').innerHTML = T.map(t => '<button type="button" data-tab="' + t[0] + '" aria-pressed="' + (tab === t[0]) + '">' + t[1] + '</button>').join('');
+  const m = $('main'), y = window.scrollY;
+  const keep = document.activeElement && document.activeElement.id === 'fQ' ? document.activeElement.selectionStart : null;
+  m.innerHTML = isAdmin() ? ({ national: nationalView, students: studentsView, agents: agentsView, programs: programsAdminView }[tab] || nationalView)()
+    : ({ home: agentHome, programs: programsAgentView }[tab] || agentHome)();
+  if (keep != null && $('fQ')) { $('fQ').focus(); $('fQ').setSelectionRange(keep, keep); }
+  window.scrollTo(0, y);
+}
+const statusPill = s => '<span class="st st-' + esc(s) + '">' + esc((STATUS[s] || {}).name || s) + '</span>';
+const progName = s => s.programName || (programs[s.programId] || {}).name || '—';
+const periodSeg = () => '<div class="seg" role="group" aria-label="Période"><button type="button" data-period="year" aria-pressed="' + (period === 'year') + '">' + new Date().getFullYear() + '</button><button type="button" data-period="all" aria-pressed="' + (period === 'all') + '">Tout</button></div>';
+
+/* ---------- Agent : accueil ---------- */
+function agentHome() {
+  const st = agentStats(me.uid), mine = Object.values(students).sort((a, b) => (a.id < b.id ? -1 : 1));
+  let rankTxt = '';
+  if (board && board.ranking && board.ranking.length) {
+    const i = board.ranking.findIndex(r => r.uid === me.uid);
+    if (i >= 0 && board.ranking[i].n > 0) rankTxt = '<div class="rankbox"><b>' + (i + 1) + (i === 0 ? 'er' : 'e') + '</b><small>sur ' + board.ranking.length + ' agents en ' + esc(board.year) + '</small></div>';
+    else if (i >= 0) rankTxt = '<div class="rankbox" style="max-width:200px"><small>Votre première inscription confirmée vous fait entrer dans le classement ' + esc(board.year) + '.</small></div>';
+  }
+  return '<div class="hello"><div class="grow"><h1>Bonjour ' + esc(firstName(profile.name)) + '</h1><p>Agent Juniors Academy · wilaya ' + esc(wName(profile.wilaya)) + '</p></div>' + rankTxt +
+    '<button type="button" class="btn btn-green btn-big" data-new>' + icon('plus') + 'Inscrire un élève</button></div>' +
+    '<section class="stats s4"><div class="stat"><b class="num">' + st.total + '</b><span>' + (st.total === 1 ? 'élève inscrit' : 'élèves inscrits') + '</span></div><div class="stat"><b class="num">' + st.conf + '</b><span>' + (st.conf === 1 ? 'confirmé' : 'confirmés') + '</span></div><div class="stat"><b class="num">' + st.won + '</b><span>' + (st.won === 1 ? 'payé' : 'payés') + '</span></div><div class="stat dark"><b class="num">' + esc(money(st.com)) + '</b><span>commission estimée</span><small>' + st.rate + ' % des inscriptions payées</small></div></section>' +
+    (mine.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Élève</th><th>Programme</th><th>Parent</th><th>Statut</th><th>Envoyé le</th></tr></thead><tbody>' +
+      mine.map(s => '<tr data-open="' + esc(s.id) + '"><td><div class="person"><span class="av" style="--c:' + colorOf(s.id) + '">' + esc(initials(s.firstName + ' ' + s.lastName)) + '</span><span><b>' + esc(s.firstName + ' ' + s.lastName) + '</b><small>' + (ageFrom(s.dob) != null ? ageFrom(s.dob) + ' ans · ' : '') + esc(wName(s.studentWilaya)) + '</small></span></div></td>' +
+        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '<small>' + esc((STATUS[s.status] || {}).hint || '') + '</small></td><td>' + esc(niceDate(s.createdAt)) + '</td></tr>').join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><span class="pin" aria-hidden="true" style="margin:0 auto;width:44px;height:44px"><b>JA</b></span><h2>Inscrivez votre premier élève</h2><p>Choisissez le programme, renseignez l\u2019élève et ses parents : Juniors Academy reçoit l\u2019inscription immédiatement.</p><button type="button" class="btn btn-green" data-new>' + icon('plus') + 'Inscrire un élève</button></div>');
+}
+function programsAgentView() {
+  const list = Object.values(programs).filter(p => p.open !== false).sort((a, b) => String(a.start || '9').localeCompare(String(b.start || '9')));
+  return '<div class="head"><div><h1>Programmes ouverts</h1><p>Les programmes auxquels vous pouvez inscrire des élèves.</p></div></div>' +
+    (list.length ? '<div class="progs">' + list.map(p => '<div class="prog"><b>' + esc(p.name) + '</b><span class="meta">' + esc([p.dest, p.ages].filter(Boolean).join(' · ')) + '</span>' +
+      (p.start ? '<span class="meta">Du ' + esc(niceDate(p.start)) + (p.end ? ' au ' + esc(niceDate(p.end)) : '') + '</span>' : '') + (p.price ? '<span class="price">' + esc(money(p.price)) + '</span>' : '') +
+      (p.full ? '<span class="st st-cancelled full">Complet</span>' : '<button type="button" class="btn btn-light btn-small" style="align-self:flex-start;margin-top:6px" data-new="' + esc(p.id) + '">Inscrire un élève</button>') + '</div>').join('') + '</div>'
+      : '<div class="empty"><h2>Aucun programme ouvert</h2><p>Juniors Academy publiera bientôt les prochains départs.</p></div>');
+}
+
+/* ---------- Direction : vue nationale ---------- */
+function nationalView() {
+  const L = live(), won = L.filter(s => WON(s.status)), rev = won.reduce((n, s) => n + priceOf(s), 0);
+  const act = Object.values(agents).filter(a => a.active !== false), bw = byWilaya();
+  const covered = WILAYAS.filter(w => bw[w.code].agents > 0).length;
+  const conv = L.length ? Math.round(won.length / L.length * 100) : 0;
+  const ranked = act.map(a => Object.assign({ a }, agentStats(a.uid))).sort((x, y) => y.won - x.won || y.total - x.total || y.rev - x.rev);
+  const maxR = Math.max(1, ...ranked.map(r => r.total));
+  const f = ORDER.map((s, i) => [s, L.filter(x => ORDER.indexOf(x.status) >= i).length]);
+  const fmax = Math.max(1, f[0][1]);
+  const pc = {}; L.forEach(s => { const k = progName(s); pc[k] = (pc[k] || 0) + 1; });
+  const tops = Object.keys(pc).sort((a, b) => pc[b] - pc[a]).slice(0, 6), pmax = Math.max(1, ...tops.map(k => pc[k]));
+  const now = new Date(), months = [];
+  for (let i = 11; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push([d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'), MON[d.getMonth()]]); }
+  const mc = months.map(m => Object.values(students).filter(s => s.status !== 'cancelled' && String(s.createdAt || '').slice(0, 7) === m[0]).length), mmax = Math.max(1, ...mc);
+  const gaps = PRIORITY.filter(c => !bw[c].agents).slice(0, 14);
+  return '<div class="head"><div><h1>Vue nationale</h1><p>Activité des agents dans les 69 wilayas, mise à jour en direct.</p></div><div class="head-acts">' + periodSeg() + '</div></div>' +
+    '<section class="stats"><div class="stat dark"><b class="num">' + L.length + '</b><span>inscriptions</span><small>' + L.filter(s => s.status === 'submitted').length + ' à vérifier</small></div>' +
+      '<div class="stat"><b class="num">' + won.length + '</b><span>payées</span><small>' + conv + ' % de conversion</small></div>' +
+      '<div class="stat"><b class="num">' + esc(shortMoney(rev)) + '</b><span>chiffre d\u2019affaires (' + CURRENCY + ')</span><small>inscriptions payées</small></div>' +
+      '<div class="stat"><b class="num">' + act.length + '</b><span>agents actifs</span></div>' +
+      '<div class="stat"><b class="num">' + covered + '<small style="display:inline;font-size:.9rem"> / 69</small></b><span>wilayas couvertes</span></div>' +
+      '<div class="stat"><b class="num">' + (ranked[0] && ranked[0].total ? esc(firstName(ranked[0].a.name)) : '—') + '</b><span>meilleur agent</span><small>' + (ranked[0] && ranked[0].total ? esc(W[ranked[0].a.wilaya] ? W[ranked[0].a.wilaya].name : '') : 'aucune inscription') + '</small></div></section>' +
+    '<div class="nat"><section class="card mapcard"><div class="map-top"><h2>Carte de l\u2019Algérie</h2>' +
+      '<div class="seg" role="group" aria-label="Mesure"><button type="button" data-metric="count" aria-pressed="' + (metric === 'count') + '">Inscriptions</button><button type="button" data-metric="rev" aria-pressed="' + (metric === 'rev') + '">Chiffre d\u2019affaires</button><button type="button" data-metric="res" aria-pressed="' + (metric === 'res') + '">Domicile des élèves</button></div>' +
+      '<div class="seg" role="group" aria-label="Zoom"><button type="button" data-mapview="north" aria-pressed="' + (mapView === 'north') + '">Nord</button><button type="button" data-mapview="all" aria-pressed="' + (mapView === 'all') + '">Tout le pays</button></div></div>' +
+      '<div class="mapbox" id="mapbox">' + mapSVG(bw) + '<div class="tip" id="tip"></div></div>' +
+      '<div class="legend"><span><i style="background:var(--green)"></i>' + ({ count: 'Inscriptions par wilaya de l\u2019agent', rev: 'Chiffre d\u2019affaires par wilaya de l\u2019agent', res: 'Élèves par wilaya de résidence' }[metric]) + '</span><span><i style="background:#fff;border:2px solid var(--green)"></i>Agent présent, pas encore d\u2019inscription</span><span><i style="background:#CBD2C8"></i>Aucun agent</span></div>' +
+      (selWilaya ? '<div style="padding:0 18px 16px">' + wilayaDetail(selWilaya, bw) + '</div>' : '') + '</section>' +
+    '<section class="card pad"><h3 class="h">Classement des agents <small>payées · inscrites</small></h3>' +
+      (ranked.length ? '<ol class="rank">' + ranked.slice(0, 8).map((r, i) => '<li><span class="pos">' + (i + 1) + '</span><span class="nm"><b>' + esc(r.a.name) + '</b><small>' + esc(wName(r.a.wilaya)) + ' · ' + r.conv + ' % conv.</small><span class="bar"><i style="width:' + (r.total / maxR * 100) + '%"></i></span></span><span class="val">' + r.won + ' · ' + r.total + '<small>' + esc(shortMoney(r.rev)) + ' ' + CURRENCY + '</small></span></li>').join('') + '</ol>'
+        : '<p class="muted" style="margin:0;color:var(--muted)">Ajoutez vos agents dans l\u2019onglet Agents.</p>') + '</section></div>' +
+    '<div class="grid3"><section class="card pad"><h3 class="h">Parcours des inscriptions</h3><div class="funnel">' +
+      f.map((x, i) => '<div class="fstep"><span>' + STATUS[x[0]].name + '</span><span class="track"><i style="width:' + (x[1] / fmax * 100) + '%;background:' + ['#2B6FD6', '#E0A12B', '#0B7A4B', '#14181D'][i] + '"></i></span><b>' + x[1] + '</b></div>').join('') + '</div></section>' +
+    '<section class="card pad"><h3 class="h">Programmes les plus demandés</h3>' + (tops.length ? '<div class="hbars">' + tops.map(k => '<div class="hb"><div><span>' + esc(k) + '</span><span class="track"><i style="width:' + (pc[k] / pmax * 100) + '%"></i></span></div><b>' + pc[k] + '</b></div>').join('') + '</div>' : '<p style="margin:0;color:var(--muted)">Pas encore d\u2019inscription.</p>') + '</section>' +
+    '<section class="card pad"><h3 class="h">Inscriptions par mois</h3><div class="months">' + months.map((m, i) => '<div class="mo" title="' + esc(m[1]) + ' : ' + mc[i] + '"><b>' + (mc[i] || '') + '</b><i style="height:' + (mc[i] / mmax * 100) + '%"></i>' + esc(m[1].replace('.', '')) + '</div>').join('') + '</div></section></div>' +
+    '<section class="card pad"><h3 class="h">Grandes wilayas sans agent <small>à recruter en priorité</small></h3>' + (gaps.length ? '<div class="gaps">' + gaps.map(c => '<span class="gap">' + esc(wName(c)) + '</span>').join('') + '</div>' : '<p class="info" style="margin:0">Toutes les grandes wilayas ont un agent.</p>') + '</section>';
+}
+function project(view) {
+  const b = view === 'all' ? { x0: -9.2, x1: 12.4, y0: 18.6, y1: 37.6, lat: 28, w: 640 } : { x0: -2.6, x1: 9.3, y0: 31.3, y1: 37.35, lat: 35, w: 680 };
+  const c = Math.cos(b.lat * Math.PI / 180), k = b.w / ((b.x1 - b.x0) * c), h = (b.y1 - b.y0) * k;
+  return { b, w: b.w, h, p: (lon, lat) => [(lon - b.x0) * c * k, (b.y1 - lat) * k], inside: w => w.lon >= b.x0 && w.lon <= b.x1 && w.lat >= b.y0 && w.lat <= b.y1 };
+}
+function mapSVG(bw) {
+  const P = project(mapView), val = c => metric === 'rev' ? bw[c].rev : metric === 'res' ? bw[c].res : bw[c].count;
+  const vis = WILAYAS.filter(P.inside), max = Math.max(1, ...vis.map(w => val(w.code)));
+  const r0 = mapView === 'all' ? 5 : 7, r1 = mapView === 'all' ? 24 : 27;
+  const path = BORDER.map((pt, i) => (i ? 'L' : 'M') + P.p(pt[0], pt[1]).map(n => n.toFixed(1)).join(' ')).join('') + 'Z';
+  const withVal = vis.filter(w => val(w.code) > 0).sort((a, b) => val(b.code) - val(a.code));
+  const named = new Set(withVal.slice(0, mapView === 'all' ? 5 : 9).map(w => w.code));
+  let dots = '', bubs = '', labels = '';
+  vis.forEach(w => {
+    const [x, y] = P.p(w.lon, w.lat), v = val(w.code), sel = selWilaya === w.code ? ' sel' : '';
+    if (v > 0) {
+      const r = r0 + Math.sqrt(v / max) * (r1 - r0);
+      bubs += '<g><circle class="bub' + sel + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r.toFixed(1) + '" data-w="' + w.code + '" tabindex="0" role="button" aria-label="' + esc(w.name) + '"></circle>' +
+        (r >= 11 ? '<text class="bub-lab" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '">' + esc(metric === 'rev' ? shortMoney(v).replace('\u00A0', '') : v) + '</text>' : '') + '</g>';
+      if (named.has(w.code)) labels += '<text class="wl-name" x="' + (x + r + 4).toFixed(1) + '" y="' + (y + 3.5).toFixed(1) + '">' + esc(w.name) + '</text>';
+    } else if (bw[w.code].agents) dots += '<circle class="dot-agent' + sel + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.5" data-w="' + w.code + '" style="cursor:pointer"></circle>';
+    else dots += '<circle class="dot-none" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (mapView === 'all' ? 2.6 : 3.4) + '" data-w="' + w.code + '" style="cursor:pointer"></circle>';
+  });
+  return '<svg viewBox="0 0 ' + P.w + ' ' + P.h.toFixed(0) + '" role="img" aria-label="Carte de l\u2019Algérie par wilaya" style="overflow:hidden"><rect class="sea" width="' + P.w + '" height="' + P.h.toFixed(0) + '" rx="14"></rect>' +
+    '<path class="land" d="' + path + '"></path>' + (mapView === 'north' ? '<text class="coast-label" x="' + (P.w * .05) + '" y="30">MER MÉDITERRANÉE</text>' : '') + dots + bubs + labels + '</svg>';
+}
+function wilayaDetail(code, bw) {
+  const w = W[code], ag = Object.values(agents).filter(a => +a.wilaya === code && a.active !== false), L = live().filter(s => +s.agentWilaya === code);
+  const pc = {}; L.forEach(s => { const k = progName(s); pc[k] = (pc[k] || 0) + 1; }); const top = Object.keys(pc).sort((a, b) => pc[b] - pc[a])[0];
+  return '<div class="wdetail"><b>' + esc(wName(code)) + '</b> · ' + L.length + (L.length === 1 ? ' inscription' : ' inscriptions') + ', ' + esc(money(bw[code].rev)) + ' payés, ' + bw[code].res + ' élèves y habitent.<br>' +
+    (ag.length ? 'Agents : ' + ag.map(a => esc(a.name)).join(', ') : '<span style="color:var(--red-text);font-weight:600">Aucun agent dans cette wilaya.</span>') + (top ? '<br>Programme le plus demandé : ' + esc(top) : '') +
+    (L.length ? ' <button type="button" class="linkish" data-seew="' + code + '">Voir les inscriptions</button>' : '') + '</div>';
+}
+
+/* ---------- Direction : inscriptions ---------- */
+function filtered() {
+  const q = filt.q.trim().toLowerCase();
+  return Object.values(students).filter(s => inPeriod(s) && (!filt.status || s.status === filt.status) && (!filt.prog || s.programId === filt.prog) && (!filt.agent || s.agentUid === filt.agent) && (!filt.wilaya || +s.agentWilaya === +filt.wilaya) &&
+    (!q || [s.firstName, s.lastName, s.parentName, s.parentPhone, s.agentName, progName(s)].join(' ').toLowerCase().includes(q))).sort((a, b) => (a.id < b.id ? -1 : 1));
+}
+function studentsView() {
+  const list = filtered(), ags = Object.values(agents).sort((a, b) => String(a.name).localeCompare(String(b.name), 'fr'));
+  return '<div class="head"><div><h1>Inscriptions</h1><p>' + list.length + (list.length === 1 ? ' inscription' : ' inscriptions') + ' · cliquez sur une ligne pour la traiter.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-light btn-small" id="csv">' + icon('down') + 'Exporter (CSV)</button></div></div>' +
+    '<div class="bar"><input type="search" id="fQ" placeholder="Élève, parent, téléphone, agent…" value="' + esc(filt.q) + '" aria-label="Rechercher">' +
+      '<select data-f="status" aria-label="Statut"><option value="">Tous les statuts</option>' + Object.keys(STATUS).map(k => '<option value="' + k + '"' + (filt.status === k ? ' selected' : '') + '>' + STATUS[k].name + '</option>').join('') + '</select>' +
+      '<select data-f="prog" aria-label="Programme"><option value="">Tous les programmes</option>' + Object.values(programs).map(p => '<option value="' + esc(p.id) + '"' + (filt.prog === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>').join('') + '</select>' +
+      '<select data-f="agent" aria-label="Agent"><option value="">Tous les agents</option>' + ags.map(a => '<option value="' + esc(a.uid) + '"' + (filt.agent === a.uid ? ' selected' : '') + '>' + esc(a.name) + '</option>').join('') + '</select>' +
+      '<select data-f="wilaya" aria-label="Wilaya">' + wilayaOptions(filt.wilaya, 'Toutes les wilayas') + '</select></div>' +
+    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Élève</th><th>Programme</th><th>Agent</th><th>Parent</th><th>Statut</th><th>Reçu le</th><th style="text-align:right">Prix</th></tr></thead><tbody>' +
+      list.map(s => '<tr data-open="' + esc(s.id) + '"><td><div class="person"><span class="av" style="--c:' + colorOf(s.id) + '">' + esc(initials(s.firstName + ' ' + s.lastName)) + '</span><span><b>' + esc(s.firstName + ' ' + s.lastName) + '</b><small>' + (ageFrom(s.dob) != null ? ageFrom(s.dob) + ' ans · ' : '') + esc(W[s.studentWilaya] ? W[s.studentWilaya].name : '') + '</small></span></div></td>' +
+        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.agentName || '') + '<small>' + esc(wName(s.agentWilaya)) + '</small></td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '</td><td>' + esc(niceDate(s.createdAt)) + '</td><td class="num" style="text-align:right">' + (priceOf(s) ? esc(money(priceOf(s))) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><h2>Aucune inscription</h2><p>' + (Object.keys(students).length ? 'Aucune inscription ne correspond à ces filtres.' : 'Les inscriptions envoyées par vos agents apparaîtront ici en direct.') + '</p></div>');
+}
+function agentsView() {
+  const list = Object.values(agents).map(a => Object.assign({ a }, agentStats(a.uid))).sort((x, y) => (x.a.active === false) - (y.a.active === false) || y.won - x.won || y.total - x.total);
+  return '<div class="head"><div><h1>Agents</h1><p>' + list.filter(r => r.a.active !== false).length + ' agents actifs · commission calculée sur les inscriptions payées.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-green" id="addAgent">' + icon('plus') + 'Ajouter un agent</button></div></div>' +
+    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Agent</th><th>Wilaya</th><th style="text-align:right">Inscrits</th><th style="text-align:right">Payés</th><th style="text-align:right">Conversion</th><th style="text-align:right">Chiffre d\u2019affaires</th><th style="text-align:right">Commission</th><th>Dernière inscription</th></tr></thead><tbody>' +
+      list.map(r => '<tr data-agent="' + esc(r.a.uid) + '"' + (r.a.active === false ? ' style="opacity:.55"' : '') + '><td><div class="person"><span class="av" style="--c:' + colorOf(r.a.uid) + '">' + esc(initials(r.a.name)) + '</span><span><b>' + esc(r.a.name || r.a.email) + (r.a.active === false ? ' <span class="st st-cancelled">Suspendu</span>' : '') + '</b><small>' + esc(r.a.email || '') + (r.a.phone ? ' · ' + esc(r.a.phone) : '') + '</small></span></div></td>' +
+        '<td>' + (r.a.wilaya ? esc(wName(r.a.wilaya)) : '<span style="color:var(--muted)">à choisir</span>') + '</td><td class="num" style="text-align:right">' + r.total + '</td><td class="num" style="text-align:right">' + r.won + '</td><td class="num" style="text-align:right">' + r.conv + ' %</td><td class="num" style="text-align:right">' + esc(money(r.rev)) + '</td><td class="num" style="text-align:right">' + esc(money(r.com)) + '<small>' + r.rate + ' %</small></td><td>' + (r.last ? esc(niceDate(r.last)) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><h2>Ajoutez votre premier agent</h2><p>Créez un compte pour chaque agent : il se connecte, choisit sa wilaya et inscrit ses élèves.</p><button type="button" class="btn btn-green" id="addAgent2">' + icon('plus') + 'Ajouter un agent</button></div>');
+}
+function programsAdminView() {
+  const list = Object.values(programs).sort((a, b) => String(a.start || '9').localeCompare(String(b.start || '9')));
+  return '<div class="head"><div><h1>Programmes</h1><p>Les agents voient les programmes ouverts et y inscrivent leurs élèves.</p></div><div class="head-acts"><button type="button" class="btn btn-green" id="addProg">' + icon('plus') + 'Nouveau programme</button></div></div>' +
+    (list.length ? '<div class="progs">' + list.map(p => { const n = Object.values(students).filter(s => s.programId === p.id && s.status !== 'cancelled').length, seats = +p.seats || 0;
+      return '<div class="prog" data-prog="' + esc(p.id) + '" style="cursor:pointer"><b>' + esc(p.name) + '</b><span class="meta">' + esc([p.dest, p.ages].filter(Boolean).join(' · ')) + '</span>' + (p.start ? '<span class="meta">Du ' + esc(niceDate(p.start)) + (p.end ? ' au ' + esc(niceDate(p.end)) : '') + '</span>' : '') +
+        (p.price ? '<span class="price">' + esc(money(p.price)) + '</span>' : '') + '<span class="meta"><b style="font-family:inherit;font-size:.9rem;color:var(--ink)">' + n + (seats ? ' / ' + seats : '') + '</b> inscrits' + (p.open === false ? ' · <span class="st st-cancelled">Fermé</span>' : p.full ? ' · <span class="st st-cancelled">Complet</span>' : '') + '</span>' +
+        (seats ? '<span class="bar" style="display:block;height:6px;border-radius:999px;background:var(--paper);overflow:hidden"><i style="display:block;height:100%;width:' + Math.min(100, n / seats * 100) + '%;background:var(--green)"></i></span>' : '') + '</div>'; }).join('') + '</div>'
+      : '<div class="empty"><h2>Créez vos programmes</h2><p>Par exemple « Séjour linguistique Angleterre, juillet 2027 ». Les agents ne peuvent inscrire des élèves qu\u2019à des programmes ouverts.</p><button type="button" class="btn btn-green" id="addProg2">' + icon('plus') + 'Nouveau programme</button></div>');
+}
+
+/* ==================== Fiches ==================== */
+let editing = null;
+function openStudent(id, progId) {
+  const s = id ? students[id] : null; editing = s;
+  const open = Object.values(programs).filter(p => (p.open !== false && !p.full) || (s && p.id === s.programId));
+  if (!open.length) { toast('Aucun programme ouvert pour le moment.'); return; }
+  $('spTitle').textContent = s ? 'Modifier l\u2019inscription' : 'Inscrire un élève';
+  $('sProg').innerHTML = '<option value="">Choisir un programme</option>' + open.map(p => '<option value="' + esc(p.id) + '">' + esc(p.name) + (p.start ? ' · ' + esc(niceDate(p.start)) : '') + '</option>').join('');
+  $('sProg').value = s ? s.programId : (progId || ''); progInfo();
+  $('sFirst').value = s ? s.firstName : ''; $('sLast').value = s ? s.lastName : ''; $('sDob').value = s ? s.dob : ''; $('sGender').value = s ? (s.gender || '') : '';
+  $('sLevel').value = s ? (s.level || '') : ''; $('sWilaya').innerHTML = wilayaOptions(s ? s.studentWilaya : profile.wilaya, 'Choisir'); $('sPass').value = s ? (s.passport || 'valid') : 'valid';
+  $('sParent').value = s ? s.parentName : ''; $('sPhone').value = s ? s.parentPhone : ''; $('sEmail').value = s ? (s.parentEmail || '') : ''; $('sNotes').value = s ? (s.notes || '') : '';
+  $('sConsent').checked = !!s; $('sErr').hidden = true; $('sDelete').hidden = !s; $('sSave').textContent = s ? 'Enregistrer' : 'Envoyer l\u2019inscription'; ageInfo();
+  $('studentPop').showModal(); if (!s) setTimeout(() => $(progId ? 'sFirst' : 'sProg').focus(), 60);
+}
+function progInfo() { const p = programs[$('sProg').value]; $('sProgInfo').textContent = p ? [p.dest, p.ages, p.start ? 'départ le ' + niceDate(p.start) : '', p.price ? money(p.price) : ''].filter(Boolean).join(' · ') : ''; }
+function ageInfo() { const a = ageFrom($('sDob').value); $('sAge').textContent = a != null ? a + ' ans' + (a < 6 || a > 25 ? ' · vérifiez la date' : '') : ''; }
+async function saveStudent() {
+  const err = t => { $('sErr').textContent = t; $('sErr').hidden = false; $('sErr').scrollIntoView({ block: 'nearest' }); };
+  const v = id => $(id).value.trim(), p = programs[v('sProg')];
+  if (!p) return err('Choisissez le programme.');
+  if (!v('sFirst') || !v('sLast')) return err('Indiquez le prénom et le nom de l\u2019élève.');
+  if (!v('sDob')) return err('Indiquez la date de naissance.');
+  if (!v('sWilaya')) return err('Indiquez la wilaya de résidence.');
+  if (!v('sParent')) return err('Indiquez le nom du parent ou tuteur.');
+  if (!phoneOk(v('sPhone'))) return err('Le téléphone du parent ne semble pas valide (exemple : 0550 12 34 56).');
+  if (v('sEmail') && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('sEmail'))) return err('L\u2019email du parent ne semble pas valide.');
+  if (!$('sConsent').checked) return err('Cochez l\u2019accord des parents pour envoyer l\u2019inscription.');
+  const now = new Date().toISOString();
+  const data = { programId: p.id, programName: p.name, price: +p.price || 0, firstName: v('sFirst'), lastName: v('sLast'), dob: v('sDob'), gender: v('sGender'), level: v('sLevel'), studentWilaya: +v('sWilaya'),
+    passport: v('sPass'), parentName: v('sParent'), parentPhone: v('sPhone'), parentEmail: v('sEmail'), notes: v('sNotes'), consent: true, updatedAt: now };
+  $('sSave').disabled = true;
+  try {
+    if (editing) await fb.F.setDoc(fb.F.doc(fb.db, 'students', editing.id), data, { merge: true });
+    else { const id = newId(); await fb.F.setDoc(fb.F.doc(fb.db, 'students', id), Object.assign(data, { id, agentUid: me.uid, agentName: profile.name, agentWilaya: +profile.wilaya, status: 'submitted', createdAt: now, history: [{ at: now, by: profile.name, status: 'submitted' }] })); }
+    $('studentPop').close(); toast(editing ? 'Inscription mise à jour' : 'Inscription envoyée à Juniors Academy');
+  } catch (e) { err(e && e.code === 'permission-denied' ? 'Cette inscription a déjà été traitée par Juniors Academy et ne peut plus être modifiée.' : 'Envoi impossible. Vérifiez la connexion.'); }
+  finally { $('sSave').disabled = false; }
+}
+function openDetail(id) {
+  const s = students[id]; if (!s) return;
+  if (!isAdmin() && s.status === 'submitted') return openStudent(id);
+  const a = agents[s.agentUid] || {}, age = ageFrom(s.dob), wa = waNumber(s.parentPhone);
+  const pass = { valid: 'Valide', progress: 'En cours de demande', none: 'Pas encore' }[s.passport] || '—';
+  $('dpTitle').textContent = s.firstName + ' ' + s.lastName; $('dpSub').textContent = progName(s) + (priceOf(s) ? ' · ' + money(priceOf(s)) : '');
+  const fact = (k, v) => '<div class="fact"><span>' + k + '</span><b>' + v + '</b></div>';
+  let h = '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">' + statusPill(s.status) + '<span style="color:var(--muted);font-size:.86rem">' + esc((STATUS[s.status] || {}).hint || '') + '</span></div>' +
+    '<div class="facts">' + fact('Élève', esc(s.firstName + ' ' + s.lastName) + (age != null ? ' · ' + age + ' ans' : '')) + fact('Date de naissance', esc(niceDate(s.dob)) || '—') +
+      fact('Sexe · niveau', esc([{ F: 'Fille', M: 'Garçon' }[s.gender], s.level].filter(Boolean).join(' · ') || '—')) + fact('Wilaya de résidence', esc(wName(s.studentWilaya))) +
+      fact('Parent ou tuteur', esc(s.parentName)) + fact('Téléphone', '<a href="tel:' + esc(s.parentPhone) + '">' + esc(s.parentPhone) + '</a>') + fact('Email', s.parentEmail ? '<a href="mailto:' + esc(s.parentEmail) + '">' + esc(s.parentEmail) + '</a>' : '—') + fact('Passeport', pass) +
+      (isAdmin() ? fact('Agent', esc(s.agentName || a.name || '') + '<br><span style="font-weight:500;color:var(--muted)">' + esc(wName(s.agentWilaya)) + (a.phone ? ' · ' + esc(a.phone) : '') + '</span>') : '') + fact('Reçu le', esc(niceDate(s.createdAt))) + '</div>' +
+    (s.notes ? '<div class="fact"><span>Remarques</span><b style="font-weight:500;white-space:pre-wrap">' + esc(s.notes) + '</b></div>' : '');
+  if (isAdmin()) {
+    h += '<div><span style="font-size:.76rem;font-weight:600;color:var(--body)">Changer le statut</span><div class="steps" style="margin-top:6px">' +
+      ['submitted', 'confirmed', 'paid', 'departed', 'cancelled'].filter(k => k !== s.status).map(k => '<button type="button" class="btn btn-small ' + (k === 'cancelled' ? 'btn-red' : k === ORDER[ORDER.indexOf(s.status) + 1] ? 'btn-green' : 'btn-light') + '" data-setstatus="' + k + '">' + STATUS[k].name + '</button>').join('') + '</div></div>' +
+      '<div class="fld"><label for="dNote">Note (facultatif, visible dans l\u2019historique)</label><input id="dNote" type="text" placeholder="Acompte reçu le 12 octobre"></div>' +
+      '<div class="pop-foot" style="justify-content:flex-start">' + (wa ? '<a class="btn btn-light btn-small" href="https://wa.me/' + wa + '" target="_blank" rel="noopener">' + icon('wa') + 'WhatsApp parent</a>' : '') + '<button type="button" class="btn btn-light btn-small" data-copy="' + esc(s.id) + '">' + icon('copy') + 'Copier pour le CRM</button><span style="flex:1"></span><button type="button" class="linkish" data-delstudent="' + esc(s.id) + '" style="color:var(--red-text)">Supprimer</button></div>';
+  }
+  const hist = (s.history || []).slice().reverse();
+  if (hist.length) h += '<div><span style="font-size:.76rem;font-weight:600;color:var(--body)">Historique</span><ul class="hist" style="margin-top:8px">' + hist.map(x => '<li><i></i><span>' + esc((STATUS[x.status] || {}).name || x.status) + (x.note ? ' · ' + esc(x.note) : '') + '<small>' + esc(x.by || '') + ', ' + esc(niceDate(x.at)) + '</small></span></li>').join('') + '</ul></div>';
+  $('dpBody').innerHTML = h; $('dpBody').setAttribute('data-id', id);
+  if (!$('detailPop').open) $('detailPop').showModal();
+}
+async function setStatus(id, st) {
+  const s = students[id]; if (!s) return;
+  if (st === 'cancelled' && !confirm('Annuler l\u2019inscription de ' + s.firstName + ' ' + s.lastName + ' ?')) return;
+  const now = new Date().toISOString(), note = ($('dNote') ? $('dNote').value.trim() : '');
+  try {
+    await fb.F.updateDoc(fb.F.doc(fb.db, 'students', id), { status: st, statusAt: now, updatedAt: now, history: fb.F.arrayUnion({ at: now, by: 'Direction', status: st, note }) });
+    students[id] = Object.assign({}, s, { status: st, history: (s.history || []).concat({ at: now, by: 'Direction', status: st, note }) });
+    openDetail(id); toast('Statut : ' + STATUS[st].name);
+  } catch (e) { toast('Enregistrement impossible. Vérifiez la connexion.'); }
+}
+function crmText(s) {
+  return [s.firstName + ' ' + s.lastName, 'Programme : ' + progName(s), 'Né(e) le : ' + niceDate(s.dob), 'Wilaya : ' + wName(s.studentWilaya), 'Parent : ' + s.parentName + ', ' + s.parentPhone + (s.parentEmail ? ', ' + s.parentEmail : ''), 'Passeport : ' + ({ valid: 'valide', progress: 'en cours', none: 'pas encore' }[s.passport] || '—'), 'Agent : ' + (s.agentName || '') + ' (' + wName(s.agentWilaya) + ')', s.notes ? 'Remarques : ' + s.notes : ''].filter(Boolean).join('\n');
+}
+function csv() {
+  const rows = filtered(), cell = v => { v = String(v == null ? '' : v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const head = ['Reçu le', 'Statut', 'Prénom', 'Nom', 'Date de naissance', 'Âge', 'Sexe', 'Niveau', 'Wilaya élève', 'Parent', 'Téléphone', 'Email', 'Passeport', 'Programme', 'Prix (' + CURRENCY + ')', 'Agent', 'Wilaya agent', 'Remarques'];
+  const out = rows.map(s => [niceDate(s.createdAt), (STATUS[s.status] || {}).name, s.firstName, s.lastName, s.dob, ageFrom(s.dob), s.gender, s.level, wName(s.studentWilaya), s.parentName, s.parentPhone, s.parentEmail, s.passport, progName(s), priceOf(s), s.agentName, wName(s.agentWilaya), s.notes].map(cell).join(';'));
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF' + [head.join(';')].concat(out).join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'inscriptions-agents-' + todayISO() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); toast(rows.length + ' inscriptions exportées');
+}
+let editAgent = null;
+function openAgent(uid) {
+  const a = uid ? agents[uid] : null; editAgent = a;
+  $('apTitle').textContent = a ? a.name || a.email : 'Ajouter un agent';
+  $('aName').value = a ? a.name || '' : ''; $('aEmail').value = ''; $('aPass').value = ''; $('aEmailF').hidden = $('aPassF').hidden = !!a;
+  $('aWilaya').innerHTML = wilayaOptions(a ? a.wilaya : '', a ? 'Non choisie' : 'L\u2019agent la choisira'); $('aRate').value = a ? (a.rate ?? 10) : 10; $('aPhone').value = a ? a.phone || '' : '';
+  $('aSuspend').hidden = !a; $('aSuspend').textContent = a && a.active === false ? 'Réactiver' : 'Suspendre'; $('aSave').textContent = a ? 'Enregistrer' : 'Créer l\u2019agent'; $('aErr').hidden = true;
+  $('agentPop').showModal();
+}
+async function saveAgent() {
+  const err = t => { $('aErr').textContent = t; $('aErr').hidden = false; };
+  const name = $('aName').value.trim(), wil = $('aWilaya').value, rate = Math.max(0, Math.min(50, +$('aRate').value || 0)), phone = $('aPhone').value.trim();
+  if (name.length < 2) return err('Indiquez le nom de l\u2019agent.');
+  $('aSave').disabled = true;
+  try {
+    if (editAgent) { await fb.F.setDoc(fb.F.doc(fb.db, 'agents', editAgent.uid), { name, wilaya: wil ? +wil : null, rate, phone }, { merge: true }); $('agentPop').close(); toast(name + ' enregistré'); return; }
+    const email = $('aEmail').value.trim().toLowerCase(), pass = $('aPass').value;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('Indiquez un email valide.');
+    if (pass.length < 6) return err('Le mot de passe doit contenir au moins 6 caractères.');
+    const sec = fb.A0.getApps().find(x => x.name === 'add-agent') || fb.A0.initializeApp(FIREBASE_CONFIG, 'add-agent'), secAuth = fb.A.getAuth(sec);
+    const cred = await fb.A.createUserWithEmailAndPassword(secAuth, email, pass); const uid = cred.user.uid; await fb.A.signOut(secAuth);
+    await fb.F.setDoc(fb.F.doc(fb.db, 'agents', uid), { uid, name, email, phone, wilaya: wil ? +wil : null, rate, active: true, createdAt: new Date().toISOString() });
+    $('agentPop').close(); toast(name + ' ajouté. Envoyez-lui son email et son mot de passe.');
+  } catch (e) {
+    const c = (e && e.code) || '';
+    err(/email-already-in-use/.test(c) ? 'Un compte existe déjà avec cet email.' : /operation-not-allowed|admin-restricted/.test(c) ? 'Firebase bloque la création de comptes : dans Authentication, Paramètres, Actions utilisateur, cochez « Activer la création (inscription) ».' : 'Enregistrement impossible. Vérifiez la connexion.');
+  } finally { $('aSave').disabled = false; }
+}
+let editProg = null;
+function openProg(id) {
+  const p = id ? programs[id] : null; editProg = p;
+  $('ppTitle').textContent = p ? p.name : 'Nouveau programme';
+  [['pgName', 'name'], ['pgDest', 'dest'], ['pgAges', 'ages'], ['pgStart', 'start'], ['pgEnd', 'end'], ['pgPrice', 'price'], ['pgSeats', 'seats']].forEach(f => { $(f[0]).value = p ? (p[f[1]] ?? '') : ''; });
+  $('pgOpen').checked = p ? p.open !== false && !p.full : true; $('pgDelete').hidden = !p; $('pgErr').hidden = true; $('progPop').showModal();
+}
+async function saveProg() {
+  const name = $('pgName').value.trim(); if (!name) { $('pgErr').textContent = 'Indiquez le nom du programme.'; $('pgErr').hidden = false; return; }
+  const id = editProg ? editProg.id : 'p' + Date.now().toString(36);
+  const data = { id, name, dest: $('pgDest').value.trim(), ages: $('pgAges').value.trim(), start: $('pgStart').value, end: $('pgEnd').value, price: +$('pgPrice').value || 0, seats: +$('pgSeats').value || 0, open: $('pgOpen').checked, full: false, updatedAt: new Date().toISOString() };
+  try { await fb.F.setDoc(fb.F.doc(fb.db, 'programs', id), data, { merge: true }); $('progPop').close(); toast(name + ' enregistré'); } catch (e) { toast('Enregistrement impossible.'); }
+}
+
+/* ==================== Événements ==================== */
+document.addEventListener('click', async e => {
+  const q = s => e.target.closest(s); let el;
+  if ((el = q('[data-tab]'))) { tab = el.getAttribute('data-tab'); window.scrollTo(0, 0); return render(); }
+  if ((el = q('[data-period]'))) { period = el.getAttribute('data-period'); return render(); }
+  if ((el = q('[data-metric]'))) { metric = el.getAttribute('data-metric'); return render(); }
+  if ((el = q('[data-mapview]'))) { mapView = el.getAttribute('data-mapview'); return render(); }
+  if ((el = q('[data-w]'))) { const c = +el.getAttribute('data-w'); selWilaya = selWilaya === c ? null : c; return render(); }
+  if ((el = q('[data-seew]'))) { filt = { q: '', status: '', prog: '', agent: '', wilaya: el.getAttribute('data-seew') }; tab = 'students'; window.scrollTo(0, 0); return render(); }
+  if ((el = q('[data-new]'))) return openStudent(null, el.getAttribute('data-new') || '');
+  if ((el = q('[data-open]'))) return openDetail(el.getAttribute('data-open'));
+  if ((el = q('[data-agent]'))) return openAgent(el.getAttribute('data-agent'));
+  if ((el = q('[data-prog]')) && isAdmin()) return openProg(el.getAttribute('data-prog'));
+  if (q('#addAgent') || q('#addAgent2')) return openAgent(null);
+  if (q('#addProg') || q('#addProg2')) return openProg(null);
+  if (q('#csv')) return csv();
+  if ((el = q('[data-setstatus]'))) return setStatus($('dpBody').getAttribute('data-id'), el.getAttribute('data-setstatus'));
+  if ((el = q('[data-copy]'))) { const t = crmText(students[el.getAttribute('data-copy')]); try { await navigator.clipboard.writeText(t); toast('Copié : collez-le dans le CRM'); } catch (x) { prompt('Copiez ce texte :', t); } return; }
+  if ((el = q('[data-delstudent]'))) { const s = students[el.getAttribute('data-delstudent')]; if (s && confirm('Supprimer définitivement l\u2019inscription de ' + s.firstName + ' ' + s.lastName + ' ?')) { await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', s.id)).catch(() => {}); $('detailPop').close(); toast('Inscription supprimée'); } return; }
+  if (q('[data-close]')) return q('dialog').close();
+  if (e.target.id === 'btnOut' || e.target.id === 'gOut') { fb.A.signOut(fb.auth); return; }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'fQ') { filt.q = e.target.value; render(); }
+  if (e.target.id === 'sDob') ageInfo();
+});
+document.addEventListener('change', e => {
+  const f = e.target.getAttribute && e.target.getAttribute('data-f');
+  if (f) { filt[f] = e.target.value; render(); }
+  if (e.target.id === 'sProg') progInfo();
+});
+/* infobulle de la carte */
+document.addEventListener('pointerover', e => {
+  const c = e.target.closest && e.target.closest('[data-w]'), tip = $('tip'); if (!tip) return;
+  if (!c) { tip.classList.remove('on'); return; }
+  const code = +c.getAttribute('data-w'), bw = byWilaya(), d = bw[code], box = $('mapbox').getBoundingClientRect(), r = c.getBoundingClientRect();
+  tip.innerHTML = '<b>' + esc(wName(code)) + '</b>' + d.count + (d.count === 1 ? ' inscription' : ' inscriptions') + ' · ' + esc(shortMoney(d.rev)) + ' ' + CURRENCY + '<br>' + d.agents + (d.agents === 1 ? ' agent' : ' agents') + ' · ' + d.res + ' élèves y habitent';
+  tip.style.left = (r.left + r.width / 2 - box.left) + 'px'; tip.style.top = (r.top - box.top) + 'px'; tip.classList.add('on');
+});
+$('studentForm').addEventListener('submit', e => { e.preventDefault(); saveStudent(); });
+$('sDelete').addEventListener('click', async () => {
+  if (!editing || !confirm('Retirer l\u2019inscription de ' + editing.firstName + ' ' + editing.lastName + ' ?')) return;
+  try { await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', editing.id)); $('studentPop').close(); toast('Inscription retirée'); } catch (x) { toast('Impossible : l\u2019inscription a déjà été traitée.'); }
+});
+$('agentForm').addEventListener('submit', e => { e.preventDefault(); saveAgent(); });
+$('aSuspend').addEventListener('click', async () => {
+  const a = editAgent; if (!a) return;
+  if (a.active !== false && !confirm('Suspendre ' + (a.name || a.email) + ' ? Il ne pourra plus se connecter. Ses inscriptions restent visibles.')) return;
+  await fb.F.setDoc(fb.F.doc(fb.db, 'agents', a.uid), { active: a.active === false }, { merge: true }).catch(() => {}); $('agentPop').close(); toast(a.active === false ? 'Agent réactivé' : 'Agent suspendu');
+});
+$('progForm').addEventListener('submit', e => { e.preventDefault(); saveProg(); });
+$('pgDelete').addEventListener('click', async () => {
+  const p = editProg; if (!p) return;
+  const n = Object.values(students).filter(s => s.programId === p.id).length;
+  if (n) { if (!confirm('Des élèves sont inscrits à ce programme. Le fermer aux nouvelles inscriptions plutôt que le supprimer ?')) return; await fb.F.setDoc(fb.F.doc(fb.db, 'programs', p.id), { open: false }, { merge: true }); $('progPop').close(); toast('Programme fermé'); return; }
+  if (!confirm('Supprimer ' + p.name + ' ?')) return; await fb.F.deleteDoc(fb.F.doc(fb.db, 'programs', p.id)).catch(() => {}); $('progPop').close(); toast('Programme supprimé');
+});
+document.querySelectorAll('dialog.pop').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+
+/* ==================== Connexion ==================== */
+$('signForm').addEventListener('submit', async e => {
+  e.preventDefault(); const b = $('gSubmit'); b.disabled = true; b.textContent = 'Connexion…';
+  try { await fb.A.signInWithEmailAndPassword(fb.auth, $('gEmail').value.trim(), $('gPass').value); $('gPass').value = ''; }
+  catch (x) { gate('signin', authMessage(x)); } finally { b.disabled = false; b.textContent = 'Se connecter'; }
+});
+$('gForgot').addEventListener('click', async () => {
+  const email = $('gEmail').value.trim(); if (!email) { gate('signin', 'Saisissez d\u2019abord votre email, puis cliquez de nouveau sur « Mot de passe oublié ».', true); return; }
+  try { await fb.A.sendPasswordResetEmail(fb.auth, email); } catch (x) {}
+  gate('signin', 'Si ce compte existe, un email pour choisir un nouveau mot de passe vient d\u2019être envoyé.', true);
+});
+$('profileForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = $('pName').value.trim(), phone = $('pPhone').value.trim(), wil = +$('pWilaya').value || +profile.wilaya || 0;
+  if (name.length < 2) { gate('profile', 'Indiquez votre nom complet.'); return; }
+  if (!phoneOk(phone)) { gate('profile', 'Le téléphone ne semble pas valide (exemple : 0550 12 34 56).'); return; }
+  if (!wil) { gate('profile', 'Choisissez votre wilaya.'); return; }
+  try { const upd = { name, phone, agency: $('pAgency').value.trim() }; if (!profile.wilaya) upd.wilaya = wil;
+    await fb.F.setDoc(fb.F.doc(fb.db, 'agents', me.uid), upd, { merge: true }); profile = Object.assign({}, profile, upd); openApp(); }
+  catch (x) { gate('profile', 'Enregistrement impossible. Vérifiez la connexion.'); }
+});
+setInterval(() => { if (me) paint(); }, 60000);
+start();
+</script>
+</body>
+</html>
