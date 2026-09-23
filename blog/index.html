@@ -25,6 +25,18 @@
   <link rel="icon" type="image/jpeg" href="/Juniors%20Academy%20Logo.jpg?v=1">
   <link rel="apple-touch-icon" href="/Juniors%20Academy%20Logo.jpg?v=1">
 
+  <script>
+    /* Photos: if a file is not found under its exact name, try the usual variants
+       (.jpg, .JPG, .jpeg, .JPEG, .png, .webp) in /blog/ and at the root of the site. */
+    window.jaPhoto = function (img) {
+      var name = img.getAttribute('data-photo'); if (!name) { img.remove(); return; }
+      var list = [], exts = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'webp'];
+      ['/blog/', '/'].forEach(function (dir) { exts.forEach(function (x) { list.push(dir + encodeURIComponent(name) + '.' + x); }); });
+      var i = +(img.getAttribute('data-i') || 0) + 1;
+      if (i >= list.length) { img.remove(); return; }
+      img.setAttribute('data-i', i); img.src = list[i];
+    };
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -133,6 +145,61 @@
 }
   </script>
   <style>
+    /* ===== En-tête : logo + téléphone ===== */
+    .jah-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #fff;
+      border-bottom: 1px solid rgba(20, 24, 29, .08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px clamp(14px, 3vw, 40px);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .jah-header-logo { display: inline-flex; align-items: center; }
+    .jah-header-logo img { height: 52px; width: auto; display: block; }
+    .jah-header-phone {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: #14181D;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .jah-header-phone:hover { color: #DC143C; }
+    .jah-header-phone svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+    .jah-logo-text {
+      font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -.01em;
+      color: #14181D;
+    }
+    @media (max-width: 640px) {
+      .jah-header { padding: 8px 14px; }
+      .jah-header-logo img { height: 42px; }
+      .jah-logo-text { font-size: .95rem; }
+      .jah-header-phone {
+        gap: 7px;
+        font-size: .8rem;
+        padding: 9px 13px;
+        border: 1px solid rgba(20,24,29,.15);
+        border-radius: 999px;
+      }
+      .jah-header-phone svg { width: 14px; height: 14px; }
+    }
+
+    .jah-header { position: sticky; }
+    .jah-nav-link { font-family: 'Inter', system-ui, sans-serif; font-size: .9rem; font-weight: 600; color: #7A828C; text-decoration: none; white-space: nowrap; }
+    .jah-nav-link:hover { color: #14181D; }
+    .jah-blog-btn[aria-current="page"] { border-color: #DC143C; background: rgba(220,20,60,.06); }
+    @media (max-width: 900px) { .jah-nav-link { display: none; } }
+
     :root {
       --ink: #14181D; --paper: #FAFAF7; --card: #fff;
       --crimson: #DC143C; --crimson-soft: rgba(220,20,60,.08); --crimson-deep: #A50E2D;
@@ -170,7 +237,8 @@
     .btn-ink { background: var(--ink); color: #fff; }
 
     .ft { padding: 34px 16px 40px; text-align: center; color: var(--muted); font-size: .85rem; }
-    .ft nav { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; font-weight: 600; }
+    .ft nav { display: flex; gap: 8px 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; font-weight: 600; font-size: .88rem; }
+    .ft p { margin: 0; }
     .ft nav a { text-decoration: none; } .ft nav a:hover { color: var(--ink); }
 
     @media (max-width: 760px) {
@@ -302,19 +370,164 @@
       .end-card { border-radius: 22px; }
     }
   </style>
+<!-- ==================== EN-TÊTE v2 : logo + bouton « Étudier en Chine » + téléphone ====================
+     Sur ordinateur : bouton dans l'en-tête. Sur téléphone : bandeau cliquable au-dessus de l'en-tête,
+     pour que le logo et le numéro gardent toute la place. Les deux mènent à /study. -->
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&text=%E5%AD%A6&display=swap" rel="stylesheet">
+<style>
+  /* ----- mise en page de l'en-tête ----- */
+  .jah-header { gap: 16px; }
+  .jah-header-logo { flex: 0 1 auto; min-width: 0; text-decoration: none; }
+  .jah-header-logo img { max-width: 100%; object-fit: contain; object-position: left center; }
+  .jah-header-right { display: flex; align-items: center; flex: none; gap: clamp(14px, 2.2vw, 28px); }
+  .jah-header-phone { flex: none; }
+
+  /* ----- bouton Blog (en-tête, ordinateur et téléphone) ----- */
+  .jah-blog-btn {
+    position: relative; flex: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 15px 8px 12px; border-radius: 999px;
+    border: 1px solid rgba(20,24,29,.15); background: #fff; color: #14181D;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: .9rem; font-weight: 600;
+    text-decoration: none; white-space: nowrap;
+    transition: border-color .3s cubic-bezier(.16, 1, .3, 1), transform .3s cubic-bezier(.16, 1, .3, 1), box-shadow .3s cubic-bezier(.16, 1, .3, 1);
+  }
+  .jah-blog-btn:hover { border-color: #DC143C; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(220,20,60,.14); }
+  .jah-blog-btn:active { transform: scale(.96); }
+  .jah-blog-btn:focus-visible { outline: 3px solid #DC143C; outline-offset: 3px; }
+  .jah-blog-btn svg { width: 19px; height: 19px; flex: none; color: #DC143C; overflow: visible; }
+  /* la page du livre se tourne au survol, et une fois à l'ouverture de la page */
+  .jah-blog-page { transform-box: fill-box; transform-origin: 0% 50%; }
+  .jah-blog-btn:hover .jah-blog-page, .jah-blog-btn:focus-visible .jah-blog-page { animation: jah-page-turn .7s cubic-bezier(.45, 0, .2, 1); }
+  .jah-blog-btn.jah-blog-intro .jah-blog-page { animation: jah-page-turn .8s cubic-bezier(.45, 0, .2, 1) 1.4s; }
+  @keyframes jah-page-turn { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); opacity: .6; } 100% { transform: scaleX(1); } }
+  /* pastille : un nouvel article est en ligne */
+  .jah-blog-dot { position: absolute; top: 2px; right: 3px; width: 9px; height: 9px; border-radius: 50%; background: #DC143C; box-shadow: 0 0 0 2px #fff; }
+  .jah-blog-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #DC143C; animation: jah-blog-ping 2.6s cubic-bezier(0, 0, .2, 1) 2.2s infinite; }
+  @keyframes jah-blog-ping { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(2.6); opacity: 0; } }
+
+  /* ----- sceau 学 commun au bouton et au bandeau ----- */
+  .jah-study-seal {
+    flex: none; display: grid; place-items: center;
+    width: 28px; height: 28px; border-radius: 8px;
+    background: #DC143C; color: #fff;
+    font-family: 'Ma Shan Zheng', 'STKaiti', 'KaiTi', serif; font-size: 1.15rem; line-height: 1;
+    transform: rotate(-6deg);
+    transition: transform .45s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  /* ----- bouton (ordinateur / tablette) ----- */
+  .jah-study-btn {
+    position: relative; overflow: hidden;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px 7px 8px; border-radius: 999px;
+    background: #14181D; color: #fff; text-decoration: none;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: .9rem; font-weight: 600; white-space: nowrap;
+    transition: transform .35s cubic-bezier(.16, 1, .3, 1), box-shadow .35s cubic-bezier(.16, 1, .3, 1);
+  }
+  .jah-study-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(20,24,29,.25); }
+  .jah-study-btn:hover .jah-study-seal { transform: rotate(6deg) scale(1.1); }
+  .jah-study-btn:active { transform: scale(.97); }
+  .jah-study-new {
+    padding: 3px 8px; border-radius: 999px;
+    background: #FFD23F; color: #14181D;
+    font-size: .68rem; font-weight: 700; letter-spacing: .04em;
+  }
+  .jah-study-btn svg { flex: none; transition: transform .35s cubic-bezier(.16, 1, .3, 1); }
+  .jah-study-btn:hover svg { transform: translateX(3px); }
+  /* reflet qui traverse le bouton de temps en temps */
+  .jah-study-btn::after, .jah-study-bar::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: -40%; width: 30%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.22), transparent);
+    transform: skewX(-18deg);
+    animation: jah-study-shine 5.5s ease-in-out 1.5s infinite;
+    pointer-events: none;
+  }
+  @keyframes jah-study-shine { 0% { left: -40%; } 22%, 100% { left: 130%; } }
+
+  /* ----- bandeau (téléphone uniquement) ----- */
+  .jah-study-bar { display: none; }
+
+  @media (max-width: 640px) {
+    .jah-study-btn { display: none; }
+    .jah-study-bar {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 9px 14px; min-height: 44px;
+      background: #14181D; color: #fff; text-decoration: none;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: .84rem; font-weight: 600; line-height: 1.2;
+    }
+    .jah-study-bar .jah-study-seal { width: 24px; height: 24px; border-radius: 7px; font-size: 1rem; }
+    .jah-study-bar b { color: #FFD23F; font-weight: 700; }
+    .jah-study-bar svg { flex: none; animation: jah-study-nudge 1.8s ease-in-out infinite; }
+    @keyframes jah-study-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+
+    /* logo et téléphone : espace garanti entre les deux, même sur petit écran */
+    .jah-header { gap: 14px; padding: 8px 14px; }
+    .jah-header-logo img { height: 42px; }
+    .jah-header-right { gap: 8px; }
+    .jah-blog-btn { padding: 8px 12px 8px 10px; font-size: .8rem; gap: 6px; }
+    .jah-blog-btn svg { width: 16px; height: 16px; }
+  }
+  @media (max-width: 400px) {
+    .jah-header { gap: 10px; padding-left: 10px; padding-right: 10px; }
+    .jah-header-right { gap: 6px; }
+    .jah-blog-btn { padding: 8px 10px 8px 9px; font-size: .76rem; gap: 5px; }
+    .jah-blog-btn svg { width: 15px; height: 15px; }
+  }
+  @media (max-width: 360px) {
+    .jah-header { gap: 10px; padding: 8px 12px; }
+    .jah-header-logo img { height: 38px; }
+    .jah-header-phone { font-size: .74rem; padding: 8px 11px; gap: 6px; }
+    .jah-blog-btn { padding: 8px 9px 8px 8px; font-size: .74rem; gap: 5px; }
+    .jah-blog-btn svg { width: 15px; height: 15px; }
+    .jah-study-bar { font-size: .78rem; gap: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jah-blog-page, .jah-blog-dot::after { animation: none !important; }
+    .jah-blog-btn { transition: none !important; }
+    .jah-study-btn::after, .jah-study-bar::after, .jah-study-bar svg { animation: none !important; }
+    .jah-study-btn, .jah-study-seal { transition: none !important; }
+  }
+  .jah-study-btn:focus-visible, .jah-study-bar:focus-visible { outline: 3px solid #DC143C; outline-offset: 3px; }
+</style>
 </head>
 <body>
 <a class="skip" href="#article">Aller à l’article</a>
 
-<header class="hd">
-  <div class="hd-in">
-    <a class="hd-logo" href="/" aria-label="Juniors Academy, accueil"><img src="/JA%20Black%20Logo.png" alt="Juniors Academy" width="160" height="46" onerror="this.outerHTML='<span>Juniors Academy</span>'"></a>
-    <nav class="hd-nav" aria-label="Menu principal">
-      <a href="/#jah-destinations">Nos séjours</a>
-      <a href="/study/">Étudier en Chine</a>
-      <a href="/blog/" aria-current="page">Blog</a>
-    </nav>
-    <a class="hd-tel" href="tel:+213550527722"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>0550 52 77 22</a>
+<!-- Bandeau téléphone : défile avec la page, l'en-tête reste collé en haut -->
+<a href="/study/" class="jah-study-bar" aria-label="Nouveau : étudier en Chine, découvrir le programme">
+  <span class="jah-study-seal" aria-hidden="true">学</span>
+  <span><b>Nouveau</b> · Étudier en Chine</span>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</a>
+
+<header class="jah-header" id="jahHeader">
+  <a href="/" class="jah-header-logo" aria-label="Juniors Academy, accueil">
+    <img src="/JA%20Black%20Logo.png" alt="Juniors Academy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="jah-logo-text" style="display:none">Juniors Academy</span>
+  </a>
+  <div class="jah-header-right">
+    <a href="/" class="jah-nav-link">Nos séjours</a>
+    <a href="/study/" class="jah-study-btn">
+      <span class="jah-study-seal" aria-hidden="true">学</span>
+      Étudier en Chine
+      <span class="jah-study-new">Nouveau</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="/blog/" class="jah-blog-btn" aria-current="page" aria-label="Blog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5"/>
+        <path class="jah-blog-page" d="M12 6.5C14 5 17 4.6 20.5 5v13c-3.5-.4-6.5 0-8.5 1.5z"/>
+      </svg>
+      Blog
+    </a>
+    <a href="tel:+213550527722" class="jah-header-phone" aria-label="Appeler Juniors Academy">
+      <span>+213 550 52 77 22</span>
+      <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+    </a>
   </div>
   <div class="progress" id="progress" aria-hidden="true"></div>
 </header>
@@ -327,10 +540,10 @@
     <span class="cat">Séjours linguistiques</span>
     <h1>Séjour linguistique pour enfants et ados depuis l’Algérie : le guide complet des parents</h1>
     <p class="lede">À quel âge partir, quelle destination choisir, comment se passe l’encadrement et comment préparer votre enfant : toutes les réponses, simplement.</p>
-    <div class="byline"><img src="/Juniors%20Academy%20Logo.jpg" alt="" width="34" height="34" onerror="this.remove()"><span>Par <b>l’équipe Juniors Academy</b></span><span class="sep"></span><time datetime="2026-09-23">23 septembre 2026</time><span class="sep"></span><span>8 min de lecture</span></div>
+    <div class="byline"><img src="/blog/Juniors%20Academy%20Logo.jpg" data-photo="Juniors Academy Logo" alt="" width="34" height="34" onerror="jaPhoto(this)"><span>Par <b>l’équipe Juniors Academy</b></span><span class="sep"></span><time datetime="2026-09-23">23 septembre 2026</time><span class="sep"></span><span>8 min de lecture</span></div>
   </div>
   <figure class="hero">
-    <div class="ph"><img src="/blog/Juniors%20Academy%20Group.jpg" alt="Groupe d’élèves de Juniors Academy en séjour linguistique" width="1600" height="800" fetchpriority="high" onerror="this.remove()"></div>
+    <div class="ph"><img src="/blog/Juniors%20Academy%20Group.jpg" data-photo="Juniors Academy Group" alt="Groupe d’élèves de Juniors Academy en séjour linguistique" width="1600" height="800" fetchpriority="high" onerror="jaPhoto(this)"></div>
     <div class="stamp" aria-hidden="true"><small>JUNIORS ACADEMY</small><b>ALG → LHR</b><span>SÉJOUR LINGUISTIQUE</span></div>
   </figure>
 </section>
@@ -373,7 +586,7 @@
       <div class="age"><b>15 à 18<small>ans</small></b><div><h3>L’étape qui prépare l’avenir</h3><p>Un programme plus académique, un campus prestigieux ou une thématique comme le football. Le séjour prépare aussi aux études supérieures à l’étranger.</p></div></div>
     </div>
     <p class="tip">Le meilleur indicateur n’est pas seulement l’âge : c’est l’envie de l’enfant. Un enfant motivé de 10 ans profitera davantage de son séjour qu’un adolescent qui part à contrecœur.</p>
-    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20Ages.jpg" alt="Enfants en activité pendant un séjour linguistique Juniors Academy" width="1600" height="1067" loading="lazy" decoding="async" onerror="this.remove()"></div><figcaption>Les plus jeunes découvrent la langue par le jeu et les activités de groupe.</figcaption></figure>
+    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20Ages.jpg" data-photo="Juniors Academy Ages" alt="Enfants en activité pendant un séjour linguistique Juniors Academy" width="1600" height="1067" loading="lazy" decoding="async" onerror="jaPhoto(this)"></div><figcaption>Les plus jeunes découvrent la langue par le jeu et les activités de groupe.</figcaption></figure>
 
     <h2 id="destination">Quelle destination choisir ?</h2>
     <p>Tout dépend de la langue visée et de la personnalité de votre enfant.</p>
@@ -384,7 +597,7 @@
       <div class="dest"><h3>Pour une autre culture</h3><p>La Chine, le Japon et la Corée du Sud ouvrent les jeunes à de nouvelles langues et à une autre vision du monde.</p><a href="/#jah-chine">Le séjour en Chine</a></div>
     </div>
     <p><strong>Pour les passionnés de sport</strong>, un <a href="/#jah-football">stage de football avec des clubs de Premier League</a> associe entraînements de haut niveau et cours d’anglais. Le meilleur moyen de motiver un enfant qui préfère le terrain à la salle de classe.</p>
-    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20London.jpg" alt="Élèves de Juniors Academy en excursion à Londres" width="1600" height="1067" loading="lazy" decoding="async" onerror="this.remove()"></div><figcaption>Une journée d’excursion à Londres, pendant le séjour en Angleterre.</figcaption></figure>
+    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20London.jpg" data-photo="Juniors Academy London" alt="Élèves de Juniors Academy en excursion à Londres" width="1600" height="1067" loading="lazy" decoding="async" onerror="jaPhoto(this)"></div><figcaption>Une journée d’excursion à Londres, pendant le séjour en Angleterre.</figcaption></figure>
 
     <div class="cta-in"><div><b>Vous hésitez entre plusieurs destinations ?</b><span>Recevez la brochure avec tous nos programmes, les dates et les âges.</span></div><a class="btn btn-red" href="/brochure/">Recevoir la brochure</a></div>
 
@@ -398,7 +611,7 @@
       <li><b>Week-end</b><span>Une grande excursion, par exemple une journée à Londres.</span></li>
     </ol>
     <p>Chaque moment de la journée devient une occasion de parler la langue.</p>
-    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20Class.jpg" alt="Cours d’anglais en petit groupe pendant un séjour linguistique" width="1600" height="1067" loading="lazy" decoding="async" onerror="this.remove()"></div><figcaption>Le matin, cours en petits groupes, par niveau.</figcaption></figure>
+    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20Class.jpg" data-photo="Juniors Academy Class" alt="Cours d’anglais en petit groupe pendant un séjour linguistique" width="1600" height="1067" loading="lazy" decoding="async" onerror="jaPhoto(this)"></div><figcaption>Le matin, cours en petits groupes, par niveau.</figcaption></figure>
 
     <h2 id="securite">Sécurité et encadrement : les 7 questions à poser avant d’inscrire votre enfant</h2>
     <p>C’est la question la plus importante. Avant de choisir un organisme, posez-lui ces questions et exigez des réponses claires.</p>
@@ -412,7 +625,7 @@
       <li>Le transfert entre l’aéroport et le campus est-il organisé ?</li>
     </ol>
     <div class="note"><p>Un organisme sérieux répond à chacune de ces questions sans hésiter. Chez Juniors Academy, nos programmes incluent un <strong>encadrement 24 heures sur 24</strong>, un contact régulier avec les parents et des écoles partenaires reconnues, comme Uppingham, Oundle, Worth ou Brambletye en Angleterre.</p></div>
-    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20Security.jpg" alt="Encadrant de Juniors Academy avec un groupe d’élèves" width="1600" height="1067" loading="lazy" decoding="async" onerror="this.remove()"></div><figcaption>Nos encadrants accompagnent les élèves du départ jusqu’au retour.</figcaption></figure>
+    <figure class="fig"><div class="ph"><img src="/blog/Juniors%20Academy%20Security.jpg" data-photo="Juniors Academy Security" alt="Encadrant de Juniors Academy avec un groupe d’élèves" width="1600" height="1067" loading="lazy" decoding="async" onerror="jaPhoto(this)"></div><figcaption>Nos encadrants accompagnent les élèves du départ jusqu’au retour.</figcaption></figure>
 
     <h2 id="preparer">Comment préparer son enfant avant le départ</h2>
     <p>Un séjour réussi se prépare aussi émotionnellement.</p>
@@ -448,19 +661,31 @@
     <div>
       <h2 id="endTitle">Offrez à votre enfant l’aventure qui le fera grandir</h2>
       <p>Un séjour linguistique, c’est une langue qui se débloque, une autonomie qui se construit et une ouverture sur le monde qui reste pour la vie. Notre équipe vous accompagne depuis notre bureau d’El Biar, à Alger.</p>
-      <div class="acts"><a class="btn btn-red" href="/#jah-destinations">Découvrir nos séjours</a><a class="btn btn-line" href="/brochure/">Recevoir la brochure</a></div>
+      <div class="acts"><a class="btn btn-red" href="/">Découvrir nos séjours</a><a class="btn btn-line" href="/brochure/">Recevoir la brochure</a></div>
     </div>
-    <div class="ph"><img src="/blog/Juniors%20Academy%20Adventure.jpg" alt="Élèves de Juniors Academy au retour de leur séjour linguistique" width="1600" height="1200" loading="lazy" decoding="async" onerror="this.remove()"></div>
+    <div class="ph"><img src="/blog/Juniors%20Academy%20Adventure.jpg" data-photo="Juniors Academy Adventure" alt="Élèves de Juniors Academy au retour de leur séjour linguistique" width="1600" height="1200" loading="lazy" decoding="async" onerror="jaPhoto(this)"></div>
   </div>
 </section>
 </main>
 
 <footer class="ft">
-  <nav aria-label="Liens du site"><a href="/">Accueil</a><a href="/#jah-destinations">Nos séjours</a><a href="/study/">Étudier en Chine</a><a href="/blog/">Blog</a><a href="/brochure/">Brochure gratuite</a></nav>
-  <p>&copy; 2026 Juniors Academy · 25 Rue Rabah Bourbia, El Biar, Alger</p>
+  <nav aria-label="Liens du site"><a href="/">Nos séjours</a><a href="/study/">Étudier en Chine</a><a href="/blog/">Blog</a><a href="/brochure/">Brochure gratuite</a></nav>
+  <p>&copy; 2026 Juniors Academy. Tous droits réservés.</p>
 </footer>
 
 <script>
+  (function () {
+    /* tab icon: use the logo wherever it is (root or /blog/, any usual ending) */
+    var names = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG'], dirs = ['/', '/blog/'], tries = [];
+    dirs.forEach(function (d) { names.forEach(function (x) { tries.push(d + 'Juniors%20Academy%20Logo.' + x); }); });
+    (function probe(i) {
+      if (i >= tries.length) return;
+      var im = new Image();
+      im.onload = function () { document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach(function (l) { l.href = tries[i]; }); };
+      im.onerror = function () { probe(i + 1); };
+      im.src = tries[i];
+    })(0);
+  })();
   (function () {
     var bar = document.getElementById('progress'), art = document.getElementById('article');
     var links = Array.prototype.slice.call(document.querySelectorAll('.toc ol a'));
