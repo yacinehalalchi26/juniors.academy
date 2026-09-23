@@ -49,7 +49,8 @@
   <style>
     /* Base de page */
     html { scroll-behavior: smooth; }
-    body { margin: 0; background: #FAFAF7; }
+    body { margin: 0; background: #FAFAF7; overflow-x: hidden; }
+    @supports (overflow-x: clip) { body { overflow-x: clip; } }
 
     /* ===== En-tête : logo + téléphone ===== */
     .jah-header {
@@ -115,6 +116,30 @@
   .jah-header-right { display: flex; align-items: center; flex: none; gap: clamp(14px, 2.2vw, 28px); }
   .jah-header-phone { flex: none; }
 
+  /* ----- bouton Blog (en-tête, ordinateur et téléphone) ----- */
+  .jah-blog-btn {
+    position: relative; flex: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 15px 8px 12px; border-radius: 999px;
+    border: 1px solid rgba(20,24,29,.15); background: #fff; color: #14181D;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: .9rem; font-weight: 600;
+    text-decoration: none; white-space: nowrap;
+    transition: border-color .3s cubic-bezier(.16, 1, .3, 1), transform .3s cubic-bezier(.16, 1, .3, 1), box-shadow .3s cubic-bezier(.16, 1, .3, 1);
+  }
+  .jah-blog-btn:hover { border-color: #DC143C; transform: translateY(-2px); box-shadow: 0 10px 22px rgba(220,20,60,.14); }
+  .jah-blog-btn:active { transform: scale(.96); }
+  .jah-blog-btn:focus-visible { outline: 3px solid #DC143C; outline-offset: 3px; }
+  .jah-blog-btn svg { width: 19px; height: 19px; flex: none; color: #DC143C; overflow: visible; }
+  /* la page du livre se tourne au survol, et une fois à l'ouverture de la page */
+  .jah-blog-page { transform-box: fill-box; transform-origin: 0% 50%; }
+  .jah-blog-btn:hover .jah-blog-page, .jah-blog-btn:focus-visible .jah-blog-page { animation: jah-page-turn .7s cubic-bezier(.45, 0, .2, 1); }
+  .jah-blog-btn.jah-blog-intro .jah-blog-page { animation: jah-page-turn .8s cubic-bezier(.45, 0, .2, 1) 1.4s; }
+  @keyframes jah-page-turn { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); opacity: .6; } 100% { transform: scaleX(1); } }
+  /* pastille : un nouvel article est en ligne */
+  .jah-blog-dot { position: absolute; top: 2px; right: 3px; width: 9px; height: 9px; border-radius: 50%; background: #DC143C; box-shadow: 0 0 0 2px #fff; }
+  .jah-blog-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #DC143C; animation: jah-blog-ping 2.6s cubic-bezier(0, 0, .2, 1) 2.2s infinite; }
+  @keyframes jah-blog-ping { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(2.6); opacity: 0; } }
+
   /* ----- sceau 学 commun au bouton et au bandeau ----- */
   .jah-study-seal {
     flex: none; display: grid; place-items: center;
@@ -176,15 +201,27 @@
     /* logo et téléphone : espace garanti entre les deux, même sur petit écran */
     .jah-header { gap: 14px; padding: 8px 14px; }
     .jah-header-logo img { height: 42px; }
-    .jah-header-right { gap: 0; }
+    .jah-header-right { gap: 8px; }
+    .jah-blog-btn { padding: 8px 12px 8px 10px; font-size: .8rem; gap: 6px; }
+    .jah-blog-btn svg { width: 16px; height: 16px; }
+  }
+  .jah-tel-short { display: none; }
+  @media (max-width: 400px) {
+    .jah-tel-full { display: none; } .jah-tel-short { display: inline; }
+    .jah-header-right { gap: 6px; }
+    .jah-header-phone { font-size: .76rem; padding: 8px 11px; gap: 6px; }
   }
   @media (max-width: 360px) {
     .jah-header { gap: 10px; padding: 8px 12px; }
     .jah-header-logo img { height: 38px; }
-    .jah-header-phone { font-size: .74rem; padding: 8px 11px; gap: 6px; }
+    .jah-header-phone { font-size: .72rem; padding: 8px 10px; gap: 5px; }
+    .jah-blog-btn { padding: 8px 10px 8px 9px; font-size: .74rem; gap: 5px; }
+    .jah-blog-btn svg { width: 15px; height: 15px; }
     .jah-study-bar { font-size: .78rem; gap: 8px; }
   }
   @media (prefers-reduced-motion: reduce) {
+    .jah-blog-page, .jah-blog-dot::after { animation: none !important; }
+    .jah-blog-btn { transition: none !important; }
     .jah-study-btn::after, .jah-study-bar::after, .jah-study-bar svg { animation: none !important; }
     .jah-study-btn, .jah-study-seal { transition: none !important; }
   }
@@ -210,8 +247,16 @@
       <span class="jah-study-new">Nouveau</span>
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
+    <a href="blog/" class="jah-blog-btn jah-blog-intro" aria-label="Blog : le guide des parents pour un séjour linguistique">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5"/>
+        <path class="jah-blog-page" d="M12 6.5C14 5 17 4.6 20.5 5v13c-3.5-.4-6.5 0-8.5 1.5z"/>
+      </svg>
+      Blog
+      <span class="jah-blog-dot" aria-hidden="true"></span>
+    </a>
     <a href="tel:+213550527722" class="jah-header-phone" aria-label="Appeler Juniors Academy">
-      <span>+213 550 52 77 22</span>
+      <span class="jah-tel-full">+213 550 52 77 22</span><span class="jah-tel-short">0550 52 77 22</span>
       <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
     </a>
   </div>
@@ -460,7 +505,7 @@
   .jah-card:hover .jah-card-cta svg { transform: translateX(4px); }
 
   /* ---------- Fiches destinations ---------- */
-  .jah-details { padding: clamp(20px, 4vw, 50px) clamp(14px, 3vw, 40px) clamp(10px, 2vw, 20px); }
+  .jah-details { padding: clamp(20px, 4vw, 50px) clamp(14px, 3vw, 40px) clamp(10px, 2vw, 20px); overflow-x: clip; }
 
   .jah-detail {
     display: grid;
@@ -650,6 +695,9 @@
     text-align: center;
     padding: 4px 16px 26px;
   }
+  .jah-footer-links { margin-bottom: 8px !important; }
+  .jah-footer-links a { color: #14181D; font-weight: 600; text-decoration: none; }
+  .jah-footer-links a:hover { color: #DC143C; }
   .jah-footer p {
     margin: 0;
     font-size: .82rem;
@@ -1333,6 +1381,7 @@
 
 <!-- ==================== 5. COPYRIGHT ==================== -->
 <footer class="jah-footer">
+  <p class="jah-footer-links"><a href="/blog/">Blog : conseils pour les parents</a> · <a href="/study/">Étudier en Chine</a> · <a href="/brochure/">Brochure gratuite</a></p>
   <p>&copy; 2026 Juniors Academy. Tous droits réservés.</p>
 </footer>
 
