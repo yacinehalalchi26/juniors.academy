@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>CSCA Mock Test · Juniors Academy</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#1B2A4A">
+  <!-- Tab icon: answer sheet on a navy tile, built into the page -->
+  <link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+  <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       JUNIORS ACADEMY — CSCA MOCK TEST SIMULATOR (juniors.academy/csca)
+       Mathematics, Physics, Chemistry · 48 questions · 60 minutes each
+       Questions and answer keys live in Firebase, never in this file.
+       ============================================================ */
+    :root {
+      --navy: #1B2A4A; --navy-2: #27406E; --ink: #14181D; --paper: #F4F5F8; --card: #fff;
+      --blue: #2F5BD3; --blue-soft: rgba(47,91,211,.1); --red: #DC143C; --red-soft: rgba(220,20,60,.09);
+      --ok: #1E8E5A; --ok-soft: rgba(30,142,90,.12); --amber: #C77C0E; --amber-soft: rgba(242,169,59,.2);
+      --muted: #687280; --body: #3B4350; --line: rgba(20,24,29,.1);
+      --ease: cubic-bezier(.16, 1, .3, 1); --display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+      --sub-math: #2F5BD3; --sub-physics: #7A3FC4; --sub-chemistry: #0E8C6B;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 8px; }
+    [hidden] { display: none !important; }
+    .num { font-variant-numeric: tabular-nums; }
+    svg.i { width: 18px; height: 18px; flex: none; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 9px 18px; border-radius: 12px; border: 1px solid transparent; font-weight: 600; font-size: .92rem; white-space: nowrap; text-decoration: none; transition: background .2s, border-color .2s, transform .15s; }
+    .btn:active { transform: scale(.98); } .btn:disabled { opacity: .5; cursor: default; }
+    .btn-navy { background: var(--navy); color: #fff; } .btn-navy:hover { background: var(--navy-2); }
+    .btn-blue { background: var(--blue); color: #fff; } .btn-blue:hover { background: #2649b3; }
+    .btn-light { background: #fff; border-color: var(--line); } .btn-light:hover { border-color: rgba(20,24,29,.3); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-ghost-red { background: #fff; border-color: rgba(220,20,60,.35); color: #B0102F; }
+    .btn-small { min-height: 34px; padding: 5px 12px; font-size: .84rem; border-radius: 10px; }
+    .linkish { background: none; border: 0; padding: 0; color: var(--muted); font-weight: 600; font-size: .85rem; text-decoration: underline; }
+
+    /* top bar (dashboard + admin) */
+    .top { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 14px; padding: 10px clamp(12px, 3vw, 28px); padding-top: calc(10px + env(safe-area-inset-top, 0px)); background: var(--navy); color: #fff; }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo .sheet { width: 30px; height: 34px; border-radius: 6px; background: #fff; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 6px 5px; align-content: center; }
+    .logo .sheet i { width: 4px; height: 4px; border-radius: 50%; border: 1px solid #9AA3B5; justify-self: center; }
+    .logo .sheet i.f { background: var(--red); border-color: var(--red); }
+    .logo b { display: block; font-family: var(--display); font-size: 1.05rem; letter-spacing: -.01em; }
+    .logo small { display: block; font-size: .72rem; color: rgba(255,255,255,.6); }
+    .tabs { display: flex; gap: 4px; margin-left: 14px; }
+    .tabs button { min-height: 36px; padding: 6px 14px; border: 0; border-radius: 999px; background: none; color: rgba(255,255,255,.7); font-weight: 600; font-size: .88rem; }
+    .tabs button[aria-pressed="true"] { background: rgba(255,255,255,.14); color: #fff; }
+    .top-r { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .who { text-align: right; font-size: .78rem; color: rgba(255,255,255,.65); line-height: 1.25; }
+    .who b { display: block; color: #fff; font-size: .86rem; }
+    .tbtn { min-height: 34px; padding: 5px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff; font-weight: 600; font-size: .84rem; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px clamp(12px, 3vw, 28px) 70px; }
+    .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 18px; }
+    .head h1 { margin: 0; font-family: var(--display); font-size: clamp(1.5rem, 2.8vw, 2rem); letter-spacing: -.02em; line-height: 1.1; }
+    .head p { margin: 4px 0 0; color: var(--muted); }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; }
+
+    /* student dashboard */
+    .subject { margin: 0 0 20px; }
+    .subject-h { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; }
+    .subject-h i { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--c); color: #fff; font-style: normal; font-family: var(--display); font-weight: 800; }
+    .subject-h h2 { margin: 0; font-family: var(--display); font-size: 1.2rem; }
+    .subject-h small { color: var(--muted); font-size: .85rem; }
+    .tests { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .tcard { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; background: #fff; border: 1px solid var(--line); min-height: 150px; }
+    .tcard b { font-family: var(--display); font-size: 1.02rem; }
+    .tcard .meta { font-size: .8rem; color: var(--muted); }
+    .tcard .btn { margin-top: auto; width: 100%; }
+    .tcard.locked { background: repeating-linear-gradient(135deg, #F7F8FA, #F7F8FA 8px, #F1F3F6 8px, #F1F3F6 16px); color: var(--muted); }
+    .tcard.locked .lock { margin-top: auto; display: flex; align-items: center; gap: 7px; font-size: .8rem; font-weight: 600; }
+    .tcard.done { border-color: rgba(30,142,90,.35); }
+    .pill { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; padding: 3px 9px; border-radius: 999px; font-size: .72rem; font-weight: 700; }
+    .p-ready { background: var(--blue-soft); color: var(--blue); } .p-prog { background: var(--amber-soft); color: #8A5A00; } .p-done { background: var(--ok-soft); color: var(--ok); } .p-lock { background: rgba(20,24,29,.07); color: var(--muted); } .p-exp { background: var(--red-soft); color: #B0102F; }
+    .note { padding: 12px 16px; border-radius: 14px; background: #fff; border: 1px solid var(--line); color: var(--body); font-size: .9rem; margin: 0 0 20px; display: flex; gap: 10px; align-items: flex-start; }
+
+    /* instructions */
+    .intro { max-width: 760px; margin: 0 auto; }
+    .intro .card { padding: 26px 28px; }
+    .intro h1 { margin: 0 0 4px; font-family: var(--display); font-size: 1.6rem; }
+    .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 18px 0; }
+    .fact { padding: 12px; border-radius: 12px; background: var(--paper); text-align: center; }
+    .fact b { display: block; font-family: var(--display); font-size: 1.4rem; }
+    .fact span { font-size: .78rem; color: var(--muted); }
+    .rules { margin: 0 0 20px; padding-left: 20px; color: var(--body); }
+    .rules li { margin: 0 0 6px; }
+
+    /* ===== exam screen (computer-based test) ===== */
+    .exam { position: fixed; inset: 0; z-index: 100; display: grid; grid-template-rows: auto 1fr auto; background: #EEF0F4; }
+    .ex-top { display: flex; align-items: center; gap: 16px; padding: 10px 18px; padding-top: calc(10px + env(safe-area-inset-top, 0px)); background: var(--navy); color: #fff; }
+    .ex-top .t1 { font-family: var(--display); font-weight: 800; font-size: 1.02rem; }
+    .ex-top .t2 { font-size: .78rem; color: rgba(255,255,255,.65); }
+    .ex-top .cand { margin-left: auto; text-align: right; font-size: .78rem; color: rgba(255,255,255,.7); line-height: 1.3; }
+    .ex-top .cand b { display: block; color: #fff; font-size: .88rem; }
+    .timer { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 10px; background: rgba(255,255,255,.1); font-family: var(--display); font-weight: 800; font-size: 1.25rem; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+    .timer svg { width: 18px; height: 18px; }
+    .timer.warn { background: #F2A93B; color: var(--ink); }
+    .timer.crit { background: var(--red); color: #fff; animation: blink 1s steps(2) infinite; }
+    @keyframes blink { 50% { opacity: .75; } }
+    .ex-main { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; padding: 14px 18px; min-height: 0; }
+    .qpane { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px 26px; overflow-y: auto; min-height: 0; }
+    .qnum { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 14px; font-size: .84rem; color: var(--muted); font-weight: 600; }
+    .qnum b { color: var(--ink); font-size: 1rem; font-family: var(--display); }
+    .qtext { font-size: 1.08rem; line-height: 1.65; margin: 0 0 20px; white-space: pre-wrap; }
+    .opts { display: grid; gap: 10px; }
+    .opt { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 13px 16px; border-radius: 12px; border: 1.5px solid var(--line); background: #fff; font-size: 1rem; transition: border-color .15s, background .15s; }
+    .opt:hover { border-color: rgba(47,91,211,.45); background: #FAFBFF; }
+    .opt .l { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 2px solid #B7BFCC; display: grid; place-items: center; font-weight: 700; font-size: .9rem; color: var(--body); }
+    .opt[aria-checked="true"] { border-color: var(--blue); background: #F3F6FE; }
+    .opt[aria-checked="true"] .l { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .qpane .flagged { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: var(--amber-soft); color: #8A5A00; font-size: .76rem; font-weight: 700; }
+    .sheet { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow-y: auto; }
+    .sheet h3 { margin: 0; font-size: .92rem; }
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+    .cell { position: relative; aspect-ratio: 1; border-radius: 8px; border: 1.5px solid #CBD2DC; background: #fff; font-size: .82rem; font-weight: 700; color: var(--body); padding: 0; }
+    .cell.ans { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .cell.cur { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--navy); }
+    .cell.flag::after { content: ""; position: absolute; top: -4px; right: -4px; width: 11px; height: 11px; border-radius: 50%; background: #F2A93B; border: 2px solid #fff; }
+    .legend { display: grid; gap: 5px; font-size: .76rem; color: var(--muted); }
+    .legend span { display: flex; align-items: center; gap: 7px; }
+    .legend i { width: 13px; height: 13px; border-radius: 4px; border: 1.5px solid #CBD2DC; position: relative; }
+    .counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; }
+    .counts div { padding: 8px 4px; border-radius: 10px; background: var(--paper); }
+    .counts b { display: block; font-family: var(--display); font-size: 1.1rem; }
+    .counts small { font-size: .7rem; color: var(--muted); }
+    .ex-foot { display: flex; align-items: center; gap: 10px; padding: 10px 18px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); background: #fff; border-top: 1px solid var(--line); }
+    .ex-foot .sp { flex: 1; }
+    .saved { font-size: .78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+    .saved i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+    .saved.busy i { background: #F2A93B; } .saved.err i { background: var(--red); } .saved.err { color: #B0102F; }
+    .sheet-toggle { display: none; }
+
+    /* dialogs */
+    dialog.pop { border: 0; padding: 0; border-radius: 20px; width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--paper); color: var(--ink); box-shadow: 0 40px 90px -20px rgba(20,24,29,.5); }
+    dialog.pop.wide { width: min(1000px, calc(100vw - 24px)); }
+    dialog.pop::backdrop { background: rgba(15,22,38,.6); }
+    .pop-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; background: var(--navy); color: #fff; }
+    .pop-head h2 { margin: 0; font-family: var(--display); font-size: 1.1rem; }
+    .pop-head p { margin: 1px 0 0; font-size: .8rem; color: rgba(255,255,255,.65); }
+    .x { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: transparent; color: #fff; font-size: 1.2rem; line-height: 1; flex: none; }
+    .pop-body { display: grid; gap: 14px; padding: 18px; }
+    .pop-foot { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+    .fld { display: grid; gap: 4px; }
+    .fld label { font-size: .78rem; font-weight: 600; color: var(--body); }
+    .fld input, .fld select { width: 100%; min-height: 42px; padding: 8px 12px; border-radius: 11px; border: 1px solid rgba(20,24,29,.18); background: #fff; }
+    .fld input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+    .err { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--red-soft); color: #B0102F; font-size: .88rem; font-weight: 500; }
+    .info { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--blue-soft); color: #1F3F99; font-size: .88rem; font-weight: 500; }
+    .okbox { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--ok-soft); color: var(--ok); font-size: .88rem; font-weight: 600; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* admin */
+    .stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 0 0 16px; }
+    .stat { padding: 14px 16px; border-radius: 16px; background: #fff; border: 1px solid var(--line); }
+    .stat b { display: block; font-family: var(--display); font-size: 1.6rem; letter-spacing: -.02em; line-height: 1.1; }
+    .stat span { font-size: .8rem; color: var(--muted); }
+    .stat.dark { background: var(--navy); border-color: var(--navy); color: #fff; } .stat.dark span { color: rgba(255,255,255,.7); }
+    .bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; }
+    .bar input[type=search], .bar select { min-height: 38px; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--line); background: #fff; font-size: .88rem; }
+    .bar input[type=search] { flex: 1; min-width: 200px; }
+    .tablewrap { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+    .tscroll { overflow-x: auto; }
+    table.list { width: 100%; border-collapse: collapse; min-width: 760px; }
+    .list th { text-align: left; font-size: .74rem; font-weight: 600; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line); background: #FAFBFC; white-space: nowrap; }
+    .list td { padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: .88rem; vertical-align: middle; }
+    .list tr:last-child td { border-bottom: 0; }
+    .list tbody tr { cursor: pointer; } .list tbody tr:hover { background: #FAFBFD; }
+    .list td small { display: block; color: var(--muted); font-size: .76rem; }
+    .score { font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
+    .s-hi { color: var(--ok); } .s-mid { color: #8A5A00; } .s-lo { color: #B0102F; }
+    .empty { text-align: center; padding: 46px 20px; background: #fff; border: 1px solid var(--line); border-radius: 16px; color: var(--muted); }
+    .empty h2 { margin: 0 0 6px; color: var(--ink); font-family: var(--display); font-size: 1.25rem; }
+    /* student access grid */
+    .access { display: grid; gap: 12px; }
+    .arow { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+    .arow-h { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
+    .arow-h b { font-family: var(--display); }
+    .arow-h .sp { flex: 1; }
+    .acells { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+    .acell { display: flex; flex-direction: column; gap: 6px; padding: 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); font-size: .8rem; min-height: 118px; }
+    .acell b { font-size: .86rem; }
+    .acell .sc { font-family: var(--display); font-weight: 800; font-size: 1.25rem; line-height: 1; }
+    .acell .acts { margin-top: auto; display: flex; flex-wrap: wrap; gap: 4px; }
+    .acell .acts button { flex: 1; min-height: 30px; padding: 3px 8px; border-radius: 8px; font-size: .74rem; font-weight: 600; border: 1px solid var(--line); background: #fff; }
+    .acell .acts .on { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .switch { position: relative; width: 38px; height: 22px; border-radius: 999px; background: #CBD2DC; border: 0; padding: 0; flex: none; transition: background .2s; }
+    .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s var(--ease); }
+    .switch[aria-checked="true"] { background: var(--ok); } .switch[aria-checked="true"]::after { transform: translateX(16px); }
+    /* answer review */
+    .rv-top { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .topics { display: grid; gap: 6px; }
+    .tp { display: grid; grid-template-columns: minmax(0, 1fr) 120px 48px; gap: 10px; align-items: center; font-size: .84rem; }
+    .tp .track { height: 8px; border-radius: 999px; background: #E6E9EF; overflow: hidden; } .tp .track i { display: block; height: 100%; background: var(--ok); }
+    .rq { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+    .rq.bad { border-left: 4px solid var(--red); } .rq.good { border-left: 4px solid var(--ok); } .rq.skip { border-left: 4px solid #B7BFCC; }
+    .rq-h { display: flex; gap: 10px; align-items: baseline; font-size: .8rem; color: var(--muted); margin: 0 0 4px; }
+    .rq-h b { color: var(--ink); }
+    .rq p { margin: 0 0 8px; font-size: .92rem; }
+    .ropts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .ro { padding: 6px 10px; border-radius: 8px; background: var(--paper); font-size: .84rem; display: flex; gap: 8px; }
+    .ro.correct { background: var(--ok-soft); color: #0F5E3B; font-weight: 600; }
+    .ro.chosen-bad { background: var(--red-soft); color: #9C0E2B; font-weight: 600; text-decoration: line-through; }
+    .ro em { font-style: normal; font-weight: 700; }
+
+    /* sign in */
+    .gate { position: fixed; inset: 0; z-index: 700; display: grid; place-items: center; padding: 20px; overflow-y: auto; background: radial-gradient(900px 500px at 15% -10%, rgba(47,91,211,.35), transparent 60%), var(--navy); }
+    .gate-card { width: min(100%, 420px); background: #fff; border-radius: 24px; padding: 30px 26px 24px; box-shadow: 0 40px 100px -30px rgba(0,0,0,.6); }
+    .gate-card .logo { justify-content: center; margin: 0 0 14px; }
+    .gate-card .logo .sheet { width: 44px; height: 50px; padding: 9px 7px; gap: 4px; } .gate-card .logo .sheet i { width: 6px; height: 6px; }
+    .gate-card h1 { margin: 0 0 4px; font-family: var(--display); font-size: 1.5rem; text-align: center; letter-spacing: -.02em; }
+    .gate-card .lead { margin: 0 0 18px; text-align: center; color: var(--muted); font-size: .9rem; }
+    .gate-card form { display: grid; gap: 12px; }
+    .gate-card .btn { width: 100%; min-height: 46px; }
+    .gate-card .err, .gate-card .info { margin: 0 0 12px; }
+
+    .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 900; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-weight: 600; font-size: .88rem; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
+    .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1100px) { .tests, .acells { grid-template-columns: repeat(3, minmax(0, 1fr)); } .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 860px) {
+      .ex-main { grid-template-columns: 1fr; padding: 10px; }
+      .sheet { position: fixed; left: 10px; right: 10px; bottom: 70px; z-index: 5; max-height: 60dvh; box-shadow: 0 30px 60px -20px rgba(0,0,0,.4); display: none; }
+      .exam.show-sheet .sheet { display: flex; }
+      .sheet-toggle { display: inline-flex; }
+      .qpane { padding: 18px; }
+      .ex-top .cand { display: none; } .ex-top { gap: 10px; }
+      .grid { grid-template-columns: repeat(8, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .tests, .acells { grid-template-columns: 1fr 1fr; } .stats, .facts, .rv-top { grid-template-columns: 1fr 1fr; }
+      .top { flex-wrap: wrap; } .tabs { order: 3; width: 100%; margin: 0; overflow-x: auto; } .who { display: none; }
+      .fields, .ropts { grid-template-columns: 1fr; }
+      .ex-foot .btn span { display: none; }
+      .tp { grid-template-columns: minmax(0, 1fr) 70px 44px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+</svg>
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="logo"><span class="sheet" aria-hidden="true"><i></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></div>
+    <h1>CSCA Mock Test</h1>
+    <p class="lead" id="gLead">Opening…</p>
+    <p class="err" id="gMsg" role="alert" hidden></p>
+    <form id="signForm" hidden novalidate>
+      <div class="fld"><label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="username" required></div>
+      <div class="fld"><label for="gPass">Password</label><input id="gPass" type="password" autocomplete="current-password" required></div>
+      <button type="submit" class="btn btn-navy" id="gSubmit">Sign in</button>
+      <button type="button" class="linkish" id="gForgot" style="justify-self:center">Forgot my password</button>
+    </form>
+    <button type="button" class="btn btn-light" id="gOut" style="width:100%;margin-top:12px" hidden>Sign out</button>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <header class="top">
+    <div class="logo"><span class="sheet" aria-hidden="true"><i></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><span><b>CSCA Mock Test</b><small>Juniors Academy</small></span></div>
+    <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+    <div class="top-r"><span class="who" id="who"></span><button type="button" class="tbtn" id="btnOut">Sign out</button></div>
+  </header>
+  <main class="wrap" id="main"></main>
+</div>
+
+<!-- the exam (computer-based test screen) -->
+<div class="exam" id="exam" hidden>
+  <div class="ex-top">
+    <div><div class="t1" id="exTitle"></div><div class="t2">CSCA · 48 questions · 60 minutes</div></div>
+    <div class="timer" id="timer" role="timer" aria-live="off"><svg aria-hidden="true"><use href="#i-clock"/></svg><span id="timeLeft">60:00</span></div>
+    <div class="cand"><b id="exName"></b>Candidate</div>
+  </div>
+  <div class="ex-main">
+    <section class="qpane" id="qpane" aria-live="polite"></section>
+    <aside class="sheet" id="sheet" aria-label="Answer sheet">
+      <h3>Answer sheet</h3>
+      <div class="counts"><div><b id="cAns">0</b><small>answered</small></div><div><b id="cLeft">48</b><small>not answered</small></div><div><b id="cFlag">0</b><small>flagged</small></div></div>
+      <div class="grid" id="grid"></div>
+      <div class="legend"><span><i style="background:var(--blue);border-color:var(--blue)"></i>Answered</span><span><i></i>Not answered</span><span><i style="border-color:#F2A93B;background:#FFF4E0"></i>Flagged for review</span></div>
+      <button type="button" class="btn btn-red" data-submit>Submit test</button>
+    </aside>
+  </div>
+  <div class="ex-foot">
+    <button type="button" class="btn btn-light" id="bPrev"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg><span>Previous</span></button>
+    <button type="button" class="btn btn-light" id="bFlag"><svg class="i" aria-hidden="true"><use href="#i-flag"/></svg><span id="bFlagT">Flag for review</span></button>
+    <button type="button" class="btn btn-light sheet-toggle" id="bSheet"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg><span>Questions</span></button>
+    <span class="sp"></span>
+    <span class="saved" id="saved"><i></i><span>Saved</span></span>
+    <button type="button" class="btn btn-navy" id="bNext"><span>Next</span><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
+  </div>
+</div>
+
+<dialog class="pop" id="submitPop" aria-labelledby="smTitle">
+  <div class="pop-head"><div><h2 id="smTitle">Submit your test?</h2><p>You cannot change your answers after submitting</p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <div class="pop-body"><div id="smBody"></div><div class="pop-foot"><button type="button" class="btn btn-light" data-close>Back to the test</button><button type="button" class="btn btn-red" id="smGo">Submit now</button></div></div>
+</dialog>
+
+<dialog class="pop" id="addPop" aria-labelledby="adTitle">
+  <div class="pop-head"><div><h2 id="adTitle">Add a student</h2><p>They sign in with this email and password</p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <form class="pop-body" id="addForm" novalidate>
+    <div class="fld"><label for="adName">Full name</label><input id="adName" type="text" required></div>
+    <div class="fields"><div class="fld"><label for="adEmail">Email</label><input id="adEmail" type="email" autocomplete="off" required></div><div class="fld"><label for="adPass">Password (6+ characters)</label><input id="adPass" type="text" autocomplete="off" required></div></div>
+    <p class="err" id="adErr" hidden></p>
+    <div class="pop-foot"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-navy" id="adGo">Create student</button></div>
+  </form>
+</dialog>
+
+<dialog class="pop wide" id="accPop" aria-labelledby="acTitle">
+  <div class="pop-head"><div><h2 id="acTitle"></h2><p id="acSub"></p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <div class="pop-body" id="acBody"></div>
+</dialog>
+
+<dialog class="pop wide" id="revPop" aria-labelledby="rvTitle">
+  <div class="pop-head"><div><h2 id="rvTitle"></h2><p id="rvSub"></p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <div class="pop-body" id="rvBody"></div>
+</dialog>
+
+<input type="file" id="bankFile" accept=".json,application/json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module">
+/* ============================================================
+   SETTINGS — the Firebase project of the simulator (juniors-csca).
+   Paste its six values below. Only this block needs editing.
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBpH_K90kXo_3vkHt7Nr-WzMRZ3ZADNESc",
+  authDomain: "juniors-csca.firebaseapp.com",
+  projectId: "juniors-csca",
+  storageBucket: "juniors-csca.firebasestorage.app",
+  messagingSenderId: "259017695062",
+  appId: "1:259017695062:web:34bd4d35516465abfe80f7"
+};
+const DIRECTOR_EMAILS = ['director@juniors.academy'];
+/* ============================================================ */
+
+const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
+const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+const SUBJECTS = [
+  { key: 'math', name: 'Mathematics', letter: 'M', color: 'var(--sub-math)' },
+  { key: 'physics', name: 'Physics', letter: 'P', color: 'var(--sub-physics)' },
+  { key: 'chemistry', name: 'Chemistry', letter: 'C', color: 'var(--sub-chemistry)' }
+];
+const TESTS = []; SUBJECTS.forEach(s => { for (let n = 1; n <= 5; n++) TESTS.push({ id: s.key + '-' + n, subject: s.key, n, title: s.name + ' · Mock test ' + n }); });
+const TEST = {}; TESTS.forEach(t => { TEST[t.id] = t; });
+const MINUTES = 60, COUNT = 48, GRACE_MS = 60 * 1000;
+const LETTERS = ['A', 'B', 'C', 'D'];
+
+/* ==================== Helpers ==================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const icon = n => '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"/></svg>';
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const ms = v => !v ? 0 : typeof v === 'number' ? v : v.toMillis ? v.toMillis() : (v.seconds ? v.seconds * 1000 : Date.parse(v) || 0);
+const when = v => { const t = ms(v); if (!t) return ''; const d = new Date(t); return d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear() + ', ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+const mmss = s => { s = Math.max(0, Math.round(s)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+const subj = k => SUBJECTS.find(s => s.key === k) || SUBJECTS[0];
+let toastTimer;
+function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3200); }
+
+/* ==================== State ==================== */
+let fb = null, me = null, profile = null, unsub = [], skew = 0;
+let students = {}, attempts = {}, keys = {}, bankTests = {}, tab = '', q = '', rsub = '';
+const isDirector = () => !!me && me.director;
+const now = () => Date.now() + skew;          /* server time, as seen from this device */
+const stop = () => { unsub.forEach(f => { try { f(); } catch (e) {} }); unsub = []; };
+const attemptId = (uid, tid) => uid + '_' + tid;
+const endsAt = a => ms(a.startedAt) + MINUTES * 60000;
+function stateOf(a) {
+  if (!a) return 'none';
+  if (a.status === 'submitted') return 'submitted';
+  if (ms(a.startedAt) && now() > endsAt(a)) return 'expired';
+  return 'progress';
+}
+function scoreOf(a) {
+  const k = keys[a.testId]; if (!k || !k.answers) return null;
+  let c = 0; const ans = a.answers || {};
+  k.answers.forEach((x, i) => { if (ans[i] === x) c++; });
+  return { correct: c, total: k.answers.length, score: Math.round(c / k.answers.length * 100), answered: Object.keys(ans).length };
+}
+
+/* ==================== Sign in ==================== */
+function gate(mode, msg, info) {
+  $('gate').hidden = mode === 'off'; $('signForm').hidden = mode !== 'signin'; $('gOut').hidden = mode !== 'blocked';
+  $('gLead').textContent = mode === 'signin' ? 'Sign in with the email and password given by Juniors Academy.' : mode === 'loading' ? 'Opening…' : '';
+  $('gLead').hidden = !$('gLead').textContent;
+  $('gMsg').textContent = msg || ''; $('gMsg').hidden = !msg; $('gMsg').className = info ? 'info' : 'err';
+  if (mode === 'signin') setTimeout(() => $('gEmail').focus(), 50);
+}
+async function start() {
+  if (!READY) { gate('blocked', 'Almost ready: paste the Firebase settings of the juniors-csca project into FIREBASE_CONFIG, near the bottom of index.html.', true); $('gOut').hidden = true; return; }
+  gate('loading');
+  try {
+    const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
+    const app = A0.initializeApp(FIREBASE_CONFIG);
+    fb = { A0, A, F, auth: A.getAuth(app), db: F.getFirestore(app) };
+    A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
+  } catch (e) { gate('blocked', 'Couldn\u2019t reach the test server. Check the connection and reload the page.'); }
+}
+function signedOut() { stop(); closeExam(true); me = null; profile = null; students = {}; attempts = {}; keys = {}; bankTests = {}; $('app').hidden = true; gate('signin', pendingMsg); pendingMsg = ''; }
+let pendingMsg = '';
+async function signedIn(u) {
+  const email = (u.email || '').toLowerCase();
+  me = { uid: u.uid, email, director: DIRECTOR_EMAILS.map(x => x.toLowerCase()).includes(email) };
+  if (me.director) {
+    profile = { name: 'Director' };
+    try { const t0 = Date.now(), ref = fb.F.doc(fb.db, 'meta', 'clock'); await fb.F.setDoc(ref, { t: fb.F.serverTimestamp() }); const s2 = await fb.F.getDoc(ref); const srv = ms(s2.data().t); if (srv) skew = srv - (t0 + Date.now()) / 2; } catch (e) {}
+    openApp(); return;
+  }
+  gate('loading');
+  try {
+    const ref = fb.F.doc(fb.db, 'students', u.uid);
+    const snap = await fb.F.getDoc(ref);
+    if (!snap.exists()) { pendingMsg = 'This account has no access to the mock tests. Contact Juniors Academy.'; fb.A.signOut(fb.auth); return; }
+    profile = snap.data();
+    if (profile.active === false) { pendingMsg = 'Your access has been suspended. Contact Juniors Academy.'; fb.A.signOut(fb.auth); return; }
+    /* measure the gap between this device's clock and the server clock, so the timer can't be cheated by changing the device time */
+    const t0 = Date.now();
+    await fb.F.updateDoc(ref, { lastSeen: fb.F.serverTimestamp() });
+    const s2 = await fb.F.getDoc(ref);
+    const srv = ms(s2.data().lastSeen); const t1 = Date.now();
+    if (srv) skew = srv - (t0 + t1) / 2;
+    openApp();
+  } catch (e) { gate('blocked', e && e.code === 'permission-denied' ? 'Access refused. The Firebase rules may not be published yet (project juniors-csca).' : 'Couldn\u2019t load your account. Check the connection and reload.'); }
+}
+function openApp() {
+  const { F, db } = fb;
+  gate('off'); $('app').hidden = false; stop();
+  $('who').innerHTML = '<b>' + esc(profile.name) + '</b>' + esc(me.email);
+  tab = tab || (isDirector() ? 'students' : 'tests');
+  if (isDirector()) {
+    unsub.push(F.onSnapshot(F.collection(db, 'students'), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ uid: d.id }, d.data()); }); render(); }, denied));
+    unsub.push(F.onSnapshot(F.collection(db, 'attempts'), s => { attempts = {}; s.docs.forEach(d => { attempts[d.id] = Object.assign({ id: d.id }, d.data({ serverTimestamps: 'estimate' })); }); render(); }, denied));
+    unsub.push(F.onSnapshot(F.collection(db, 'keys'), s => { keys = {}; s.docs.forEach(d => { keys[d.id] = d.data(); }); render(); }, denied));
+    unsub.push(F.onSnapshot(F.collection(db, 'tests'), s => { bankTests = {}; s.docs.forEach(d => { bankTests[d.id] = d.data(); }); render(); }, denied));
+  } else {
+    unsub.push(F.onSnapshot(F.doc(db, 'students', me.uid), d => {
+      if (!d.exists() || d.data().active === false) { pendingMsg = 'Your access has been removed. Contact Juniors Academy.'; fb.A.signOut(fb.auth); return; }
+      profile = d.data(); render();
+    }, () => {}));
+    unsub.push(F.onSnapshot(F.query(F.collection(db, 'attempts'), F.where('uid', '==', me.uid)), s => { attempts = {}; s.docs.forEach(d => { attempts[d.id] = Object.assign({ id: d.id }, d.data({ serverTimestamps: 'estimate' })); }); render(); resumeIfNeeded(); }, denied));
+  }
+}
+function denied(e) { if (e && e.code === 'permission-denied') { stop(); gate('blocked', 'Access refused by the Firebase rules. Check that they are published in the juniors-csca project.'); } }
+
+/* ==================== Rendering ==================== */
+let painting = false;
+function render() { if (painting || !me) return; painting = true; requestAnimationFrame(() => { painting = false; draw(); }); }
+function draw() {
+  const T = isDirector() ? [['students', 'Students'], ['results', 'Results'], ['bank', 'Question bank']] : [['tests', 'My tests']];
+  $('tabs').innerHTML = T.map(t => '<button type="button" data-tab="' + t[0] + '" aria-pressed="' + (tab === t[0]) + '">' + t[1] + '</button>').join('');
+  if (intro) return;
+  const keep = document.activeElement && document.activeElement.id === 'fQ' ? document.activeElement.selectionStart : null;
+  $('main').innerHTML = isDirector() ? ({ students: studentsView, results: resultsView, bank: bankView }[tab] || studentsView)() : studentHome();
+  if (keep != null && $('fQ')) { $('fQ').focus(); $('fQ').setSelectionRange(keep, keep); }
+  if ($('accPop').open && accUid) drawAccess();
+}
+
+/* ---------- Student: the three modules ---------- */
+function studentHome() {
+  const un = profile.unlocked || {};
+  const first = String(profile.name || '').split(' ')[0];
+  return '<div class="head"><div><h1>Hello ' + esc(first) + '</h1><p>Your CSCA mock tests: 48 questions and 60 minutes each, exactly like the real exam.</p></div></div>' +
+    '<div class="note">' + icon('lock') + '<span>Juniors Academy unlocks each test for you. When you finish, your answers go straight to your teacher, who will share your results with you.</span></div>' +
+    SUBJECTS.map(s => '<section class="subject" aria-labelledby="h-' + s.key + '"><div class="subject-h" style="--c:' + s.color + '"><i>' + s.letter + '</i><div><h2 id="h-' + s.key + '">' + s.name + '</h2><small>5 mock tests</small></div></div><div class="tests">' +
+      TESTS.filter(t => t.subject === s.key).map(t => {
+        const a = attempts[attemptId(me.uid, t.id)], st = stateOf(a), open = un[t.id] === true;
+        if (st === 'submitted' || st === 'expired') return '<div class="tcard done"><span class="pill ' + (st === 'expired' ? 'p-exp' : 'p-done') + '">' + (st === 'expired' ? 'Time over' : 'Completed') + '</span><b>Mock test ' + t.n + '</b><span class="meta">' + (st === 'expired' ? 'Your saved answers were sent' : 'Submitted ' + esc(when(a.submittedAt))) + '</span><span class="meta" style="margin-top:auto">Results shared by Juniors Academy</span></div>';
+        if (st === 'progress') return '<div class="tcard"><span class="pill p-prog">In progress</span><b>Mock test ' + t.n + '</b><span class="meta num">' + mmss((endsAt(a) - now()) / 1000) + ' left · ' + Object.keys(a.answers || {}).length + '/48 answered</span><button type="button" class="btn btn-blue btn-small" data-start="' + t.id + '">Resume</button></div>';
+        if (!open) return '<div class="tcard locked"><span class="pill p-lock">Locked</span><b>Mock test ' + t.n + '</b><span class="meta">48 questions · 60 min</span><span class="lock">' + icon('lock') + 'Ask Juniors Academy to unlock it</span></div>';
+        return '<div class="tcard"><span class="pill p-ready">Ready</span><b>Mock test ' + t.n + '</b><span class="meta">48 questions · 60 min</span><button type="button" class="btn btn-navy btn-small" data-intro="' + t.id + '">Start test</button></div>';
+      }).join('') + '</div></section>').join('');
+}
+
+/* ---------- Instructions before the timer starts ---------- */
+let intro = null;
+function showIntro(tid) {
+  intro = tid; const t = TEST[tid];
+  $('main').innerHTML = '<div class="intro"><p style="margin:0 0 10px"><button type="button" class="linkish" data-back>← Back to my tests</button></p><div class="card">' +
+    '<h1>' + esc(t.title) + '</h1><p style="margin:0;color:var(--muted)">CSCA · ' + esc(subj(t.subject).name) + ' in English</p>' +
+    '<div class="facts"><div class="fact"><b>48</b><span>questions</span></div><div class="fact"><b>60</b><span>minutes</span></div><div class="fact"><b>A–D</b><span>one correct answer</span></div><div class="fact"><b>100</b><span>points</span></div></div>' +
+    '<ol class="rules"><li>Each question has four options and only one correct answer. There is no penalty for a wrong answer, so answer every question.</li>' +
+    '<li>The timer starts when you click <b>Start the test</b> and cannot be paused. If you close the page, it keeps running.</li>' +
+    '<li>You can move between questions, change your answers and flag questions to review them before submitting.</li>' +
+    '<li>Your answers are saved automatically. When the time is up, the test is submitted automatically.</li>' +
+    '<li>As in the real exam, use a whiteboard or paper for your working. No calculator is provided.</li>' +
+    '<li>Once you submit, you cannot change your answers. Juniors Academy will share your result with you.</li></ol>' +
+    '<div class="pop-foot" style="justify-content:space-between"><button type="button" class="btn btn-light" data-back>Not now</button><button type="button" class="btn btn-navy" data-start="' + tid + '" style="min-width:200px">Start the test</button></div></div></div>';
+  window.scrollTo(0, 0);
+}
+
+/* ==================== The exam ==================== */
+let ex = null, tick = null;
+async function startTest(tid) {
+  const id = attemptId(me.uid, tid), existing = attempts[id];
+  if (existing && stateOf(existing) !== 'progress') { toast('You have already completed this test.'); intro = null; render(); return; }
+  try {
+    const tsnap = await fb.F.getDoc(fb.F.doc(fb.db, 'tests', tid));
+    if (!tsnap.exists()) { toast('This test is not available yet. Contact Juniors Academy.'); return; }
+    const test = tsnap.data();
+    let a = existing;
+    if (!a) {
+      const ref = fb.F.doc(fb.db, 'attempts', id);
+      await fb.F.setDoc(ref, { uid: me.uid, testId: tid, name: profile.name || '', email: me.email, status: 'in_progress', startedAt: fb.F.serverTimestamp(), answers: {}, flags: {}, current: 0 });
+      const s = await fb.F.getDoc(ref); a = Object.assign({ id }, s.data({ serverTimestamps: 'estimate' }));
+    }
+    intro = null;
+    openExam(test, a);
+  } catch (e) { toast(e && e.code === 'permission-denied' ? 'This test is locked. Ask Juniors Academy to unlock it.' : 'Couldn\u2019t open the test. Check the connection.'); }
+}
+function openExam(test, a) {
+  ex = { tid: a.testId, a, qs: test.questions, cur: Math.min(+a.current || 0, test.questions.length - 1), answers: Object.assign({}, a.answers || {}), flags: Object.assign({}, a.flags || {}), dirty: false, saving: false, warned: {} };
+  $('exTitle').textContent = TEST[a.testId].title; $('exName').textContent = profile.name || me.email;
+  $('exam').hidden = false; document.body.style.overflow = 'hidden';
+  drawGrid(); drawQ(); clearInterval(tick); tick = setInterval(timerTick, 250); timerTick();
+}
+function closeExam(silent) {
+  clearInterval(tick); tick = null; clearTimeout(saveT);
+  if (!ex && silent) return;
+  ex = null; $('exam').hidden = true; $('exam').classList.remove('show-sheet'); document.body.style.overflow = '';
+  if (!silent) render();
+}
+function drawQ() {
+  const i = ex.cur, qu = ex.qs[i], chosen = ex.answers[i];
+  $('qpane').innerHTML = '<div class="qnum"><span>Question <b>' + (i + 1) + '</b> of ' + ex.qs.length + '</span>' + (ex.flags[i] ? '<span class="flagged">' + icon('flag') + 'Flagged</span>' : '') + '</div>' +
+    '<p class="qtext">' + esc(qu.q) + '</p><div class="opts" role="radiogroup" aria-label="Answer options">' +
+    qu.o.map((o, k) => '<button type="button" class="opt" role="radio" aria-checked="' + (chosen === k) + '" data-opt="' + k + '"><span class="l">' + LETTERS[k] + '</span><span>' + esc(o) + '</span></button>').join('') + '</div>';
+  $('bPrev').disabled = i === 0;
+  $('bNext').innerHTML = i === ex.qs.length - 1 ? '<span>Review and submit</span>' : '<span>Next</span>' + icon('right');
+  $('bFlagT').textContent = ex.flags[i] ? 'Remove flag' : 'Flag for review';
+  $('qpane').scrollTop = 0;
+  drawGrid();
+}
+function drawGrid() {
+  const n = ex.qs.length, ans = Object.keys(ex.answers).length, fl = Object.keys(ex.flags).length;
+  $('grid').innerHTML = ex.qs.map((_, i) => '<button type="button" class="cell' + (ex.answers[i] != null ? ' ans' : '') + (ex.flags[i] ? ' flag' : '') + (i === ex.cur ? ' cur' : '') + '" data-go="' + i + '" aria-label="Question ' + (i + 1) + (ex.answers[i] != null ? ', answered' : '') + (ex.flags[i] ? ', flagged' : '') + '">' + (i + 1) + '</button>').join('');
+  $('cAns').textContent = ans; $('cLeft').textContent = n - ans; $('cFlag').textContent = fl;
+}
+function timerTick() {
+  if (!ex) return;
+  const left = (endsAt(ex.a) - now()) / 1000;
+  $('timeLeft').textContent = mmss(left);
+  $('timer').classList.toggle('warn', left <= 600 && left > 300); $('timer').classList.toggle('crit', left <= 300);
+  [[600, '10 minutes left'], [300, '5 minutes left'], [60, '1 minute left']].forEach(w => { if (left <= w[0] && left > w[0] - 5 && !ex.warned[w[0]]) { ex.warned[w[0]] = 1; toast(w[1]); } });
+  if (left <= 0) submit(true);
+}
+let saveT = null;
+function queueSave() { ex.dirty = true; setSaved('busy', 'Saving…'); clearTimeout(saveT); saveT = setTimeout(save, 700); }
+function setSaved(cls, txt) { const s = $('saved'); s.className = 'saved' + (cls ? ' ' + cls : ''); s.lastElementChild.textContent = txt; }
+async function save() {
+  if (!ex || !ex.dirty) return; const E = ex; E.dirty = false;
+  try { await fb.F.updateDoc(fb.F.doc(fb.db, 'attempts', E.a.id), { answers: E.answers, flags: E.flags, current: E.cur, lastSaved: fb.F.serverTimestamp() }); if (ex === E && !E.dirty) setSaved('', 'Saved'); }
+  catch (e) {
+    if (ex !== E) return;
+    if (e && e.code === 'permission-denied') { closeExam(); doneScreen(E.tid, true); return; }   /* the 60 minutes are over on the server */
+    E.dirty = true; setSaved('err', 'Not saved yet, retrying…'); clearTimeout(saveT); saveT = setTimeout(save, 3000);
+  }
+}
+function choose(k) { if (!ex) return; if (ex.answers[ex.cur] === k) return; ex.answers[ex.cur] = k; drawQ(); queueSave(); }
+function go(i) { if (!ex) return; ex.cur = Math.max(0, Math.min(ex.qs.length - 1, i)); drawQ(); $('exam').classList.remove('show-sheet'); queueSave(); }
+function toggleFlag() { if (!ex) return; if (ex.flags[ex.cur]) delete ex.flags[ex.cur]; else ex.flags[ex.cur] = true; drawQ(); queueSave(); }
+function askSubmit() {
+  if (!ex) return; const n = ex.qs.length, ans = Object.keys(ex.answers).length, fl = Object.keys(ex.flags).length, left = n - ans;
+  const unanswered = ex.qs.map((_, i) => i).filter(i => ex.answers[i] == null);
+  $('smBody').innerHTML = '<div class="counts" style="margin:0 0 12px"><div><b>' + ans + '</b><small>answered</small></div><div><b>' + left + '</b><small>not answered</small></div><div><b>' + fl + '</b><small>flagged</small></div></div>' +
+    (left ? '<p class="info">Unanswered: questions ' + unanswered.slice(0, 20).map(i => i + 1).join(', ') + (unanswered.length > 20 ? '…' : '') + '. A wrong answer costs nothing, so it is worth answering them.</p>' : '<p class="okbox">You have answered every question.</p>') +
+    '<p style="margin:12px 0 0;color:var(--muted);font-size:.88rem">Time left: ' + mmss((endsAt(ex.a) - now()) / 1000) + '</p>';
+  $('submitPop').showModal();
+}
+async function submit(auto) {
+  if (!ex || ex.submitting) return; const E = ex; E.submitting = true; clearTimeout(saveT);
+  if ($('submitPop').open) $('submitPop').close();
+  setSaved('busy', auto ? 'Time is up, submitting…' : 'Submitting…');
+  try {
+    await fb.F.updateDoc(fb.F.doc(fb.db, 'attempts', E.a.id), { answers: E.answers, flags: E.flags, current: E.cur, status: 'submitted', submittedAt: fb.F.serverTimestamp(), auto: !!auto });
+    closeExam(); doneScreen(E.tid, auto);
+  } catch (e) {
+    if (e && e.code === 'permission-denied') { closeExam(); doneScreen(E.tid, true); return; }   /* the time was already over: the saved answers stand */
+    E.submitting = false; setSaved('err', 'Couldn\u2019t submit. Check the connection, then try again.'); toast('Couldn\u2019t submit. Check the connection, then try again.');
+  }
+}
+function doneScreen(tid, auto) {
+  intro = 'done';
+  $('main').innerHTML = '<div class="intro"><div class="card" style="text-align:center;padding:40px 28px"><div style="width:64px;height:64px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:0 auto 14px">' + icon('check').replace('class="i"', 'class="i" style="width:32px;height:32px"') + '</div>' +
+    '<h1>' + (auto ? 'Time is up' : 'Test submitted') + '</h1><p style="color:var(--body);max-width:44ch;margin:8px auto 22px">Your answers to <b>' + esc(TEST[tid].title) + '</b> have been sent to Juniors Academy. Your teacher will share your result with you.</p>' +
+    '<button type="button" class="btn btn-navy" data-back>Back to my tests</button></div></div>';
+}
+function resumeIfNeeded() {
+  if (ex || isDirector()) return;
+  const running = Object.values(attempts).find(a => stateOf(a) === 'progress');
+  if (running && !resumeIfNeeded.done) { resumeIfNeeded.done = true; startTest(running.testId); }
+}
+
+/* ==================== Director ==================== */
+const scoreCls = s => s >= 80 ? 's-hi' : s >= 60 ? 's-mid' : 's-lo';
+function doneAttempts() { return Object.values(attempts).filter(a => { const s = stateOf(a); return s === 'submitted' || s === 'expired'; }); }
+function statsBar() {
+  const list = Object.values(students), done = doneAttempts(), live = Object.values(attempts).filter(a => stateOf(a) === 'progress');
+  const avg = k => { const xs = done.filter(a => !k || TEST[a.testId].subject === k).map(scoreOf).filter(Boolean).map(x => x.score); return xs.length ? Math.round(xs.reduce((a, b) => a + b, 0) / xs.length) : '—'; };
+  return '<section class="stats"><div class="stat dark"><b class="num">' + list.filter(s => s.active !== false).length + '</b><span>students</span></div>' +
+    '<div class="stat"><b class="num">' + live.length + '</b><span>taking a test now</span></div>' +
+    '<div class="stat"><b class="num">' + done.length + '</b><span>tests completed</span></div>' +
+    SUBJECTS.slice(0, 2).map(s => '<div class="stat"><b class="num">' + avg(s.key) + '</b><span>average ' + s.name.toLowerCase() + '</span></div>').join('') + '</section>';
+}
+function studentsView() {
+  const qq = q.trim().toLowerCase();
+  const list = Object.values(students).filter(s => !qq || (s.name + ' ' + s.email).toLowerCase().includes(qq)).sort((a, b) => (a.active === false) - (b.active === false) || String(a.name).localeCompare(String(b.name)));
+  const bankOk = Object.keys(bankTests).length === 15 && Object.keys(keys).length === 15;
+  return '<div class="head"><div><h1>Students</h1><p>Unlock tests for each student and follow their progress. Only you see scores and answers.</p></div><div class="pop-foot"><button type="button" class="btn btn-navy" id="addStudent">' + icon('plus') + 'Add a student</button></div></div>' +
+    (bankOk ? '' : '<p class="info" style="margin:0 0 14px">The question bank is not installed yet. Open <b>Question bank</b> and import the file <b>csca-question-bank.json</b>.</p>') +
+    statsBar() +
+    '<div class="bar"><input type="search" id="fQ" placeholder="Search a student by name or email" value="' + esc(q) + '" aria-label="Search"></div>' +
+    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Student</th><th>Unlocked</th><th>Completed</th><th>Now</th>' + SUBJECTS.map(s => '<th>' + s.name + ' avg.</th>').join('') + '<th>Last activity</th></tr></thead><tbody>' +
+      list.map(s => {
+        const mine = Object.values(attempts).filter(a => a.uid === s.uid), done = mine.filter(a => ['submitted', 'expired'].includes(stateOf(a))), live = mine.find(a => stateOf(a) === 'progress');
+        const un = Object.values(s.unlocked || {}).filter(Boolean).length;
+        const avg = k => { const xs = done.filter(a => TEST[a.testId].subject === k).map(scoreOf).filter(Boolean).map(x => x.score); return xs.length ? '<span class="score ' + scoreCls(Math.round(xs.reduce((a, b) => a + b, 0) / xs.length)) + '">' + Math.round(xs.reduce((a, b) => a + b, 0) / xs.length) + '</span>' : '<span style="color:var(--muted)">—</span>'; };
+        const last = Math.max(ms(s.lastSeen), ...mine.map(a => Math.max(ms(a.lastSaved), ms(a.submittedAt), ms(a.startedAt))));
+        return '<tr data-student="' + esc(s.uid) + '"' + (s.active === false ? ' style="opacity:.55"' : '') + '><td><b>' + esc(s.name) + '</b>' + (s.active === false ? ' <span class="pill p-lock">Suspended</span>' : '') + '<small>' + esc(s.email) + '</small></td>' +
+          '<td class="num">' + un + ' / 15</td><td class="num">' + done.length + '</td><td>' + (live ? '<span class="pill p-prog">' + esc(TEST[live.testId].title.replace(' · Mock test ', ' ')) + '</span>' : '<span style="color:var(--muted)">—</span>') + '</td>' +
+          SUBJECTS.map(x => '<td>' + avg(x.key) + '</td>').join('') + '<td>' + (last > 0 ? esc(when(last)) : '<span style="color:var(--muted)">never</span>') + '</td></tr>';
+      }).join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><h2>' + (Object.keys(students).length ? 'No student matches' : 'Add your first student') + '</h2><p>Create an account for each student, then unlock the tests they should take.</p></div>');
+}
+function resultsView() {
+  const list = doneAttempts().filter(a => !rsub || TEST[a.testId].subject === rsub).sort((a, b) => ms(b.submittedAt || b.startedAt) - ms(a.submittedAt || a.startedAt));
+  const perTest = TESTS.filter(t => !rsub || t.subject === rsub).map(t => { const xs = doneAttempts().filter(a => a.testId === t.id).map(scoreOf).filter(Boolean).map(x => x.score); return [t, xs.length, xs.length ? Math.round(xs.reduce((a, b) => a + b, 0) / xs.length) : null]; });
+  return '<div class="head"><div><h1>Results</h1><p>Scores out of 100, each question worth the same. Click a line to see every answer.</p></div><div class="pop-foot"><button type="button" class="btn btn-light btn-small" id="csv">' + icon('down') + 'Export (CSV)</button></div></div>' +
+    '<div class="bar"><select id="fSub" aria-label="Subject"><option value="">All subjects</option>' + SUBJECTS.map(s => '<option value="' + s.key + '"' + (rsub === s.key ? ' selected' : '') + '>' + s.name + '</option>').join('') + '</select></div>' +
+    '<div class="card" style="padding:14px 16px;margin:0 0 14px"><div class="tscroll"><table class="list" style="min-width:600px"><thead><tr><th>Test</th><th>Completed by</th><th>Average score</th></tr></thead><tbody>' +
+      perTest.map(p => '<tr style="cursor:default"><td>' + esc(p[0].title) + '</td><td class="num">' + p[1] + '</td><td>' + (p[2] != null ? '<span class="score ' + scoreCls(p[2]) + '">' + p[2] + '</span>' : '<span style="color:var(--muted)">—</span>') + '</td></tr>').join('') + '</tbody></table></div></div>' +
+    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Student</th><th>Test</th><th>Score</th><th>Correct</th><th>Answered</th><th>Time used</th><th>Finished</th></tr></thead><tbody>' +
+      list.map(a => { const r = scoreOf(a), st = stateOf(a), used = st === 'submitted' ? (ms(a.submittedAt) - ms(a.startedAt)) / 1000 : MINUTES * 60;
+        return '<tr data-review="' + esc(a.id) + '"><td><b>' + esc((students[a.uid] || {}).name || a.name) + '</b><small>' + esc(a.email || '') + '</small></td><td>' + esc(TEST[a.testId].title) + '</td>' +
+          '<td>' + (r ? '<span class="score ' + scoreCls(r.score) + '">' + r.score + '</span>' : '—') + '</td><td class="num">' + (r ? r.correct + ' / ' + r.total : '—') + '</td><td class="num">' + (r ? r.answered : Object.keys(a.answers || {}).length) + ' / 48</td>' +
+          '<td class="num">' + mmss(Math.min(used, MINUTES * 60)) + (a.auto || st === 'expired' ? '<small>time ran out</small>' : '') + '</td><td>' + esc(when(a.submittedAt || endsAt(a))) + '</td></tr>'; }).join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><h2>No results yet</h2><p>Completed tests appear here as soon as a student submits.</p></div>');
+}
+function bankView() {
+  const n = Object.keys(bankTests).length, k = Object.keys(keys).length;
+  return '<div class="head"><div><h1>Question bank</h1><p>15 mock tests · 48 questions each · 720 questions in all.</p></div><div class="pop-foot"><button type="button" class="btn btn-navy" id="importBank">' + icon('down') + (n ? 'Re-import the bank' : 'Import the question bank') + '</button></div></div>' +
+    (n === 15 && k === 15 ? '<p class="okbox" style="margin:0 0 14px">Installed: 15 tests with their answer keys. Students only receive a test once you unlock it, and never the answers.</p>' : '<p class="info" style="margin:0 0 14px">Click “Import the question bank” and choose the file <b>csca-question-bank.json</b>. Keep that file private: never upload it to GitHub.</p>') +
+    SUBJECTS.map(s => '<section class="subject"><div class="subject-h" style="--c:' + s.color + '"><i>' + s.letter + '</i><div><h2>' + s.name + '</h2><small>' + TESTS.filter(t => t.subject === s.key && bankTests[t.id]).length + ' of 5 installed</small></div></div><div class="tests">' +
+      TESTS.filter(t => t.subject === s.key).map(t => '<div class="tcard"><span class="pill ' + (bankTests[t.id] && keys[t.id] ? 'p-done' : 'p-lock') + '">' + (bankTests[t.id] && keys[t.id] ? 'Installed' : 'Not installed') + '</span><b>Mock test ' + t.n + '</b><span class="meta">' + (bankTests[t.id] ? bankTests[t.id].questions.length + ' questions' : '—') + '</span>' + (bankTests[t.id] ? '<button type="button" class="btn btn-light btn-small" data-preview="' + t.id + '">Preview with answers</button>' : '') + '</div>').join('') + '</div></section>').join('');
+}
+
+/* ---------- One student: unlock tests, see scores ---------- */
+let accUid = null;
+function openAccess(uid) { accUid = uid; drawAccess(); if (!$('accPop').open) $('accPop').showModal(); }
+function drawAccess() {
+  const s = students[accUid]; if (!s) { $('accPop').close(); return; }
+  const un = s.unlocked || {};
+  $('acTitle').textContent = s.name; $('acSub').textContent = s.email + (s.active === false ? ' · suspended' : '');
+  $('acBody').innerHTML = '<div class="access">' + SUBJECTS.map(sb => {
+    const ts = TESTS.filter(t => t.subject === sb.key), allOn = ts.every(t => un[t.id]);
+    return '<div class="arow"><div class="arow-h"><b>' + sb.name + '</b><span class="sp"></span><button type="button" class="btn btn-light btn-small" data-unlockall="' + sb.key + '" data-on="' + (!allOn) + '">' + (allOn ? 'Lock all 5' : 'Unlock all 5') + '</button></div><div class="acells">' +
+      ts.map(t => { const a = attempts[attemptId(accUid, t.id)], st = stateOf(a), r = a ? scoreOf(a) : null;
+        let body = '';
+        if (st === 'submitted' || st === 'expired') body = '<span class="sc ' + (r ? scoreCls(r.score) : '') + '">' + (r ? r.score : '—') + '<small style="font-size:.7rem;color:var(--muted);font-family:Inter"> /100</small></span><span>' + (r ? r.correct + ' / 48 correct' : '') + (st === 'expired' ? ' · time ran out' : '') + '</span>';
+        else if (st === 'progress') body = '<span class="pill p-prog">In progress</span><span class="num">' + Object.keys(a.answers || {}).length + '/48 · ' + mmss((endsAt(a) - now()) / 1000) + ' left</span>';
+        else body = '<span class="pill ' + (un[t.id] ? 'p-ready' : 'p-lock') + '">' + (un[t.id] ? 'Unlocked' : 'Locked') + '</span><span style="color:var(--muted)">Not started</span>';
+        return '<div class="acell"><div style="display:flex;align-items:center;justify-content:space-between;gap:6px"><b>Test ' + t.n + '</b><button type="button" class="switch" role="switch" aria-checked="' + !!un[t.id] + '" aria-label="' + (un[t.id] ? 'Lock ' : 'Unlock ') + esc(t.title) + '" data-toggle="' + t.id + '"></button></div>' + body +
+          '<div class="acts">' + (a && st !== 'progress' ? '<button type="button" class="on" data-review="' + esc(a.id) + '">Answers</button>' : '') + (a ? '<button type="button" data-reset="' + esc(a.id) + '">' + (st === 'progress' ? 'Cancel' : 'Retake') + '</button>' : '') + '</div></div>'; }).join('') + '</div></div>';
+  }).join('') + '</div>' +
+    '<div class="pop-foot" style="justify-content:space-between"><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-ghost-red btn-small" id="suspend">' + (s.active === false ? 'Reactivate' : 'Suspend') + '</button><button type="button" class="btn btn-ghost-red btn-small" id="delStudent">Delete student</button></div><button type="button" class="btn btn-light" data-close>Done</button></div>';
+}
+async function setUnlock(ids, on) {
+  const patch = {}; ids.forEach(id => { patch['unlocked.' + id] = !!on; });
+  try { await fb.F.updateDoc(fb.F.doc(fb.db, 'students', accUid), patch); toast((on ? 'Unlocked: ' : 'Locked: ') + (ids.length > 1 ? ids.length + ' tests' : TEST[ids[0]].title)); }
+  catch (e) { toast('Couldn\u2019t save. Check the connection.'); }
+}
+
+/* ---------- Answers review (only the director) ---------- */
+async function openReview(aid) {
+  const a = attempts[aid]; if (!a) return;
+  const k = keys[a.testId], t = bankTests[a.testId];
+  if (!k || !t) { toast('Import the question bank first.'); return; }
+  const r = scoreOf(a), ans = a.answers || {}, fl = a.flags || {};
+  const topics = {}; t.questions.forEach((qq, i) => { const tp = (k.topics || [])[i] || 'Other'; topics[tp] = topics[tp] || [0, 0]; topics[tp][1]++; if (ans[i] === k.answers[i]) topics[tp][0]++; });
+  $('rvTitle').textContent = ((students[a.uid] || {}).name || a.name) + ' · ' + TEST[a.testId].title;
+  $('rvSub').textContent = stateOf(a) === 'expired' ? 'Time ran out · saved answers counted' : 'Submitted ' + when(a.submittedAt);
+  const used = stateOf(a) === 'submitted' ? Math.min((ms(a.submittedAt) - ms(a.startedAt)) / 1000, MINUTES * 60) : MINUTES * 60;
+  $('rvBody').innerHTML = '<div class="rv-top"><div class="stat dark"><b class="num">' + r.score + '</b><span>score out of 100</span></div><div class="stat"><b class="num">' + r.correct + '</b><span>correct of 48</span></div><div class="stat"><b class="num">' + (48 - r.answered) + '</b><span>not answered</span></div><div class="stat"><b class="num">' + mmss(used) + '</b><span>time used</span></div></div>' +
+    '<div class="card" style="padding:14px 16px"><b style="font-family:var(--display)">By topic</b><div class="topics" style="margin-top:10px">' + Object.keys(topics).sort((x, y) => topics[x][0] / topics[x][1] - topics[y][0] / topics[y][1]).map(tp => '<div class="tp"><span>' + esc(tp) + '</span><span class="track"><i style="width:' + (topics[tp][0] / topics[tp][1] * 100) + '%"></i></span><b class="num">' + topics[tp][0] + '/' + topics[tp][1] + '</b></div>').join('') + '</div></div>' +
+    '<div class="bar" style="margin:0"><label style="display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600"><input type="checkbox" id="rvWrong"> Show only wrong and unanswered questions</label></div>' +
+    '<div id="rvList" style="display:grid;gap:8px">' + t.questions.map((qq, i) => { const ch = ans[i], ok = ch === k.answers[i], cls = ch == null ? 'skip' : ok ? 'good' : 'bad';
+      return '<div class="rq ' + cls + '" data-ok="' + ok + '"><div class="rq-h"><b>Question ' + (i + 1) + '</b><span>' + esc((k.topics || [])[i] || '') + '</span>' + (fl[i] ? '<span class="pill p-prog">flagged</span>' : '') + '<span style="margin-left:auto;font-weight:700;color:' + (ch == null ? 'var(--muted)' : ok ? 'var(--ok)' : '#B0102F') + '">' + (ch == null ? 'Not answered' : ok ? 'Correct' : 'Wrong') + '</span></div><p>' + esc(qq.q) + '</p><div class="ropts">' +
+        qq.o.map((o, j) => '<div class="ro' + (j === k.answers[i] ? ' correct' : j === ch ? ' chosen-bad' : '') + '"><em>' + LETTERS[j] + '</em><span>' + esc(o) + '</span></div>').join('') + '</div></div>'; }).join('') + '</div>';
+  if (!$('revPop').open) $('revPop').showModal();
+}
+function openPreview(tid) {
+  const t = bankTests[tid], k = keys[tid]; if (!t) return;
+  $('rvTitle').textContent = TEST[tid].title + ' · preview'; $('rvSub').textContent = 'Correct answers are highlighted in green. Only you can see this.';
+  $('rvBody').innerHTML = '<div style="display:grid;gap:8px">' + t.questions.map((qq, i) => '<div class="rq good"><div class="rq-h"><b>Question ' + (i + 1) + '</b><span>' + esc(k && k.topics ? k.topics[i] : '') + '</span></div><p>' + esc(qq.q) + '</p><div class="ropts">' + qq.o.map((o, j) => '<div class="ro' + (k && j === k.answers[i] ? ' correct' : '') + '"><em>' + LETTERS[j] + '</em><span>' + esc(o) + '</span></div>').join('') + '</div></div>').join('') + '</div>';
+  $('revPop').showModal();
+}
+async function importBank(file) {
+  let bank; try { bank = JSON.parse(await file.text()); } catch (e) { toast('This file is not a valid question bank.'); return; }
+  if (!bank || bank.format !== 'juniors-csca-bank' || !Array.isArray(bank.tests)) { toast('This file is not the CSCA question bank.'); return; }
+  if (Object.keys(bankTests).length && !confirm('Replace the installed tests with this file? Students\u2019 past answers are kept, but they will be marked against the new keys.')) return;
+  toast('Importing 15 tests…');
+  try {
+    for (const t of bank.tests) {
+      await fb.F.setDoc(fb.F.doc(fb.db, 'tests', t.id), { id: t.id, subject: t.subject, n: t.n, title: t.title, minutes: t.minutes || 60, questions: t.questions.map(x => ({ q: x.q, o: x.o })) });
+      await fb.F.setDoc(fb.F.doc(fb.db, 'keys', t.id), { answers: t.questions.map(x => x.a), topics: t.questions.map(x => x.t || '') });
+    }
+    toast('Question bank installed: ' + bank.tests.length + ' tests');
+  } catch (e) { toast(e && e.code === 'permission-denied' ? 'Refused: publish the Firebase rules first.' : 'Import stopped. Check the connection and try again.'); }
+}
+function csv() {
+  const rows = doneAttempts().filter(a => !rsub || TEST[a.testId].subject === rsub);
+  const cell = v => { v = String(v == null ? '' : v); return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const head = ['Student', 'Email', 'Subject', 'Test', 'Score /100', 'Correct /48', 'Answered /48', 'Started', 'Finished', 'Time ran out'];
+  const out = rows.map(a => { const r = scoreOf(a) || {}, t = TEST[a.testId]; return [(students[a.uid] || {}).name || a.name, a.email, subj(t.subject).name, t.n, r.score, r.correct, r.answered, when(a.startedAt), when(a.submittedAt || endsAt(a)), a.auto || stateOf(a) === 'expired' ? 'yes' : 'no'].map(cell).join(';'); });
+  const link = document.createElement('a'); link.href = URL.createObjectURL(new Blob(['\uFEFF' + [head.join(';')].concat(out).join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+  link.download = 'csca-results.csv'; document.body.appendChild(link); link.click(); link.remove(); toast(rows.length + ' results exported');
+}
+async function addStudent() {
+  const err = t => { $('adErr').textContent = t; $('adErr').hidden = false; };
+  const name = $('adName').value.trim(), email = $('adEmail').value.trim().toLowerCase(), pass = $('adPass').value;
+  if (name.length < 2) return err('Enter the student\u2019s full name.');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('Enter a valid email.');
+  if (pass.length < 6) return err('The password needs at least 6 characters.');
+  $('adGo').disabled = true;
+  try {
+    const sec = fb.A0.getApps().find(x => x.name === 'add-student') || fb.A0.initializeApp(FIREBASE_CONFIG, 'add-student'), secAuth = fb.A.getAuth(sec);
+    const cred = await fb.A.createUserWithEmailAndPassword(secAuth, email, pass); const uid = cred.user.uid; await fb.A.signOut(secAuth);
+    await fb.F.setDoc(fb.F.doc(fb.db, 'students', uid), { uid, name, email, active: true, unlocked: {}, createdAt: fb.F.serverTimestamp() });
+    $('addPop').close(); toast(name + ' added. Send them their email and password.'); openAccess(uid);
+  } catch (e) {
+    const c = (e && e.code) || '';
+    err(/email-already-in-use/.test(c) ? 'A login already exists with this email. Delete it in Firebase (juniors-csca > Authentication > Users) or use another email.' : /operation-not-allowed|admin-restricted/.test(c) ? 'Firebase blocks new accounts: in Authentication > Settings > User actions, tick “Enable create (sign-up)”.' : 'Couldn\u2019t create the student. Check the connection.');
+  } finally { $('adGo').disabled = false; }
+}
+
+/* ==================== Events ==================== */
+document.addEventListener('click', async e => {
+  const c = s => e.target.closest(s); let el;
+  if ((el = c('[data-tab]'))) { tab = el.getAttribute('data-tab'); intro = null; window.scrollTo(0, 0); return render(); }
+  if ((el = c('[data-intro]'))) return showIntro(el.getAttribute('data-intro'));
+  if ((el = c('[data-start]'))) { el.disabled = true; await startTest(el.getAttribute('data-start')); el.disabled = false; return; }
+  if (c('[data-back]')) { intro = null; return render(); }
+  if ((el = c('[data-opt]'))) return choose(+el.getAttribute('data-opt'));
+  if ((el = c('[data-go]'))) return go(+el.getAttribute('data-go'));
+  if (c('[data-submit]')) return askSubmit();
+  if ((el = c('[data-student]'))) return openAccess(el.getAttribute('data-student'));
+  if ((el = c('[data-toggle]'))) { const id = el.getAttribute('data-toggle'); return setUnlock([id], !((students[accUid] || {}).unlocked || {})[id]); }
+  if ((el = c('[data-unlockall]'))) return setUnlock(TESTS.filter(t => t.subject === el.getAttribute('data-unlockall')).map(t => t.id), el.getAttribute('data-on') === 'true');
+  if ((el = c('[data-reset]'))) {
+    const a = attempts[el.getAttribute('data-reset')]; if (!a) return;
+    const running = stateOf(a) === 'progress';
+    if (!confirm((running ? 'Cancel the test in progress' : 'Let the student retake') + ' ' + TEST[a.testId].title + '? Their current answers for this test will be deleted.')) return;
+    try { await fb.F.deleteDoc(fb.F.doc(fb.db, 'attempts', a.id)); toast(running ? 'Test cancelled' : 'The student can retake this test'); } catch (x) { toast('Couldn\u2019t reset. Check the connection.'); }
+    return;
+  }
+  if ((el = c('[data-review]'))) return openReview(el.getAttribute('data-review'));
+  if ((el = c('[data-preview]'))) return openPreview(el.getAttribute('data-preview'));
+  if (c('#addStudent')) { ['adName', 'adEmail', 'adPass'].forEach(i => { $(i).value = ''; }); $('adErr').hidden = true; $('addPop').showModal(); setTimeout(() => $('adName').focus(), 50); return; }
+  if (c('#importBank')) return $('bankFile').click();
+  if (c('#csv')) return csv();
+  if (c('#suspend')) { const s = students[accUid]; if (!s) return; if (s.active !== false && !confirm('Suspend ' + s.name + '? They will be signed out and cannot take tests until you reactivate them.')) return; await fb.F.updateDoc(fb.F.doc(fb.db, 'students', accUid), { active: s.active === false }).catch(() => {}); toast(s.active === false ? 'Student reactivated' : 'Student suspended'); return; }
+  if (c('#delStudent')) {
+    const s = students[accUid]; if (!s) return;
+    if (!confirm('Delete ' + s.name + ' and all their test answers? This cannot be undone.')) return;
+    try { for (const a of Object.values(attempts).filter(x => x.uid === accUid)) await fb.F.deleteDoc(fb.F.doc(fb.db, 'attempts', a.id)); await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', accUid)); $('accPop').close(); accUid = null; toast(s.name + ' deleted. To free the email, also delete the login in Firebase > Authentication.'); }
+    catch (x) { toast('Couldn\u2019t delete. Check the connection.'); }
+    return;
+  }
+  if (c('[data-close]')) { const d = c('dialog'); if (d) d.close(); return; }
+  if (e.target.id === 'btnOut' || e.target.id === 'gOut') { if (ex && !confirm('Sign out? Your test keeps running and your saved answers are kept.')) return; fb.A.signOut(fb.auth); }
+});
+$('bPrev').addEventListener('click', () => go(ex.cur - 1));
+$('bNext').addEventListener('click', () => { if (ex.cur === ex.qs.length - 1) askSubmit(); else go(ex.cur + 1); });
+$('bFlag').addEventListener('click', toggleFlag);
+$('bSheet').addEventListener('click', () => $('exam').classList.toggle('show-sheet'));
+$('smGo').addEventListener('click', () => submit(false));
+document.addEventListener('input', e => {
+  if (e.target.id === 'fQ') { q = e.target.value; render(); }
+  if (e.target.id === 'rvWrong') document.querySelectorAll('#rvList .rq').forEach(x => { x.hidden = e.target.checked && x.getAttribute('data-ok') === 'true'; });
+});
+document.addEventListener('change', e => { if (e.target.id === 'fSub') { rsub = e.target.value; render(); } });
+$('bankFile').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) importBank(f); });
+$('addForm').addEventListener('submit', e => { e.preventDefault(); addStudent(); });
+$('accPop').addEventListener('close', () => { accUid = null; });
+document.querySelectorAll('dialog.pop').forEach(d => d.addEventListener('click', e => { if (e.target === d && d.id !== 'submitPop') d.close(); }));
+/* keyboard in the exam: A–D or 1–4 to answer, arrows to move, F to flag */
+document.addEventListener('keydown', e => {
+  if (!ex || $('submitPop').open || e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key.toLowerCase(), m = { a: 0, b: 1, c: 2, d: 3, '1': 0, '2': 1, '3': 2, '4': 3 };
+  if (k in m) { e.preventDefault(); choose(m[k]); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); if (ex.cur < ex.qs.length - 1) go(ex.cur + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(ex.cur - 1); }
+  else if (k === 'f') { e.preventDefault(); toggleFlag(); }
+});
+window.addEventListener('beforeunload', e => { if (ex) { save(); e.preventDefault(); e.returnValue = ''; } });
+
+/* ==================== Sign in form ==================== */
+$('signForm').addEventListener('submit', async e => {
+  e.preventDefault(); const b = $('gSubmit'); b.disabled = true; b.textContent = 'Signing in…';
+  try { await fb.A.signInWithEmailAndPassword(fb.auth, $('gEmail').value.trim(), $('gPass').value); $('gPass').value = ''; }
+  catch (x) { const c = (x && x.code) || ''; gate('signin', /too-many/.test(c) ? 'Too many tries. Wait a few minutes.' : /network/.test(c) ? 'No internet connection.' : 'That email or password isn\u2019t right.'); }
+  finally { b.disabled = false; b.textContent = 'Sign in'; }
+});
+$('gForgot').addEventListener('click', async () => {
+  const email = $('gEmail').value.trim(); if (!email) { gate('signin', 'Type your email first, then click \u201cForgot my password\u201d again.', true); return; }
+  try { await fb.A.sendPasswordResetEmail(fb.auth, email); } catch (x) {}
+  gate('signin', 'If this account exists, an email to choose a new password is on its way.', true);
+});
+setInterval(() => { if (me && !ex) render(); }, 30000);
+start();
+</script>
+</body>
+</html>
