@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Juniors CRM</title>
   <meta name="robots" content="noindex, nofollow, noarchive">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#4A235A">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* ============================================================
        JUNIORS CRM v5 — record pages, sales path, pipeline, reports
@@ -19,14 +19,19 @@
        collection "leads"). Only the SETTINGS block needs editing.
        ============================================================ */
     :root {
-      --page: #F3F4F6; --card: #fff; --ink: #181B20; --body: #3E4450; --muted: #68717D; --line: #DDDFE3; --line-2: #EDEEF0;
-      --blue: #0B5CAB; --blue-2: #0A4E92; --blue-dark: #0B2F5B; --blue-soft: #EAF2FD; --blue-text: #0B4F94;
-      --green: #2E844A; --green-soft: #E6F4EA; --green-text: #1F6B3A;
-      --amber: #B06A00; --amber-soft: #FDF1DE; --amber-text: #7A4A00;
-      --red: #BA0517; --red-soft: #FDECEC; --red-text: #9A0414;
-      --pink: #FF3B6B; --pink-soft: #FFE8EE; --pink-text: #B3123F;
-      --violet: #6B45C9; --violet-soft: #F0EBFC;
+      /* Juniors Academy brand, v1.0 (purple-led). Only these eight colours, plus tints of them. */
+      --ja-purple: #4A235A; --ja-crimson: #DC143C; --ja-paper: #FAFAF7; --ja-ink: #14101A;
+      --ja-night: #2B1236; --ja-lavender: #EDE9EE; --ja-blush: #FCE8EC; --ja-sun: #FFC23D;
+      --ja-prism: conic-gradient(#4A235A 0deg, #7A2166 45deg, #B31A4E 90deg, #DC143C 135deg, #F2683E 180deg, #FFC23D 225deg, #F0A08F 270deg, #B4708F 315deg, #4A235A 360deg);
+      --page: var(--ja-paper); --card: #fff; --ink: var(--ja-ink); --body: rgba(20,16,26,.8); --muted: rgba(20,16,26,.6); --line: rgba(74,35,90,.18); --line-2: var(--ja-lavender);
+      --blue: var(--ja-purple); --blue-2: var(--ja-night); --blue-dark: var(--ja-purple); --blue-soft: var(--ja-lavender); --blue-text: var(--ja-purple);
+      --green: var(--ja-purple); --green-soft: var(--ja-lavender); --green-text: var(--ja-purple);
+      --amber: var(--ja-purple); --amber-soft: var(--ja-lavender); --amber-text: var(--ja-purple);
+      --red: var(--ja-crimson); --red-soft: var(--ja-blush); --red-text: var(--ja-ink);
+      --pink: var(--ja-crimson); --pink-soft: var(--ja-blush); --pink-text: var(--ja-ink);
+      --violet: var(--ja-night); --violet-soft: var(--ja-lavender);
       --ease: cubic-bezier(.16, 1, .3, 1);
+      --slant: skewX(-20deg);
     }
     *, *::before, *::after { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
@@ -46,7 +51,7 @@
     .app-name { font-weight: 700; font-size: 1.02rem; white-space: nowrap; }
     .gsearch { position: relative; flex: 1; max-width: 560px; margin: 0 auto; }
     .gsearch svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
-    .gsearch input { width: 100%; min-height: 36px; padding: 6px 12px 6px 34px; border-radius: 6px; border: 1px solid var(--line); background: #F7F8FA; }
+    .gsearch input { width: 100%; min-height: 36px; padding: 6px 12px 6px 34px; border-radius: 6px; border: 1px solid var(--line); background: var(--ja-paper); }
     .gsearch input:focus { outline: none; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px var(--blue-soft); }
     .gh-r { display: flex; align-items: center; gap: 6px; }
     .icon-btn { position: relative; width: 36px; height: 36px; border-radius: 6px; border: 0; background: transparent; color: var(--body); display: grid; place-items: center; }
@@ -62,7 +67,7 @@
     .gh-nav button:hover { color: var(--blue); }
     .gh-nav button[aria-current="page"] { color: var(--blue); }
     .gh-nav button[aria-current="page"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--blue); }
-    .menu { position: absolute; right: clamp(10px, 2vw, 20px); top: 54px; z-index: 60; width: 270px; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 16px 40px -12px rgba(20,30,50,.3); padding: 8px; }
+    .menu { position: absolute; right: clamp(10px, 2vw, 20px); top: 54px; z-index: 60; width: 270px; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 16px 40px -12px rgba(20,16,26,.3); padding: 8px; }
     .menu .who { padding: 8px 10px 10px; border-bottom: 1px solid var(--line-2); margin-bottom: 6px; }
     .menu .who b { display: block; } .menu .who span { font-size: .8rem; color: var(--muted); }
     .menu button, .menu label.mi { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; background: none; border-radius: 6px; text-align: left; font-size: .88rem; }
@@ -79,32 +84,32 @@
     .card-b { padding: 12px 14px; }
     .obj { width: 30px; height: 30px; border-radius: 6px; display: grid; place-items: center; color: #fff; flex: none; }
     .obj svg { width: 17px; height: 17px; }
-    .o-lead { background: #F88962; } .o-booked { background: var(--green); } .o-alumni { background: var(--violet); } .o-lost { background: #8A93A0; } .o-home { background: var(--blue); } .o-report { background: #2A9D8F; } .o-pipe { background: #E3A008; }
+    .o-lead { background: var(--ja-crimson); } .o-booked { background: var(--green); } .o-alumni { background: var(--violet); } .o-lost { background: rgba(20,16,26,.35); } .o-home { background: var(--blue); } .o-report { background: var(--ja-purple); } .o-pipe { background: var(--ja-night); }
 
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 34px; padding: 6px 14px; border-radius: 6px; border: 1px solid #C9CDD3; background: #fff; color: var(--blue); font-weight: 600; font-size: .86rem; white-space: nowrap; text-decoration: none; transition: background .15s, border-color .15s; }
-    .btn:hover { background: #F4F7FB; border-color: #A9B0BA; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 34px; padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(74,35,90,.25); background: #fff; color: var(--blue); font-weight: 600; font-size: .86rem; white-space: nowrap; text-decoration: none; transition: background .15s, border-color .15s; }
+    .btn:hover { background: var(--ja-lavender); border-color: rgba(74,35,90,.4); }
     .btn:disabled { opacity: .55; cursor: default; }
     .btn-brand { background: var(--blue); border-color: var(--blue); color: #fff; } .btn-brand:hover { background: var(--blue-2); border-color: var(--blue-2); }
-    .btn-danger { color: var(--red); } .btn-danger:hover { background: var(--red-soft); border-color: #E7A1A8; }
-    .btn-green { background: var(--green); border-color: var(--green); color: #fff; } .btn-green:hover { background: #276F3E; }
+    .btn-danger { color: var(--red); } .btn-danger:hover { background: var(--red-soft); border-color: rgba(220,20,60,.4); }
+    .btn-green { background: var(--green); border-color: var(--green); color: #fff; } .btn-green:hover { background: var(--ja-night); }
     .btn-sm { min-height: 28px; padding: 3px 10px; font-size: .8rem; }
     .btn-group { display: inline-flex; } .btn-group .btn { border-radius: 0; margin-left: -1px; } .btn-group .btn:first-child { border-radius: 6px 0 0 6px; margin-left: 0; } .btn-group .btn:last-child { border-radius: 0 6px 6px 0; }
     .linkish { background: none; border: 0; padding: 0; color: var(--blue); font-weight: 600; font-size: .84rem; }
     .linkish:hover { text-decoration: underline; }
 
     .pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px; font-size: .74rem; font-weight: 700; white-space: nowrap; }
-    .st-new, .st-lead { background: #FFEFE8; color: #A8431B; }
+    .st-new, .st-lead { background: var(--ja-blush); color: var(--ja-ink); }
     .st-contacted, .st-brochure, .st-meeting, .st-talking { background: var(--amber-soft); color: var(--amber-text); }
     .st-booked { background: var(--green-soft); color: var(--green-text); }
-    .st-alumni { background: var(--violet-soft); color: #4B2C99; }
-    .st-lost { background: #EEF0F2; color: var(--muted); }
-    .due-late { background: var(--red-soft); color: var(--red-text); } .due-today { background: #FFF4CC; color: #6B5200; } .due-soon { background: #EEF0F2; color: var(--body); }
+    .st-alumni { background: var(--violet-soft); color: var(--ja-ink); }
+    .st-lost { background: rgba(20,16,26,.06); color: var(--muted); }
+    .due-late { background: var(--red-soft); color: var(--red-text); } .due-today { background: var(--ja-sun); color: var(--ja-ink); } .due-soon { background: rgba(20,16,26,.06); color: var(--body); }
     .sub { display: block; font-size: .78rem; color: var(--muted); margin-top: 1px; }
 
     /* ---------- home ---------- */
     .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 12px; }
     .kpi { padding: 14px 16px; text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 8px; }
-    button.kpi:hover { border-color: #A9B0BA; }
+    button.kpi:hover { border-color: rgba(74,35,90,.4); }
     .kpi span { display: block; font-size: .8rem; color: var(--muted); font-weight: 600; }
     .kpi b { display: block; font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; margin-top: 2px; }
     .kpi small { display: block; font-size: .76rem; color: var(--muted); margin-top: 2px; }
@@ -113,19 +118,19 @@
     .home-col { display: grid; gap: 12px; align-content: start; }
     .task { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-top: 1px solid var(--line-2); cursor: pointer; }
     .task:first-child { border-top: 0; }
-    .task:hover { background: #FAFBFC; }
+    .task:hover { background: var(--ja-paper); }
     .task .nm { flex: 1; min-width: 0; }
     .task .nm b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .funnel-row { display: grid; grid-template-columns: 110px minmax(0, 1fr) 40px; gap: 10px; align-items: center; padding: 5px 0; font-size: .85rem; }
     .track { height: 20px; border-radius: 4px; background: var(--page); overflow: hidden; }
     .track i { display: block; height: 100%; border-radius: 4px; }
     .feed-item { display: flex; gap: 10px; padding: 9px 14px; border-top: 1px solid var(--line-2); cursor: pointer; }
-    .feed-item:first-child { border-top: 0; } .feed-item:hover { background: #FAFBFC; }
+    .feed-item:first-child { border-top: 0; } .feed-item:hover { background: var(--ja-paper); }
     .ic { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; flex: none; }
     .ic svg { width: 15px; height: 15px; }
-    .ic-call { background: var(--blue-soft); color: var(--blue); } .ic-whatsapp { background: #E4F7EC; color: #1C8C4E; } .ic-email { background: #FFF0E6; color: #B4520F; }
-    .ic-meeting { background: var(--amber-soft); color: var(--amber); } .ic-note { background: #EEF0F2; color: var(--body); } .ic-pay { background: var(--green-soft); color: var(--green); }
-    .ic-stage { background: var(--violet-soft); color: var(--violet); } .ic-new { background: #FFEFE8; color: #A8431B; } .ic-lost { background: #EEF0F2; color: var(--muted); } .ic-next { background: #FFF4CC; color: #6B5200; }
+    .ic-call { background: var(--blue-soft); color: var(--blue); } .ic-whatsapp { background: var(--ja-lavender); color: var(--ja-purple); } .ic-email { background: var(--ja-lavender); color: var(--ja-purple); }
+    .ic-meeting { background: var(--amber-soft); color: var(--amber); } .ic-note { background: rgba(20,16,26,.06); color: var(--body); } .ic-pay { background: var(--green-soft); color: var(--green); }
+    .ic-stage { background: var(--violet-soft); color: var(--violet); } .ic-new { background: var(--ja-blush); color: var(--ja-ink); } .ic-lost { background: rgba(20,16,26,.06); color: var(--muted); } .ic-next { background: var(--ja-sun); color: var(--ja-ink); }
     .empty-s { padding: 22px 14px; text-align: center; color: var(--muted); font-size: .88rem; }
 
     /* ---------- list views ---------- */
@@ -140,9 +145,9 @@
     .lv-tools .count { color: var(--muted); font-size: .8rem; margin-left: auto; }
     .tscroll { overflow-x: auto; border-top: 1px solid var(--line); }
     table.grid { width: 100%; border-collapse: collapse; min-width: 900px; }
-    .grid th { text-align: left; font-size: .74rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; padding: 9px 12px; background: #FAFAFB; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .grid th { text-align: left; font-size: .74rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; padding: 9px 12px; background: var(--ja-paper); border-bottom: 1px solid var(--line); white-space: nowrap; }
     .grid td { padding: 10px 12px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
-    .grid tbody tr { cursor: pointer; } .grid tbody tr:hover { background: #F7F9FC; }
+    .grid tbody tr { cursor: pointer; } .grid tbody tr:hover { background: var(--ja-paper); }
     .grid tbody tr:last-child td { border-bottom: 0; }
     .grid .ref { font-weight: 600; color: var(--muted); font-size: .8rem; white-space: nowrap; }
     .grid .nm { color: var(--blue); font-weight: 600; }
@@ -153,14 +158,14 @@
 
     /* ---------- pipeline ---------- */
     .board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 1fr); gap: 10px; overflow-x: auto; padding-bottom: 6px; }
-    .col { background: #EBEDF0; border-radius: 8px; display: flex; flex-direction: column; min-height: 380px; }
+    .col { background: var(--ja-lavender); border-radius: 8px; display: flex; flex-direction: column; min-height: 380px; }
     .col-h { padding: 10px 12px 8px; }
     .col-h b { font-size: .88rem; } .col-h span { float: right; font-size: .78rem; color: var(--muted); font-weight: 600; }
     .col-h small { display: block; clear: both; color: var(--muted); font-size: .76rem; }
     .col-b { flex: 1; padding: 0 8px 10px; display: grid; gap: 8px; align-content: start; border-radius: 0 0 8px 8px; transition: background .15s; }
     .col.over .col-b { background: var(--blue-soft); }
     .kcard { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; cursor: grab; }
-    .kcard:hover { border-color: #A9B0BA; } .kcard.dragging { opacity: .45; }
+    .kcard:hover { border-color: rgba(74,35,90,.4); } .kcard.dragging { opacity: .45; }
     .kcard b { display: block; color: var(--blue); font-size: .88rem; }
     .kcard .meta { font-size: .76rem; color: var(--muted); margin-top: 2px; }
     .kcard .foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 7px; font-size: .74rem; }
@@ -189,24 +194,24 @@
     .hl-name h1 { margin: 0; font-size: 1.35rem; line-height: 1.2; letter-spacing: -.01em; }
     .hl-acts { display: flex; gap: 6px; flex-wrap: wrap; }
     .hl-fields { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line-2); }
-    .hl-fields span { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; }
+    .hl-fields > div > span { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; }
     .hl-fields b { display: block; font-weight: 500; overflow-wrap: anywhere; }
     .path-card { padding: 12px 14px; margin: 0 0 12px; }
     .path { display: flex; gap: 3px; }
-    .step { flex: 1; min-width: 0; border: 0; padding: 8px 6px 8px 16px; font-size: .82rem; font-weight: 600; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); background: #ECEEF1; color: var(--body); display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .step { flex: 1; min-width: 0; border: 0; padding: 8px 6px 8px 16px; font-size: .82rem; font-weight: 600; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); background: rgba(20,16,26,.06); color: var(--body); display: flex; align-items: center; justify-content: center; gap: 5px; }
     .step:first-child { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); border-radius: 18px 0 0 18px; padding-left: 10px; }
     .step:last-child { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%); border-radius: 0 18px 18px 0; }
-    .step:hover { background: #DDE1E6; }
-    .step.done { background: var(--green-soft); color: var(--green-text); } .step.done:hover { background: #D3EBDA; }
+    .step:hover { background: rgba(20,16,26,.1); }
+    .step.done { background: var(--green-soft); color: var(--green-text); } .step.done:hover { background: var(--ja-lavender); }
     .step.cur { background: var(--blue-dark); color: #fff; }
     .step.sel { box-shadow: inset 0 0 0 2px var(--blue); background: var(--blue-soft); color: var(--blue-text); }
-    .path.lost .step { background: #EEF0F2; color: #9AA2AC; }
+    .path.lost .step { background: rgba(20,16,26,.06); color: rgba(20,16,26,.4); }
     .path-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
     .path-foot p { margin: 0; color: var(--body); font-size: .86rem; }
     .alert { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; margin: 0 0 12px; font-size: .88rem; }
-    .alert-warn { background: #FFF6DB; border: 1px solid #F2D17A; color: #6B5200; }
-    .alert-info { background: var(--blue-soft); border: 1px solid #B9D2F2; color: var(--blue-text); }
-    .alert-lost { background: #F4F5F7; border: 1px solid var(--line); color: var(--body); }
+    .alert-warn { background: var(--ja-blush); border: 1px solid rgba(220,20,60,.3); color: var(--ja-ink); }
+    .alert-info { background: var(--blue-soft); border: 1px solid rgba(74,35,90,.25); color: var(--blue-text); }
+    .alert-lost { background: rgba(20,16,26,.04); border: 1px solid var(--line); color: var(--body); }
     .rec { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; align-items: start; }
     .rec-col { display: grid; gap: 12px; }
     .composer { padding: 12px 14px; border-bottom: 1px solid var(--line-2); }
@@ -217,9 +222,9 @@
     .types input:checked + span { background: var(--blue-soft); border-color: var(--blue); color: var(--blue-text); }
     .types input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
     .comp-row { display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; gap: 8px; }
-    .comp-row input { min-height: 34px; padding: 6px 10px; border-radius: 6px; border: 1px solid #C9CDD3; background: #fff; min-width: 0; }
+    .comp-row input { min-height: 34px; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(74,35,90,.25); background: #fff; min-width: 0; }
     .nextstep { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 14px; border-bottom: 1px solid var(--line-2); font-size: .86rem; }
-    .nextstep input[type=date] { min-height: 30px; padding: 3px 8px; border-radius: 6px; border: 1px solid #C9CDD3; }
+    .nextstep input[type=date] { min-height: 30px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(74,35,90,.25); }
     .tl-sec { padding: 8px 14px 2px; font-size: .74rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
     .tl { list-style: none; margin: 0; padding: 0 14px 8px; }
     .tl li { position: relative; display: flex; gap: 10px; padding: 8px 0; }
@@ -233,7 +238,7 @@
     .tl .x:hover { background: var(--red-soft); color: var(--red); }
     .dl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
     .dl div.full { grid-column: 1 / -1; }
-    .dl span { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; }
+    .dl > div > span { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; }
     .dl b { display: block; font-weight: 500; overflow-wrap: anywhere; white-space: pre-wrap; min-height: 1.2em; }
     .money { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 10px; }
     .money div { padding: 8px 10px; border-radius: 6px; background: var(--page); }
@@ -242,16 +247,16 @@
     .money .due { background: var(--red-soft); } .money .due b { color: var(--red-text); }
     .money .ok { background: var(--green-soft); } .money .ok b { color: var(--green-text); }
     .pay-row { display: grid; grid-template-columns: 130px 110px minmax(0, 1fr) auto; gap: 6px; }
-    .pay-row input { min-height: 32px; padding: 5px 8px; border-radius: 6px; border: 1px solid #C9CDD3; min-width: 0; }
+    .pay-row input { min-height: 32px; padding: 5px 8px; border-radius: 6px; border: 1px solid rgba(74,35,90,.25); min-width: 0; }
     .rel { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-top: 1px solid var(--line-2); cursor: pointer; }
-    .rel:first-child { border-top: 0; } .rel:hover { background: #FAFBFC; }
+    .rel:first-child { border-top: 0; } .rel:hover { background: var(--ja-paper); }
     .rel .nm { flex: 1; min-width: 0; } .rel .nm b { color: var(--blue); font-weight: 600; }
     .meta-foot { font-size: .76rem; color: var(--muted); padding: 10px 14px; }
 
     /* ---------- dialogs ---------- */
-    dialog.pop { border: 0; padding: 0; border-radius: 10px; width: min(640px, calc(100vw - 20px)); max-height: calc(100dvh - 20px); background: #fff; color: var(--ink); box-shadow: 0 30px 80px -20px rgba(10,20,40,.45); }
+    dialog.pop { border: 0; padding: 0; border-radius: 10px; width: min(640px, calc(100vw - 20px)); max-height: calc(100dvh - 20px); background: #fff; color: var(--ink); box-shadow: 0 30px 80px -20px rgba(20,16,26,.45); }
     dialog.pop.small { width: min(440px, calc(100vw - 20px)); }
-    dialog.pop::backdrop { background: rgba(20,30,45,.5); }
+    dialog.pop::backdrop { background: rgba(43,18,54,.55); }
     dialog.pop[open] { animation: rise .25s var(--ease); }
     @keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
     .pop-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #fff; z-index: 2; }
@@ -260,14 +265,14 @@
     .xb { width: 32px; height: 32px; border-radius: 6px; border: 0; background: transparent; font-size: 1.3rem; line-height: 1; color: var(--muted); }
     .xb:hover { background: var(--page); }
     .pop-b { padding: 14px 18px; display: grid; gap: 14px; }
-    .pop-f { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); background: #FAFAFB; position: sticky; bottom: 0; }
+    .pop-f { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); background: var(--ja-paper); position: sticky; bottom: 0; }
     .sec-t { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 -4px; }
     .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
     .fld { display: grid; gap: 4px; min-width: 0; }
     .fld.full { grid-column: 1 / -1; }
     .fld label, .fld .lab { font-size: .78rem; font-weight: 600; color: var(--body); }
     .fld label .req { color: var(--red); }
-    .fld input, .fld select, .fld textarea { width: 100%; min-height: 36px; padding: 6px 10px; border-radius: 6px; border: 1px solid #C9CDD3; background: #fff; }
+    .fld input, .fld select, .fld textarea { width: 100%; min-height: 36px; padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(74,35,90,.25); background: #fff; }
     .fld textarea { min-height: 76px; resize: vertical; }
     .fld input:focus, .fld select:focus, .fld textarea:focus, .comp-row input:focus, .pay-row input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
     .fld.invalid input { border-color: var(--red); }
@@ -276,12 +281,12 @@
     .seg { display: flex; gap: 4px; }
     .seg label { flex: 1; position: relative; }
     .seg input { position: absolute; opacity: 0; pointer-events: none; }
-    .seg span { display: grid; place-items: center; min-height: 36px; border-radius: 6px; border: 1px solid #C9CDD3; font-weight: 600; font-size: .84rem; cursor: pointer; }
+    .seg span { display: grid; place-items: center; min-height: 36px; border-radius: 6px; border: 1px solid rgba(74,35,90,.25); font-weight: 600; font-size: .84rem; cursor: pointer; }
     .seg input:checked + span { background: var(--blue-soft); border-color: var(--blue); color: var(--blue-text); }
-    .dup { padding: 8px 10px; border-radius: 6px; background: #FFF6DB; border: 1px solid #F2D17A; color: #6B5200; font-size: .82rem; }
+    .dup { padding: 8px 10px; border-radius: 6px; background: var(--ja-blush); border: 1px solid rgba(220,20,60,.3); color: var(--ja-ink); font-size: .82rem; }
 
     /* ---------- sign in ---------- */
-    .lock { position: fixed; inset: 0; z-index: 700; display: grid; place-items: center; padding: 20px; overflow-y: auto; background: linear-gradient(180deg, #0B2F5B 0%, #0B5CAB 100%); }
+    .lock { position: fixed; inset: 0; z-index: 700; display: grid; place-items: center; padding: 20px; overflow-y: auto; background: var(--ja-night); }
     .lock-card { width: min(100%, 400px); background: #fff; border-radius: 12px; padding: 28px 26px 22px; box-shadow: 0 30px 80px -20px rgba(0,0,0,.5); }
     .lock-card .seal { width: 44px; height: 44px; font-size: 1rem; margin: 0 auto 12px; }
     .lock-card h1 { margin: 0 0 4px; font-size: 1.4rem; text-align: center; }
@@ -291,8 +296,97 @@
     .lock-msg { margin: 0 0 12px; padding: 9px 12px; border-radius: 6px; background: var(--red-soft); color: var(--red-text); font-size: .86rem; }
     .lock-msg.info { background: var(--blue-soft); color: var(--blue-text); }
 
-    .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 900; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #1F2937; color: #fff; padding: 10px 16px; border-radius: 6px; font-weight: 600; font-size: .86rem; transition: opacity .2s, transform .2s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
+    .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 900; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--ja-night); color: #fff; padding: 10px 16px; border-radius: 6px; font-weight: 600; font-size: .86rem; transition: opacity .2s, transform .2s var(--ease); max-width: calc(100vw - 30px); text-align: center; }
     .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+
+    /* ==================== JUNIORS ACADEMY BRAND ==================== */
+    body { font-family: 'Poppins', 'Cairo', system-ui, -apple-system, sans-serif; line-height: 1.5; background: var(--ja-paper); color: var(--ja-ink); }
+    :focus-visible { outline-color: var(--ja-purple); }
+    /* headlines: Poppins Bold Italic, capitals, tight tracking */
+    .title, .hl-name h1, .lv-title select, .lv-title .static, .lock-card h1 { font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: -.015em; color: var(--ja-purple); }
+    .kpi b, .money b, .grid td b.num, .rt td.num, .col-h small { font-style: italic; }
+    .kpi b, .money b { font-weight: 700; }
+    .rule { display: block; width: 56px; height: 4px; background: var(--ja-sun); margin: 6px 0 0; border-radius: 0; }
+    .card-h h2, .card-h h3 { font-weight: 600; }
+    /* the prism: the profile mark, the only gradient allowed */
+    .seal { background: var(--ja-prism); border-radius: 50%; transform: none; padding: 3px; }
+    .seal i { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: var(--ja-purple); color: #fff; font-style: normal; font-weight: 700; font-size: .72rem; overflow: hidden; }
+    .seal img { width: 70%; height: 70%; object-fit: contain; }
+    .lock-card .seal { padding: 4px; } .lock-card .seal i { font-size: .95rem; }
+    /* header in Academy Purple: white text, Sun for the active tab and the alert count (never crimson on purple) */
+    .gh { background: var(--ja-purple); border-bottom: 0; color: #fff; }
+    .app-name { color: #fff; font-weight: 600; }
+    .gsearch input { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.28); color: #fff; }
+    .gsearch input::placeholder { color: rgba(255,255,255,.72); }
+    .gsearch svg { color: rgba(255,255,255,.8); }
+    .gsearch input:focus { background: #fff; color: var(--ja-ink); border-color: #fff; box-shadow: 0 0 0 3px rgba(255,194,61,.45); }
+    .gsearch:focus-within svg { color: var(--ja-purple); }
+    .icon-btn { color: #fff; } .icon-btn:hover { background: rgba(255,255,255,.12); }
+    .badge { background: var(--ja-sun); color: var(--ja-ink); }
+    .avatar { background: var(--ja-prism); padding: 2px; color: #fff; }
+    .avatar > span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: var(--ja-purple); border: 1.5px solid var(--ja-purple); }
+    .avatar .sync { background: var(--ja-sun); border-color: var(--ja-purple); } .avatar .sync.off { background: #fff; }
+    .gh .btn-brand { background: #fff; border-color: #fff; color: var(--ja-purple); } .gh .btn-brand::before { display: none; }
+    .gh .btn-brand:hover { background: var(--ja-lavender); border-color: var(--ja-lavender); }
+    .gh-nav button { color: rgba(255,255,255,.78); } .gh-nav button:hover, .gh-nav button[aria-current="page"] { color: #fff; }
+    .gh-nav button[aria-current="page"]::after { height: 4px; border-radius: 0; background: var(--ja-sun); }
+    .menu { color: var(--ja-ink); } .menu button:hover, .menu label.mi:hover { background: var(--ja-lavender); }
+    /* buttons: purple for the main action (white on purple = 12.5:1), crimson only as text/outline for what needs attention */
+    .btn { border-color: var(--line); color: var(--ja-purple); } .btn:hover { background: var(--ja-lavender); border-color: rgba(74,35,90,.35); }
+    .btn-brand { position: relative; isolation: isolate; background: transparent; border-color: transparent; color: #fff; }
+    .btn-brand::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ja-purple); transform: var(--slant); border-radius: 4px; transition: background .15s; }
+    .btn-brand:hover { background: transparent; border-color: transparent; } .btn-brand:hover::before { background: var(--ja-night); }
+    .btn-danger { color: var(--ja-crimson); border-color: rgba(220,20,60,.4); } .btn-danger:hover { background: var(--ja-blush); border-color: var(--ja-crimson); }
+    .btn-group .btn-brand::before { transform: none; border-radius: 0; }
+    a, .linkish { color: var(--ja-purple); }
+    /* chips and status pills: the slant, drawn behind the text so the text stays straight */
+    .pill { position: relative; isolation: isolate; background: transparent !important; padding: 2px 11px; border-radius: 0; }
+    .pill::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--pb, var(--ja-lavender)); transform: var(--slant); border-radius: 3px; }
+    .st-new, .st-lead { --pb: var(--ja-blush); color: var(--ja-ink); }
+    .st-contacted, .st-brochure, .st-meeting, .st-talking { --pb: var(--ja-lavender); color: var(--ja-purple); }
+    .st-booked { --pb: var(--ja-purple); color: #fff; }
+    .st-alumni { --pb: var(--ja-sun); color: var(--ja-ink); }
+    .st-lost { --pb: rgba(20,16,26,.07); color: var(--muted); }
+    .due-late { --pb: var(--ja-blush); color: var(--ja-ink); } .due-late::after { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--ja-crimson); margin-left: 6px; vertical-align: 1px; }
+    .due-today { --pb: var(--ja-sun); color: var(--ja-ink); }
+    .due-soon { --pb: var(--ja-lavender); color: var(--ja-purple); }
+    /* record and object colours */
+    .o-lead { background: var(--ja-crimson); } .o-booked, .o-home, .o-report { background: var(--ja-purple); } .o-pipe { background: var(--ja-night); }
+    .o-alumni { background: var(--ja-sun); color: var(--ja-ink); } .o-lost { background: var(--ja-lavender); color: var(--muted); }
+    .ic-call, .ic-whatsapp, .ic-email, .ic-meeting, .ic-note, .ic-stage { background: var(--ja-lavender); color: var(--ja-purple); }
+    .ic-pay { background: var(--ja-purple); color: #fff; } .ic-new { background: var(--ja-blush); color: var(--ja-crimson); }
+    .ic-lost { background: rgba(20,16,26,.06); color: var(--muted); } .ic-next { background: var(--ja-sun); color: var(--ja-ink); }
+    /* the sales path */
+    .step { background: rgba(20,16,26,.06); color: var(--muted); }
+    .step:hover { background: rgba(20,16,26,.1); }
+    .step.done { background: var(--ja-lavender); color: var(--ja-purple); } .step.done:hover { background: rgba(74,35,90,.14); }
+    .step.cur { background: var(--ja-purple); color: #fff; }
+    .step.sel { background: var(--ja-blush); color: var(--ja-ink); box-shadow: inset 0 0 0 2px var(--ja-purple); }
+    .path.lost .step { background: rgba(20,16,26,.05); color: rgba(20,16,26,.4); }
+    /* surfaces */
+    .card, .kpi { border-color: var(--line); }
+    .kpi.hot b { color: var(--ja-crimson); }
+    .grid th { background: var(--ja-paper); color: var(--muted); }
+    .grid tbody tr:hover, .task:hover, .feed-item:hover, .rel:hover { background: rgba(237,233,238,.55); }
+    .grid .nm, .kcard b, .rel .nm b { color: var(--ja-purple); }
+    .col { background: var(--ja-lavender); } .col.over .col-b { background: var(--ja-blush); }
+    .kcard { border-color: rgba(74,35,90,.14); } .kcard:hover { border-color: var(--ja-purple); }
+    .track { background: var(--ja-lavender); }
+    .bars i { background: var(--ja-purple); border-radius: 0; }
+    .money div { background: var(--ja-paper); } .money .due { background: var(--ja-blush); } .money .due b { color: var(--ja-ink); }
+    .money .ok { background: var(--ja-lavender); } .money .ok b { color: var(--ja-purple); }
+    .alert-warn { background: var(--ja-blush); border-color: rgba(220,20,60,.3); color: var(--ja-ink); }
+    .alert-info { background: var(--ja-lavender); border-color: rgba(74,35,90,.25); color: var(--ja-purple); }
+    .dup { background: var(--ja-blush); border-color: rgba(220,20,60,.3); color: var(--ja-ink); }
+    .types input:checked + span, .seg input:checked + span { background: var(--ja-lavender); border-color: var(--ja-purple); color: var(--ja-purple); }
+    .fld input:focus, .fld select:focus, .fld textarea:focus, .comp-row input:focus, .pay-row input:focus { border-color: var(--ja-purple); box-shadow: 0 0 0 3px var(--ja-lavender); }
+    .fld label .req, .fld .err { color: var(--ja-crimson); }
+    /* sign in: Night ground, no gradient (the prism is the only one) */
+    .lock { background: var(--ja-night); }
+    .lock-card { background: var(--ja-paper); }
+    .lock-msg { background: var(--ja-blush); color: var(--ja-ink); } .lock-msg.info { background: var(--ja-lavender); color: var(--ja-purple); }
+    .toast { background: var(--ja-night); }
 
     @media (max-width: 1100px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .home, .rec, .rep { grid-template-columns: 1fr; } .hl-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 700px) {
@@ -340,7 +434,7 @@
 <!-- ==================== SIGN IN ==================== -->
 <div class="lock" id="lock" data-mode="loading">
   <div class="lock-card">
-    <span class="seal" aria-hidden="true">JA</span>
+    <span class="seal" aria-hidden="true"><i class="mono">JA</i></span>
     <h1>Juniors CRM</h1>
     <p class="lead" id="gateLead">Opening…</p>
     <p class="lock-msg" id="lockMsg" role="alert" hidden></p>
@@ -362,7 +456,7 @@
 <div id="app" hidden>
   <header class="gh">
     <div class="gh-top">
-      <span class="seal" aria-hidden="true">JA</span><span class="app-name">Juniors CRM</span>
+      <span class="seal" aria-hidden="true"><i class="mono">JA</i></span><span class="app-name">Juniors CRM</span>
       <label class="gsearch"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="q" placeholder="Search names, references, phone numbers" aria-label="Search the CRM" autocomplete="off"></label>
       <div class="gh-r">
         <button type="button" class="btn btn-brand btn-sm" id="btnNew"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span>New</span></button>
@@ -407,7 +501,7 @@
         <div class="fld"><label for="fEmail">Email</label><input id="fEmail" type="email" autocomplete="off"></div>
         <div class="fld"><span class="lab" id="labGender">Gender</span><div class="seg" role="radiogroup" aria-labelledby="labGender"><label><input type="radio" name="gender" value="Male"><span>Male</span></label><label><input type="radio" name="gender" value="Female"><span>Female</span></label></div></div>
         <div class="fld"><label for="fDob">Date of birth</label><input id="fDob" type="date"></div>
-        <div class="fld"><span class="lab">Age</span><input id="fAge" type="text" readonly tabindex="-1" style="background:#F7F8FA"></div>
+        <div class="fld"><span class="lab">Age</span><input id="fAge" type="text" readonly tabindex="-1" style="background:var(--ja-paper)"></div>
       </div>
       <p class="sec-t">The sale</p>
       <div class="fields">
@@ -453,6 +547,8 @@ const FIREBASE_CONFIG = {
   appId: "1:376121999841:web:356c1c7efa76b908aa12a0"
 };
 const DIRECTOR_EMAILS = ['director@juniors.academy'];
+/* Your monogram (white version, PNG or SVG), e.g. '../brand/ja-monogram-white.svg'. Leave empty to show the initials. */
+const LOGO_URL = '';
 /* ============================================================ */
 
 const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
@@ -573,7 +669,9 @@ function authMessage(e) {
   if (/user-disabled/.test(c)) return 'This account has been turned off.';
   return "Couldn't sign in. Try again.";
 }
+function applyLogo() { if (!LOGO_URL) return; document.querySelectorAll('.seal .mono').forEach(el => { el.innerHTML = '<img src="' + LOGO_URL + '" alt="">'; }); }
 async function start() {
+  applyLogo();
   if (!READY) { gate('setup', 'The online database is not connected yet. Paste your Firebase settings into FIREBASE_CONFIG near the bottom of index.html.', true); return; }
   gate('loading');
   try {
@@ -722,7 +820,7 @@ function homeView() {
   const unpaid = booked.filter(b => balance(b) > 0 && b.dueDate && dayDiff(t, b.dueDate) <= 14).sort((a, b) => a.dueDate < b.dueDate ? -1 : 1);
   const hi = new Date().getHours(), hello = (hi < 12 ? 'Good morning' : hi < 18 ? 'Good afternoon' : 'Good evening') + ', ' + firstName(profile.name);
   const counts = STAGES.slice(0, 5).map(s => [s, all.filter(b => stageOf(b) === s[0]).length]), cmax = Math.max(1, ...counts.map(c => c[1]));
-  const colors = { new: '#F88962', contacted: '#E3A008', brochure: '#D4891A', meeting: '#B06A00', booked: '#2E844A' };
+  const colors = { new: 'rgba(74,35,90,.3)', contacted: 'rgba(74,35,90,.45)', brochure: 'rgba(74,35,90,.6)', meeting: 'rgba(74,35,90,.8)', booked: '#4A235A' };
   const events = [];
   all.forEach(b => {
     (b.calls || []).forEach(c => events.push({ at: c.date, b, kind: c.type || 'call', text: (ACTS[c.type] || 'Call') + (c.note ? ': ' + c.note : ''), by: c.by }));
@@ -730,7 +828,7 @@ function homeView() {
     (b.history || []).forEach(h => events.push({ at: String(h.date).slice(0, 10), b, kind: 'stage', text: 'Moved to ' + (STAGE[h.to] || h.to), by: h.by }));
   });
   events.sort((x, y) => x.at < y.at ? 1 : -1);
-  return '<div style="display:flex;align-items:center;gap:12px;margin:2px 0 12px"><span class="obj o-home">' + icon('home') + '</span><div><div style="font-size:.78rem;color:var(--muted);font-weight:600">Home</div><div style="font-size:1.25rem;font-weight:700">' + esc(hello) + '</div></div></div>' +
+  return '<div style="display:flex;align-items:center;gap:12px;margin:2px 0 12px"><span class="obj o-home">' + icon('home') + '</span><div><div style="font-size:.78rem;color:var(--muted);font-weight:600">Home</div><div class="title" style="font-size:1.35rem;line-height:1.15">' + esc(hello) + '</div><span class="rule"></span></div></div>' +
     '<section class="kpis">' +
       '<button type="button" class="kpi' + (due.length ? ' hot' : '') + '" data-list="leads:followups"><span>To call today</span><b class="num">' + due.length + '</b><small>' + (due.length ? 'follow-ups due or overdue' : 'nothing overdue') + '</small></button>' +
       '<button type="button" class="kpi" data-list="leads:open"><span>Open leads</span><b class="num">' + open.length + '</b><small>' + all.filter(b => b.status === 'lead').length + ' not contacted yet</small></button>' +
@@ -823,7 +921,7 @@ function searchView() {
 function pipelineView() {
   const all = pool();
   const cols = STAGES.slice(0, 5).map(s => { const items = all.filter(b => stageOf(b) === s[0]).sort((a, b) => { const fa = hasFollow(a) ? a.followUp : '9', fb2 = hasFollow(b) ? b.followUp : '9'; return fa < fb2 ? -1 : fa > fb2 ? 1 : ((b.createdAt || '') < (a.createdAt || '') ? -1 : 1); }); return [s, items]; });
-  return '<div style="display:flex;align-items:center;gap:12px;margin:2px 0 12px;flex-wrap:wrap"><span class="obj o-pipe">' + icon('pipe') + '</span><div style="margin-right:auto"><div style="font-size:.78rem;color:var(--muted);font-weight:600">Pipeline</div><div style="font-size:1.15rem;font-weight:700">Drag a card to move it to the next stage</div></div>' +
+  return '<div style="display:flex;align-items:center;gap:12px;margin:2px 0 12px;flex-wrap:wrap"><span class="obj o-pipe">' + icon('pipe') + '</span><div style="margin-right:auto"><div style="font-size:.78rem;color:var(--muted);font-weight:600">Pipeline</div><div class="title" style="font-size:1.2rem;line-height:1.15">Drag a card to the next stage</div><span class="rule"></span></div>' +
       '<select id="scope" aria-label="Whose records" style="min-height:32px;padding:4px 8px;border-radius:6px;border:1px solid var(--line)">' + ('<option value="all">Whole team</option><option value="mine">My records</option>' + team.filter(x => x.uid !== me.uid).map(x => '<option value="' + esc(x.uid) + '">' + esc(firstName(x.name)) + '’s records</option>').join('')).replace('value="' + scope + '"', 'value="' + scope + '" selected') + '</select></div>' +
     '<div class="board">' + cols.map(c => {
       const val = c[1].reduce((s, b) => s + toNum(b.fee), 0);
@@ -846,14 +944,14 @@ function reportsView() {
   const now = new Date(), months = [];
   for (let i = 11; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push([d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'), MON[d.getMonth()]]); }
   const mc = months.map(m => pool().filter(b => isWon(b) && String(b.bookedAt || (b.status === 'booked' ? b.createdAt : '') || '').slice(0, 7) === m[0]).length), mmax = Math.max(1, ...mc);
-  return '<div style="display:flex;align-items:center;gap:12px;margin:2px 0 12px;flex-wrap:wrap"><span class="obj o-report">' + icon('report') + '</span><div style="margin-right:auto"><div style="font-size:.78rem;color:var(--muted);font-weight:600">Reports</div><div style="font-size:1.15rem;font-weight:700">How sales are going</div></div>' +
+  return '<div style="display:flex;align-items:center;gap:12px;margin:2px 0 12px;flex-wrap:wrap"><span class="obj o-report">' + icon('report') + '</span><div style="margin-right:auto"><div style="font-size:.78rem;color:var(--muted);font-weight:600">Reports</div><div class="title" style="font-size:1.2rem;line-height:1.15">How sales are going</div><span class="rule"></span></div>' +
       '<div class="btn-group"><button type="button" class="btn btn-sm' + (period === 'year' ? ' btn-brand' : '') + '" data-period="year">' + y + '</button><button type="button" class="btn btn-sm' + (period === 'all' ? ' btn-brand' : '') + '" data-period="all">All time</button></div></div>' +
     '<section class="kpis"><div class="kpi"><span>Leads created</span><b class="num">' + base.length + '</b><small>' + (period === 'all' ? 'all time' : 'in ' + y) + '</small></div><div class="kpi"><span>Booked</span><b class="num">' + won.length + '</b><small>' + (decided ? Math.round(won.length / decided * 100) + '% of decided leads' : 'no decided leads yet') + '</small></div><div class="kpi"><span>Value booked</span><b class="num">' + esc(money(value)) + '</b><small>program fees</small></div><div class="kpi"><span>Collected</span><b class="num">' + esc(money(collected)) + '</b><small>' + (value ? Math.round(collected / value * 100) + '% of the value booked' : '—') + '</small></div></section>' +
     '<div class="rep">' +
       '<section class="card"><div class="card-h"><h3>Where leads come from</h3><small>“Won” = booked ÷ decided</small></div><div class="card-b">' + tbl(group(b => b.source), false) + '</div></section>' +
       '<section class="card"><div class="card-h"><h3>Team</h3></div><div class="card-b">' + tbl(group(b => ownerName(b) || 'Not assigned'), true) + '</div></section>' +
       '<section class="card"><div class="card-h"><h3>Programs</h3></div><div class="card-b">' + tbl(group(b => b.program), false) + '</div></section>' +
-      '<section class="card"><div class="card-h"><h3>Why leads are lost</h3><small>' + lost.length + '</small></div><div class="card-b">' + (rk.length ? rk.map(k => '<div class="funnel-row" style="grid-template-columns:150px minmax(0,1fr) 34px"><span>' + esc(k) + '</span><span class="track"><i style="width:' + (reasons[k] / rmax * 100) + '%;background:#8A93A0"></i></span><b class="num" style="text-align:right">' + reasons[k] + '</b></div>').join('') : '<div class="empty-s">No lost leads in this period.</div>') + '</div></section>' +
+      '<section class="card"><div class="card-h"><h3>Why leads are lost</h3><small>' + lost.length + '</small></div><div class="card-b">' + (rk.length ? rk.map(k => '<div class="funnel-row" style="grid-template-columns:150px minmax(0,1fr) 34px"><span>' + esc(k) + '</span><span class="track"><i style="width:' + (reasons[k] / rmax * 100) + '%;background:rgba(20,16,26,.35)"></i></span><b class="num" style="text-align:right">' + reasons[k] + '</b></div>').join('') : '<div class="empty-s">No lost leads in this period.</div>') + '</div></section>' +
       '<section class="card" style="grid-column:1/-1"><div class="card-h"><h3>Bookings per month</h3><small>last 12 months</small></div><div class="card-b"><div class="bars">' + months.map((m, i) => '<div title="' + m[1] + ': ' + mc[i] + '"><b>' + (mc[i] || '') + '</b><i style="height:' + (mc[i] / mmax * 100) + '%"></i>' + m[1] + '</div>').join('') + '</div></div></section>' +
     '</div>';
 }
@@ -883,7 +981,7 @@ function recordView() {
   const fee = toNum(b.fee), p = paid(b), bal = balance(b);
   const dl = (k, v, full) => '<div' + (full ? ' class="full"' : '') + '><span>' + k + '</span><b>' + (v || '<span style="color:var(--muted)">—</span>') + '</b></div>';
   return '<p class="crumb"><button type="button" class="linkish" data-back>' + icon('left') + ' ' + ({ leads: 'Leads', bookings: 'Bookings', alumni: 'Alumni', pipeline: 'Pipeline', reports: 'Reports' }[tab] || 'Home') + '</button></p>' +
-    '<section class="card hl"><div class="hl-top"><span class="obj ' + objCls(b) + '">' + icon(objIcon(b)) + '</span><div class="hl-name"><small>' + label + ' · ' + esc(b.num || '') + '</small><h1>' + esc(b.name) + '</h1></div><div class="hl-acts">' +
+    '<section class="card hl"><div class="hl-top"><span class="obj ' + objCls(b) + '">' + icon(objIcon(b)) + '</span><div class="hl-name"><small>' + label + ' · ' + esc(b.num || '') + '</small><h1>' + esc(b.name) + '</h1><span class="rule"></span></div><div class="hl-acts">' +
       (wa ? '<a class="btn" href="https://wa.me/' + wa + '" target="_blank" rel="noopener noreferrer">' + icon('whatsapp') + 'WhatsApp</a>' : '') +
       (b.phone ? '<a class="btn" href="tel:' + esc(String(b.phone).replace(/[^\d+]/g, '')) + '">' + icon('call') + 'Call</a>' : '') +
       '<button type="button" class="btn" data-edit>' + icon('edit') + 'Edit</button>' +
