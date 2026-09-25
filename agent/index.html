@@ -323,6 +323,20 @@
     .flow-steps li.now i { border-color: var(--ja-purple); color: var(--ja-purple); box-shadow: 0 0 0 5px var(--ja-lavender); }
     .pending { border-color: rgba(220,20,60,.3) !important; background: var(--ja-blush) !important; }
 
+
+    /* language switch: British and French flags */
+    .lang { display: inline-flex; gap: 2px; padding: 2px; border-radius: 6px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); flex: none; }
+    .lang button { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 3px 8px; border: 0; border-radius: 4px; background: none; color: rgba(255,255,255,.78); font-weight: 600; font-size: .76rem; }
+    .lang button:hover { color: #fff; }
+    .lang button[aria-pressed="true"] { background: #fff; color: var(--ja-purple); }
+    .lang svg { width: 21px; height: 14px; border-radius: 2px; box-shadow: 0 0 0 1px rgba(20,16,26,.18); flex: none; }
+    .gate-card { position: relative; }
+    .gate-card .lang { position: absolute; top: 14px; right: 14px; background: var(--ja-lavender); border-color: var(--line); }
+    .gate-card .lang button { color: var(--ja-purple); }
+    .gate-card .lang button[aria-pressed="true"] { background: var(--ja-purple); color: #fff; }
+    @media (max-width: 760px) { .top .lang { margin-left: auto; } }
+    @media (max-width: 420px) { .lang span { display: none; } .lang button { padding: 3px 6px; } }
+
     @media (max-width: 1150px) { .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } .nat { grid-template-columns: 1fr; } .grid3 { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 760px) {
       .top { flex-wrap: wrap; } .tabs { order: 3; width: 100%; margin: 0; overflow-x: auto; } .who { display: none; } .brand small { display: none; }
@@ -336,33 +350,36 @@
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="f-uk" viewBox="0 0 60 30"><clipPath id="ukc"><rect width="60" height="30"/></clipPath><g clip-path="url(#ukc)"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30M60,0 0,30" stroke="#C8102E" stroke-width="2.4"/><path d="M30,0V30M0,15H60" stroke="#fff" stroke-width="10"/><path d="M30,0V30M0,15H60" stroke="#C8102E" stroke-width="6"/></g></symbol>
+  <symbol id="f-fr" viewBox="0 0 3 2"><rect width="1" height="2" fill="#002654"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
   <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.7-.1 1.4z"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
 </svg>
 
-<!-- ==================== CONNEXION ==================== -->
+<!-- ==================== CONNEXION / SIGN IN ==================== -->
 <div class="gate" id="gate">
   <div class="gate-card">
+    <div class="lang" id="langGate" role="group" aria-label="Language / Langue"><button type="button" data-lang="en" aria-pressed="false" title="English"><svg aria-hidden="true"><use href="#f-uk"/></svg><span>EN</span></button><button type="button" data-lang="fr" aria-pressed="true" title="Français"><svg aria-hidden="true"><use href="#f-fr"/></svg><span>FR</span></button></div>
     <span class="pin" aria-hidden="true"><b>JA</b></span>
     <h1 id="gTitle">Espace agents</h1>
     <p class="lead" id="gLead">Ouverture…</p>
     <p class="err" id="gMsg" role="alert" hidden></p>
     <form id="signForm" hidden novalidate>
       <div class="fld"><label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="username" required></div>
-      <div class="fld"><label for="gPass">Mot de passe</label><input id="gPass" type="password" autocomplete="current-password" required></div>
-      <button type="submit" class="btn btn-green" id="gSubmit">Se connecter</button>
-      <button type="button" class="linkish" id="gForgot" style="justify-self:center">Mot de passe oublié</button>
+      <div class="fld"><label for="gPass" data-en="Password">Mot de passe</label><input id="gPass" type="password" autocomplete="current-password" required></div>
+      <button type="submit" class="btn btn-green" id="gSubmit" data-en="Sign in">Se connecter</button>
+      <button type="button" class="linkish" id="gForgot" style="justify-self:center" data-en="Forgot my password">Mot de passe oublié</button>
     </form>
     <form id="profileForm" hidden novalidate>
-      <div class="fld"><label for="pName">Nom complet</label><input id="pName" type="text" autocomplete="name" required></div>
-      <div class="fld"><label for="pAgency">Agence ou école (facultatif)</label><input id="pAgency" type="text" placeholder="Agence Horizon, Sétif"></div>
-      <div class="fld"><label for="pPhone">Téléphone</label><input id="pPhone" type="tel" autocomplete="tel" placeholder="0550 12 34 56" required></div>
-      <div class="fld"><label for="pWilaya">Votre wilaya</label><select id="pWilaya" required></select><span class="hint">C'est la région que vous représentez. Seule la direction pourra la modifier ensuite.</span></div>
-      <button type="submit" class="btn btn-green">Continuer</button>
+      <div class="fld"><label for="pName" data-en="Full name">Nom complet</label><input id="pName" type="text" autocomplete="name" required></div>
+      <div class="fld"><label for="pAgency" data-en="Agency or school (optional)">Agence ou école (facultatif)</label><input id="pAgency" type="text" placeholder="Agence Horizon, Sétif" data-en-ph="Horizon Agency, Sétif"></div>
+      <div class="fld"><label for="pPhone" data-en="Phone">Téléphone</label><input id="pPhone" type="tel" autocomplete="tel" placeholder="0550 12 34 56" required></div>
+      <div class="fld"><label for="pWilaya" data-en="Your wilaya">Votre wilaya</label><select id="pWilaya" required></select><span class="hint" data-en="This is the region you represent. Only Juniors Academy can change it afterwards.">C'est la région que vous représentez. Seule la direction pourra la modifier ensuite.</span></div>
+      <button type="submit" class="btn btn-green" data-en="Continue">Continuer</button>
     </form>
-    <button type="button" class="btn btn-light" id="gOut" style="margin-top:12px" hidden>Se déconnecter</button>
+    <button type="button" class="btn btn-light" id="gOut" style="margin-top:12px" hidden data-en="Sign out">Se déconnecter</button>
   </div>
 </div>
 
@@ -371,98 +388,99 @@
   <header class="top">
     <div class="brand"><span class="pin" aria-hidden="true"><b>JA</b></span><span><strong>Juniors Agents</strong><small id="brandSub">Espace agents</small></span></div>
     <nav class="tabs" id="tabs" aria-label="Sections"></nav>
-    <div class="top-r"><span class="who" id="who"></span><button type="button" class="tbtn" id="btnOut">Déconnexion</button></div>
+    <div class="top-r"><div class="lang" id="langTop" role="group" aria-label="Language / Langue"><button type="button" data-lang="en" aria-pressed="false" title="English"><svg aria-hidden="true"><use href="#f-uk"/></svg><span>EN</span></button><button type="button" data-lang="fr" aria-pressed="true" title="Français"><svg aria-hidden="true"><use href="#f-fr"/></svg><span>FR</span></button></div><span class="who" id="who"></span><button type="button" class="tbtn" id="btnOut">Déconnexion</button></div>
   </header>
   <main class="wrap" id="main"></main>
 </div>
 
-<!-- Fiche d'inscription (agent) -->
+<!-- Fiche d'inscription (agent, FR/EN) -->
 <dialog class="pop" id="studentPop" aria-labelledby="spTitle">
-  <div class="pop-head"><div><h2 id="spTitle">Inscrire un élève</h2><p id="spSub">Les champs marqués * sont obligatoires</p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="pop-head"><div><h2 id="spTitle">Inscrire un élève</h2><p id="spSub" data-en="Fields marked * are required">Les champs marqués * sont obligatoires</p></div><button type="button" class="x" data-close aria-label="Fermer / Close">×</button></div>
   <form class="pop-body" id="studentForm" novalidate>
-    <fieldset class="fs"><legend>Programme</legend>
-      <div class="fld full"><label for="sProg">Programme choisi *</label><select id="sProg" required></select><span class="hint" id="sProgInfo"></span></div>
+    <fieldset class="fs"><legend data-en="Programme">Programme</legend>
+      <div class="fld full"><label for="sProg" data-en="Chosen programme *">Programme choisi *</label><select id="sProg" required></select><span class="hint" id="sProgInfo"></span></div>
     </fieldset>
-    <fieldset class="fs"><legend>Élève</legend>
+    <fieldset class="fs"><legend data-en="Student">Élève</legend>
       <div class="fields">
-        <div class="fld"><label for="sFirst">Prénom *</label><input id="sFirst" type="text" required></div>
-        <div class="fld"><label for="sLast">Nom *</label><input id="sLast" type="text" required></div>
-        <div class="fld"><label for="sDob">Date de naissance *</label><input id="sDob" type="date" required><span class="hint" id="sAge"></span></div>
-        <div class="fld"><label for="sGender">Sexe</label><select id="sGender"><option value="">—</option><option value="F">Fille</option><option value="M">Garçon</option></select></div>
-        <div class="fld"><label for="sLevel">Niveau scolaire</label><select id="sLevel"><option value="">—</option><option>Primaire</option><option>Collège (CEM)</option><option>Lycée</option><option>Université</option><option>Autre</option></select></div>
-        <div class="fld"><label for="sWilaya">Wilaya de résidence *</label><select id="sWilaya" required></select></div>
-        <div class="fld full"><label for="sPass">Passeport</label><select id="sPass"><option value="valid">Valide</option><option value="progress">En cours de demande</option><option value="none">Pas encore</option></select></div>
+        <div class="fld"><label for="sFirst" data-en="First name *">Prénom *</label><input id="sFirst" type="text" required></div>
+        <div class="fld"><label for="sLast" data-en="Last name *">Nom *</label><input id="sLast" type="text" required></div>
+        <div class="fld"><label for="sDob" data-en="Date of birth *">Date de naissance *</label><input id="sDob" type="date" required><span class="hint" id="sAge"></span></div>
+        <div class="fld"><label for="sGender" data-en="Gender">Sexe</label><select id="sGender"><option value="">—</option><option value="F" data-en="Girl">Fille</option><option value="M" data-en="Boy">Garçon</option></select></div>
+        <div class="fld"><label for="sLevel" data-en="School level">Niveau scolaire</label><select id="sLevel"><option value="">—</option><option value="Primaire" data-en="Primary school">Primaire</option><option value="Collège (CEM)" data-en="Middle school (CEM)">Collège (CEM)</option><option value="Lycée" data-en="Secondary school (lycée)">Lycée</option><option value="Université" data-en="University">Université</option><option value="Autre" data-en="Other">Autre</option></select></div>
+        <div class="fld"><label for="sWilaya" data-en="Wilaya of residence *">Wilaya de résidence *</label><select id="sWilaya" required></select></div>
+        <div class="fld full"><label for="sPass" data-en="Passport">Passeport</label><select id="sPass"><option value="valid" data-en="Valid">Valide</option><option value="progress" data-en="Application in progress">En cours de demande</option><option value="none" data-en="Not yet">Pas encore</option></select></div>
       </div>
     </fieldset>
-    <fieldset class="fs"><legend>Parent ou tuteur</legend>
+    <fieldset class="fs"><legend data-en="Parent or guardian">Parent ou tuteur</legend>
       <div class="fields">
-        <div class="fld"><label for="sParent">Nom complet *</label><input id="sParent" type="text" required></div>
-        <div class="fld"><label for="sPhone">Téléphone *</label><input id="sPhone" type="tel" placeholder="0550 12 34 56" required></div>
+        <div class="fld"><label for="sParent" data-en="Full name *">Nom complet *</label><input id="sParent" type="text" required></div>
+        <div class="fld"><label for="sPhone" data-en="Phone *">Téléphone *</label><input id="sPhone" type="tel" placeholder="0550 12 34 56" required></div>
         <div class="fld full"><label for="sEmail">Email</label><input id="sEmail" type="email" placeholder="parent@email.com"></div>
       </div>
     </fieldset>
-    <div class="fld"><label for="sNotes">Remarques</label><textarea id="sNotes" maxlength="800" placeholder="Allergies, frère ou sœur inscrit, disponibilités…"></textarea></div>
-    <label class="check"><input type="checkbox" id="sConsent"> <span>Les parents ont accepté que ces informations soient transmises à Juniors Academy pour l'inscription de leur enfant. *</span></label>
+    <div class="fld"><label for="sNotes" data-en="Notes">Remarques</label><textarea id="sNotes" maxlength="800" placeholder="Allergies, frère ou sœur inscrit, disponibilités…" data-en-ph="Allergies, brother or sister registered, availability…"></textarea></div>
+    <label class="check"><input type="checkbox" id="sConsent"> <span data-en="The parents have agreed that this information is sent to Juniors Academy to register their child. *">Les parents ont accepté que ces informations soient transmises à Juniors Academy pour l'inscription de leur enfant. *</span></label>
     <p class="err" id="sErr" hidden></p>
-    <div class="pop-foot"><button type="button" class="btn btn-red" id="sDelete" hidden>Retirer cette inscription</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green" id="sSave">Envoyer l'inscription</button></div>
+    <div class="pop-foot"><button type="button" class="btn btn-red" id="sDelete" hidden data-en="Withdraw this registration">Retirer cette inscription</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close data-en="Cancel">Annuler</button><button type="submit" class="btn btn-green" id="sSave">Envoyer l'inscription</button></div>
   </form>
 </dialog>
 
-<!-- Détail d'une inscription (direction) -->
+<!-- Registration detail (director in English; agents see it in their language) -->
 <dialog class="pop" id="detailPop" aria-labelledby="dpTitle">
-  <div class="pop-head"><div><h2 id="dpTitle"></h2><p id="dpSub"></p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="pop-head"><div><h2 id="dpTitle"></h2><p id="dpSub"></p></div><button type="button" class="x" data-close aria-label="Close / Fermer">×</button></div>
   <div class="pop-body" id="dpBody"></div>
 </dialog>
 
-<!-- Agent (direction) -->
+<!-- Agent (director) -->
 <dialog class="pop" id="agentPop" aria-labelledby="apTitle" style="width:min(520px,calc(100vw - 24px))">
-  <div class="pop-head"><div><h2 id="apTitle">Ajouter un agent</h2><p>Il se connectera avec cet email et ce mot de passe</p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="pop-head"><div><h2 id="apTitle">Add an agent</h2><p>They sign in with this email and password</p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
   <form class="pop-body" id="agentForm" novalidate>
     <div class="fields">
-      <div class="fld full"><label for="aName">Nom complet</label><input id="aName" type="text" required></div>
-      <div class="fld" id="aEmailF"><label for="aEmail">Email (identifiant)</label><input id="aEmail" type="email" autocomplete="off"></div>
-      <div class="fld" id="aPassF"><label for="aPass">Premier mot de passe (6+)</label><input id="aPass" type="text" autocomplete="off"></div>
-      <div class="fld"><label for="aWilaya">Wilaya</label><select id="aWilaya"></select><span class="hint">Laissez vide : l'agent la choisira à sa première connexion.</span></div>
+      <div class="fld full"><label for="aName">Full name</label><input id="aName" type="text" required></div>
+      <div class="fld" id="aEmailF"><label for="aEmail">Email (sign-in)</label><input id="aEmail" type="email" autocomplete="off"></div>
+      <div class="fld" id="aPassF"><label for="aPass">First password (6+)</label><input id="aPass" type="text" autocomplete="off"></div>
+      <div class="fld"><label for="aWilaya">Wilaya</label><select id="aWilaya"></select><span class="hint">Leave empty: the agent picks it at first sign-in.</span></div>
       <div class="fld"><label for="aRate">Commission (%)</label><input id="aRate" type="number" min="0" max="50" step="0.5" value="10"></div>
-      <div class="fld full"><label for="aPhone">Téléphone</label><input id="aPhone" type="tel"></div>
+      <div class="fld full"><label for="aPhone">Phone</label><input id="aPhone" type="tel"></div>
     </div>
     <p class="err" id="aErr" hidden></p>
-    <div class="pop-foot"><button type="button" class="btn btn-red" id="aSuspend" hidden>Suspendre</button><button type="button" class="linkish" id="aDelete" style="color:var(--ja-crimson)" hidden>Supprimer</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green" id="aSave">Créer l'agent</button></div>
+    <div class="pop-foot"><button type="button" class="btn btn-red" id="aSuspend" hidden>Suspend</button><button type="button" class="linkish" id="aDelete" style="color:var(--ja-crimson)" hidden>Delete</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-green" id="aSave">Create the agent</button></div>
   </form>
 </dialog>
 
-<!-- Supprimer un agent (direction) -->
+<!-- Delete an agent (director) -->
 <dialog class="pop" id="delPop" aria-labelledby="dlTitle" style="width:min(540px,calc(100vw - 24px))">
-  <div class="pop-head"><div><h2 id="dlTitle">Supprimer l'agent</h2><p id="dlSub"></p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="pop-head"><div><h2 id="dlTitle">Delete the agent</h2><p id="dlSub"></p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
   <form class="pop-body" id="delForm" novalidate>
     <div id="dlChoices" style="display:grid;gap:8px">
-      <span style="font-size:.86rem;font-weight:600">Que faire de ses inscriptions ?</span>
-      <label class="choice"><input type="radio" name="dlWhat" value="keep" checked><span><b>Les garder à son nom</b><small>Elles restent dans vos chiffres, la carte et les exports, marquées « ancien agent ». Recommandé.</small></span></label>
-      <label class="choice"><input type="radio" name="dlWhat" value="move"><span><b>Les transférer à un autre agent</b><small>Elles comptent désormais pour l'agent choisi.</small><select id="dlTo" aria-label="Agent qui reçoit les inscriptions"></select></span></label>
-      <label class="choice"><input type="radio" name="dlWhat" value="delete"><span><b>Les supprimer aussi</b><small>Pour les comptes de test. Ces élèves disparaissent de vos chiffres.</small></span></label>
+      <span style="font-size:.86rem;font-weight:600">What should happen to their registrations?</span>
+      <label class="choice"><input type="radio" name="dlWhat" value="keep" checked><span><b>Keep them under their name</b><small>They stay in your figures, the map and exports, marked “former agent”. Recommended.</small></span></label>
+      <label class="choice"><input type="radio" name="dlWhat" value="move"><span><b>Transfer them to another agent</b><small>They now count for the agent you choose.</small><select id="dlTo" aria-label="Agent who receives the registrations"></select></span></label>
+      <label class="choice"><input type="radio" name="dlWhat" value="delete"><span><b>Delete them too</b><small>For test accounts. These students disappear from your figures.</small></span></label>
     </div>
-    <label class="check"><input type="checkbox" id="dlSure"> <span>Je comprends que la suppression est définitive. L'agent ne pourra plus se connecter.</span></label>
+    <label class="check"><input type="checkbox" id="dlSure"> <span>I understand this is permanent. The agent will no longer be able to sign in.</span></label>
     <p class="err" id="dlErr" hidden></p>
-    <div class="pop-foot"><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-red" id="dlGo">Supprimer définitivement</button></div>
+    <div class="pop-foot"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-red" id="dlGo">Delete permanently</button></div>
   </form>
 </dialog>
 
-<!-- Programme (direction) -->
+<!-- Programme (director) -->
 <dialog class="pop" id="progPop" aria-labelledby="ppTitle" style="width:min(520px,calc(100vw - 24px))">
-  <div class="pop-head"><div><h2 id="ppTitle">Nouveau programme</h2><p>Visible par tous les agents</p></div><button type="button" class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="pop-head"><div><h2 id="ppTitle">New programme</h2><p>Visible to every agent</p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
   <form class="pop-body" id="progForm" novalidate>
     <div class="fields">
       <div class="fld full"><label for="pgName">Programme</label><input id="pgName" type="text" placeholder="Séjour linguistique Angleterre" required></div>
       <div class="fld"><label for="pgDest">Destination</label><input id="pgDest" type="text" placeholder="Oundle, Angleterre"></div>
-      <div class="fld"><label for="pgAges">Âges</label><input id="pgAges" type="text" placeholder="10 à 17 ans"></div>
-      <div class="fld"><label for="pgStart">Départ</label><input id="pgStart" type="date"></div>
-      <div class="fld"><label for="pgEnd">Retour</label><input id="pgEnd" type="date"></div>
-      <div class="fld"><label for="pgPrice">Prix (DA)</label><input id="pgPrice" type="number" min="0" step="1000" placeholder="450000"></div>
+      <div class="fld"><label for="pgAges">Ages</label><input id="pgAges" type="text" placeholder="10 à 17 ans"></div>
+      <div class="fld"><label for="pgStart">Departure</label><input id="pgStart" type="date"></div>
+      <div class="fld"><label for="pgEnd">Return</label><input id="pgEnd" type="date"></div>
+      <div class="fld"><label for="pgPrice">Price (DA)</label><input id="pgPrice" type="number" min="0" step="1000" placeholder="450000"></div>
       <div class="fld"><label for="pgSeats">Places</label><input id="pgSeats" type="number" min="0" step="1" placeholder="30"></div>
     </div>
-    <label class="check"><input type="checkbox" id="pgOpen" checked> <span>Ouvert aux inscriptions</span></label>
+    <p class="hint" style="margin:-4px 0 0;font-size:.78rem;color:var(--muted)">Agents read programme names in the language you type them in; French is best for them.</p>
+    <label class="check"><input type="checkbox" id="pgOpen" checked> <span>Open for registrations</span></label>
     <p class="err" id="pgErr" hidden></p>
-    <div class="pop-foot"><button type="button" class="btn btn-red" id="pgDelete" hidden>Supprimer</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Annuler</button><button type="submit" class="btn btn-green">Enregistrer</button></div>
+    <div class="pop-foot"><button type="button" class="btn btn-red" id="pgDelete" hidden>Delete</button><span style="flex:1"></span><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-green">Save</button></div>
   </form>
 </dialog>
 
@@ -517,30 +535,48 @@ const BORDER = [[-2.2,35.1],[-1.3,35.3],[-0.6,35.75],[0.1,35.95],[0.9,36.35],[1.
 const PROGRAMS_SEED = []; /* programmes créés par la direction */
 
 const STATUS = {
-  submitted: { name: 'Soumis', hint: 'Reçu par Juniors Academy, en cours de vérification' },
-  confirmed: { name: 'Confirmé', hint: 'Place confirmée, en attente du paiement' },
-  paid: { name: 'Payé', hint: 'Inscription payée' },
-  departed: { name: 'Parti', hint: 'L\u2019élève est parti' },
-  cancelled: { name: 'Annulé', hint: 'Inscription annulée' }
+  submitted: { name: 'Soumis', hint: 'Reçu par Juniors Academy, en cours de vérification', en: 'Submitted', enHint: 'Received by Juniors Academy, being checked' },
+  confirmed: { name: 'Confirmé', hint: 'Place confirmée, en attente du paiement', en: 'Confirmed', enHint: 'Place confirmed, waiting for payment' },
+  paid: { name: 'Payé', hint: 'Inscription payée', en: 'Paid', enHint: 'Registration paid' },
+  departed: { name: 'Parti', hint: 'L\u2019élève est parti', en: 'Departed', enHint: 'The student has left' },
+  cancelled: { name: 'Annulé', hint: 'Inscription annulée', en: 'Cancelled', enHint: 'Registration cancelled' }
 };
 const ORDER = ['submitted', 'confirmed', 'paid', 'departed'];
 const WON = s => s === 'paid' || s === 'departed';
 const COLORS = ['#4A235A', '#2B1236'];   /* avatar tiles: Academy Purple and Night only */
 
+/* ==================== Language ==================== */
+/* The director always sees English. Agents see French by default and can switch with the flags;
+   their choice is remembered on their device. */
+const LANG_KEY = 'ja-agent-lang';
+const savedLang = () => { try { const v = localStorage.getItem(LANG_KEY); return v === 'en' || v === 'fr' ? v : 'fr'; } catch (e) { return 'fr'; } };
+let lang = savedLang();
+const L = (fr, en) => (lang === 'en' ? en : fr);
+const pick = m => (Array.isArray(m) ? L(m[0], m[1]) : (m || ''));
+const stName = s => (STATUS[s] ? L(STATUS[s].name, STATUS[s].en) : s);
+const stHint = s => (STATUS[s] ? L(STATUS[s].hint, STATUS[s].enHint) : '');
+
 /* ==================== Helpers ==================== */
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const icon = n => '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"/></svg>';
-const nf = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
-const money = n => nf.format(Math.round(n || 0)) + '\u00A0' + CURRENCY;
-const shortMoney = n => n >= 1e6 ? (Math.round(n / 1e5) / 10).toString().replace('.', ',') + '\u00A0M' : n >= 1e3 ? Math.round(n / 1e3) + '\u00A0k' : String(Math.round(n || 0));
+const money = n => new Intl.NumberFormat(lang === 'en' ? 'en-GB' : 'fr-FR', { maximumFractionDigits: 0 }).format(Math.round(n || 0)) + '\u00A0' + CURRENCY;
+const shortMoney = n => {
+  if (n >= 1e6) { const v = Math.round(n / 1e5) / 10; return (lang === 'en' ? String(v) + 'M' : String(v).replace('.', ',') + '\u00A0M'); }
+  if (n >= 1e3) return Math.round(n / 1e3) + (lang === 'en' ? 'k' : '\u00A0k');
+  return String(Math.round(n || 0));
+};
 function todayISO() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
-const MON = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
-const niceDate = iso => { if (!iso) return ''; const p = String(iso).slice(0, 10).split('-'); return (+p[2]) + ' ' + MON[+p[1] - 1] + ' ' + p[0]; };
+const MON_FR = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+const MON_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MON = () => (lang === 'en' ? MON_EN : MON_FR);
+const niceDate = iso => { if (!iso) return ''; const p = String(iso).slice(0, 10).split('-'); return (+p[2]) + ' ' + MON()[+p[1] - 1] + ' ' + p[0]; };
 const initials = n => { const p = String(n || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase(); };
 const colorOf = id => { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length]; };
 const firstName = n => String(n || '').split(' ')[0];
 function ageFrom(dob) { if (!dob) return null; const t = todayISO().split('-').map(Number), b = dob.split('-').map(Number); let a = t[0] - b[0]; if (t[1] < b[1] || (t[1] === b[1] && t[2] < b[2])) a--; return a >= 0 && a < 120 ? a : null; }
+const ageTxt = a => L(a + ' ans', a + ' yrs');
+const ord = n => lang === 'en' ? n + (n % 100 >= 11 && n % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th')) : n + (n === 1 ? 'er' : 'e');
 const phoneOk = p => /^(\+?213|0)[5-7]\d{8}$/.test(String(p || '').replace(/[\s.-]/g, ''));
 function waNumber(phone) { let d = String(phone || '').replace(/\D/g, ''); if (!d) return ''; if (d.indexOf('00') === 0) d = d.slice(2); else if (d.charAt(0) === '0') d = '213' + d.slice(1); return d; }
 const newId = () => String(9e15 - Date.now()).padStart(16, '0') + Math.random().toString(36).slice(2, 6);
@@ -548,35 +584,58 @@ let toastTimer;
 function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3200); }
 const wilayaOptions = (sel, blank) => (blank ? '<option value="">' + esc(blank) + '</option>' : '') + WILAYAS.map(w => '<option value="' + w.code + '"' + (+sel === w.code ? ' selected' : '') + '>' + String(w.code).padStart(2, '0') + ' · ' + esc(w.name) + '</option>').join('');
 
-/* ==================== État ==================== */
+/* ==================== State ==================== */
 let fb = null, me = null, profile = null, unsub = [];
 let agents = {}, programs = {}, students = {}, board = null, requests = {}, waitUnsub = null, activating = null;
 let tab = '', filt = { q: '', status: '', prog: '', agent: '', wilaya: '' }, period = 'all', metric = 'count', mapView = 'north', selWilaya = null;
 const isAdmin = () => !!me && me.isAdmin;
 const stop = () => { unsub.forEach(f => { try { f(); } catch (e) {} }); unsub = []; };
 
-/* ==================== Connexion ==================== */
+/* ==================== Applying the language ==================== */
+let lastGate = ['loading', '', false];
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-en]').forEach(el => { if (el.dataset.fr == null) el.dataset.fr = el.innerHTML; el.innerHTML = lang === 'en' ? el.dataset.en : el.dataset.fr; });
+  document.querySelectorAll('[data-en-ph]').forEach(el => { if (el.dataset.frPh == null) el.dataset.frPh = el.getAttribute('placeholder') || ''; el.setAttribute('placeholder', lang === 'en' ? el.dataset.enPh : el.dataset.frPh); });
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang)));
+  $('btnOut').textContent = L('Déconnexion', 'Sign out');
+  $('langTop').hidden = isAdmin();
+  if (me) $('brandSub').textContent = isAdmin() ? 'National view' : L('Espace agents', 'Agent area');
+  if ($('gate').getAttribute('data-mode') !== 'off') gate(lastGate[0], lastGate[1], lastGate[2]);
+}
+function setLang(l) {
+  if (isAdmin() || (l !== 'en' && l !== 'fr') || l === lang) return;
+  lang = l; try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+  applyLang();
+  if (me) paint();
+  if ($('studentPop').open) studentTexts();
+  if ($('detailPop').open && $('dpBody').getAttribute('data-id')) openDetail($('dpBody').getAttribute('data-id'));
+}
+
+/* ==================== Sign in ==================== */
 function gate(mode, msg, info) {
+  lastGate = [mode, msg, info];
   $('gate').hidden = mode === 'off'; $('gate').setAttribute('data-mode', mode);
   $('signForm').hidden = mode !== 'signin'; $('profileForm').hidden = mode !== 'profile'; $('gOut').hidden = !(mode === 'profile' || mode === 'blocked');
-  $('gTitle').textContent = mode === 'profile' ? 'Bienvenue' : 'Espace agents';
-  $('gLead').textContent = { loading: 'Ouverture…', signin: 'Connectez-vous avec l\u2019email et le mot de passe fournis par Juniors Academy.', profile: 'Complétez votre profil. Il ne vous sera demandé qu\u2019une fois.' }[mode] || '';
+  $('gTitle').textContent = mode === 'profile' ? L('Bienvenue', 'Welcome') : L('Espace agents', 'Agent area');
+  $('gLead').textContent = { loading: L('Ouverture…', 'Opening…'), signin: L('Connectez-vous avec l\u2019email et le mot de passe fournis par Juniors Academy.', 'Sign in with the email and password provided by Juniors Academy.'), profile: L('Complétez votre profil. Il ne vous sera demandé qu\u2019une fois.', 'Complete your profile. You will only be asked once.') }[mode] || '';
   $('gLead').hidden = !$('gLead').textContent;
-  $('gMsg').textContent = msg || ''; $('gMsg').hidden = !msg; $('gMsg').className = info ? 'info' : 'err';
-  if (mode === 'signin') setTimeout(() => $('gEmail').focus(), 50);
+  const m = pick(msg);
+  $('gMsg').textContent = m; $('gMsg').hidden = !m; $('gMsg').className = info ? 'info' : 'err';
+  if (mode === 'signin' && !$('gate').contains(document.activeElement)) setTimeout(() => $('gEmail').focus(), 50);
 }
 function authMessage(e) {
   const c = (e && e.code) || '';
-  if (/invalid-credential|wrong-password|user-not-found|invalid-email|missing-password/.test(c)) return 'Email ou mot de passe incorrect.';
-  if (/too-many-requests/.test(c)) return 'Trop d\u2019essais. Patientez quelques minutes.';
-  if (/network-request-failed/.test(c)) return 'Pas de connexion internet.';
-  if (/user-disabled/.test(c)) return 'Ce compte a été désactivé.';
-  return 'Connexion impossible. Réessayez.';
+  if (/invalid-credential|wrong-password|user-not-found|invalid-email|missing-password/.test(c)) return ['Email ou mot de passe incorrect.', 'Wrong email or password.'];
+  if (/too-many-requests/.test(c)) return ['Trop d\u2019essais. Patientez quelques minutes.', 'Too many tries. Wait a few minutes.'];
+  if (/network-request-failed/.test(c)) return ['Pas de connexion internet.', 'No internet connection.'];
+  if (/user-disabled/.test(c)) return ['Ce compte a été désactivé.', 'This account has been turned off.'];
+  return ['Connexion impossible. Réessayez.', 'Could not sign in. Try again.'];
 }
 function applyLogo() { if (!LOGO_URL) return; document.querySelectorAll('.pin b').forEach(el => { el.innerHTML = '<img src="' + LOGO_URL + '" alt="">'; }); }
 async function start() {
-  applyLogo();
-  if (!READY) { gate('blocked', 'La base de données n\u2019est pas encore connectée : collez les réglages Firebase (projet juniors-agent) dans FIREBASE_CONFIG, en bas du fichier index.html.', true); return; }
+  applyLogo(); applyLang();
+  if (!READY) { gate('blocked', ['La base de données n\u2019est pas encore connectée : collez les réglages Firebase (projet juniors-agent) dans FIREBASE_CONFIG, en bas du fichier index.html.', 'The database is not connected yet: paste the Firebase settings (project juniors-agent) into FIREBASE_CONFIG, near the bottom of index.html.'], true); return; }
   gate('loading');
   try {
     const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
@@ -584,40 +643,45 @@ async function start() {
     let db; try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); } catch (e) { db = F.getFirestore(app); }
     fb = { auth: A.getAuth(app), db, A, F, A0 };
     A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
-  } catch (e) { gate('blocked', 'Impossible de joindre la base de données. Vérifiez la connexion puis rechargez la page.'); }
+  } catch (e) { gate('blocked', ['Impossible de joindre la base de données. Vérifiez la connexion puis rechargez la page.', 'Could not reach the database. Check the connection, then reload the page.']); }
 }
-function signedOut() { stop(); if (waitUnsub) { waitUnsub(); waitUnsub = null; } me = null; profile = null; agents = {}; programs = {}; students = {}; requests = {}; $('app').hidden = true; if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin'); }
+function signedOut() {
+  stop(); if (waitUnsub) { waitUnsub(); waitUnsub = null; } me = null; profile = null; agents = {}; programs = {}; students = {}; requests = {};
+  $('app').hidden = true; lang = savedLang(); applyLang();
+  if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin');
+}
 async function signedIn(u) {
   const email = (u.email || '').toLowerCase();
   me = { uid: u.uid, email, isAdmin: ADMIN_EMAILS.map(x => x.toLowerCase()).includes(email) };
-  if (me.isAdmin) { profile = { name: 'Direction', uid: u.uid }; openApp(); return; }
+  if (me.isAdmin) { lang = 'en'; applyLang(); profile = { name: 'Director', uid: u.uid }; openApp(); return; }
+  lang = savedLang(); applyLang();
   gate('loading');
   try {
     const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'agents', u.uid));
     if (!snap.exists()) {
       const gone = await fb.F.getDoc(fb.F.doc(fb.db, 'removed', u.uid)).catch(() => null);
-      if (gone && gone.exists()) { gate('blocked', 'Votre accès à l\u2019espace agents a été supprimé. Contactez Juniors Academy si c\u2019est une erreur.'); return; }
+      if (gone && gone.exists()) { gate('blocked', ['Votre accès à l\u2019espace agents a été supprimé. Contactez Juniors Academy si c\u2019est une erreur.', 'Your access to the agent area has been removed. Contact Juniors Academy if this is a mistake.']); return; }
       fb.F.setDoc(fb.F.doc(fb.db, 'requests', u.uid), { uid: u.uid, email, at: new Date().toISOString() }).catch(() => {});
-      gate('blocked', 'Votre compte est bien connecté, mais Juniors Academy doit encore l\u2019activer. La direction vient d\u2019être prévenue : cette page s\u2019ouvrira toute seule dès l\u2019activation.', true);
+      gate('blocked', ['Votre compte est bien connecté, mais Juniors Academy doit encore l\u2019activer. La direction vient d\u2019être prévenue : cette page s\u2019ouvrira toute seule dès l\u2019activation.', 'You are signed in, but Juniors Academy still has to activate your account. They have just been told: this page will open by itself as soon as it is done.'], true);
       if (waitUnsub) waitUnsub();
       waitUnsub = fb.F.onSnapshot(fb.F.doc(fb.db, 'agents', u.uid), d => { if (d.exists()) { waitUnsub(); waitUnsub = null; signedIn(u); } }, () => {});
       return;
     }
     profile = snap.data();
-    if (profile.active === false) { gate('blocked', 'Votre accès a été suspendu. Contactez Juniors Academy.'); return; }
+    if (profile.active === false) { gate('blocked', ['Votre accès a été suspendu. Contactez Juniors Academy.', 'Your access has been suspended. Contact Juniors Academy.']); return; }
     if (!profile.wilaya || !profile.phone) {
       $('pName').value = profile.name || ''; $('pAgency').value = profile.agency || ''; $('pPhone').value = profile.phone || '';
-      $('pWilaya').innerHTML = wilayaOptions(profile.wilaya, 'Choisir votre wilaya'); $('pWilaya').disabled = !!profile.wilaya;
+      $('pWilaya').innerHTML = wilayaOptions(profile.wilaya, L('Choisir votre wilaya', 'Choose your wilaya')); $('pWilaya').disabled = !!profile.wilaya;
       gate('profile'); return;
     }
     openApp();
-  } catch (e) { gate('blocked', e && e.code === 'permission-denied' ? 'Les règles Firebase ne sont pas encore publiées (projet juniors-agent).' : 'Impossible de charger votre profil. Rechargez la page.'); }
+  } catch (e) { gate('blocked', e && e.code === 'permission-denied' ? ['Les règles Firebase ne sont pas encore publiées (projet juniors-agent).', 'The Firebase rules are not published yet (project juniors-agent).'] : ['Impossible de charger votre profil. Rechargez la page.', 'Could not load your profile. Reload the page.']); }
 }
 function openApp() {
   const { F, db } = fb;
-  gate('off'); $('app').hidden = false; stop();
-  $('who').innerHTML = isAdmin() ? '<b>Direction</b>' + esc(me.email) : '<b>' + esc(profile.name) + '</b>' + esc(wName(profile.wilaya));
-  $('brandSub').textContent = isAdmin() ? 'Vue nationale' : 'Espace agents';
+  gate('off'); $('app').hidden = false; stop(); applyLang();
+  $('who').innerHTML = isAdmin() ? '<b>Director</b>' + esc(me.email) : '<b>' + esc(profile.name) + '</b>' + esc(wName(profile.wilaya));
+  $('brandSub').textContent = isAdmin() ? 'National view' : L('Espace agents', 'Agent area');
   tab = tab || (isAdmin() ? 'national' : 'home');
   unsub.push(F.onSnapshot(F.collection(db, 'programs'), s => { programs = {}; s.docs.forEach(d => { programs[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); }, deny));
   if (isAdmin()) {
@@ -625,13 +689,13 @@ function openApp() {
     unsub.push(F.onSnapshot(F.collection(db, 'students'), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); publishBoard(); }, deny));
     unsub.push(F.onSnapshot(F.collection(db, 'requests'), s => { requests = {}; s.docs.forEach(d => { const r = d.data(); if (!agents[d.id]) requests[d.id] = Object.assign({ uid: d.id }, r); }); paint(); }, () => {}));
   } else {
-    unsub.push(F.onSnapshot(F.doc(db, 'agents', me.uid), d => { if (d.exists()) { profile = d.data(); if (profile.active === false) { fb.A.signOut(fb.auth); gate('signin', 'Votre accès a été suspendu. Contactez Juniors Academy.'); } paint(); } }, () => {}));
+    unsub.push(F.onSnapshot(F.doc(db, 'agents', me.uid), d => { if (d.exists()) { profile = d.data(); if (profile.active === false) { fb.A.signOut(fb.auth); gate('signin', ['Votre accès a été suspendu. Contactez Juniors Academy.', 'Your access has been suspended. Contact Juniors Academy.']); } paint(); } }, () => {}));
     unsub.push(F.onSnapshot(F.query(F.collection(db, 'students'), F.where('agentUid', '==', me.uid)), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ id: d.id }, d.data()); }); paint(); }, deny));
     unsub.push(F.onSnapshot(F.doc(db, 'meta', 'board'), d => { board = d.exists() ? d.data() : null; paint(); }, () => {}));
   }
 }
-function deny(err) { if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'Accès refusé par les règles Firebase. Vérifiez que les règles sont publiées dans le projet juniors-agent.'); } }
-/* classement anonyme lu par les agents : seulement des identifiants et des nombres */
+function deny(err) { if (err && err.code === 'permission-denied') { stop(); gate('blocked', ['Accès refusé par les règles Firebase. Vérifiez que les règles sont publiées dans le projet juniors-agent.', 'Access refused by the Firebase rules. Check that the rules are published in the juniors-agent project.']); } }
+/* anonymous ranking read by agents: only ids and numbers */
 let boardTimer = null;
 function publishBoard() {
   clearTimeout(boardTimer);
@@ -646,7 +710,7 @@ function publishBoard() {
   }, 1500);
 }
 
-/* ==================== Calculs ==================== */
+/* ==================== Figures ==================== */
 const inPeriod = s => period === 'all' || String(s.createdAt || '').slice(0, 4) === String(new Date().getFullYear());
 const live = () => Object.values(students).filter(s => s.status !== 'cancelled' && inPeriod(s));
 const priceOf = s => +(s.price || (programs[s.programId] || {}).price || 0);
@@ -667,12 +731,12 @@ function byWilaya() {
   return out;
 }
 
-/* ==================== Rendu ==================== */
+/* ==================== Rendering ==================== */
 let painting = false;
 function paint() { if (painting || !me) return; painting = true; requestAnimationFrame(() => { painting = false; render(); }); }
 function render() {
   const nReq = Object.keys(requests).filter(k => !agents[k]).length;
-  const T = isAdmin() ? [['national', 'Vue nationale'], ['students', 'Inscriptions'], ['agents', 'Agents' + (nReq ? ' (' + nReq + ')' : '')], ['programs', 'Programmes']] : [['home', 'Mes élèves'], ['programs', 'Programmes']];
+  const T = isAdmin() ? [['national', 'National view'], ['students', 'Registrations'], ['agents', 'Agents' + (nReq ? ' (' + nReq + ')' : '')], ['programs', 'Programmes']] : [['home', L('Mes élèves', 'My students')], ['programs', L('Programmes', 'Programmes')]];
   $('tabs').innerHTML = T.map(t => '<button type="button" data-tab="' + t[0] + '" aria-pressed="' + (tab === t[0]) + '">' + t[1] + '</button>').join('');
   const m = $('main'), y = window.scrollY;
   const keep = document.activeElement && document.activeElement.id === 'fQ' ? document.activeElement.selectionStart : null;
@@ -681,73 +745,79 @@ function render() {
   if (keep != null && $('fQ')) { $('fQ').focus(); $('fQ').setSelectionRange(keep, keep); }
   window.scrollTo(0, y);
 }
-const statusPill = s => '<span class="st st-' + esc(s) + '">' + esc((STATUS[s] || {}).name || s) + '</span>';
+const statusPill = s => '<span class="st st-' + esc(s) + '">' + esc(stName(s)) + '</span>';
 const progName = s => s.programName || (programs[s.programId] || {}).name || '—';
-const periodSeg = () => '<div class="seg" role="group" aria-label="Période"><button type="button" data-period="year" aria-pressed="' + (period === 'year') + '">' + new Date().getFullYear() + '</button><button type="button" data-period="all" aria-pressed="' + (period === 'all') + '">Tout</button></div>';
+const periodSeg = () => '<div class="seg" role="group" aria-label="Period"><button type="button" data-period="year" aria-pressed="' + (period === 'year') + '">' + new Date().getFullYear() + '</button><button type="button" data-period="all" aria-pressed="' + (period === 'all') + '">All time</button></div>';
+const plural = (n, fr1, frN, en1, enN) => n + ' ' + (n === 1 ? L(fr1, en1) : L(frN, enN));
 
-/* ---------- Agent : accueil ---------- */
+/* ---------- Agent: home (French or English) ---------- */
 function agentHome() {
   const st = agentStats(me.uid), mine = Object.values(students).sort((a, b) => (a.id < b.id ? -1 : 1));
   let rankTxt = '';
   if (board && board.ranking && board.ranking.length) {
     const i = board.ranking.findIndex(r => r.uid === me.uid);
-    if (i >= 0 && board.ranking[i].n > 0) rankTxt = '<div class="rankbox"><b>' + (i + 1) + (i === 0 ? 'er' : 'e') + '</b><small>sur ' + board.ranking.length + ' agents en ' + esc(board.year) + '</small></div>';
-    else if (i >= 0) rankTxt = '<div class="rankbox" style="max-width:200px"><small>Votre première inscription confirmée vous fait entrer dans le classement ' + esc(board.year) + '.</small></div>';
+    if (i >= 0 && board.ranking[i].n > 0) rankTxt = '<div class="rankbox"><b>' + ord(i + 1) + '</b><small>' + L('sur ' + board.ranking.length + ' agents en ' + esc(board.year), 'of ' + board.ranking.length + ' agents in ' + esc(board.year)) + '</small></div>';
+    else if (i >= 0) rankTxt = '<div class="rankbox" style="max-width:200px"><small>' + L('Votre première inscription confirmée vous fait entrer dans le classement ' + esc(board.year) + '.', 'Your first confirmed registration puts you in the ' + esc(board.year) + ' ranking.') + '</small></div>';
   }
-  return '<div class="hello"><div class="grow"><h1>Bonjour ' + esc(firstName(profile.name)) + '</h1><p>Agent Juniors Academy · wilaya ' + esc(wName(profile.wilaya)) + '</p></div>' + rankTxt +
-    '<button type="button" class="btn btn-green btn-big" data-new>' + icon('plus') + 'Inscrire un élève</button></div>' +
-    '<section class="stats s4"><div class="stat"><b class="num">' + st.total + '</b><span>' + (st.total === 1 ? 'élève inscrit' : 'élèves inscrits') + '</span></div><div class="stat"><b class="num">' + st.conf + '</b><span>' + (st.conf === 1 ? 'confirmé' : 'confirmés') + '</span></div><div class="stat"><b class="num">' + st.won + '</b><span>' + (st.won === 1 ? 'payé' : 'payés') + '</span></div><div class="stat dark"><b class="num">' + esc(money(st.com)) + '</b><span>commission estimée</span><small>' + st.rate + ' % des inscriptions payées</small></div></section>' +
-    (mine.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Élève</th><th>Programme</th><th>Parent</th><th>Statut</th><th>Envoyé le</th></tr></thead><tbody>' +
-      mine.map(s => '<tr data-open="' + esc(s.id) + '"><td><div class="person"><span class="av" style="--c:' + colorOf(s.id) + '">' + esc(initials(s.firstName + ' ' + s.lastName)) + '</span><span><b>' + esc(s.firstName + ' ' + s.lastName) + '</b><small>' + (ageFrom(s.dob) != null ? ageFrom(s.dob) + ' ans · ' : '') + esc(wName(s.studentWilaya)) + '</small></span></div></td>' +
-        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '<small>' + esc((STATUS[s.status] || {}).hint || '') + '</small></td><td>' + esc(niceDate(s.createdAt)) + '</td></tr>').join('') + '</tbody></table></div></div>'
-      : '<div class="empty"><span class="pin" aria-hidden="true" style="margin:0 auto;width:44px;height:44px"><b>JA</b></span><h2>Inscrivez votre premier élève</h2><p>Choisissez le programme, renseignez l\u2019élève et ses parents : Juniors Academy reçoit l\u2019inscription immédiatement.</p><button type="button" class="btn btn-green" data-new>' + icon('plus') + 'Inscrire un élève</button></div>');
+  const t = st.total, c = st.conf, w = st.won;
+  return '<div class="hello"><div class="grow"><h1>' + L('Bonjour ', 'Hello ') + esc(firstName(profile.name)) + '</h1><p>' + L('Agent Juniors Academy · wilaya ', 'Juniors Academy agent · wilaya ') + esc(wName(profile.wilaya)) + '</p></div>' + rankTxt +
+    '<button type="button" class="btn btn-green btn-big" data-new>' + icon('plus') + L('Inscrire un élève', 'Register a student') + '</button></div>' +
+    '<section class="stats s4"><div class="stat"><b class="num">' + t + '</b><span>' + (t === 1 ? L('élève inscrit', 'student registered') : L('élèves inscrits', 'students registered')) + '</span></div>' +
+      '<div class="stat"><b class="num">' + c + '</b><span>' + (c === 1 ? L('confirmé', 'confirmed') : L('confirmés', 'confirmed')) + '</span></div>' +
+      '<div class="stat"><b class="num">' + w + '</b><span>' + (w === 1 ? L('payé', 'paid') : L('payés', 'paid')) + '</span></div>' +
+      '<div class="stat dark"><b class="num">' + esc(money(st.com)) + '</b><span>' + L('commission estimée', 'estimated commission') + '</span><small>' + L(st.rate + ' % des inscriptions payées', st.rate + '% of paid registrations') + '</small></div></section>' +
+    (mine.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>' + L('Élève', 'Student') + '</th><th>' + L('Programme', 'Programme') + '</th><th>' + L('Parent', 'Parent') + '</th><th>' + L('Statut', 'Status') + '</th><th>' + L('Envoyé le', 'Sent on') + '</th></tr></thead><tbody>' +
+      mine.map(s => '<tr data-open="' + esc(s.id) + '"><td><div class="person"><span class="av" style="--c:' + colorOf(s.id) + '">' + esc(initials(s.firstName + ' ' + s.lastName)) + '</span><span><b>' + esc(s.firstName + ' ' + s.lastName) + '</b><small>' + (ageFrom(s.dob) != null ? ageTxt(ageFrom(s.dob)) + ' · ' : '') + esc(wName(s.studentWilaya)) + '</small></span></div></td>' +
+        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '<small>' + esc(stHint(s.status)) + '</small></td><td>' + esc(niceDate(s.createdAt)) + '</td></tr>').join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><span class="pin" aria-hidden="true" style="margin:0 auto;width:44px;height:44px"><b>JA</b></span><h2>' + L('Inscrivez votre premier élève', 'Register your first student') + '</h2><p>' + L('Choisissez le programme, renseignez l\u2019élève et ses parents : Juniors Academy reçoit l\u2019inscription immédiatement.', 'Choose the programme, fill in the student and the parents: Juniors Academy receives the registration straight away.') + '</p><button type="button" class="btn btn-green" data-new>' + icon('plus') + L('Inscrire un élève', 'Register a student') + '</button></div>');
 }
+function progDates(p) { return p.start ? (p.end ? L('Du ' + niceDate(p.start) + ' au ' + niceDate(p.end), 'From ' + niceDate(p.start) + ' to ' + niceDate(p.end)) : L('Départ le ' + niceDate(p.start), 'Departs ' + niceDate(p.start))) : ''; }
 function programsAgentView() {
   const list = Object.values(programs).filter(p => p.open !== false).sort((a, b) => String(a.start || '9').localeCompare(String(b.start || '9')));
-  return '<div class="head"><div><h1>Programmes ouverts</h1><p>Les programmes auxquels vous pouvez inscrire des élèves.</p></div></div>' +
+  return '<div class="head"><div><h1>' + L('Programmes ouverts', 'Open programmes') + '</h1><p>' + L('Les programmes auxquels vous pouvez inscrire des élèves.', 'The programmes you can register students for.') + '</p></div></div>' +
     (list.length ? '<div class="progs">' + list.map(p => '<div class="prog"><b>' + esc(p.name) + '</b><span class="meta">' + esc([p.dest, p.ages].filter(Boolean).join(' · ')) + '</span>' +
-      (p.start ? '<span class="meta">Du ' + esc(niceDate(p.start)) + (p.end ? ' au ' + esc(niceDate(p.end)) : '') + '</span>' : '') + (p.price ? '<span class="price">' + esc(money(p.price)) + '</span>' : '') +
-      (p.full ? '<span class="st st-cancelled full">Complet</span>' : '<button type="button" class="btn btn-light btn-small" style="align-self:flex-start;margin-top:6px" data-new="' + esc(p.id) + '">Inscrire un élève</button>') + '</div>').join('') + '</div>'
-      : '<div class="empty"><h2>Aucun programme ouvert</h2><p>Juniors Academy publiera bientôt les prochains départs.</p></div>');
+      (p.start ? '<span class="meta">' + esc(progDates(p)) + '</span>' : '') + (p.price ? '<span class="price">' + esc(money(p.price)) + '</span>' : '') +
+      (p.full ? '<span class="st st-cancelled full">' + L('Complet', 'Full') + '</span>' : '<button type="button" class="btn btn-light btn-small" style="align-self:flex-start;margin-top:6px" data-new="' + esc(p.id) + '">' + L('Inscrire un élève', 'Register a student') + '</button>') + '</div>').join('') + '</div>'
+      : '<div class="empty"><h2>' + L('Aucun programme ouvert', 'No open programme') + '</h2><p>' + L('Juniors Academy publiera bientôt les prochains départs.', 'Juniors Academy will publish the next departures soon.') + '</p></div>');
 }
 
-/* ---------- Direction : vue nationale ---------- */
+/* ---------- Director: national view (English) ---------- */
 function nationalView() {
-  const L = live(), won = L.filter(s => WON(s.status)), rev = won.reduce((n, s) => n + priceOf(s), 0);
+  const Lv = live(), won = Lv.filter(s => WON(s.status)), rev = won.reduce((n, s) => n + priceOf(s), 0);
   const act = Object.values(agents).filter(a => a.active !== false), bw = byWilaya();
   const covered = WILAYAS.filter(w => bw[w.code].agents > 0).length;
-  const conv = L.length ? Math.round(won.length / L.length * 100) : 0;
+  const conv = Lv.length ? Math.round(won.length / Lv.length * 100) : 0;
   const ranked = act.map(a => Object.assign({ a }, agentStats(a.uid))).sort((x, y) => y.won - x.won || y.total - x.total || y.rev - x.rev);
   const maxR = Math.max(1, ...ranked.map(r => r.total));
-  const f = ORDER.map((s, i) => [s, L.filter(x => ORDER.indexOf(x.status) >= i).length]);
+  const f = ORDER.map((s, i) => [s, Lv.filter(x => ORDER.indexOf(x.status) >= i).length]);
   const fmax = Math.max(1, f[0][1]);
-  const pc = {}; L.forEach(s => { const k = progName(s); pc[k] = (pc[k] || 0) + 1; });
+  const pc = {}; Lv.forEach(s => { const k = progName(s); pc[k] = (pc[k] || 0) + 1; });
   const tops = Object.keys(pc).sort((a, b) => pc[b] - pc[a]).slice(0, 6), pmax = Math.max(1, ...tops.map(k => pc[k]));
   const now = new Date(), months = [];
-  for (let i = 11; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push([d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'), MON[d.getMonth()]]); }
+  for (let i = 11; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push([d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'), MON_EN[d.getMonth()]]); }
   const mc = months.map(m => Object.values(students).filter(s => s.status !== 'cancelled' && String(s.createdAt || '').slice(0, 7) === m[0]).length), mmax = Math.max(1, ...mc);
   const gaps = PRIORITY.filter(c => !bw[c].agents).slice(0, 14);
-  return '<div class="head"><div><h1>Vue nationale</h1><p>Activité des agents dans les 69 wilayas, mise à jour en direct.</p></div><div class="head-acts">' + periodSeg() + '</div></div>' +
-    '<section class="stats"><div class="stat dark"><b class="num">' + L.length + '</b><span>inscriptions</span><small>' + L.filter(s => s.status === 'submitted').length + ' à vérifier</small></div>' +
-      '<div class="stat"><b class="num">' + won.length + '</b><span>payées</span><small>' + conv + ' % de conversion</small></div>' +
-      '<div class="stat"><b class="num">' + esc(shortMoney(rev)) + '</b><span>chiffre d\u2019affaires (' + CURRENCY + ')</span><small>inscriptions payées</small></div>' +
-      '<div class="stat"><b class="num">' + act.length + '</b><span>agents actifs</span></div>' +
-      '<div class="stat"><b class="num">' + covered + '<small style="display:inline;font-size:.9rem"> / 69</small></b><span>wilayas couvertes</span></div>' +
-      '<div class="stat"><b class="num">' + (ranked[0] && ranked[0].total ? esc(firstName(ranked[0].a.name)) : '—') + '</b><span>meilleur agent</span><small>' + (ranked[0] && ranked[0].total ? esc(W[ranked[0].a.wilaya] ? W[ranked[0].a.wilaya].name : '') : 'aucune inscription') + '</small></div></section>' +
-    '<div class="nat"><section class="card mapcard"><div class="map-top"><h2>Carte de l\u2019Algérie</h2>' +
-      '<div class="seg" role="group" aria-label="Mesure"><button type="button" data-metric="count" aria-pressed="' + (metric === 'count') + '">Inscriptions</button><button type="button" data-metric="rev" aria-pressed="' + (metric === 'rev') + '">Chiffre d\u2019affaires</button><button type="button" data-metric="res" aria-pressed="' + (metric === 'res') + '">Domicile des élèves</button></div>' +
-      '<div class="seg" role="group" aria-label="Zoom"><button type="button" data-mapview="north" aria-pressed="' + (mapView === 'north') + '">Nord</button><button type="button" data-mapview="all" aria-pressed="' + (mapView === 'all') + '">Tout le pays</button></div></div>' +
+  return '<div class="head"><div><h1>National view</h1><p>Agent activity across the 69 wilayas, updated live.</p></div><div class="head-acts">' + periodSeg() + '</div></div>' +
+    '<section class="stats"><div class="stat dark"><b class="num">' + Lv.length + '</b><span>registrations</span><small>' + Lv.filter(s => s.status === 'submitted').length + ' to check</small></div>' +
+      '<div class="stat"><b class="num">' + won.length + '</b><span>paid</span><small>' + conv + '% conversion</small></div>' +
+      '<div class="stat"><b class="num">' + esc(shortMoney(rev)) + '</b><span>revenue (' + CURRENCY + ')</span><small>paid registrations</small></div>' +
+      '<div class="stat"><b class="num">' + act.length + '</b><span>active agents</span></div>' +
+      '<div class="stat"><b class="num">' + covered + '<small style="display:inline;font-size:.9rem"> / 69</small></b><span>wilayas covered</span></div>' +
+      '<div class="stat"><b class="num">' + (ranked[0] && ranked[0].total ? esc(firstName(ranked[0].a.name)) : '—') + '</b><span>top agent</span><small>' + (ranked[0] && ranked[0].total ? esc(W[ranked[0].a.wilaya] ? W[ranked[0].a.wilaya].name : '') : 'no registration yet') + '</small></div></section>' +
+    '<div class="nat"><section class="card mapcard"><div class="map-top"><h2>Map of Algeria</h2>' +
+      '<div class="seg" role="group" aria-label="Measure"><button type="button" data-metric="count" aria-pressed="' + (metric === 'count') + '">Registrations</button><button type="button" data-metric="rev" aria-pressed="' + (metric === 'rev') + '">Revenue</button><button type="button" data-metric="res" aria-pressed="' + (metric === 'res') + '">Where students live</button></div>' +
+      '<div class="seg" role="group" aria-label="Zoom"><button type="button" data-mapview="north" aria-pressed="' + (mapView === 'north') + '">North</button><button type="button" data-mapview="all" aria-pressed="' + (mapView === 'all') + '">Whole country</button></div></div>' +
       '<div class="mapbox" id="mapbox">' + mapSVG(bw) + '<div class="tip" id="tip"></div></div>' +
-      '<div class="legend"><span><i style="background:var(--green)"></i>' + ({ count: 'Inscriptions par wilaya de l\u2019agent', rev: 'Chiffre d\u2019affaires par wilaya de l\u2019agent', res: 'Élèves par wilaya de résidence' }[metric]) + '</span><span><i style="background:#fff;border:2px solid var(--green)"></i>Agent présent, pas encore d\u2019inscription</span><span><i style="background:rgba(20,16,26,.22)"></i>Aucun agent</span></div>' +
+      '<div class="legend"><span><i style="background:var(--green)"></i>' + ({ count: 'Registrations by the agent\u2019s wilaya', rev: 'Revenue by the agent\u2019s wilaya', res: 'Students by wilaya of residence' }[metric]) + '</span><span><i style="background:#fff;border:2px solid var(--green)"></i>Agent present, no registration yet</span><span><i style="background:rgba(20,16,26,.22)"></i>No agent</span></div>' +
       (selWilaya ? '<div style="padding:0 18px 16px">' + wilayaDetail(selWilaya, bw) + '</div>' : '') + '</section>' +
-    '<section class="card pad"><h3 class="h">Classement des agents <small>payées · inscrites</small></h3>' +
-      (ranked.length ? '<ol class="rank">' + ranked.slice(0, 8).map((r, i) => '<li><span class="pos">' + (i + 1) + '</span><span class="nm"><b>' + esc(r.a.name) + '</b><small>' + esc(wName(r.a.wilaya)) + ' · ' + r.conv + ' % conv.</small><span class="bar"><i style="width:' + (r.total / maxR * 100) + '%"></i></span></span><span class="val">' + r.won + ' · ' + r.total + '<small>' + esc(shortMoney(r.rev)) + ' ' + CURRENCY + '</small></span></li>').join('') + '</ol>'
-        : '<p class="muted" style="margin:0;color:var(--muted)">Ajoutez vos agents dans l\u2019onglet Agents.</p>') + '</section></div>' +
-    '<div class="grid3"><section class="card pad"><h3 class="h">Parcours des inscriptions</h3><div class="funnel">' +
-      f.map((x, i) => '<div class="fstep"><span>' + STATUS[x[0]].name + '</span><span class="track"><i style="width:' + (x[1] / fmax * 100) + '%;background:' + ['rgba(74,35,90,.35)', 'rgba(74,35,90,.6)', '#4A235A', '#2B1236'][i] + '"></i></span><b>' + x[1] + '</b></div>').join('') + '</div></section>' +
-    '<section class="card pad"><h3 class="h">Programmes les plus demandés</h3>' + (tops.length ? '<div class="hbars">' + tops.map(k => '<div class="hb"><div><span>' + esc(k) + '</span><span class="track"><i style="width:' + (pc[k] / pmax * 100) + '%"></i></span></div><b>' + pc[k] + '</b></div>').join('') + '</div>' : '<p style="margin:0;color:var(--muted)">Pas encore d\u2019inscription.</p>') + '</section>' +
-    '<section class="card pad"><h3 class="h">Inscriptions par mois</h3><div class="months">' + months.map((m, i) => '<div class="mo" title="' + esc(m[1]) + ' : ' + mc[i] + '"><b>' + (mc[i] || '') + '</b><i style="height:' + (mc[i] / mmax * 100) + '%"></i>' + esc(m[1].replace('.', '')) + '</div>').join('') + '</div></section></div>' +
-    '<section class="card pad"><h3 class="h">Grandes wilayas sans agent <small>à recruter en priorité</small></h3>' + (gaps.length ? '<div class="gaps">' + gaps.map(c => '<span class="gap">' + esc(wName(c)) + '</span>').join('') + '</div>' : '<p class="info" style="margin:0">Toutes les grandes wilayas ont un agent.</p>') + '</section>';
+    '<section class="card pad"><h3 class="h">Agent ranking <small>paid · registered</small></h3>' +
+      (ranked.length ? '<ol class="rank">' + ranked.slice(0, 8).map((r, i) => '<li><span class="pos">' + (i + 1) + '</span><span class="nm"><b>' + esc(r.a.name) + '</b><small>' + esc(wName(r.a.wilaya)) + ' · ' + r.conv + '% conv.</small><span class="bar"><i style="width:' + (r.total / maxR * 100) + '%"></i></span></span><span class="val">' + r.won + ' · ' + r.total + '<small>' + esc(shortMoney(r.rev)) + ' ' + CURRENCY + '</small></span></li>').join('') + '</ol>'
+        : '<p class="muted" style="margin:0;color:var(--muted)">Add your agents in the Agents tab.</p>') + '</section></div>' +
+    '<div class="grid3"><section class="card pad"><h3 class="h">Registration funnel</h3><div class="funnel">' +
+      f.map((x, i) => '<div class="fstep"><span>' + STATUS[x[0]].en + '</span><span class="track"><i style="width:' + (x[1] / fmax * 100) + '%;background:' + ['rgba(74,35,90,.35)', 'rgba(74,35,90,.6)', '#4A235A', '#2B1236'][i] + '"></i></span><b>' + x[1] + '</b></div>').join('') + '</div></section>' +
+    '<section class="card pad"><h3 class="h">Most requested programmes</h3>' + (tops.length ? '<div class="hbars">' + tops.map(k => '<div class="hb"><div><span>' + esc(k) + '</span><span class="track"><i style="width:' + (pc[k] / pmax * 100) + '%"></i></span></div><b>' + pc[k] + '</b></div>').join('') + '</div>' : '<p style="margin:0;color:var(--muted)">No registration yet.</p>') + '</section>' +
+    '<section class="card pad"><h3 class="h">Registrations per month</h3><div class="months">' + months.map((m, i) => '<div class="mo" title="' + esc(m[1]) + ': ' + mc[i] + '"><b>' + (mc[i] || '') + '</b><i style="height:' + (mc[i] / mmax * 100) + '%"></i>' + esc(m[1]) + '</div>').join('') + '</div></section></div>' +
+    '<section class="card pad"><h3 class="h">Large wilayas with no agent <small>recruit here first</small></h3>' + (gaps.length ? '<div class="gaps">' + gaps.map(c => '<span class="gap">' + esc(wName(c)) + '</span>').join('') + '</div>' : '<p class="info" style="margin:0">Every large wilaya has an agent.</p>') + '</section>';
 }
 function project(view) {
   const b = view === 'all' ? { x0: -9.2, x1: 12.4, y0: 18.6, y1: 37.6, lat: 28, w: 640 } : { x0: -2.6, x1: 9.3, y0: 31.3, y1: 37.35, lat: 35, w: 680 };
@@ -772,18 +842,18 @@ function mapSVG(bw) {
     } else if (bw[w.code].agents) dots += '<circle class="dot-agent' + sel + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.5" data-w="' + w.code + '" style="cursor:pointer"></circle>';
     else dots += '<circle class="dot-none" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (mapView === 'all' ? 2.6 : 3.4) + '" data-w="' + w.code + '" style="cursor:pointer"></circle>';
   });
-  return '<svg viewBox="0 0 ' + P.w + ' ' + P.h.toFixed(0) + '" role="img" aria-label="Carte de l\u2019Algérie par wilaya" style="overflow:hidden"><rect class="sea" width="' + P.w + '" height="' + P.h.toFixed(0) + '" rx="14"></rect>' +
-    '<path class="land" d="' + path + '"></path>' + (mapView === 'north' ? '<text class="coast-label" x="' + (P.w * .05) + '" y="30">MER MÉDITERRANÉE</text>' : '') + dots + bubs + labels + '</svg>';
+  return '<svg viewBox="0 0 ' + P.w + ' ' + P.h.toFixed(0) + '" role="img" aria-label="Map of Algeria by wilaya" style="overflow:hidden"><rect class="sea" width="' + P.w + '" height="' + P.h.toFixed(0) + '" rx="14"></rect>' +
+    '<path class="land" d="' + path + '"></path>' + (mapView === 'north' ? '<text class="coast-label" x="' + (P.w * .05) + '" y="30">MEDITERRANEAN SEA</text>' : '') + dots + bubs + labels + '</svg>';
 }
 function wilayaDetail(code, bw) {
-  const w = W[code], ag = Object.values(agents).filter(a => +a.wilaya === code && a.active !== false), L = live().filter(s => +s.agentWilaya === code);
-  const pc = {}; L.forEach(s => { const k = progName(s); pc[k] = (pc[k] || 0) + 1; }); const top = Object.keys(pc).sort((a, b) => pc[b] - pc[a])[0];
-  return '<div class="wdetail"><b>' + esc(wName(code)) + '</b> · ' + L.length + (L.length === 1 ? ' inscription' : ' inscriptions') + ', ' + esc(money(bw[code].rev)) + ' payés, ' + bw[code].res + ' élèves y habitent.<br>' +
-    (ag.length ? 'Agents : ' + ag.map(a => esc(a.name)).join(', ') : '<span style="color:var(--ja-ink);font-weight:700">Aucun agent dans cette wilaya.</span>') + (top ? '<br>Programme le plus demandé : ' + esc(top) : '') +
-    (L.length ? ' <button type="button" class="linkish" data-seew="' + code + '">Voir les inscriptions</button>' : '') + '</div>';
+  const ag = Object.values(agents).filter(a => +a.wilaya === code && a.active !== false), Lv = live().filter(s => +s.agentWilaya === code);
+  const pc = {}; Lv.forEach(s => { const k = progName(s); pc[k] = (pc[k] || 0) + 1; }); const top = Object.keys(pc).sort((a, b) => pc[b] - pc[a])[0];
+  return '<div class="wdetail"><b>' + esc(wName(code)) + '</b> · ' + Lv.length + (Lv.length === 1 ? ' registration' : ' registrations') + ', ' + esc(money(bw[code].rev)) + ' paid, ' + bw[code].res + (bw[code].res === 1 ? ' student lives' : ' students live') + ' there.<br>' +
+    (ag.length ? 'Agents: ' + ag.map(a => esc(a.name)).join(', ') : '<span style="color:var(--ja-ink);font-weight:700">No agent in this wilaya.</span>') + (top ? '<br>Most requested programme: ' + esc(top) : '') +
+    (Lv.length ? ' <button type="button" class="linkish" data-seew="' + code + '">See the registrations</button>' : '') + '</div>';
 }
 
-/* ---------- Direction : inscriptions ---------- */
+/* ---------- Director: registrations (English) ---------- */
 function filtered() {
   const q = filt.q.trim().toLowerCase();
   return Object.values(students).filter(s => inPeriod(s) && (!filt.status || s.status === filt.status) && (!filt.prog || s.programId === filt.prog) && (!filt.agent || s.agentUid === filt.agent) && (!filt.wilaya || +s.agentWilaya === +filt.wilaya) &&
@@ -791,67 +861,74 @@ function filtered() {
 }
 function studentsView() {
   const list = filtered(), ags = Object.values(agents).sort((a, b) => String(a.name).localeCompare(String(b.name), 'fr'));
-  return '<div class="head"><div><h1>Inscriptions</h1><p>' + list.length + (list.length === 1 ? ' inscription' : ' inscriptions') + ' · cliquez sur une ligne pour la traiter.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-light btn-small" id="csv">' + icon('down') + 'Exporter (CSV)</button></div></div>' +
-    '<div class="bar"><input type="search" id="fQ" placeholder="Élève, parent, téléphone, agent…" value="' + esc(filt.q) + '" aria-label="Rechercher">' +
-      '<select data-f="status" aria-label="Statut"><option value="">Tous les statuts</option>' + Object.keys(STATUS).map(k => '<option value="' + k + '"' + (filt.status === k ? ' selected' : '') + '>' + STATUS[k].name + '</option>').join('') + '</select>' +
-      '<select data-f="prog" aria-label="Programme"><option value="">Tous les programmes</option>' + Object.values(programs).map(p => '<option value="' + esc(p.id) + '"' + (filt.prog === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>').join('') + '</select>' +
-      '<select data-f="agent" aria-label="Agent"><option value="">Tous les agents</option>' + ags.map(a => '<option value="' + esc(a.uid) + '"' + (filt.agent === a.uid ? ' selected' : '') + '>' + esc(a.name) + '</option>').join('') + '</select>' +
-      '<select data-f="wilaya" aria-label="Wilaya">' + wilayaOptions(filt.wilaya, 'Toutes les wilayas') + '</select></div>' +
-    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Élève</th><th>Programme</th><th>Agent</th><th>Parent</th><th>Statut</th><th>Reçu le</th><th style="text-align:right">Prix</th></tr></thead><tbody>' +
-      list.map(s => '<tr data-open="' + esc(s.id) + '"><td><div class="person"><span class="av" style="--c:' + colorOf(s.id) + '">' + esc(initials(s.firstName + ' ' + s.lastName)) + '</span><span><b>' + esc(s.firstName + ' ' + s.lastName) + '</b><small>' + (ageFrom(s.dob) != null ? ageFrom(s.dob) + ' ans · ' : '') + esc(W[s.studentWilaya] ? W[s.studentWilaya].name : '') + '</small></span></div></td>' +
-        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.agentName || '') + '<small>' + esc(wName(s.agentWilaya)) + (agents[s.agentUid] ? '' : ' · ancien agent') + '</small></td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '</td><td>' + esc(niceDate(s.createdAt)) + '</td><td class="num" style="text-align:right">' + (priceOf(s) ? esc(money(priceOf(s))) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
-      : '<div class="empty"><h2>Aucune inscription</h2><p>' + (Object.keys(students).length ? 'Aucune inscription ne correspond à ces filtres.' : 'Les inscriptions envoyées par vos agents apparaîtront ici en direct.') + '</p></div>');
+  return '<div class="head"><div><h1>Registrations</h1><p>' + list.length + (list.length === 1 ? ' registration' : ' registrations') + ' · click a line to process it.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-light btn-small" id="csv">' + icon('down') + 'Export (CSV)</button></div></div>' +
+    '<div class="bar"><input type="search" id="fQ" placeholder="Student, parent, phone, agent…" value="' + esc(filt.q) + '" aria-label="Search">' +
+      '<select data-f="status" aria-label="Status"><option value="">All statuses</option>' + Object.keys(STATUS).map(k => '<option value="' + k + '"' + (filt.status === k ? ' selected' : '') + '>' + STATUS[k].en + '</option>').join('') + '</select>' +
+      '<select data-f="prog" aria-label="Programme"><option value="">All programmes</option>' + Object.values(programs).map(p => '<option value="' + esc(p.id) + '"' + (filt.prog === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>').join('') + '</select>' +
+      '<select data-f="agent" aria-label="Agent"><option value="">All agents</option>' + ags.map(a => '<option value="' + esc(a.uid) + '"' + (filt.agent === a.uid ? ' selected' : '') + '>' + esc(a.name) + '</option>').join('') + '</select>' +
+      '<select data-f="wilaya" aria-label="Wilaya">' + wilayaOptions(filt.wilaya, 'All wilayas') + '</select></div>' +
+    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Student</th><th>Programme</th><th>Agent</th><th>Parent</th><th>Status</th><th>Received</th><th style="text-align:right">Price</th></tr></thead><tbody>' +
+      list.map(s => '<tr data-open="' + esc(s.id) + '"><td><div class="person"><span class="av" style="--c:' + colorOf(s.id) + '">' + esc(initials(s.firstName + ' ' + s.lastName)) + '</span><span><b>' + esc(s.firstName + ' ' + s.lastName) + '</b><small>' + (ageFrom(s.dob) != null ? ageFrom(s.dob) + ' yrs · ' : '') + esc(W[s.studentWilaya] ? W[s.studentWilaya].name : '') + '</small></span></div></td>' +
+        '<td>' + esc(progName(s)) + '</td><td>' + esc(s.agentName || '') + '<small>' + esc(wName(s.agentWilaya)) + (agents[s.agentUid] ? '' : ' · former agent') + '</small></td><td>' + esc(s.parentName) + '<small>' + esc(s.parentPhone) + '</small></td><td>' + statusPill(s.status) + '</td><td>' + esc(niceDate(s.createdAt)) + '</td><td class="num" style="text-align:right">' + (priceOf(s) ? esc(money(priceOf(s))) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><h2>No registration</h2><p>' + (Object.keys(students).length ? 'No registration matches these filters.' : 'Registrations sent by your agents appear here live.') + '</p></div>');
 }
 function agentsView() {
   const list = Object.values(agents).map(a => Object.assign({ a }, agentStats(a.uid))).sort((x, y) => (x.a.active === false) - (y.a.active === false) || y.won - x.won || y.total - x.total);
   const waiting = Object.values(requests).filter(r => !agents[r.uid]);
-  const pend = waiting.length ? '<section class="card pad" class="pending" style="margin:0 0 14px"><h3 class="h">Comptes en attente d\u2019activation <small>' + waiting.length + '</small></h3>' +
+  const pend = waiting.length ? '<section class="card pad pending" style="margin:0 0 14px"><h3 class="h">Accounts waiting for activation <small>' + waiting.length + '</small></h3>' +
     waiting.map(r => { const old = Object.values(agents).find(a => (a.email || '').toLowerCase() === (r.email || '').toLowerCase());
-      return '<div class="person" style="justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px"><span><b>' + esc(r.email) + '</b><small style="display:block;color:var(--muted)">S\u2019est connecté le ' + esc(niceDate(r.at)) + (old ? ' · ancienne fiche : ' + esc(old.name) : '') + '</small></span><button type="button" class="btn btn-green btn-small" data-activate="' + esc(r.uid) + '">Activer</button></div>'; }).join('') + '</section>' : '';
-  return pend + '<div class="head"><div><h1>Agents</h1><p>' + list.filter(r => r.a.active !== false).length + ' agents actifs · commission calculée sur les inscriptions payées.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-green" id="addAgent">' + icon('plus') + 'Ajouter un agent</button></div></div>' +
-    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Agent</th><th>Wilaya</th><th style="text-align:right">Inscrits</th><th style="text-align:right">Payés</th><th style="text-align:right">Conversion</th><th style="text-align:right">Chiffre d\u2019affaires</th><th style="text-align:right">Commission</th><th>Dernière inscription</th></tr></thead><tbody>' +
-      list.map(r => '<tr data-agent="' + esc(r.a.uid) + '"' + (r.a.active === false ? ' style="opacity:.55"' : '') + '><td><div class="person"><span class="av" style="--c:' + colorOf(r.a.uid) + '">' + esc(initials(r.a.name)) + '</span><span><b>' + esc(r.a.name || r.a.email) + (r.a.active === false ? ' <span class="st st-cancelled">Suspendu</span>' : '') + '</b><small>' + esc(r.a.email || '') + (r.a.phone ? ' · ' + esc(r.a.phone) : '') + '</small></span></div></td>' +
-        '<td>' + (r.a.wilaya ? esc(wName(r.a.wilaya)) : '<span style="color:var(--muted)">à choisir</span>') + '</td><td class="num" style="text-align:right">' + r.total + '</td><td class="num" style="text-align:right">' + r.won + '</td><td class="num" style="text-align:right">' + r.conv + ' %</td><td class="num" style="text-align:right">' + esc(money(r.rev)) + '</td><td class="num" style="text-align:right">' + esc(money(r.com)) + '<small>' + r.rate + ' %</small></td><td>' + (r.last ? esc(niceDate(r.last)) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
-      : '<div class="empty"><h2>Ajoutez votre premier agent</h2><p>Créez un compte pour chaque agent : il se connecte, choisit sa wilaya et inscrit ses élèves.</p><button type="button" class="btn btn-green" id="addAgent2">' + icon('plus') + 'Ajouter un agent</button></div>');
+      return '<div class="person" style="justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px"><span><b>' + esc(r.email) + '</b><small style="display:block;color:var(--muted)">Signed in on ' + esc(niceDate(r.at)) + (old ? ' · previous record: ' + esc(old.name) : '') + '</small></span><button type="button" class="btn btn-green btn-small" data-activate="' + esc(r.uid) + '">Activate</button></div>'; }).join('') + '</section>' : '';
+  return pend + '<div class="head"><div><h1>Agents</h1><p>' + list.filter(r => r.a.active !== false).length + ' active agents · commission calculated on paid registrations.</p></div><div class="head-acts">' + periodSeg() + '<button type="button" class="btn btn-green" id="addAgent">' + icon('plus') + 'Add an agent</button></div></div>' +
+    (list.length ? '<div class="tablewrap"><div class="tscroll"><table class="list"><thead><tr><th>Agent</th><th>Wilaya</th><th style="text-align:right">Registered</th><th style="text-align:right">Paid</th><th style="text-align:right">Conversion</th><th style="text-align:right">Revenue</th><th style="text-align:right">Commission</th><th>Last registration</th></tr></thead><tbody>' +
+      list.map(r => '<tr data-agent="' + esc(r.a.uid) + '"' + (r.a.active === false ? ' style="opacity:.55"' : '') + '><td><div class="person"><span class="av" style="--c:' + colorOf(r.a.uid) + '">' + esc(initials(r.a.name)) + '</span><span><b>' + esc(r.a.name || r.a.email) + (r.a.active === false ? ' <span class="st st-cancelled">Suspended</span>' : '') + '</b><small>' + esc(r.a.email || '') + (r.a.phone ? ' · ' + esc(r.a.phone) : '') + '</small></span></div></td>' +
+        '<td>' + (r.a.wilaya ? esc(wName(r.a.wilaya)) : '<span style="color:var(--muted)">to choose</span>') + '</td><td class="num" style="text-align:right">' + r.total + '</td><td class="num" style="text-align:right">' + r.won + '</td><td class="num" style="text-align:right">' + r.conv + '%</td><td class="num" style="text-align:right">' + esc(money(r.rev)) + '</td><td class="num" style="text-align:right">' + esc(money(r.com)) + '<small>' + r.rate + '%</small></td><td>' + (r.last ? esc(niceDate(r.last)) : '—') + '</td></tr>').join('') + '</tbody></table></div></div>'
+      : '<div class="empty"><h2>Add your first agent</h2><p>Create an account for each agent: they sign in, choose their wilaya and register their students.</p><button type="button" class="btn btn-green" id="addAgent2">' + icon('plus') + 'Add an agent</button></div>');
 }
 function programsAdminView() {
   const list = Object.values(programs).sort((a, b) => String(a.start || '9').localeCompare(String(b.start || '9')));
-  return '<div class="head"><div><h1>Programmes</h1><p>Les agents voient les programmes ouverts et y inscrivent leurs élèves.</p></div><div class="head-acts"><button type="button" class="btn btn-green" id="addProg">' + icon('plus') + 'Nouveau programme</button></div></div>' +
+  return '<div class="head"><div><h1>Programmes</h1><p>Agents see the open programmes and register their students on them.</p></div><div class="head-acts"><button type="button" class="btn btn-green" id="addProg">' + icon('plus') + 'New programme</button></div></div>' +
     (list.length ? '<div class="progs">' + list.map(p => { const n = Object.values(students).filter(s => s.programId === p.id && s.status !== 'cancelled').length, seats = +p.seats || 0;
-      return '<div class="prog" data-prog="' + esc(p.id) + '" style="cursor:pointer"><b>' + esc(p.name) + '</b><span class="meta">' + esc([p.dest, p.ages].filter(Boolean).join(' · ')) + '</span>' + (p.start ? '<span class="meta">Du ' + esc(niceDate(p.start)) + (p.end ? ' au ' + esc(niceDate(p.end)) : '') + '</span>' : '') +
-        (p.price ? '<span class="price">' + esc(money(p.price)) + '</span>' : '') + '<span class="meta"><b style="font-family:inherit;font-size:.9rem;color:var(--ink)">' + n + (seats ? ' / ' + seats : '') + '</b> inscrits' + (p.open === false ? ' · <span class="st st-cancelled">Fermé</span>' : p.full ? ' · <span class="st st-cancelled">Complet</span>' : '') + '</span>' +
+      return '<div class="prog" data-prog="' + esc(p.id) + '" style="cursor:pointer"><b>' + esc(p.name) + '</b><span class="meta">' + esc([p.dest, p.ages].filter(Boolean).join(' · ')) + '</span>' + (p.start ? '<span class="meta">' + esc(progDates(p)) + '</span>' : '') +
+        (p.price ? '<span class="price">' + esc(money(p.price)) + '</span>' : '') + '<span class="meta"><b style="font-family:inherit;font-size:.9rem;color:var(--ink)">' + n + (seats ? ' / ' + seats : '') + '</b> registered' + (p.open === false ? ' · <span class="st st-cancelled">Closed</span>' : p.full ? ' · <span class="st st-cancelled">Full</span>' : '') + '</span>' +
         (seats ? '<span class="bar" style="display:block;height:6px;border-radius:999px;background:var(--paper);overflow:hidden"><i style="display:block;height:100%;width:' + Math.min(100, n / seats * 100) + '%;background:var(--green)"></i></span>' : '') + '</div>'; }).join('') + '</div>'
-      : '<div class="empty"><h2>Créez vos programmes</h2><p>Par exemple « Séjour linguistique Angleterre, juillet 2027 ». Les agents ne peuvent inscrire des élèves qu\u2019à des programmes ouverts.</p><button type="button" class="btn btn-green" id="addProg2">' + icon('plus') + 'Nouveau programme</button></div>');
+      : '<div class="empty"><h2>Create your programmes</h2><p>For example “Séjour linguistique Angleterre, juillet 2027”. Agents can only register students on open programmes.</p><button type="button" class="btn btn-green" id="addProg2">' + icon('plus') + 'New programme</button></div>');
 }
 
-/* ==================== Fiches ==================== */
+/* ==================== Registration form (agents, French or English) ==================== */
 let editing = null;
+function studentTexts() {
+  $('spTitle').textContent = editing ? L('Modifier l\u2019inscription', 'Edit the registration') : L('Inscrire un élève', 'Register a student');
+  $('sSave').textContent = editing ? L('Enregistrer', 'Save') : L('Envoyer l\u2019inscription', 'Send the registration');
+  const keepW = $('sWilaya').value; $('sWilaya').innerHTML = wilayaOptions(keepW, L('Choisir', 'Choose'));
+  const keepP = $('sProg').value, first = $('sProg').querySelector('option[value=""]'); if (first) first.textContent = L('Choisir un programme', 'Choose a programme'); $('sProg').value = keepP;
+  progInfo(); ageInfo();
+}
 function openStudent(id, progId) {
   const s = id ? students[id] : null; editing = s;
   const open = Object.values(programs).filter(p => (p.open !== false && !p.full) || (s && p.id === s.programId));
-  if (!open.length) { toast('Aucun programme ouvert pour le moment.'); return; }
-  $('spTitle').textContent = s ? 'Modifier l\u2019inscription' : 'Inscrire un élève';
-  $('sProg').innerHTML = '<option value="">Choisir un programme</option>' + open.map(p => '<option value="' + esc(p.id) + '">' + esc(p.name) + (p.start ? ' · ' + esc(niceDate(p.start)) : '') + '</option>').join('');
-  $('sProg').value = s ? s.programId : (progId || ''); progInfo();
+  if (!open.length) { toast(L('Aucun programme ouvert pour le moment.', 'No programme is open at the moment.')); return; }
+  $('sProg').innerHTML = '<option value="">' + L('Choisir un programme', 'Choose a programme') + '</option>' + open.map(p => '<option value="' + esc(p.id) + '">' + esc(p.name) + (p.start ? ' · ' + esc(niceDate(p.start)) : '') + '</option>').join('');
+  $('sProg').value = s ? s.programId : (progId || '');
   $('sFirst').value = s ? s.firstName : ''; $('sLast').value = s ? s.lastName : ''; $('sDob').value = s ? s.dob : ''; $('sGender').value = s ? (s.gender || '') : '';
-  $('sLevel').value = s ? (s.level || '') : ''; $('sWilaya').innerHTML = wilayaOptions(s ? s.studentWilaya : profile.wilaya, 'Choisir'); $('sPass').value = s ? (s.passport || 'valid') : 'valid';
+  $('sLevel').value = s ? (s.level || '') : ''; $('sWilaya').innerHTML = wilayaOptions(s ? s.studentWilaya : profile.wilaya, L('Choisir', 'Choose')); $('sPass').value = s ? (s.passport || 'valid') : 'valid';
   $('sParent').value = s ? s.parentName : ''; $('sPhone').value = s ? s.parentPhone : ''; $('sEmail').value = s ? (s.parentEmail || '') : ''; $('sNotes').value = s ? (s.notes || '') : '';
-  $('sConsent').checked = !!s; $('sErr').hidden = true; $('sDelete').hidden = !s; $('sSave').textContent = s ? 'Enregistrer' : 'Envoyer l\u2019inscription'; ageInfo();
+  $('sConsent').checked = !!s; $('sErr').hidden = true; $('sDelete').hidden = !s;
+  studentTexts();
   $('studentPop').showModal(); if (!s) setTimeout(() => $(progId ? 'sFirst' : 'sProg').focus(), 60);
 }
-function progInfo() { const p = programs[$('sProg').value]; $('sProgInfo').textContent = p ? [p.dest, p.ages, p.start ? 'départ le ' + niceDate(p.start) : '', p.price ? money(p.price) : ''].filter(Boolean).join(' · ') : ''; }
-function ageInfo() { const a = ageFrom($('sDob').value); $('sAge').textContent = a != null ? a + ' ans' + (a < 6 || a > 25 ? ' · vérifiez la date' : '') : ''; }
+function progInfo() { const p = programs[$('sProg').value]; $('sProgInfo').textContent = p ? [p.dest, p.ages, p.start ? L('départ le ', 'departs ') + niceDate(p.start) : '', p.price ? money(p.price) : ''].filter(Boolean).join(' · ') : ''; }
+function ageInfo() { const a = ageFrom($('sDob').value); $('sAge').textContent = a != null ? ageTxt(a) + (a < 6 || a > 25 ? L(' · vérifiez la date', ' · check the date') : '') : ''; }
 async function saveStudent() {
   const err = t => { $('sErr').textContent = t; $('sErr').hidden = false; $('sErr').scrollIntoView({ block: 'nearest' }); };
   const v = id => $(id).value.trim(), p = programs[v('sProg')];
-  if (!p) return err('Choisissez le programme.');
-  if (!v('sFirst') || !v('sLast')) return err('Indiquez le prénom et le nom de l\u2019élève.');
-  if (!v('sDob')) return err('Indiquez la date de naissance.');
-  if (!v('sWilaya')) return err('Indiquez la wilaya de résidence.');
-  if (!v('sParent')) return err('Indiquez le nom du parent ou tuteur.');
-  if (!phoneOk(v('sPhone'))) return err('Le téléphone du parent ne semble pas valide (exemple : 0550 12 34 56).');
-  if (v('sEmail') && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('sEmail'))) return err('L\u2019email du parent ne semble pas valide.');
-  if (!$('sConsent').checked) return err('Cochez l\u2019accord des parents pour envoyer l\u2019inscription.');
+  if (!p) return err(L('Choisissez le programme.', 'Choose the programme.'));
+  if (!v('sFirst') || !v('sLast')) return err(L('Indiquez le prénom et le nom de l\u2019élève.', 'Enter the student\u2019s first and last name.'));
+  if (!v('sDob')) return err(L('Indiquez la date de naissance.', 'Enter the date of birth.'));
+  if (!v('sWilaya')) return err(L('Indiquez la wilaya de résidence.', 'Choose the wilaya of residence.'));
+  if (!v('sParent')) return err(L('Indiquez le nom du parent ou tuteur.', 'Enter the parent or guardian\u2019s name.'));
+  if (!phoneOk(v('sPhone'))) return err(L('Le téléphone du parent ne semble pas valide (exemple : 0550 12 34 56).', 'The parent\u2019s phone number doesn\u2019t look right (example: 0550 12 34 56).'));
+  if (v('sEmail') && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('sEmail'))) return err(L('L\u2019email du parent ne semble pas valide.', 'The parent\u2019s email doesn\u2019t look right.'));
+  if (!$('sConsent').checked) return err(L('Cochez l\u2019accord des parents pour envoyer l\u2019inscription.', 'Tick the parents\u2019 consent to send the registration.'));
   const now = new Date().toISOString();
   const data = { programId: p.id, programName: p.name, price: +p.price || 0, firstName: v('sFirst'), lastName: v('sLast'), dob: v('sDob'), gender: v('sGender'), level: v('sLevel'), studentWilaya: +v('sWilaya'),
     passport: v('sPass'), parentName: v('sParent'), parentPhone: v('sPhone'), parentEmail: v('sEmail'), notes: v('sNotes'), consent: true, updatedAt: now };
@@ -859,98 +936,105 @@ async function saveStudent() {
   try {
     if (editing) await fb.F.setDoc(fb.F.doc(fb.db, 'students', editing.id), data, { merge: true });
     else { const id = newId(); await fb.F.setDoc(fb.F.doc(fb.db, 'students', id), Object.assign(data, { id, agentUid: me.uid, agentName: profile.name, agentWilaya: +profile.wilaya, status: 'submitted', createdAt: now, history: [{ at: now, by: profile.name, status: 'submitted' }] })); }
-    $('studentPop').close(); toast(editing ? 'Inscription mise à jour' : 'Inscription envoyée à Juniors Academy');
-  } catch (e) { err(e && e.code === 'permission-denied' ? 'Cette inscription a déjà été traitée par Juniors Academy et ne peut plus être modifiée.' : 'Envoi impossible. Vérifiez la connexion.'); }
+    $('studentPop').close(); toast(editing ? L('Inscription mise à jour', 'Registration updated') : L('Inscription envoyée à Juniors Academy', 'Registration sent to Juniors Academy'));
+  } catch (e) { err(e && e.code === 'permission-denied' ? L('Cette inscription a déjà été traitée par Juniors Academy et ne peut plus être modifiée.', 'Juniors Academy has already processed this registration, so it can no longer be changed.') : L('Envoi impossible. Vérifiez la connexion.', 'Could not send. Check the connection.')); }
   finally { $('sSave').disabled = false; }
 }
+
+/* ==================== Registration file: director (English) or agent (their language) ==================== */
 function openDetail(id) {
   const s = students[id]; if (!s) return;
   if (!isAdmin() && s.status === 'submitted') return openStudent(id);
   const a = agents[s.agentUid] || {}, age = ageFrom(s.dob), wa = waNumber(s.parentPhone);
-  const pass = { valid: 'Valide', progress: 'En cours de demande', none: 'Pas encore' }[s.passport] || '—';
+  const pass = { valid: L('Valide', 'Valid'), progress: L('En cours de demande', 'Application in progress'), none: L('Pas encore', 'Not yet') }[s.passport] || '—';
+  const gender = { F: L('Fille', 'Girl'), M: L('Garçon', 'Boy') }[s.gender];
+  const levelEn = { 'Primaire': 'Primary school', 'Collège (CEM)': 'Middle school (CEM)', 'Lycée': 'Secondary school (lycée)', 'Université': 'University', 'Autre': 'Other' };
+  const level = s.level ? L(s.level, levelEn[s.level] || s.level) : '';
   $('dpTitle').textContent = s.firstName + ' ' + s.lastName; $('dpSub').textContent = progName(s) + (priceOf(s) ? ' · ' + money(priceOf(s)) : '');
   const fact = (k, v) => '<div class="fact"><span>' + k + '</span><b>' + v + '</b></div>';
-  let h = (isAdmin() ? flowHTML(s) : '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">' + statusPill(s.status) + '<span style="color:var(--muted);font-size:.86rem">' + esc((STATUS[s.status] || {}).hint || '') + '</span></div>') +
-    '<div class="facts">' + fact('Élève', esc(s.firstName + ' ' + s.lastName) + (age != null ? ' · ' + age + ' ans' : '')) + fact('Date de naissance', esc(niceDate(s.dob)) || '—') +
-      fact('Sexe · niveau', esc([{ F: 'Fille', M: 'Garçon' }[s.gender], s.level].filter(Boolean).join(' · ') || '—')) + fact('Wilaya de résidence', esc(wName(s.studentWilaya))) +
-      fact('Parent ou tuteur', esc(s.parentName)) + fact('Téléphone', '<a href="tel:' + esc(s.parentPhone) + '">' + esc(s.parentPhone) + '</a>') + fact('Email', s.parentEmail ? '<a href="mailto:' + esc(s.parentEmail) + '">' + esc(s.parentEmail) + '</a>' : '—') + fact('Passeport', pass) +
-      (isAdmin() ? fact('Agent', esc(s.agentName || a.name || '') + '<br><span style="font-weight:500;color:var(--muted)">' + esc(wName(s.agentWilaya)) + (a.phone ? ' · ' + esc(a.phone) : '') + '</span>') : '') + fact('Reçu le', esc(niceDate(s.createdAt))) + '</div>' +
-    (s.notes ? '<div class="fact"><span>Remarques</span><b style="font-weight:500;white-space:pre-wrap">' + esc(s.notes) + '</b></div>' : '');
+  let h = (isAdmin() ? flowHTML(s) : '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">' + statusPill(s.status) + '<span style="color:var(--muted);font-size:.86rem">' + esc(stHint(s.status)) + '</span></div>') +
+    '<div class="facts">' + fact(L('Élève', 'Student'), esc(s.firstName + ' ' + s.lastName) + (age != null ? ' · ' + ageTxt(age) : '')) + fact(L('Date de naissance', 'Date of birth'), esc(niceDate(s.dob)) || '—') +
+      fact(L('Sexe · niveau', 'Gender · level'), esc([gender, level].filter(Boolean).join(' · ') || '—')) + fact(L('Wilaya de résidence', 'Wilaya of residence'), esc(wName(s.studentWilaya))) +
+      fact(L('Parent ou tuteur', 'Parent or guardian'), esc(s.parentName)) + fact(L('Téléphone', 'Phone'), '<a href="tel:' + esc(s.parentPhone) + '">' + esc(s.parentPhone) + '</a>') + fact('Email', s.parentEmail ? '<a href="mailto:' + esc(s.parentEmail) + '">' + esc(s.parentEmail) + '</a>' : '—') + fact(L('Passeport', 'Passport'), pass) +
+      (isAdmin() ? fact('Agent', esc(s.agentName || a.name || '') + '<br><span style="font-weight:500;color:var(--muted)">' + esc(wName(s.agentWilaya)) + (a.phone ? ' · ' + esc(a.phone) : '') + '</span>') : '') + fact(L('Reçu le', 'Received on'), esc(niceDate(s.createdAt))) + '</div>' +
+    (s.notes ? '<div class="fact"><span>' + L('Remarques', 'Notes') + '</span><b style="font-weight:500;white-space:pre-wrap">' + esc(s.notes) + '</b></div>' : '');
   if (isAdmin()) {
-    h += '<div class="pop-foot" style="justify-content:flex-start">' + (wa ? '<a class="btn btn-light btn-small" href="https://wa.me/' + wa + '" target="_blank" rel="noopener">' + icon('wa') + 'WhatsApp parent</a>' : '') + '<button type="button" class="btn btn-light btn-small" data-copy="' + esc(s.id) + '">' + icon('copy') + 'Copier pour le CRM</button><span style="flex:1"></span><button type="button" class="linkish" data-delstudent="' + esc(s.id) + '" style="color:var(--ja-crimson)">Supprimer</button></div>';
+    h += '<div class="pop-foot" style="justify-content:flex-start">' + (wa ? '<a class="btn btn-light btn-small" href="https://wa.me/' + wa + '" target="_blank" rel="noopener">' + icon('wa') + 'WhatsApp the parent</a>' : '') + '<button type="button" class="btn btn-light btn-small" data-copy="' + esc(s.id) + '">' + icon('copy') + 'Copy for the CRM</button><span style="flex:1"></span><button type="button" class="linkish" data-delstudent="' + esc(s.id) + '" style="color:var(--ja-crimson)">Delete</button></div>';
   }
   const hist = (s.history || []).slice().reverse();
-  if (hist.length) h += '<div><span style="font-size:.76rem;font-weight:600;color:var(--body)">Historique</span><ul class="hist" style="margin-top:8px">' + hist.map(x => '<li><i></i><span>' + esc((STATUS[x.status] || {}).name || x.status) + (x.note ? ' · ' + esc(x.note) : '') + '<small>' + esc(x.by || '') + ', ' + esc(niceDate(x.at)) + '</small></span></li>').join('') + '</ul></div>';
+  if (hist.length) h += '<div><span style="font-size:.76rem;font-weight:600;color:var(--body)">' + L('Historique', 'History') + '</span><ul class="hist" style="margin-top:8px">' + hist.map(x => '<li><i></i><span>' + esc(stName(x.status)) + (x.note ? ' · ' + esc(x.note) : '') + '<small>' + esc(x.by === 'Direction' ? L('Direction', 'Director') : (x.by || '')) + ', ' + esc(niceDate(x.at)) + '</small></span></li>').join('') + '</ul></div>';
   $('dpBody').innerHTML = h; $('dpBody').setAttribute('data-id', id);
   if (!$('detailPop').open) $('detailPop').showModal();
 }
-const NEXT = { submitted: 'Confirmer l\u2019inscription', confirmed: 'Marquer comme payé', paid: 'Marquer comme parti' };
+const NEXT = { submitted: 'Confirm the registration', confirmed: 'Mark as paid', paid: 'Mark as departed' };
 function flowHTML(s) {
   const cur = s.status, idx = ORDER.indexOf(cur), off = cur === 'cancelled';
   const when = st => { const h = (s.history || []).filter(x => x.status === st).pop(); return h ? niceDate(h.at).replace(/ \d{4}$/, '') : ''; };
   const steps = ORDER.map((st, i) => {
     const cls = off ? '' : i < idx ? 'done' : i === idx ? 'now' : '';
-    return '<li class="' + cls + '"><i>' + (cls === 'done' ? '✓' : i + 1) + '</i>' + STATUS[st].name + '<small>' + (cls ? esc(when(st)) : '') + '</small></li>';
+    return '<li class="' + cls + '"><i>' + (cls === 'done' ? '✓' : i + 1) + '</i>' + STATUS[st].en + '<small>' + (cls ? esc(when(st)) : '') + '</small></li>';
   }).join('');
   let act = '';
   if (off) {
-    act = '<div class="cancelled-banner">Cette inscription est <b>annulée</b>.</div><button type="button" class="btn btn-light" data-setstatus="submitted">Réactiver l\u2019inscription</button>';
+    act = '<div class="cancelled-banner">This registration is <b>cancelled</b>.</div><button type="button" class="btn btn-light" data-setstatus="submitted">Reactivate the registration</button>';
   } else {
     const nxt = ORDER[idx + 1], prev = ORDER[idx - 1];
-    act = '<div class="fld"><label for="dNote">Note pour l\u2019historique (facultatif)</label><input id="dNote" type="text" placeholder="' + (cur === 'confirmed' ? 'Paiement reçu en espèces' : cur === 'submitted' ? 'Dossier complet, place réservée' : 'Vol AH 2054 du 5 juillet') + '"></div>' +
-      (nxt ? '<button type="button" class="btn btn-green btn-big" data-setstatus="' + nxt + '">' + NEXT[cur] + '</button>' : '<div class="cancelled-banner" style="background:var(--green-soft);color:var(--green-text)">Parcours terminé : l\u2019élève est parti.</div>') +
-      '<div class="flow-links">' + (prev ? '<button type="button" class="linkish" data-setstatus="' + prev + '">Revenir à « ' + STATUS[prev].name + ' »</button>' : '<span></span>') +
-        '<button type="button" class="linkish" style="color:var(--ja-crimson)" data-setstatus="cancelled">Annuler l\u2019inscription</button></div>';
+    act = '<div class="fld"><label for="dNote">Note for the history (optional)</label><input id="dNote" type="text" placeholder="' + (cur === 'confirmed' ? 'Payment received in cash' : cur === 'submitted' ? 'File complete, place reserved' : 'Flight AH 2054 on 5 July') + '"></div>' +
+      (nxt ? '<button type="button" class="btn btn-green btn-big" data-setstatus="' + nxt + '">' + NEXT[cur] + '</button>' : '<div class="cancelled-banner" style="background:var(--green-soft);color:var(--green-text)">All done: the student has left.</div>') +
+      '<div class="flow-links">' + (prev ? '<button type="button" class="linkish" data-setstatus="' + prev + '">Back to “' + STATUS[prev].en + '”</button>' : '<span></span>') +
+        '<button type="button" class="linkish" style="color:var(--ja-crimson)" data-setstatus="cancelled">Cancel the registration</button></div>';
   }
-  return '<div class="flow' + (off ? ' off' : '') + '"><ol class="flow-steps" aria-label="Étapes de l\u2019inscription">' + steps + '</ol>' +
-    (off ? '' : '<p class="flow-now" style="margin:0">Étape actuelle : <b>' + STATUS[cur].name + '</b>. ' + esc(STATUS[cur].hint) + '.</p>') + '<div class="flow-act">' + act + '</div></div>';
+  return '<div class="flow' + (off ? ' off' : '') + '"><ol class="flow-steps" aria-label="Registration steps">' + steps + '</ol>' +
+    (off ? '' : '<p class="flow-now" style="margin:0">Current step: <b>' + STATUS[cur].en + '</b>. ' + esc(STATUS[cur].enHint) + '.</p>') + '<div class="flow-act">' + act + '</div></div>';
 }
 async function setStatus(id, st) {
   const s = students[id]; if (!s) return;
-  if (st === 'cancelled' && !confirm('Annuler l\u2019inscription de ' + s.firstName + ' ' + s.lastName + ' ?')) return;
-  if (s.status !== 'cancelled' && ORDER.indexOf(st) >= 0 && ORDER.indexOf(st) < ORDER.indexOf(s.status) && !confirm('Revenir à l\u2019étape « ' + STATUS[st].name + ' » ?')) return;
+  if (st === 'cancelled' && !confirm('Cancel the registration of ' + s.firstName + ' ' + s.lastName + '?')) return;
+  if (s.status !== 'cancelled' && ORDER.indexOf(st) >= 0 && ORDER.indexOf(st) < ORDER.indexOf(s.status) && !confirm('Go back to the “' + STATUS[st].en + '” step?')) return;
   const now = new Date().toISOString(), note = ($('dNote') ? $('dNote').value.trim() : '');
   try {
     await fb.F.updateDoc(fb.F.doc(fb.db, 'students', id), { status: st, statusAt: now, updatedAt: now, history: fb.F.arrayUnion({ at: now, by: 'Direction', status: st, note }) });
     students[id] = Object.assign({}, s, { status: st, history: (s.history || []).concat({ at: now, by: 'Direction', status: st, note }) });
-    const box = $('detailPop'), y = box.scrollTop; openDetail(id); box.scrollTop = y; toast('Statut : ' + STATUS[st].name);
-  } catch (e) { toast('Enregistrement impossible. Vérifiez la connexion.'); }
+    const box = $('detailPop'), y = box.scrollTop; openDetail(id); box.scrollTop = y; toast('Status: ' + STATUS[st].en);
+  } catch (e) { toast('Could not save. Check the connection.'); }
 }
 function crmText(s) {
-  return [s.firstName + ' ' + s.lastName, 'Programme : ' + progName(s), 'Né(e) le : ' + niceDate(s.dob), 'Wilaya : ' + wName(s.studentWilaya), 'Parent : ' + s.parentName + ', ' + s.parentPhone + (s.parentEmail ? ', ' + s.parentEmail : ''), 'Passeport : ' + ({ valid: 'valide', progress: 'en cours', none: 'pas encore' }[s.passport] || '—'), 'Agent : ' + (s.agentName || '') + ' (' + wName(s.agentWilaya) + ')', s.notes ? 'Remarques : ' + s.notes : ''].filter(Boolean).join('\n');
+  return [s.firstName + ' ' + s.lastName, 'Programme: ' + progName(s), 'Born: ' + niceDate(s.dob), 'Wilaya: ' + wName(s.studentWilaya), 'Parent: ' + s.parentName + ', ' + s.parentPhone + (s.parentEmail ? ', ' + s.parentEmail : ''), 'Passport: ' + ({ valid: 'valid', progress: 'in progress', none: 'not yet' }[s.passport] || '—'), 'Agent: ' + (s.agentName || '') + ' (' + wName(s.agentWilaya) + ')', s.notes ? 'Notes: ' + s.notes : ''].filter(Boolean).join('\n');
 }
 function csv() {
   const rows = filtered(), cell = v => { v = String(v == null ? '' : v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-  const head = ['Reçu le', 'Statut', 'Prénom', 'Nom', 'Date de naissance', 'Âge', 'Sexe', 'Niveau', 'Wilaya élève', 'Parent', 'Téléphone', 'Email', 'Passeport', 'Programme', 'Prix (' + CURRENCY + ')', 'Agent', 'Wilaya agent', 'Remarques'];
-  const out = rows.map(s => [niceDate(s.createdAt), (STATUS[s.status] || {}).name, s.firstName, s.lastName, s.dob, ageFrom(s.dob), s.gender, s.level, wName(s.studentWilaya), s.parentName, s.parentPhone, s.parentEmail, s.passport, progName(s), priceOf(s), s.agentName, wName(s.agentWilaya), s.notes].map(cell).join(';'));
+  const head = ['Received', 'Status', 'First name', 'Last name', 'Date of birth', 'Age', 'Gender', 'Level', 'Student wilaya', 'Parent', 'Phone', 'Email', 'Passport', 'Programme', 'Price (' + CURRENCY + ')', 'Agent', 'Agent wilaya', 'Notes'];
+  const out = rows.map(s => [niceDate(s.createdAt), (STATUS[s.status] || {}).en, s.firstName, s.lastName, s.dob, ageFrom(s.dob), s.gender, s.level, wName(s.studentWilaya), s.parentName, s.parentPhone, s.parentEmail, s.passport, progName(s), priceOf(s), s.agentName, wName(s.agentWilaya), s.notes].map(cell).join(';'));
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF' + [head.join(';')].concat(out).join('\r\n')], { type: 'text/csv;charset=utf-8' }));
-  a.download = 'inscriptions-agents-' + todayISO() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); toast(rows.length + ' inscriptions exportées');
+  a.download = 'agent-registrations-' + todayISO() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); toast(rows.length + ' registrations exported');
 }
+
+/* ==================== Director windows (English) ==================== */
 let editAgent = null;
 function openActivate(uid) {
   const r = requests[uid]; if (!r) return;
   const old = Object.values(agents).find(a => (a.email || '').toLowerCase() === (r.email || '').toLowerCase() && a.uid !== uid);
   openAgent(null); activating = { uid, email: r.email, old: old || null }; $('aDelete').hidden = true;
-  $('apTitle').textContent = 'Activer ' + r.email; $('aEmailF').hidden = $('aPassF').hidden = true; $('aSave').textContent = 'Activer l\u2019agent';
+  $('apTitle').textContent = 'Activate ' + r.email; $('aEmailF').hidden = $('aPassF').hidden = true; $('aSave').textContent = 'Activate the agent';
   if (old) {
-    $('aName').value = old.name || ''; $('aWilaya').innerHTML = wilayaOptions(old.wilaya, 'L\u2019agent la choisira'); $('aRate').value = old.rate ?? 10; $('aPhone').value = old.phone || '';
+    $('aName').value = old.name || ''; $('aWilaya').innerHTML = wilayaOptions(old.wilaya, 'The agent will choose'); $('aRate').value = old.rate ?? 10; $('aPhone').value = old.phone || '';
     const n = Object.values(students).filter(s => s.agentUid === old.uid).length;
-    $('aErr').className = 'info'; $('aErr').textContent = 'Ce compte remplace l\u2019ancienne fiche de ' + (old.name || old.email) + (n ? ' : ses ' + n + ' inscription' + (n > 1 ? 's' : '') + ' lui seront rattachées.' : '.'); $('aErr').hidden = false;
+    $('aErr').className = 'info'; $('aErr').textContent = 'This account replaces the previous record of ' + (old.name || old.email) + (n ? ': their ' + n + (n > 1 ? ' registrations' : ' registration') + ' will move to it.' : '.'); $('aErr').hidden = false;
   }
 }
 function openAgent(uid) {
   activating = null; $('aErr').className = 'err';
   const a = uid ? agents[uid] : null; editAgent = a;
-  $('apTitle').textContent = a ? a.name || a.email : 'Ajouter un agent';
+  $('apTitle').textContent = a ? a.name || a.email : 'Add an agent';
   $('aName').value = a ? a.name || '' : ''; $('aEmail').value = ''; $('aPass').value = ''; $('aEmailF').hidden = $('aPassF').hidden = !!a;
-  $('aWilaya').innerHTML = wilayaOptions(a ? a.wilaya : '', a ? 'Non choisie' : 'L\u2019agent la choisira'); $('aRate').value = a ? (a.rate ?? 10) : 10; $('aPhone').value = a ? a.phone || '' : '';
-  $('aSuspend').hidden = !a; $('aDelete').hidden = !a; $('aSuspend').textContent = a && a.active === false ? 'Réactiver' : 'Suspendre'; $('aSave').textContent = a ? 'Enregistrer' : 'Créer l\u2019agent'; $('aErr').hidden = true;
+  $('aWilaya').innerHTML = wilayaOptions(a ? a.wilaya : '', a ? 'Not chosen' : 'The agent will choose'); $('aRate').value = a ? (a.rate ?? 10) : 10; $('aPhone').value = a ? a.phone || '' : '';
+  $('aSuspend').hidden = !a; $('aDelete').hidden = !a; $('aSuspend').textContent = a && a.active === false ? 'Reactivate' : 'Suspend'; $('aSave').textContent = a ? 'Save' : 'Create the agent'; $('aErr').hidden = true;
   $('agentPop').showModal();
 }
 async function saveAgent() {
   const err = t => { $('aErr').textContent = t; $('aErr').hidden = false; };
   const name = $('aName').value.trim(), wil = $('aWilaya').value, rate = Math.max(0, Math.min(50, +$('aRate').value || 0)), phone = $('aPhone').value.trim();
-  if (name.length < 2) return err('Indiquez le nom de l\u2019agent.');
+  if (name.length < 2) return err('Enter the agent\u2019s name.');
   $('aSave').disabled = true;
   try {
     if (activating) {
@@ -961,72 +1045,73 @@ async function saveAgent() {
         await fb.F.deleteDoc(fb.F.doc(fb.db, 'agents', old.uid)).catch(() => {});
       }
       await fb.F.deleteDoc(fb.F.doc(fb.db, 'requests', A.uid)).catch(() => {});
-      activating = null; $('agentPop').close(); toast(name + ' est activé : sa page s\u2019ouvre toute seule.'); return;
+      activating = null; $('agentPop').close(); toast(name + ' is activated: their page opens by itself.'); return;
     }
-    if (editAgent) { await fb.F.setDoc(fb.F.doc(fb.db, 'agents', editAgent.uid), { name, wilaya: wil ? +wil : null, rate, phone }, { merge: true }); $('agentPop').close(); toast(name + ' enregistré'); return; }
+    if (editAgent) { await fb.F.setDoc(fb.F.doc(fb.db, 'agents', editAgent.uid), { name, wilaya: wil ? +wil : null, rate, phone }, { merge: true }); $('agentPop').close(); toast(name + ' saved'); return; }
     const email = $('aEmail').value.trim().toLowerCase(), pass = $('aPass').value;
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('Indiquez un email valide.');
-    if (pass.length < 6) return err('Le mot de passe doit contenir au moins 6 caractères.');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('Enter a valid email.');
+    if (pass.length < 6) return err('The password needs at least 6 characters.');
     const sec = fb.A0.getApps().find(x => x.name === 'add-agent') || fb.A0.initializeApp(FIREBASE_CONFIG, 'add-agent'), secAuth = fb.A.getAuth(sec);
     const cred = await fb.A.createUserWithEmailAndPassword(secAuth, email, pass); const uid = cred.user.uid; await fb.A.signOut(secAuth);
     await fb.F.setDoc(fb.F.doc(fb.db, 'agents', uid), { uid, name, email, phone, wilaya: wil ? +wil : null, rate, active: true, createdAt: new Date().toISOString() });
-    $('agentPop').close(); toast(name + ' ajouté. Envoyez-lui son email et son mot de passe.');
+    $('agentPop').close(); toast(name + ' added. Send them their email and password.');
   } catch (e) {
     const c = (e && e.code) || '';
-    err(/email-already-in-use/.test(c) ? 'Une connexion existe déjà avec cet email. Si c\u2019est un agent supprimé, effacez d\u2019abord sa connexion dans Firebase (juniors-agent > Authentication > Users > trois points > Delete account), puis réessayez. Sinon, demandez-lui simplement de se connecter : il apparaîtra dans « Comptes en attente ».' : /operation-not-allowed|admin-restricted/.test(c) ? 'Firebase bloque la création de comptes : dans Authentication, Paramètres, Actions utilisateur, cochez « Activer la création (inscription) ».' : 'Enregistrement impossible. Vérifiez la connexion.');
+    err(/email-already-in-use/.test(c) ? 'A login already exists with this email. If it belongs to a deleted agent, first delete that login in Firebase (juniors-agent > Authentication > Users > three dots > Delete account), then try again. Otherwise, simply ask them to sign in: they will appear under “Accounts waiting for activation”.' : /operation-not-allowed|admin-restricted/.test(c) ? 'Firebase blocks new accounts: in Authentication > Settings > User actions, tick “Enable create (sign-up)”.' : 'Could not save. Check the connection.');
   } finally { $('aSave').disabled = false; }
 }
 let deleting = null;
 function openDelete(a) {
   deleting = a; const mine = Object.values(students).filter(x => x.agentUid === a.uid), n = mine.length;
-  $('dlTitle').textContent = 'Supprimer ' + (a.name || a.email);
-  $('dlSub').textContent = (a.email || '') + (n ? ' · ' + n + ' inscription' + (n > 1 ? 's' : '') : ' · aucune inscription');
+  $('dlTitle').textContent = 'Delete ' + (a.name || a.email);
+  $('dlSub').textContent = (a.email || '') + (n ? ' · ' + n + (n > 1 ? ' registrations' : ' registration') : ' · no registration');
   $('dlChoices').hidden = !n;
   document.querySelector('input[name=dlWhat][value=keep]').checked = true;
   const others = Object.values(agents).filter(x => x.uid !== a.uid && x.active !== false).sort((x, y) => String(x.name).localeCompare(String(y.name), 'fr'));
-  $('dlTo').innerHTML = others.length ? others.map(x => '<option value="' + esc(x.uid) + '">' + esc(x.name) + ' · ' + esc(wName(x.wilaya)) + '</option>').join('') : '<option value="">Aucun autre agent actif</option>';
+  $('dlTo').innerHTML = others.length ? others.map(x => '<option value="' + esc(x.uid) + '">' + esc(x.name) + ' · ' + esc(wName(x.wilaya)) + '</option>').join('') : '<option value="">No other active agent</option>';
   $('dlSure').checked = false; $('dlErr').hidden = true;
   $('agentPop').close(); $('delPop').showModal();
 }
 async function doDelete() {
   const a = deleting; if (!a) return;
   const err = t => { $('dlErr').textContent = t; $('dlErr').hidden = false; };
-  if (!$('dlSure').checked) return err('Cochez la case pour confirmer la suppression.');
+  if (!$('dlSure').checked) return err('Tick the box to confirm the deletion.');
   const what = (document.querySelector('input[name=dlWhat]:checked') || {}).value || 'keep', mine = Object.values(students).filter(x => x.agentUid === a.uid);
   const to = agents[$('dlTo').value];
-  if (mine.length && what === 'move' && !to) return err('Choisissez l\u2019agent qui reçoit les inscriptions.');
+  if (mine.length && what === 'move' && !to) return err('Choose the agent who receives the registrations.');
   $('dlGo').disabled = true;
   try {
     const now = new Date().toISOString();
     for (const st of mine) {
       if (what === 'delete') await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', st.id));
-      else if (what === 'move') await fb.F.setDoc(fb.F.doc(fb.db, 'students', st.id), { agentUid: to.uid, agentName: to.name, agentWilaya: +to.wilaya || st.agentWilaya, history: fb.F.arrayUnion({ at: now, by: 'Direction', status: st.status, note: 'Transféré de ' + (a.name || a.email) }) }, { merge: true });
+      else if (what === 'move') await fb.F.setDoc(fb.F.doc(fb.db, 'students', st.id), { agentUid: to.uid, agentName: to.name, agentWilaya: +to.wilaya || st.agentWilaya, history: fb.F.arrayUnion({ at: now, by: 'Direction', status: st.status, note: 'Transferred from ' + (a.name || a.email) }) }, { merge: true });
     }
     await fb.F.setDoc(fb.F.doc(fb.db, 'removed', a.uid), { uid: a.uid, email: a.email || '', name: a.name || '', at: now });
     await fb.F.deleteDoc(fb.F.doc(fb.db, 'agents', a.uid));
     await fb.F.deleteDoc(fb.F.doc(fb.db, 'requests', a.uid)).catch(() => {});
     $('delPop').close(); deleting = null;
-    toast((a.name || a.email) + ' supprimé. Pour réutiliser son email, supprimez aussi sa connexion dans Firebase.');
-  } catch (e) { err('Suppression impossible. Vérifiez que les nouvelles règles Firebase sont publiées.'); }
+    toast((a.name || a.email) + ' deleted. To reuse their email, also delete their login in Firebase.');
+  } catch (e) { err('Could not delete. Check that the latest Firebase rules are published.'); }
   finally { $('dlGo').disabled = false; }
 }
 let editProg = null;
 function openProg(id) {
   const p = id ? programs[id] : null; editProg = p;
-  $('ppTitle').textContent = p ? p.name : 'Nouveau programme';
+  $('ppTitle').textContent = p ? p.name : 'New programme';
   [['pgName', 'name'], ['pgDest', 'dest'], ['pgAges', 'ages'], ['pgStart', 'start'], ['pgEnd', 'end'], ['pgPrice', 'price'], ['pgSeats', 'seats']].forEach(f => { $(f[0]).value = p ? (p[f[1]] ?? '') : ''; });
   $('pgOpen').checked = p ? p.open !== false && !p.full : true; $('pgDelete').hidden = !p; $('pgErr').hidden = true; $('progPop').showModal();
 }
 async function saveProg() {
-  const name = $('pgName').value.trim(); if (!name) { $('pgErr').textContent = 'Indiquez le nom du programme.'; $('pgErr').hidden = false; return; }
+  const name = $('pgName').value.trim(); if (!name) { $('pgErr').textContent = 'Enter the programme name.'; $('pgErr').hidden = false; return; }
   const id = editProg ? editProg.id : 'p' + Date.now().toString(36);
   const data = { id, name, dest: $('pgDest').value.trim(), ages: $('pgAges').value.trim(), start: $('pgStart').value, end: $('pgEnd').value, price: +$('pgPrice').value || 0, seats: +$('pgSeats').value || 0, open: $('pgOpen').checked, full: false, updatedAt: new Date().toISOString() };
-  try { await fb.F.setDoc(fb.F.doc(fb.db, 'programs', id), data, { merge: true }); $('progPop').close(); toast(name + ' enregistré'); } catch (e) { toast('Enregistrement impossible.'); }
+  try { await fb.F.setDoc(fb.F.doc(fb.db, 'programs', id), data, { merge: true }); $('progPop').close(); toast(name + ' saved'); } catch (e) { toast('Could not save.'); }
 }
 
-/* ==================== Événements ==================== */
+/* ==================== Events ==================== */
 document.addEventListener('click', async e => {
   const q = s => e.target.closest(s); let el;
+  if ((el = q('[data-lang]'))) return setLang(el.getAttribute('data-lang'));
   if ((el = q('[data-tab]'))) { tab = el.getAttribute('data-tab'); window.scrollTo(0, 0); return render(); }
   if ((el = q('[data-period]'))) { period = el.getAttribute('data-period'); return render(); }
   if ((el = q('[data-metric]'))) { metric = el.getAttribute('data-metric'); return render(); }
@@ -1042,8 +1127,8 @@ document.addEventListener('click', async e => {
   if (q('#addProg') || q('#addProg2')) return openProg(null);
   if (q('#csv')) return csv();
   if ((el = q('[data-setstatus]'))) return setStatus($('dpBody').getAttribute('data-id'), el.getAttribute('data-setstatus'));
-  if ((el = q('[data-copy]'))) { const t = crmText(students[el.getAttribute('data-copy')]); try { await navigator.clipboard.writeText(t); toast('Copié : collez-le dans le CRM'); } catch (x) { prompt('Copiez ce texte :', t); } return; }
-  if ((el = q('[data-delstudent]'))) { const s = students[el.getAttribute('data-delstudent')]; if (s && confirm('Supprimer définitivement l\u2019inscription de ' + s.firstName + ' ' + s.lastName + ' ?')) { await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', s.id)).catch(() => {}); $('detailPop').close(); toast('Inscription supprimée'); } return; }
+  if ((el = q('[data-copy]'))) { const t = crmText(students[el.getAttribute('data-copy')]); try { await navigator.clipboard.writeText(t); toast('Copied: paste it into the CRM'); } catch (x) { prompt('Copy this text:', t); } return; }
+  if ((el = q('[data-delstudent]'))) { const s = students[el.getAttribute('data-delstudent')]; if (s && confirm('Permanently delete the registration of ' + s.firstName + ' ' + s.lastName + '?')) { await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', s.id)).catch(() => {}); $('detailPop').close(); toast('Registration deleted'); } return; }
   if (q('[data-close]')) return q('dialog').close();
   if (e.target.id === 'btnOut' || e.target.id === 'gOut') { fb.A.signOut(fb.auth); return; }
 });
@@ -1056,18 +1141,18 @@ document.addEventListener('change', e => {
   if (f) { filt[f] = e.target.value; render(); }
   if (e.target.id === 'sProg') progInfo();
 });
-/* infobulle de la carte */
+/* map tooltip (director) */
 document.addEventListener('pointerover', e => {
   const c = e.target.closest && e.target.closest('[data-w]'), tip = $('tip'); if (!tip) return;
   if (!c) { tip.classList.remove('on'); return; }
   const code = +c.getAttribute('data-w'), bw = byWilaya(), d = bw[code], box = $('mapbox').getBoundingClientRect(), r = c.getBoundingClientRect();
-  tip.innerHTML = '<b>' + esc(wName(code)) + '</b>' + d.count + (d.count === 1 ? ' inscription' : ' inscriptions') + ' · ' + esc(shortMoney(d.rev)) + ' ' + CURRENCY + '<br>' + d.agents + (d.agents === 1 ? ' agent' : ' agents') + ' · ' + d.res + ' élèves y habitent';
+  tip.innerHTML = '<b>' + esc(wName(code)) + '</b>' + d.count + (d.count === 1 ? ' registration' : ' registrations') + ' · ' + esc(shortMoney(d.rev)) + ' ' + CURRENCY + '<br>' + d.agents + (d.agents === 1 ? ' agent' : ' agents') + ' · ' + d.res + (d.res === 1 ? ' student lives here' : ' students live here');
   tip.style.left = (r.left + r.width / 2 - box.left) + 'px'; tip.style.top = (r.top - box.top) + 'px'; tip.classList.add('on');
 });
 $('studentForm').addEventListener('submit', e => { e.preventDefault(); saveStudent(); });
 $('sDelete').addEventListener('click', async () => {
-  if (!editing || !confirm('Retirer l\u2019inscription de ' + editing.firstName + ' ' + editing.lastName + ' ?')) return;
-  try { await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', editing.id)); $('studentPop').close(); toast('Inscription retirée'); } catch (x) { toast('Impossible : l\u2019inscription a déjà été traitée.'); }
+  if (!editing || !confirm(L('Retirer l\u2019inscription de ', 'Withdraw the registration of ') + editing.firstName + ' ' + editing.lastName + ' ?')) return;
+  try { await fb.F.deleteDoc(fb.F.doc(fb.db, 'students', editing.id)); $('studentPop').close(); toast(L('Inscription retirée', 'Registration withdrawn')); } catch (x) { toast(L('Impossible : l\u2019inscription a déjà été traitée.', 'Not possible: the registration has already been processed.')); }
 });
 $('agentForm').addEventListener('submit', e => { e.preventDefault(); saveAgent(); });
 $('aDelete').addEventListener('click', () => { if (editAgent) openDelete(editAgent); });
@@ -1075,41 +1160,42 @@ $('delForm').addEventListener('submit', e => { e.preventDefault(); doDelete(); }
 $('dlTo').addEventListener('change', () => { document.querySelector('input[name=dlWhat][value=move]').checked = true; });
 $('aSuspend').addEventListener('click', async () => {
   const a = editAgent; if (!a) return;
-  if (a.active !== false && !confirm('Suspendre ' + (a.name || a.email) + ' ? Il ne pourra plus se connecter. Ses inscriptions restent visibles.')) return;
-  await fb.F.setDoc(fb.F.doc(fb.db, 'agents', a.uid), { active: a.active === false }, { merge: true }).catch(() => {}); $('agentPop').close(); toast(a.active === false ? 'Agent réactivé' : 'Agent suspendu');
+  if (a.active !== false && !confirm('Suspend ' + (a.name || a.email) + '? They will no longer be able to sign in. Their registrations stay visible.')) return;
+  await fb.F.setDoc(fb.F.doc(fb.db, 'agents', a.uid), { active: a.active === false }, { merge: true }).catch(() => {}); $('agentPop').close(); toast(a.active === false ? 'Agent reactivated' : 'Agent suspended');
 });
 $('progForm').addEventListener('submit', e => { e.preventDefault(); saveProg(); });
 $('pgDelete').addEventListener('click', async () => {
   const p = editProg; if (!p) return;
   const n = Object.values(students).filter(s => s.programId === p.id).length;
-  if (n) { if (!confirm('Des élèves sont inscrits à ce programme. Le fermer aux nouvelles inscriptions plutôt que le supprimer ?')) return; await fb.F.setDoc(fb.F.doc(fb.db, 'programs', p.id), { open: false }, { merge: true }); $('progPop').close(); toast('Programme fermé'); return; }
-  if (!confirm('Supprimer ' + p.name + ' ?')) return; await fb.F.deleteDoc(fb.F.doc(fb.db, 'programs', p.id)).catch(() => {}); $('progPop').close(); toast('Programme supprimé');
+  if (n) { if (!confirm('Students are registered on this programme. Close it to new registrations instead of deleting it?')) return; await fb.F.setDoc(fb.F.doc(fb.db, 'programs', p.id), { open: false }, { merge: true }); $('progPop').close(); toast('Programme closed'); return; }
+  if (!confirm('Delete ' + p.name + '?')) return; await fb.F.deleteDoc(fb.F.doc(fb.db, 'programs', p.id)).catch(() => {}); $('progPop').close(); toast('Programme deleted');
 });
 document.querySelectorAll('dialog.pop').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
 
-/* ==================== Connexion ==================== */
+/* ==================== Sign-in forms (French or English) ==================== */
 $('signForm').addEventListener('submit', async e => {
-  e.preventDefault(); const b = $('gSubmit'); b.disabled = true; b.textContent = 'Connexion…';
+  e.preventDefault(); const b = $('gSubmit'); b.disabled = true; b.textContent = L('Connexion…', 'Signing in…');
   try { await fb.A.signInWithEmailAndPassword(fb.auth, $('gEmail').value.trim(), $('gPass').value); $('gPass').value = ''; }
-  catch (x) { gate('signin', authMessage(x)); } finally { b.disabled = false; b.textContent = 'Se connecter'; }
+  catch (x) { gate('signin', authMessage(x)); } finally { b.disabled = false; b.textContent = L('Se connecter', 'Sign in'); }
 });
 $('gForgot').addEventListener('click', async () => {
-  const email = $('gEmail').value.trim(); if (!email) { gate('signin', 'Saisissez d\u2019abord votre email, puis cliquez de nouveau sur « Mot de passe oublié ».', true); return; }
+  const email = $('gEmail').value.trim(); if (!email) { gate('signin', ['Saisissez d\u2019abord votre email, puis cliquez de nouveau sur « Mot de passe oublié ».', 'Type your email first, then click “Forgot my password” again.'], true); return; }
   try { await fb.A.sendPasswordResetEmail(fb.auth, email); } catch (x) {}
-  gate('signin', 'Si ce compte existe, un email pour choisir un nouveau mot de passe vient d\u2019être envoyé.', true);
+  gate('signin', ['Si ce compte existe, un email pour choisir un nouveau mot de passe vient d\u2019être envoyé.', 'If this account exists, an email to choose a new password is on its way.'], true);
 });
 $('profileForm').addEventListener('submit', async e => {
   e.preventDefault();
   const name = $('pName').value.trim(), phone = $('pPhone').value.trim(), wil = +$('pWilaya').value || +profile.wilaya || 0;
-  if (name.length < 2) { gate('profile', 'Indiquez votre nom complet.'); return; }
-  if (!phoneOk(phone)) { gate('profile', 'Le téléphone ne semble pas valide (exemple : 0550 12 34 56).'); return; }
-  if (!wil) { gate('profile', 'Choisissez votre wilaya.'); return; }
+  if (name.length < 2) { gate('profile', ['Indiquez votre nom complet.', 'Enter your full name.']); return; }
+  if (!phoneOk(phone)) { gate('profile', ['Le téléphone ne semble pas valide (exemple : 0550 12 34 56).', 'The phone number doesn\u2019t look right (example: 0550 12 34 56).']); return; }
+  if (!wil) { gate('profile', ['Choisissez votre wilaya.', 'Choose your wilaya.']); return; }
   try { const upd = { name, phone, agency: $('pAgency').value.trim() }; if (!profile.wilaya) upd.wilaya = wil;
     await fb.F.setDoc(fb.F.doc(fb.db, 'agents', me.uid), upd, { merge: true }); profile = Object.assign({}, profile, upd); openApp(); }
-  catch (x) { gate('profile', 'Enregistrement impossible. Vérifiez la connexion.'); }
+  catch (x) { gate('profile', ['Enregistrement impossible. Vérifiez la connexion.', 'Could not save. Check the connection.']); }
 });
 setInterval(() => { if (me) paint(); }, 60000);
 start();
 </script>
+
 </body>
 </html>
