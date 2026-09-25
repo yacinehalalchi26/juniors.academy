@@ -1,7 +1,7 @@
 /* Juniors CRM — lets the installed app open even with no internet.
    Online: always loads the newest version. Offline: uses the saved copy. */
-const CACHE = 'juniors-crm-v4';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const CACHE = 'juniors-crm-v5';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png?v=5', './icon-512.png?v=5'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
