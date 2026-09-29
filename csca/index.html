@@ -320,7 +320,18 @@ function openApp() {
   $('brandSub').textContent = isDirector() ? 'Director console' : 'CSCA preparation';
   tab = tab || (isDirector() ? 'overview' : 'home');
   const cat = s => { catalog = {}; s.docs.forEach(d => { catalog[d.id] = Object.assign({ id: d.id }, d.data()); }); render(); };
-  unsub.push(F.onSnapshot(F.collection(db, 'catalog'), cat, denied));
+  /* Directors may inspect the whole catalog. Students request only the three
+     subjects supported by this portal. This is important because legacy CSCA
+     Chinese catalog documents may still exist in Firestore; requesting the
+     entire collection would make Firestore reject the student query under the
+     subject-restricted security rules. */
+  const catalogSource = isDirector()
+    ? F.collection(db, 'catalog')
+    : F.query(
+        F.collection(db, 'catalog'),
+        F.where('subject', 'in', ['math', 'physics', 'chemistry'])
+      );
+  unsub.push(F.onSnapshot(catalogSource, cat, denied));
   if (isDirector()) {
     unsub.push(F.onSnapshot(F.collection(db, 'students'), s => { students = {}; s.docs.forEach(d => { students[d.id] = Object.assign({ uid: d.id }, d.data({ serverTimestamps: 'estimate' })); }); render(); if ($('accPop').open) drawAccess(); }, denied));
     unsub.push(F.onSnapshot(F.collection(db, 'attempts'), s => { attempts = {}; s.docs.forEach(d => { attempts[d.id] = Object.assign({ id: d.id }, d.data({ serverTimestamps: 'estimate' })); }); render(); if ($('accPop').open) drawAccess(); }, denied));
