@@ -1,0 +1,866 @@
+[
+{
+"id": "p01",
+"t": "Mechanics",
+"q": "A car starts from rest and accelerates uniformly at 2 m/s² for 5 s. What is its final speed?",
+"o": [
+"5 m/s",
+"10 m/s",
+"20 m/s",
+"25 m/s"
+],
+"a": 1
+},
+{
+"id": "p02",
+"t": "Mechanics",
+"q": "A car starts from rest and accelerates uniformly at 2 m/s² for 5 s. How far does it travel?",
+"o": [
+"10 m",
+"20 m",
+"25 m",
+"50 m"
+],
+"a": 2
+},
+{
+"id": "p03",
+"t": "Mechanics",
+"q": "An object is dropped from rest. How far does it fall in the first 2 s? (g = 10 m/s², ignore air resistance.)",
+"o": [
+"10 m",
+"20 m",
+"40 m",
+"5 m"
+],
+"a": 1
+},
+{
+"id": "p04",
+"t": "Mechanics",
+"q": "A ball is thrown vertically upward at 20 m/s. What maximum height does it reach? (g = 10 m/s²)",
+"o": [
+"10 m",
+"20 m",
+"40 m",
+"80 m"
+],
+"a": 1
+},
+{
+"id": "p05",
+"t": "Mechanics",
+"q": "A stone is thrown horizontally at 10 m/s from a height of 45 m. How far from the base does it land? (g = 10 m/s²)",
+"o": [
+"15 m",
+"30 m",
+"45 m",
+"90 m"
+],
+"a": 1
+},
+{
+"id": "p06",
+"t": "Mechanics",
+"q": "Which of the following is a vector quantity?",
+"o": [
+"Mass",
+"Time",
+"Displacement",
+"Energy"
+],
+"a": 2
+},
+{
+"id": "p07",
+"t": "Mechanics",
+"q": "A net force of 12 N acts on a 3 kg object. What is its acceleration?",
+"o": [
+"4 m/s²",
+"9 m/s²",
+"15 m/s²",
+"36 m/s²"
+],
+"a": 0
+},
+{
+"id": "p08",
+"t": "Mechanics",
+"q": "A book rests on a table. By Newton’s third law, which force pairs with Earth’s gravitational pull on the book?",
+"o": [
+"The normal force of the table on the book",
+"The gravitational pull of the book on Earth",
+"The force of the book on the table",
+"Friction acting on the book"
+],
+"a": 1
+},
+{
+"id": "p09",
+"t": "Mechanics",
+"q": "A 5 kg block slides on a horizontal surface with coefficient of kinetic friction 0.2. What is the friction force? (g = 10 m/s²)",
+"o": [
+"1 N",
+"5 N",
+"10 N",
+"50 N"
+],
+"a": 2
+},
+{
+"id": "p10",
+"t": "Mechanics",
+"q": "A block slides down a smooth (frictionless) incline at 30° to the horizontal. What is its acceleration? (g = 10 m/s²)",
+"o": [
+"5 m/s²",
+"8.7 m/s²",
+"10 m/s²",
+"2.5 m/s²"
+],
+"a": 0
+},
+{
+"id": "p11",
+"t": "Mechanics",
+"q": "A 60 kg person stands in a lift accelerating upward at 2 m/s². What normal force does the floor exert on them? (g = 10 m/s²)",
+"o": [
+"480 N",
+"600 N",
+"720 N",
+"120 N"
+],
+"a": 2
+},
+{
+"id": "p12",
+"t": "Mechanics",
+"q": "Two forces of 3 N and 4 N act on a point at right angles. What is the magnitude of the resultant?",
+"o": [
+"1 N",
+"5 N",
+"7 N",
+"12 N"
+],
+"a": 1
+},
+{
+"id": "p13",
+"t": "Energy & momentum",
+"q": "A 10 N force moves an object 5 m. The force acts at 60° to the displacement. How much work does it do?",
+"o": [
+"25 J",
+"43 J",
+"50 J",
+"12.5 J"
+],
+"a": 0
+},
+{
+"id": "p14",
+"t": "Energy & momentum",
+"q": "What is the kinetic energy of a 2 kg object moving at 3 m/s?",
+"o": [
+"6 J",
+"9 J",
+"18 J",
+"3 J"
+],
+"a": 1
+},
+{
+"id": "p15",
+"t": "Energy & momentum",
+"q": "A 1 kg mass is raised 5 m. By how much does its gravitational potential energy increase? (g = 10 m/s²)",
+"o": [
+"5 J",
+"50 J",
+"500 J",
+"0.5 J"
+],
+"a": 1
+},
+{
+"id": "p16",
+"t": "Energy & momentum",
+"q": "An object slides from rest down a frictionless slope, dropping 5 m in height. What is its speed at the bottom? (g = 10 m/s²)",
+"o": [
+"5 m/s",
+"10 m/s",
+"50 m/s",
+"100 m/s"
+],
+"a": 1
+},
+{
+"id": "p17",
+"t": "Energy & momentum",
+"q": "A motor lifts a 50 kg load through 4 m in 10 s at constant speed. What is its useful power output? (g = 10 m/s²)",
+"o": [
+"20 W",
+"200 W",
+"2000 W",
+"500 W"
+],
+"a": 1
+},
+{
+"id": "p18",
+"t": "Energy & momentum",
+"q": "What is the momentum of a 0.5 kg ball moving at 4 m/s?",
+"o": [
+"0.125 kg·m/s",
+"2 kg·m/s",
+"8 kg·m/s",
+"4.5 kg·m/s"
+],
+"a": 1
+},
+{
+"id": "p19",
+"t": "Energy & momentum",
+"q": "A 2 kg cart moving at 3 m/s collides with a stationary 1 kg cart and they stick together. What is their common speed?",
+"o": [
+"1 m/s",
+"1.5 m/s",
+"2 m/s",
+"3 m/s"
+],
+"a": 2
+},
+{
+"id": "p20",
+"t": "Energy & momentum",
+"q": "A constant force of 20 N acts on an object for 0.5 s. What impulse does it deliver?",
+"o": [
+"10 N·s",
+"40 N·s",
+"20.5 N·s",
+"0.025 N·s"
+],
+"a": 0
+},
+{
+"id": "p21",
+"t": "Circular motion & gravitation",
+"q": "A 2 kg object moves in a circle of radius 1.5 m at 3 m/s. What centripetal force acts on it?",
+"o": [
+"4 N",
+"6 N",
+"12 N",
+"18 N"
+],
+"a": 2
+},
+{
+"id": "p22",
+"t": "Circular motion & gravitation",
+"q": "The distance between two point masses is doubled. How does the gravitational force between them change?",
+"o": [
+"It doubles",
+"It halves",
+"It becomes one quarter as large",
+"It becomes four times as large"
+],
+"a": 2
+},
+{
+"id": "p23",
+"t": "Circular motion & gravitation",
+"q": "For satellites in circular orbits around Earth, how does orbital speed change as orbital radius increases?",
+"o": [
+"It increases",
+"It decreases",
+"It stays the same",
+"It first increases, then decreases"
+],
+"a": 1
+},
+{
+"id": "p24",
+"t": "Oscillations & waves",
+"q": "The length of a simple pendulum is quadrupled. What happens to its period?",
+"o": [
+"It halves",
+"It stays the same",
+"It doubles",
+"It quadruples"
+],
+"a": 2
+},
+{
+"id": "p25",
+"t": "Oscillations & waves",
+"q": "A spring with constant k = 200 N/m is stretched by 0.1 m. What force does it exert?",
+"o": [
+"2 N",
+"20 N",
+"2000 N",
+"200 N"
+],
+"a": 1
+},
+{
+"id": "p26",
+"t": "Oscillations & waves",
+"q": "A wave has frequency 50 Hz and wavelength 2 m. What is its speed?",
+"o": [
+"25 m/s",
+"52 m/s",
+"100 m/s",
+"0.04 m/s"
+],
+"a": 2
+},
+{
+"id": "p27",
+"t": "Oscillations & waves",
+"q": "Sound cannot travel through which of the following?",
+"o": [
+"Water",
+"Steel",
+"Air",
+"A vacuum"
+],
+"a": 3
+},
+{
+"id": "p28",
+"t": "Optics",
+"q": "What happens to the speed of light when it passes from air into glass?",
+"o": [
+"It increases",
+"It decreases",
+"It stays the same",
+"It becomes zero"
+],
+"a": 1
+},
+{
+"id": "p29",
+"t": "Optics",
+"q": "An object is placed 30 cm from a converging lens of focal length 10 cm. How far from the lens is the image?",
+"o": [
+"7.5 cm",
+"15 cm",
+"20 cm",
+"30 cm"
+],
+"a": 1
+},
+{
+"id": "p30",
+"t": "Optics",
+"q": "Total internal reflection can occur when light travels:",
+"o": [
+"from air into water, at any angle",
+"from glass into air, at an angle of incidence greater than the critical angle",
+"from air into glass, at an angle of incidence greater than the critical angle",
+"from water into glass, at small angles of incidence"
+],
+"a": 1
+},
+{
+"id": "p31",
+"t": "Thermal physics",
+"q": "A fixed amount of ideal gas is kept at constant volume. Its absolute temperature doubles. What happens to its pressure?",
+"o": [
+"It halves",
+"It stays the same",
+"It doubles",
+"It quadruples"
+],
+"a": 2
+},
+{
+"id": "p32",
+"t": "Thermal physics",
+"q": "How much energy is needed to heat 2 kg of water by 10 °C? (specific heat capacity of water = 4200 J/(kg·°C))",
+"o": [
+"8 400 J",
+"42 000 J",
+"84 000 J",
+"840 000 J"
+],
+"a": 2
+},
+{
+"id": "p33",
+"t": "Thermal physics",
+"q": "A gas absorbs 500 J of heat and does 200 J of work on its surroundings. What is the change in its internal energy?",
+"o": [
+"700 J",
+"300 J",
+"−300 J",
+"200 J"
+],
+"a": 1
+},
+{
+"id": "p34",
+"t": "Electricity",
+"q": "The distance between two point charges is halved. How does the electrostatic force between them change?",
+"o": [
+"It halves",
+"It doubles",
+"It becomes four times as large",
+"It stays the same"
+],
+"a": 2
+},
+{
+"id": "p35",
+"t": "Electricity",
+"q": "A potential difference of 12 V is applied across a 4 Ω resistor. What current flows?",
+"o": [
+"0.33 A",
+"3 A",
+"16 A",
+"48 A"
+],
+"a": 1
+},
+{
+"id": "p36",
+"t": "Electricity",
+"q": "Resistors of 2 Ω, 3 Ω and 5 Ω are connected in series. What is the total resistance?",
+"o": [
+"10 Ω",
+"0.97 Ω",
+"30 Ω",
+"5 Ω"
+],
+"a": 0
+},
+{
+"id": "p37",
+"t": "Electricity",
+"q": "Resistors of 6 Ω and 3 Ω are connected in parallel. What is the equivalent resistance?",
+"o": [
+"9 Ω",
+"4.5 Ω",
+"2 Ω",
+"18 Ω"
+],
+"a": 2
+},
+{
+"id": "p38",
+"t": "Electricity",
+"q": "A current of 2 A flows through a 5 Ω resistor. What power is dissipated?",
+"o": [
+"10 W",
+"20 W",
+"2.5 W",
+"50 W"
+],
+"a": 1
+},
+{
+"id": "p39",
+"t": "Electricity",
+"q": "A 1 kW heater runs for 2 hours. How much electrical energy does it use?",
+"o": [
+"0.5 kWh",
+"2 kWh",
+"1 kWh",
+"2000 kWh"
+],
+"a": 1
+},
+{
+"id": "p40",
+"t": "Electricity",
+"q": "A cell of EMF 6 V and internal resistance 1 Ω is connected to a 5 Ω resistor. What is the terminal voltage?",
+"o": [
+"1 V",
+"5 V",
+"6 V",
+"4 V"
+],
+"a": 1
+},
+{
+"id": "p41",
+"t": "Magnetism & induction",
+"q": "A wire 0.3 m long carries 2 A at right angles to a 0.5 T magnetic field. What force acts on it?",
+"o": [
+"0.3 N",
+"3 N",
+"0.75 N",
+"1.2 N"
+],
+"a": 0
+},
+{
+"id": "p42",
+"t": "Magnetism & induction",
+"q": "Which statement about the magnetic force on a charged particle moving in a uniform magnetic field is true?",
+"o": [
+"It always increases the particle’s speed",
+"It does no work on the particle",
+"It is parallel to the particle’s velocity",
+"It is zero when the velocity is perpendicular to the field"
+],
+"a": 1
+},
+{
+"id": "p43",
+"t": "Magnetism & induction",
+"q": "According to Faraday’s law, the EMF induced in a coil is proportional to:",
+"o": [
+"the magnetic flux through the coil",
+"the rate of change of magnetic flux through the coil",
+"the resistance of the coil",
+"the current already in the coil"
+],
+"a": 1
+},
+{
+"id": "p44",
+"t": "Magnetism & induction",
+"q": "An ideal transformer has 200 primary turns and 50 secondary turns. The primary voltage is 220 V. What is the secondary voltage?",
+"o": [
+"880 V",
+"55 V",
+"220 V",
+"44 V"
+],
+"a": 1
+},
+{
+"id": "p45",
+"t": "Modern physics",
+"q": "Which type of electromagnetic radiation has the shortest wavelength?",
+"o": [
+"Radio waves",
+"Visible light",
+"X-rays",
+"Gamma rays"
+],
+"a": 3
+},
+{
+"id": "p46",
+"t": "Modern physics",
+"q": "In the photoelectric effect, light above the threshold frequency is made more intense. What increases?",
+"o": [
+"The maximum kinetic energy of the emitted electrons",
+"The number of electrons emitted per second",
+"The threshold frequency",
+"The work function of the metal"
+],
+"a": 1
+},
+{
+"id": "p47",
+"t": "Modern physics",
+"q": "A radioactive isotope has a half-life of 2 days. What fraction of a sample remains after 6 days?",
+"o": [
+"1/3",
+"1/6",
+"1/8",
+"1/4"
+],
+"a": 2
+},
+{
+"id": "p48",
+"t": "Modern physics",
+"q": "What is an alpha particle?",
+"o": [
+"An electron",
+"A helium-4 nucleus",
+"A proton",
+"A high-energy photon"
+],
+"a": 1
+},
+{
+"id": "p49",
+"t": "Mechanics",
+"q": "A car accelerates uniformly from rest to 20 m/s in 5 s. What is its acceleration?",
+"o": [
+"4 m/s²",
+"5 m/s²",
+"100 m/s²",
+"0.25 m/s²"
+],
+"a": 0
+},
+{
+"id": "p50",
+"t": "Mechanics",
+"q": "A ball is thrown vertically upward at 20 m/s. Taking g = 10 m/s², what maximum height does it reach?",
+"o": [
+"2 m",
+"20 m",
+"10 m",
+"40 m"
+],
+"a": 1
+},
+{
+"id": "p51",
+"t": "Mechanics",
+"q": "A net force of 10 N acts on a 2 kg object. What is its acceleration?",
+"o": [
+"10 m/s²",
+"20 m/s²",
+"0.2 m/s²",
+"5 m/s²"
+],
+"a": 3
+},
+{
+"id": "p52",
+"t": "Mechanics",
+"q": "An object is dropped from rest and falls for 3 s. Taking g = 10 m/s², how far does it fall?",
+"o": [
+"45 m",
+"15 m",
+"90 m",
+"30 m"
+],
+"a": 0
+},
+{
+"id": "p53",
+"t": "Mechanics",
+"q": "A 5 kg block on a frictionless surface is pulled by a 20 N force at 60° above the horizontal. What is its horizontal acceleration?",
+"o": [
+"4 m/s²",
+"2 m/s²",
+"3.5 m/s²",
+"1 m/s²"
+],
+"a": 1
+},
+{
+"id": "p54",
+"t": "Mechanics",
+"q": "According to Newton’s third law, the action and reaction forces act on",
+"o": [
+"the same body",
+"only the heavier body",
+"the bodies only when they are at rest",
+"two different bodies"
+],
+"a": 3
+},
+{
+"id": "p55",
+"t": "Energy & momentum",
+"q": "A 50 N force moves an object 4 m in the direction of the force. How much work is done?",
+"o": [
+"12.5 J",
+"200 J",
+"800 J",
+"54 J"
+],
+"a": 1
+},
+{
+"id": "p56",
+"t": "Energy & momentum",
+"q": "What is the kinetic energy of a 2 kg object moving at 3 m/s?",
+"o": [
+"3 J",
+"6 J",
+"18 J",
+"9 J"
+],
+"a": 3
+},
+{
+"id": "p57",
+"t": "Energy & momentum",
+"q": "A 4 kg cart moving at 3 m/s collides with a 2 kg cart at rest and they stick together. What is their common speed?",
+"o": [
+"2 m/s",
+"6 m/s",
+"3 m/s",
+"1.5 m/s"
+],
+"a": 0
+},
+{
+"id": "p58",
+"t": "Energy & momentum",
+"q": "A motor does 600 J of work in 3 s. What is its power?",
+"o": [
+"603 W",
+"1800 W",
+"200 W",
+"0.005 W"
+],
+"a": 2
+},
+{
+"id": "p59",
+"t": "Circular motion & gravitation",
+"q": "An object moves in a circle of radius 2 m at 4 m/s. What is its centripetal acceleration?",
+"o": [
+"4 m/s²",
+"8 m/s²",
+"16 m/s²",
+"2 m/s²"
+],
+"a": 1
+},
+{
+"id": "p60",
+"t": "Circular motion & gravitation",
+"q": "If the distance between two masses is doubled, the gravitational force between them becomes",
+"o": [
+"half as large",
+"twice as large",
+"one quarter as large",
+"four times as large"
+],
+"a": 2
+},
+{
+"id": "p61",
+"t": "Oscillations & waves",
+"q": "A wave has frequency 500 Hz and wavelength 0.6 m. What is its speed?",
+"o": [
+"833 m/s",
+"0.0012 m/s",
+"3000 m/s",
+"300 m/s"
+],
+"a": 3
+},
+{
+"id": "p62",
+"t": "Oscillations & waves",
+"q": "The period of a simple pendulum depends on",
+"o": [
+"the material of the string",
+"its mass",
+"its length and the acceleration due to gravity",
+"its amplitude only"
+],
+"a": 2
+},
+{
+"id": "p63",
+"t": "Optics",
+"q": "Light travels at 3 × 10⁸ m/s in air. What is its speed in glass of refractive index 1.5?",
+"o": [
+"1.5 × 10⁸ m/s",
+"4.5 × 10⁸ m/s",
+"3 × 10⁸ m/s",
+"2 × 10⁸ m/s"
+],
+"a": 3
+},
+{
+"id": "p64",
+"t": "Optics",
+"q": "An object is placed at 2f in front of a converging lens. The image is",
+"o": [
+"virtual, upright and the same size",
+"real, inverted and the same size",
+"virtual, upright and enlarged",
+"real, inverted and enlarged"
+],
+"a": 1
+},
+{
+"id": "p65",
+"t": "Thermal physics",
+"q": "How much heat is needed to raise the temperature of 2 kg of water by 10 °C? (c = 4200 J/kg·°C)",
+"o": [
+"84,000 J",
+"840 J",
+"8,400 J",
+"42,000 J"
+],
+"a": 0
+},
+{
+"id": "p66",
+"t": "Thermal physics",
+"q": "An ideal gas is heated at constant volume so that its absolute temperature doubles. Its pressure",
+"o": [
+"stays the same",
+"quadruples",
+"doubles",
+"halves"
+],
+"a": 2
+},
+{
+"id": "p67",
+"t": "Electricity",
+"q": "Two 6 Ω resistors are connected in parallel. What is the total resistance?",
+"o": [
+"6 Ω",
+"3 Ω",
+"36 Ω",
+"12 Ω"
+],
+"a": 1
+},
+{
+"id": "p68",
+"t": "Electricity",
+"q": "A 12 V battery is connected across a 4 Ω resistor. What power is dissipated?",
+"o": [
+"3 W",
+"48 W",
+"144 W",
+"36 W"
+],
+"a": 3
+},
+{
+"id": "p69",
+"t": "Electricity",
+"q": "A current of 2 A flows for 30 s. How much charge passes?",
+"o": [
+"15 C",
+"32 C",
+"60 C",
+"0.067 C"
+],
+"a": 2
+},
+{
+"id": "p70",
+"t": "Magnetism & induction",
+"q": "A 0.1 m wire carrying 2 A lies perpendicular to a 0.5 T magnetic field. What force acts on it?",
+"o": [
+"0.01 N",
+"0.1 N",
+"10 N",
+"1 N"
+],
+"a": 1
+},
+{
+"id": "p71",
+"t": "Magnetism & induction",
+"q": "According to Faraday’s law, the induced emf in a coil is proportional to",
+"o": [
+"the rate of change of magnetic flux",
+"the resistance of the coil",
+"the length of the wire",
+"the magnetic flux itself"
+],
+"a": 0
+},
+{
+"id": "p72",
+"t": "Modern physics",
+"q": "If the frequency of a photon is doubled, its energy",
+"o": [
+"quadruples",
+"doubles",
+"stays the same",
+"halves"
+],
+"a": 1
+}
+]

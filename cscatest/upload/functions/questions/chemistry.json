@@ -1,0 +1,866 @@
+[
+{
+"id": "c01",
+"t": "Atomic structure",
+"q": "How many neutrons are in an atom of sodium-23 (atomic number 11)?",
+"o": [
+"11",
+"12",
+"23",
+"34"
+],
+"a": 1
+},
+{
+"id": "c02",
+"t": "Atomic structure",
+"q": "Isotopes of the same element differ in their number of:",
+"o": [
+"protons",
+"neutrons",
+"electrons in the neutral atom",
+"chemical properties"
+],
+"a": 1
+},
+{
+"id": "c03",
+"t": "Atomic structure",
+"q": "What is the electron arrangement of magnesium (atomic number 12)?",
+"o": [
+"2, 8, 2",
+"2, 10",
+"2, 8, 1, 1",
+"2, 6, 4"
+],
+"a": 0
+},
+{
+"id": "c04",
+"t": "Atomic structure",
+"q": "Across a period of the periodic table from left to right, atomic radius generally:",
+"o": [
+"increases",
+"decreases",
+"stays the same",
+"first decreases, then increases"
+],
+"a": 1
+},
+{
+"id": "c05",
+"t": "Atomic structure",
+"q": "Which element is the most electronegative?",
+"o": [
+"Oxygen",
+"Chlorine",
+"Fluorine",
+"Nitrogen"
+],
+"a": 2
+},
+{
+"id": "c06",
+"t": "Atomic structure",
+"q": "Elements in the same group of the periodic table have the same:",
+"o": [
+"number of valence electrons",
+"atomic mass",
+"number of electron shells",
+"number of neutrons"
+],
+"a": 0
+},
+{
+"id": "c07",
+"t": "Bonding & structure",
+"q": "Which compound contains ionic bonds?",
+"o": [
+"HCl",
+"CO₂",
+"NaCl",
+"CH₄"
+],
+"a": 2
+},
+{
+"id": "c08",
+"t": "Bonding & structure",
+"q": "Which of these molecules is polar?",
+"o": [
+"CO₂",
+"CH₄",
+"H₂O",
+"CCl₄"
+],
+"a": 2
+},
+{
+"id": "c09",
+"t": "Bonding & structure",
+"q": "What is the shape of an ammonia (NH₃) molecule?",
+"o": [
+"Linear",
+"Trigonal planar",
+"Trigonal pyramidal",
+"Tetrahedral"
+],
+"a": 2
+},
+{
+"id": "c10",
+"t": "Bonding & structure",
+"q": "Water boils at a much higher temperature than H₂S. What is the main reason?",
+"o": [
+"Ionic bonding",
+"Hydrogen bonding",
+"Metallic bonding",
+"Its higher molar mass"
+],
+"a": 1
+},
+{
+"id": "c11",
+"t": "Moles & stoichiometry",
+"q": "How many moles are in 36 g of water? (H = 1, O = 16)",
+"o": [
+"0.5 mol",
+"1 mol",
+"2 mol",
+"18 mol"
+],
+"a": 2
+},
+{
+"id": "c12",
+"t": "Moles & stoichiometry",
+"q": "What is the molar mass of CaCO₃? (Ca = 40, C = 12, O = 16)",
+"o": [
+"68 g/mol",
+"84 g/mol",
+"100 g/mol",
+"116 g/mol"
+],
+"a": 2
+},
+{
+"id": "c13",
+"t": "Moles & stoichiometry",
+"q": "What volume does 0.5 mol of an ideal gas occupy at STP (0 °C, 1 atm)?",
+"o": [
+"5.6 L",
+"11.2 L",
+"22.4 L",
+"44.8 L"
+],
+"a": 1
+},
+{
+"id": "c14",
+"t": "Moles & stoichiometry",
+"q": "How many molecules are in 2 mol of O₂? (Nₐ = 6.02 × 10²³ mol⁻¹)",
+"o": [
+"6.02 × 10²³",
+"1.20 × 10²⁴",
+"3.01 × 10²³",
+"2.41 × 10²⁴"
+],
+"a": 1
+},
+{
+"id": "c15",
+"t": "Moles & stoichiometry",
+"q": "For 2H₂ + O₂ → 2H₂O, what mass of water forms from 4 g of H₂ with excess oxygen? (H = 1, O = 16)",
+"o": [
+"18 g",
+"36 g",
+"32 g",
+"72 g"
+],
+"a": 1
+},
+{
+"id": "c16",
+"t": "Moles & stoichiometry",
+"q": "Balance the equation C₃H₈ + x O₂ → 3CO₂ + 4H₂O. What is x?",
+"o": [
+"3",
+"4",
+"5",
+"7"
+],
+"a": 2
+},
+{
+"id": "c17",
+"t": "Moles & stoichiometry",
+"q": "0.2 mol of NaOH is dissolved to make 500 mL of solution. What is its concentration?",
+"o": [
+"0.1 mol/L",
+"0.4 mol/L",
+"0.2 mol/L",
+"1 mol/L"
+],
+"a": 1
+},
+{
+"id": "c18",
+"t": "Moles & stoichiometry",
+"q": "100 mL of 2 mol/L HCl is diluted with water to 400 mL. What is the new concentration?",
+"o": [
+"0.25 mol/L",
+"0.5 mol/L",
+"1 mol/L",
+"8 mol/L"
+],
+"a": 1
+},
+{
+"id": "c19",
+"t": "Moles & stoichiometry",
+"q": "What is the mass percentage of oxygen in water? (H = 1, O = 16)",
+"o": [
+"11.1%",
+"50%",
+"66.7%",
+"88.9%"
+],
+"a": 3
+},
+{
+"id": "c20",
+"t": "Acids & bases",
+"q": "What is the pH of 0.01 mol/L hydrochloric acid?",
+"o": [
+"1",
+"2",
+"12",
+"0.01"
+],
+"a": 1
+},
+{
+"id": "c21",
+"t": "Acids & bases",
+"q": "What is the pH of 0.001 mol/L NaOH solution at 25 °C?",
+"o": [
+"3",
+"7",
+"11",
+"14"
+],
+"a": 2
+},
+{
+"id": "c22",
+"t": "Acids & bases",
+"q": "What volume of 0.2 mol/L NaOH exactly neutralises 20 mL of 0.1 mol/L HCl?",
+"o": [
+"5 mL",
+"10 mL",
+"20 mL",
+"40 mL"
+],
+"a": 1
+},
+{
+"id": "c23",
+"t": "Acids & bases",
+"q": "Which of the following is a weak acid?",
+"o": [
+"HCl",
+"HNO₃",
+"CH₃COOH",
+"H₂SO₄"
+],
+"a": 2
+},
+{
+"id": "c24",
+"t": "Acids & bases",
+"q": "What colour is phenolphthalein in a basic solution?",
+"o": [
+"Colourless",
+"Pink",
+"Blue",
+"Yellow"
+],
+"a": 1
+},
+{
+"id": "c25",
+"t": "Acids & bases",
+"q": "An aqueous solution of sodium carbonate (Na₂CO₃) is:",
+"o": [
+"acidic",
+"neutral",
+"basic",
+"always exactly pH 7"
+],
+"a": 2
+},
+{
+"id": "c26",
+"t": "Redox & electrochemistry",
+"q": "In the reaction Zn + CuSO₄ → ZnSO₄ + Cu, which species is the reducing agent?",
+"o": [
+"Zn",
+"CuSO₄",
+"ZnSO₄",
+"Cu"
+],
+"a": 0
+},
+{
+"id": "c27",
+"t": "Redox & electrochemistry",
+"q": "What is the oxidation state of manganese in KMnO₄?",
+"o": [
+"+2",
+"+4",
+"+6",
+"+7"
+],
+"a": 3
+},
+{
+"id": "c28",
+"t": "Redox & electrochemistry",
+"q": "What is the oxidation state of sulfur in H₂SO₄?",
+"o": [
+"+4",
+"+6",
+"−2",
+"+2"
+],
+"a": 1
+},
+{
+"id": "c29",
+"t": "Redox & electrochemistry",
+"q": "In a galvanic (voltaic) cell, oxidation takes place at:",
+"o": [
+"the anode",
+"the cathode",
+"the salt bridge",
+"both electrodes equally"
+],
+"a": 0
+},
+{
+"id": "c30",
+"t": "Redox & electrochemistry",
+"q": "Molten sodium chloride is electrolysed. What forms at the cathode?",
+"o": [
+"Chlorine gas",
+"Sodium metal",
+"Hydrogen gas",
+"Oxygen gas"
+],
+"a": 1
+},
+{
+"id": "c31",
+"t": "Rates & equilibrium",
+"q": "Raising the temperature increases reaction rate mainly because:",
+"o": [
+"more particles have energy at or above the activation energy",
+"the activation energy increases",
+"the equilibrium constant always increases",
+"reactant concentrations increase"
+],
+"a": 0
+},
+{
+"id": "c32",
+"t": "Rates & equilibrium",
+"q": "A catalyst speeds up a reaction because it:",
+"o": [
+"shifts the equilibrium position to the right",
+"provides a pathway with lower activation energy",
+"increases the enthalpy change",
+"is used up during the reaction"
+],
+"a": 1
+},
+{
+"id": "c33",
+"t": "Rates & equilibrium",
+"q": "For N₂(g) + 3H₂(g) ⇌ 2NH₃(g), ΔH < 0, how does increasing the pressure shift the equilibrium?",
+"o": [
+"Toward NH₃",
+"Toward N₂ and H₂",
+"It does not shift",
+"It depends only on temperature"
+],
+"a": 0
+},
+{
+"id": "c34",
+"t": "Rates & equilibrium",
+"q": "For N₂(g) + 3H₂(g) ⇌ 2NH₃(g), ΔH < 0, raising the temperature at equilibrium will:",
+"o": [
+"increase the yield of NH₃",
+"decrease the yield of NH₃",
+"not change the yield of NH₃",
+"stop the reaction"
+],
+"a": 1
+},
+{
+"id": "c35",
+"t": "Rates & equilibrium",
+"q": "What is the equilibrium constant expression Kc for H₂(g) + I₂(g) ⇌ 2HI(g)?",
+"o": [
+"[HI] / ([H₂][I₂])",
+"[HI]² / ([H₂][I₂])",
+"[H₂][I₂] / [HI]²",
+"2[HI] / ([H₂][I₂])"
+],
+"a": 1
+},
+{
+"id": "c36",
+"t": "Rates & equilibrium",
+"q": "Which statement is true for an exothermic reaction?",
+"o": [
+"ΔH > 0",
+"ΔH < 0",
+"ΔH = 0",
+"The entropy change is always negative"
+],
+"a": 1
+},
+{
+"id": "c37",
+"t": "Elements & compounds",
+"q": "Which metal reacts most vigorously with cold water?",
+"o": [
+"Iron",
+"Copper",
+"Potassium",
+"Magnesium"
+],
+"a": 2
+},
+{
+"id": "c38",
+"t": "Elements & compounds",
+"q": "Which gas turns limewater milky?",
+"o": [
+"O₂",
+"CO₂",
+"H₂",
+"N₂"
+],
+"a": 1
+},
+{
+"id": "c39",
+"t": "Elements & compounds",
+"q": "Which halogen is a liquid at room temperature?",
+"o": [
+"Fluorine",
+"Chlorine",
+"Bromine",
+"Iodine"
+],
+"a": 2
+},
+{
+"id": "c40",
+"t": "Elements & compounds",
+"q": "Which hydroxide reacts with both hydrochloric acid and sodium hydroxide solution?",
+"o": [
+"Mg(OH)₂",
+"NaOH",
+"Al(OH)₃",
+"Ca(OH)₂"
+],
+"a": 2
+},
+{
+"id": "c41",
+"t": "Elements & compounds",
+"q": "Which observation confirms the presence of Fe³⁺ ions in solution?",
+"o": [
+"Adding KSCN solution gives a blood-red colour",
+"Adding BaCl₂ gives a white precipitate",
+"Adding AgNO₃ gives a yellow precipitate",
+"The solution turns limewater milky"
+],
+"a": 0
+},
+{
+"id": "c42",
+"t": "Organic chemistry",
+"q": "What is the general formula of the alkanes?",
+"o": [
+"CₙH₂ₙ",
+"CₙH₂ₙ₊₂",
+"CₙH₂ₙ₋₂",
+"CₙHₙ"
+],
+"a": 1
+},
+{
+"id": "c43",
+"t": "Organic chemistry",
+"q": "Ethene decolourises bromine water. What type of reaction is this?",
+"o": [
+"Substitution",
+"Addition",
+"Esterification",
+"Neutralisation"
+],
+"a": 1
+},
+{
+"id": "c44",
+"t": "Organic chemistry",
+"q": "Which functional group is present in ethanol?",
+"o": [
+"–COOH",
+"–OH",
+"–CHO",
+"–NH₂"
+],
+"a": 1
+},
+{
+"id": "c45",
+"t": "Organic chemistry",
+"q": "Ethanol is heated with ethanoic acid and a little concentrated H₂SO₄. What is the organic product?",
+"o": [
+"Ethanal",
+"Ethyl ethanoate",
+"Ethene",
+"Diethyl ether"
+],
+"a": 1
+},
+{
+"id": "c46",
+"t": "Organic chemistry",
+"q": "How many structural isomers does C₄H₁₀ have?",
+"o": [
+"1",
+"2",
+"3",
+"4"
+],
+"a": 1
+},
+{
+"id": "c47",
+"t": "Organic chemistry",
+"q": "Polyethylene (polythene) is made by polymerising:",
+"o": [
+"ethane",
+"ethene",
+"ethanol",
+"ethyne"
+],
+"a": 1
+},
+{
+"id": "c48",
+"t": "Practical chemistry",
+"q": "What is the best method for obtaining solid salt from salt water?",
+"o": [
+"Filtration",
+"Evaporation",
+"Using a separating funnel",
+"Chromatography"
+],
+"a": 1
+},
+{
+"id": "c49",
+"t": "Atomic structure",
+"q": "How many electrons does a chloride ion Cl⁻ have? (Z = 17)",
+"o": [
+"16",
+"35",
+"18",
+"17"
+],
+"a": 2
+},
+{
+"id": "c50",
+"t": "Atomic structure",
+"q": "What is the electron configuration of magnesium (Z = 12)?",
+"o": [
+"1s² 2s² 2p⁴ 3s² 3p²",
+"1s² 2s² 2p⁶ 3s² 3p¹",
+"1s² 2s² 2p⁶ 3s²",
+"1s² 2s² 2p⁶ 3s¹"
+],
+"a": 2
+},
+{
+"id": "c51",
+"t": "Atomic structure",
+"q": "Isotopes of an element differ in their number of",
+"o": [
+"electrons",
+"energy levels",
+"neutrons",
+"protons"
+],
+"a": 2
+},
+{
+"id": "c52",
+"t": "Bonding & structure",
+"q": "What is the shape of a methane molecule, CH₄?",
+"o": [
+"linear",
+"trigonal planar",
+"bent",
+"tetrahedral"
+],
+"a": 3
+},
+{
+"id": "c53",
+"t": "Bonding & structure",
+"q": "Which of these molecules forms hydrogen bonds?",
+"o": [
+"CO₂",
+"HCl",
+"H₂O",
+"CH₄"
+],
+"a": 2
+},
+{
+"id": "c54",
+"t": "Bonding & structure",
+"q": "Which compound has ionic bonding?",
+"o": [
+"CO₂",
+"NaCl",
+"H₂O",
+"CH₄"
+],
+"a": 1
+},
+{
+"id": "c55",
+"t": "Moles & stoichiometry",
+"q": "How many moles are in 22 g of CO₂? (M = 44 g/mol)",
+"o": [
+"22 mol",
+"1 mol",
+"0.5 mol",
+"2 mol"
+],
+"a": 2
+},
+{
+"id": "c56",
+"t": "Moles & stoichiometry",
+"q": "What is the mass of 0.25 mol of NaOH? (M = 40 g/mol)",
+"o": [
+"0.00625 g",
+"40 g",
+"10 g",
+"160 g"
+],
+"a": 2
+},
+{
+"id": "c57",
+"t": "Moles & stoichiometry",
+"q": "What volume does 2 mol of an ideal gas occupy at STP? (22.4 L/mol)",
+"o": [
+"44.8 L",
+"22.4 L",
+"2 L",
+"11.2 L"
+],
+"a": 0
+},
+{
+"id": "c58",
+"t": "Moles & stoichiometry",
+"q": "In 2H₂ + O₂ → 2H₂O, how many moles of O₂ react completely with 4 mol of H₂?",
+"o": [
+"4 mol",
+"8 mol",
+"2 mol",
+"1 mol"
+],
+"a": 2
+},
+{
+"id": "c59",
+"t": "Acids & bases",
+"q": "What is the pH of a 0.001 mol/L solution of HCl?",
+"o": [
+"0.001",
+"1",
+"11",
+"3"
+],
+"a": 3
+},
+{
+"id": "c60",
+"t": "Acids & bases",
+"q": "Which salt forms when HCl reacts with NaOH?",
+"o": [
+"Na₂O",
+"NaClO",
+"HClO",
+"NaCl"
+],
+"a": 3
+},
+{
+"id": "c61",
+"t": "Acids & bases",
+"q": "A strong acid is one that",
+"o": [
+"reacts slowly with metals",
+"is concentrated",
+"ionises completely in water",
+"has a high pH"
+],
+"a": 2
+},
+{
+"id": "c62",
+"t": "Redox & electrochemistry",
+"q": "What is the oxidation number of manganese in KMnO₄?",
+"o": [
+"+2",
+"+4",
+"+7",
+"+6"
+],
+"a": 2
+},
+{
+"id": "c63",
+"t": "Redox & electrochemistry",
+"q": "In the reaction Zn + Cu²⁺ → Zn²⁺ + Cu, zinc is",
+"o": [
+"reduced",
+"a catalyst",
+"unchanged",
+"oxidised"
+],
+"a": 3
+},
+{
+"id": "c64",
+"t": "Rates & equilibrium",
+"q": "A catalyst increases the rate of a reaction by",
+"o": [
+"providing a pathway with lower activation energy",
+"raising the temperature of the mixture",
+"increasing the concentration of reactants",
+"shifting the equilibrium to the products"
+],
+"a": 0
+},
+{
+"id": "c65",
+"t": "Rates & equilibrium",
+"q": "For N₂ + 3H₂ ⇌ 2NH₃, increasing the pressure shifts the equilibrium",
+"o": [
+"to the right, producing more NH₃",
+"to the left, producing less NH₃",
+"not at all",
+"so that the reaction stops"
+],
+"a": 0
+},
+{
+"id": "c66",
+"t": "Rates & equilibrium",
+"q": "Which change increases the rate of reaction between a solid and a solution?",
+"o": [
+"diluting the solution",
+"grinding the solid into a powder",
+"cooling the mixture",
+"using a single large lump"
+],
+"a": 1
+},
+{
+"id": "c67",
+"t": "Elements & compounds",
+"q": "Which is the most reactive of the alkali metals Li, Na, K and Rb?",
+"o": [
+"Na",
+"Rb",
+"K",
+"Li"
+],
+"a": 1
+},
+{
+"id": "c68",
+"t": "Elements & compounds",
+"q": "Halogens (group 17) typically form ions with a charge of",
+"o": [
+"+1",
+"−2",
+"−1",
+"+7"
+],
+"a": 2
+},
+{
+"id": "c69",
+"t": "Organic chemistry",
+"q": "Which functional group is present in ethanol?",
+"o": [
+"carboxyl (−COOH)",
+"hydroxyl (−OH)",
+"amino (−NH₂)",
+"carbonyl (C=O)"
+],
+"a": 1
+},
+{
+"id": "c70",
+"t": "Organic chemistry",
+"q": "What is the molecular formula of propane?",
+"o": [
+"C₂H₆",
+"C₃H₆",
+"C₄H₁₀",
+"C₃H₈"
+],
+"a": 3
+},
+{
+"id": "c71",
+"t": "Organic chemistry",
+"q": "When an alkene is shaken with bromine water, what happens?",
+"o": [
+"addition occurs and the bromine water is decolourised",
+"the alkene burns",
+"the alkene polymerises",
+"substitution occurs and a gas is released"
+],
+"a": 0
+},
+{
+"id": "c72",
+"t": "Practical chemistry",
+"q": "Which technique separates sand from water?",
+"o": [
+"filtration",
+"evaporation",
+"distillation",
+"chromatography"
+],
+"a": 0
+}
+]

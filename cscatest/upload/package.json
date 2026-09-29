@@ -1,0 +1,15 @@
+{
+  "name": "cscatest",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "cscatest.org: CSCA practice tests on Firebase (project cscatestorg)",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "MOCK=1 node build.mjs && node serve.mjs",
+    "test": "node --test test/engine.test.mjs",
+    "emulate": "node build.mjs && firebase emulators:start",
+    "deploy": "npm test && node build.mjs && firebase deploy --project cscatestorg"
+  }
+}

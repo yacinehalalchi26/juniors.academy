@@ -1,0 +1,57 @@
+<main id="main">
+  <div class="loading" data-result-loading><div class="spinner"></div><span>Loading your result</span></div>
+  <div class="container" data-result-error hidden><section class="page-head"><div class="alert alert-error" data-result-error-text></div><p class="form-foot"><a href="tests/">Take a test</a></p></section></div>
+
+  <div class="container" data-result-cancelled hidden>
+    <section class="page-head">
+      <div class="cancel-notice" role="alert">
+        <strong>Test cancelled</strong>
+        <p data-cancel-reason></p>
+      </div>
+      <div class="result-actions"><a class="btn btn-primary" href="tests/" data-retry>Start a new test</a><a class="btn btn-secondary" href="./">Home</a></div>
+    </section>
+  </div>
+
+  <div data-result hidden>
+    <div class="container">
+      <section class="result-head">
+        <p class="muted" data-result-subject></p>
+        <h1 class="sr-only">Your result</h1>
+        <div class="result-top">
+          <div class="big-score"><span data-score>0</span><small data-score-of>/ 100</small></div>
+          <div>
+            <span class="band-label" data-band></span>
+            <p class="muted" data-band-note></p>
+          </div>
+        </div>
+        <div class="module-scores" data-module-scores hidden></div>
+        <ul class="result-meta">
+          <li><b data-correct></b> correct</li>
+          <li><b data-answered></b> answered</li>
+          <li><b data-duration></b> used</li>
+          <li data-submitted></li>
+        </ul>
+        <div class="result-actions">
+          <a class="btn btn-primary" href="tests/" data-again>Take another test</a>
+          <a class="btn btn-secondary" href="results/#review" data-review-link>Review answers</a>
+          <span class="muted" data-emailed></span>
+        </div>
+      </section>
+
+      <section class="section tight" data-topics-section></section>
+
+      <section class="section" id="review" data-review-section>
+        <div class="section-title"><h2>Review your answers</h2>
+          <div class="review-filters" role="group" aria-label="Filter questions">
+            <button type="button" aria-pressed="true" data-filter="all">All</button>
+            <button type="button" aria-pressed="false" data-filter="wrong">Incorrect</button>
+            <button type="button" aria-pressed="false" data-filter="empty">Unanswered</button>
+            <button type="button" aria-pressed="false" data-filter="right">Correct</button>
+          </div>
+        </div>
+        <div class="module-tabs" role="tablist" data-module-tabs hidden></div>
+        <div data-review-list></div>
+      </section>
+    </div>
+  </div>
+</main>

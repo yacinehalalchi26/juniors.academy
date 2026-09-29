@@ -1,0 +1,99 @@
+<header class="exam-bar">
+  <div class="exam-bar-inner">
+    <a class="brand brand-compact" href="./" data-leave aria-label="Leave test">{{BRAND}}</a>
+    <div class="exam-title"><strong data-exam-subject>Loading…</strong><span class="type-chip" data-exam-type hidden></span><span class="muted" data-exam-section></span></div>
+    <div class="exam-timer" data-timer role="timer" aria-label="Time remaining">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="9" r="5.5"/><path d="M8 6.5V9l1.6 1.6M6 1.5h4"/></svg>
+      <span data-timer-text>--:--</span>
+    </div>
+    <button class="btn btn-secondary btn-sm" type="button" data-open-submit>Finish</button>
+  </div>
+  <div class="exam-progress" aria-hidden="true"><i data-progress-bar></i></div>
+</header>
+
+<div class="idle-warning" role="alert" data-idle-warning hidden>
+  <span>Are you still there? Your test will be cancelled in <b data-idle-countdown>2:00</b> without activity.</span>
+  <button class="btn btn-sm btn-primary" type="button" data-still-here>I'm here</button>
+</div>
+
+<main id="main">
+  <div class="loading" data-exam-loading><div class="spinner"></div><span>Preparing your test</span></div>
+  <div class="container" data-exam-error hidden><section class="page-head"><div class="alert alert-error" data-exam-error-text></div><p class="form-foot"><a href="tests/">Take a test</a></p></section></div>
+
+  <div class="exam-main" data-exam hidden>
+    <section class="question-panel" aria-live="polite">
+      <ol class="section-steps" data-section-steps hidden></ol>
+      <div class="question-head">
+        <span class="q-label" data-q-label>Question 1</span>
+        <button class="flag-btn" type="button" aria-pressed="false" data-flag>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 14.5v-12h8l-1.5 3 1.5 3h-8"/></svg>
+          <span>Flag</span>
+        </button>
+      </div>
+      <p class="q-text" id="q-text" data-q-text tabindex="-1"></p>
+      <div class="options" role="radiogroup" aria-labelledby="q-text" data-options></div>
+      <div class="question-nav">
+        <button class="btn btn-ghost" type="button" data-prev>Previous</button>
+        <span class="save-status" data-save-status aria-live="polite"></span>
+        <button class="nav-toggle-mobile" type="button" data-toggle-nav aria-expanded="false" aria-controls="navigator">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg>
+          <span data-nav-count>0/0</span>
+        </button>
+        <button class="btn btn-primary" type="button" data-next>Next</button>
+      </div>
+    </section>
+
+    <div class="sheet-backdrop" data-sheet-backdrop hidden></div>
+    <aside class="navigator" id="navigator" aria-label="Question navigator">
+      <div class="navigator-head"><strong data-nav-title>Questions</strong><span data-answered-count></span></div>
+      <div class="nav-grid" data-nav-grid></div>
+      <ul class="legend">
+        <li><i class="lg lg-answered"></i>Answered</li>
+        <li><i class="lg lg-flagged"></i>Flagged</li>
+      </ul>
+      <p class="kbd-hint">Keys A to D answer, arrow keys move, F flags.</p>
+      <button class="btn btn-primary btn-block" type="button" data-open-submit data-finish-label>Finish test</button>
+    </aside>
+  </div>
+</main>
+
+<dialog id="submit-dialog" aria-labelledby="submit-title">
+  <div class="dialog-body">
+    <h2 id="submit-title">Finish test?</h2>
+    <p data-sum-intro>You can't change answers after this. Your results will be emailed right away.</p>
+    <dl class="summary-list">
+      <div><dt>Answered</dt><dd data-sum-answered>0</dd></div>
+      <div><dt>Unanswered</dt><dd data-sum-empty>0</dd></div>
+      <div><dt>Flagged</dt><dd data-sum-flagged>0</dd></div>
+    </dl>
+    <p class="muted small" data-sum-note></p>
+  </div>
+  <div class="dialog-actions">
+    <button class="btn btn-ghost" type="button" data-close>Keep working</button>
+    <button class="btn btn-primary" type="button" data-confirm-submit>Finish</button>
+  </div>
+</dialog>
+
+<dialog id="leave-dialog" aria-labelledby="leave-title">
+  <div class="dialog-body">
+    <h2 id="leave-title">Leave the test?</h2>
+    <p>Your answers are saved and the timer keeps running. <b>If you're away for 10 minutes, the test is cancelled.</b></p>
+  </div>
+  <div class="dialog-actions">
+    <button class="btn btn-ghost" type="button" data-close>Stay</button>
+    <a class="btn btn-secondary" href="./" data-confirm-leave>Leave</a>
+  </div>
+</dialog>
+
+<div class="cancelled-overlay" role="alertdialog" aria-labelledby="cancelled-title" aria-describedby="cancelled-desc" data-cancelled hidden>
+  <div class="cancelled-bar">Test cancelled</div>
+  <div class="cancelled-card">
+    <h2 id="cancelled-title">Your test was cancelled</h2>
+    <p id="cancelled-desc" data-cancelled-desc>There was no activity for 10 minutes, so this test was cancelled and won't be scored.</p>
+    <div class="dialog-actions">
+      <a class="btn btn-secondary" href="./">Home</a>
+      <a class="btn btn-primary" href="tests/" data-cancelled-retry>Start a new test</a>
+    </div>
+  </div>
+</div>
+<div class="toast" role="status" data-toast></div>

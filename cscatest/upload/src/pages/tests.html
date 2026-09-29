@@ -1,0 +1,121 @@
+<main id="main">
+  <section class="page-hero">
+    {{PATTERN bl}}{{PATTERN tr}}
+    <div class="container">
+      <h1>Choose your test</h1>
+      <p class="lead">Pick a format, then the module or modules you want to practise. Questions change every time.</p>
+    </div>
+  </section>
+  <div class="container narrow">
+    <form class="builder" data-builder novalidate>
+      <fieldset class="choice-group">
+        <legend>1. Format</legend>
+        <p class="hint">Module test and full exam follow the real exam. The quick test is a short check.</p>
+        <div class="choices">
+          <label class="choice t-module">
+            <input type="radio" name="type" value="module">
+            <span class="choice-body"><strong>Module test</strong><span class="choice-meta">60 minutes, 48 questions</span><span class="choice-desc">One module in the real exam format.</span></span>
+          </label>
+          <label class="choice t-full">
+            <input type="radio" name="type" value="full">
+            <span class="choice-body"><strong>Full exam</strong><span class="choice-meta">2 or 3 hours</span><span class="choice-desc">Two or three modules back to back, 60 minutes each.</span></span>
+          </label>
+          <label class="choice t-quick">
+            <input type="radio" name="type" value="quick">
+            <span class="choice-body"><strong>Quick test</strong><span class="choice-meta">15 minutes, 12 questions</span><span class="choice-desc">One module. A fast check across every topic.</span></span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset class="choice-group" data-subject-group>
+        <legend>2. <span data-subject-legend>Module</span></legend>
+        <p class="hint" data-subject-hint>Choose one module.</p>
+        <div class="choices">
+          <label class="choice choice-compact">
+            <input type="radio" name="subject" value="math">
+            <span class="choice-body"><strong>Mathematics</strong><span class="choice-desc">Required for all applicants</span></span>
+          </label>
+          <label class="choice choice-compact">
+            <input type="radio" name="subject" value="physics">
+            <span class="choice-body"><strong>Physics</strong><span class="choice-desc">Science and engineering</span></span>
+          </label>
+          <label class="choice choice-compact">
+            <input type="radio" name="subject" value="chemistry">
+            <span class="choice-body"><strong>Chemistry</strong><span class="choice-desc">Science, medicine and agriculture</span></span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset class="choice-group" data-details-group>
+        <legend>3. Your details</legend>
+        <p class="hint">We only need these to send you your result. There is no account and no password.</p>
+        <div class="form details-form">
+          <div class="alert alert-error" role="alert" data-form-error hidden></div>
+          <div class="field">
+            <label for="name">Full name</label>
+            <input class="input" id="name" name="name" autocomplete="name" maxlength="80" placeholder="First and last name">
+            <p class="field-error" data-error-for="name"></p>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
+            <p class="field-error" data-error-for="email"></p>
+            <p class="hint">Your result is sent here the moment you finish.</p>
+          </div>
+          <div class="field">
+            <label for="country">Country</label>
+            <select class="select" id="country" name="country" data-country-select><option value="">Select your country</option></select>
+            <p class="field-error" data-error-for="country"></p>
+          </div>
+          <div class="field">
+            <label for="phone">Mobile number <span class="muted">(optional)</span></label>
+            <div class="phone-group">
+              <select class="select" id="dialCode" name="dialCode" aria-label="Country code" data-dial-select></select>
+              <input class="input" id="phone" name="phone" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="Number">
+            </div>
+            <p class="field-error" data-error-for="phone"></p>
+          </div>
+          <div class="field">
+            <label class="check"><input type="checkbox" id="agree" name="agree"><span>I’m 18 or older, or have my parent or guardian’s permission, and I agree to the <a href="terms/" target="_blank">Terms of use</a> and <a href="privacy/" target="_blank">Privacy policy</a></span></label>
+            <p class="field-error" data-error-for="agree"></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="builder-summary">
+        <div>
+          <p class="summary-line" data-summary>Choose a format and a module.</p>
+          <p class="hint">The timer starts as soon as you begin. After 10 minutes without activity, the test is cancelled.</p>
+        </div>
+        <button class="btn btn-primary btn-lg" type="submit" data-start disabled>Start test</button>
+      </div>
+      <div class="alert alert-warn" data-start-error hidden></div>
+    </form>
+  </div>
+</main>
+
+<dialog id="start-dialog" aria-labelledby="start-title">
+  <div class="dialog-body">
+    <h2 id="start-title">Ready to start?</h2>
+    <p data-start-desc></p>
+    <ul class="dialog-rules">
+      <li>The timer starts immediately and can't be paused.</li>
+      <li data-rule-sections hidden>Modules run back to back. You can't return to a module once you finish it.</li>
+      <li><b>After 10 minutes without activity, the test is cancelled.</b></li>
+    </ul>
+    <p class="muted small">Your result will be emailed to <span data-user-email></span>.</p>
+  </div>
+  <div class="dialog-actions">
+    <button class="btn btn-ghost" type="button" data-close>Not yet</button>
+    <button class="btn btn-primary" type="button" data-confirm-start>Start the timer</button>
+  </div>
+</dialog>
+
+<dialog id="active-dialog" aria-labelledby="active-title">
+  <div class="dialog-body">
+    <h2 id="active-title">You have a test in progress</h2>
+    <p data-active-desc></p>
+  </div>
+  <div class="dialog-actions">
+    <button class="btn btn-ghost" type="button" data-cancel-active>Cancel it and start new</button>
+    <button class="btn btn-primary" type="button" data-resume-active>Resume it</button>
+  </div>
+</dialog>
