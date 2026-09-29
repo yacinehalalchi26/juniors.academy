@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your result | CSCA Test</title>
+<meta name="description" content="Your CSCA practice test result.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/BricolageGrotesque-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+<script type="module" src="assets/result-page.js"></script>
+</head>
+<body data-page="result">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="CSCA Test home"><span class="wordmark">CSCA<span> Test</span></span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html#tests">Tests</a>
+      <a href="index.html#how">How it works</a>
+      <a href="faq.html">FAQ</a>
+      <div class="nav-actions"><a class="btn btn-primary btn-sm" href="index.html#tests">Take a test</a></div>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <div class="loading" data-result-loading><div class="spinner"></div><span>Loading your result</span></div>
+  <div class="container" data-result-error hidden><section class="page-head"><div class="alert alert-error" data-result-error-text></div><p class="form-foot"><a href="index.html#tests">Start a test</a></p></section></div>
+
+  <div class="container" data-result-cancelled hidden>
+    <section class="page-head">
+      <div class="cancel-notice" role="alert"><strong>Test cancelled</strong><p data-cancel-reason></p></div>
+      <div class="result-actions"><a class="btn btn-primary" href="index.html#tests">Start a new test</a><a class="btn btn-secondary" href="index.html">Home</a></div>
+    </section>
+  </div>
+
+  <div data-result hidden>
+    <div class="container">
+      <section class="result-head">
+        <p class="muted" data-result-subject></p>
+        <h1 class="sr-only">Your result</h1>
+        <div class="result-top">
+          <div class="big-score"><span data-score>0</span><small data-score-of>/ 100</small></div>
+          <div><span class="band-label" data-band></span><p class="muted" data-band-note></p></div>
+        </div>
+        <div class="module-scores" data-module-scores hidden></div>
+        <ul class="result-meta">
+          <li><b data-correct></b> correct</li>
+          <li><b data-answered></b> answered</li>
+          <li><b data-duration></b> used</li>
+          <li data-submitted></li>
+        </ul>
+        <div class="result-actions">
+          <a class="btn btn-primary" href="index.html#tests" data-again>Take another test</a>
+          <a class="btn btn-secondary" href="result.html#review" data-review-link>Review answers</a>
+          <span class="muted" data-emailed></span>
+        </div>
+      </section>
+      <section class="section" data-topics-section></section>
+      <section class="section" id="review" data-review-section>
+        <div class="section-title"><h2>Review your answers</h2>
+          <div class="review-filters" role="group" aria-label="Filter questions">
+            <button type="button" aria-pressed="true" data-filter="all">All</button>
+            <button type="button" aria-pressed="false" data-filter="wrong">Incorrect</button>
+            <button type="button" aria-pressed="false" data-filter="empty">Unanswered</button>
+            <button type="button" aria-pressed="false" data-filter="right">Correct</button>
+          </div>
+        </div>
+        <div class="module-tabs" role="tablist" data-module-tabs hidden></div>
+        <div data-review-list></div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="index.html" aria-label="CSCA Test home"><span class="wordmark">CSCA<span> Test</span></span></a>
+        <p class="powered">Powered by <a href="https://juniors.academy" rel="noopener">Juniors Academy</a></p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html#tests">Tests</a>
+        <a href="faq.html">FAQ</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:support@cscatest.org">Contact</a>
+      </nav>
+    </div>
+    <p class="footer-credit">Every test is written and reviewed by competent teachers and CSCA examiners, and built by the team at Juniors Academy.</p>
+    <div class="footer-bottom">
+      <p>cscatest.org is an independent practice platform and is not affiliated with the official CSCA organisers. Official registration is only available at <a href="https://www.csca.cn" rel="noopener" target="_blank">csca.cn</a>. Practice scores can't be used for admission.</p>
+      <p>© <span data-year>2026</span> Juniors Academy <a class="admin-link" href="admin.html">Admin</a></p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

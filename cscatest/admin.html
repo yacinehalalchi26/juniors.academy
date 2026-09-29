@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin | CSCA Test</title>
+<meta name="description" content="Administration for CSCA Test.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/BricolageGrotesque-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+<script type="module" src="assets/admin.js"></script>
+</head>
+<body data-page="admin">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="CSCA Test home"><span class="wordmark">CSCA<span> Test</span></span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="index.html#tests">Tests</a>
+      <a href="index.html#how">How it works</a>
+      <a href="faq.html">FAQ</a>
+      <div class="nav-actions"><a class="btn btn-primary btn-sm" href="index.html#tests">Take a test</a></div>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <div class="container admin">
+    <div class="loading" data-admin-loading><div class="spinner"></div><span>Checking access</span></div>
+
+    <div class="admin-gate" data-admin-gate hidden>
+      <h1>Admin</h1>
+      <p class="muted">Sign in to see students, tests and results.</p>
+      <form class="form" data-admin-login novalidate>
+        <div class="alert alert-error" role="alert" data-form-error hidden></div>
+        <div class="field">
+          <label for="admin-email">Email</label>
+          <input class="input" id="admin-email" name="email" type="email" autocomplete="username" inputmode="email">
+        </div>
+        <div class="field">
+          <div class="label-row"><label class="label" for="admin-password">Password</label><button class="link-btn" type="button" data-admin-forgot>Forgot?</button></div>
+          <div class="password-wrap">
+            <input class="input" id="admin-password" name="password" type="password" autocomplete="current-password">
+            <button type="button" class="password-toggle" data-toggle-password="admin-password">Show</button>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Sign in</button>
+      </form>
+      <p class="auth-legal">This area is for Juniors Academy staff. Students don't need an account.</p>
+    </div>
+
+    <div data-admin hidden>
+      <section class="admin-head">
+        <div><h1>Admin</h1><p class="muted">Signed in as <span data-admin-email></span> · <button class="link-btn" type="button" data-admin-logout>Sign out</button></p></div>
+        <nav class="admin-tabs" role="tablist" aria-label="Admin sections">
+          <button type="button" role="tab" data-tab="overview">Overview</button>
+          <button type="button" role="tab" data-tab="tests">Tests</button>
+          <button type="button" role="tab" data-tab="students">Students</button>
+        </nav>
+      </section>
+
+      <section class="admin-panel" data-panel="overview" hidden>
+        <dl class="stat-tiles" data-stat-tiles></dl>
+        <div class="admin-grid">
+          
+          <div class="admin-card"><h2>By exam</h2><div class="table-wrap"><table class="table table-compact"><thead><tr><th>Module</th><th class="num">Completed</th><th class="num">Avg score</th></tr></thead><tbody data-by-subject></tbody></table></div></div>
+        </div>
+        <p class="muted small" data-sample-note></p>
+      </section>
+
+      <section class="admin-panel" data-panel="tests" hidden>
+        <div class="admin-toolbar">
+          <select class="select" data-f-status aria-label="Status"><option value="">All statuses</option><option value="in_progress">In progress</option><option value="submitted">Completed</option><option value="cancelled">Cancelled</option></select>
+          <select class="select" data-f-subject aria-label="Exam"><option value="">All exams</option><option value="math">Mathematics</option><option value="physics">Physics</option><option value="chemistry">Chemistry</option></select>
+          <button class="btn btn-ghost btn-sm push" type="button" data-export="tests">Export CSV</button>
+        </div>
+        <div class="table-wrap"><table class="table table-compact"><thead><tr><th>Student</th><th>Exam</th><th>Started</th><th>Result</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody data-tests></tbody></table></div>
+      </section>
+
+      <section class="admin-panel" data-panel="students" hidden>
+        <div class="admin-toolbar">
+          <input class="input" type="search" placeholder="Search name or email" aria-label="Search students" data-student-search>
+          <button class="btn btn-ghost btn-sm push" type="button" data-export="students">Export CSV</button>
+        </div>
+        <div class="table-wrap"><table class="table table-compact"><thead><tr><th>Student</th><th>Country</th><th>Phone</th><th class="num">Tests</th><th class="num">Best</th><th>Last test</th></tr></thead><tbody data-students></tbody></table></div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="index.html" aria-label="CSCA Test home"><span class="wordmark">CSCA<span> Test</span></span></a>
+        <p class="powered">Powered by <a href="https://juniors.academy" rel="noopener">Juniors Academy</a></p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html#tests">Tests</a>
+        <a href="faq.html">FAQ</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:support@cscatest.org">Contact</a>
+      </nav>
+    </div>
+    <p class="footer-credit">Every test is written and reviewed by competent teachers and CSCA examiners, and built by the team at Juniors Academy.</p>
+    <div class="footer-bottom">
+      <p>cscatest.org is an independent practice platform and is not affiliated with the official CSCA organisers. Official registration is only available at <a href="https://www.csca.cn" rel="noopener" target="_blank">csca.cn</a>. Practice scores can't be used for admission.</p>
+      <p>© <span data-year>2026</span> Juniors Academy <a class="admin-link" href="admin.html">Admin</a></p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
