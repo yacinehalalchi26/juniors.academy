@@ -16,8 +16,8 @@
     /* ============================================================
        JUNIORS FINANCE — what each booking brings in, what it costs, what you keep.
        Director only. Reads the bookings and family payments of the CRM (project juniors-academy)
-       and keeps partners, the ledger and the rates in the same project, in collections only the
-       director can open (finPartners, finEntries, finMeta). Edit only the SETTINGS block near the bottom.
+       and keeps partners, the ledger and the rates in its own project (juniors-finance).
+       Same email and password in both projects. Edit only the SETTINGS block near the bottom.
        ============================================================ */
     :root {
       /* Juniors Academy, Open Horizons identity system 3.1 */
@@ -310,9 +310,12 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script type="module">
 /* ============================================================
-   SETTINGS — the CRM project (juniors-academy). Finance reads its bookings and keeps its own
-   collections there (finPartners, finEntries, finMeta), opened only by DIRECTOR_EMAILS.
-   The Firestore rules of the project must include the three finance blocks (see firestore-rules.txt).
+   SETTINGS
+   1) FIREBASE_CONFIG: the CRM project (juniors-academy). Finance reads the bookings and the
+      family payments from it, and never writes to it.
+   2) FINANCE_CONFIG: the finance project (juniors-finance). Partners, the ledger and the rates
+      are saved there. Publish firestore-rules.txt in that project.
+   The director's email and password must exist in both projects.
    ============================================================ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyA2FAPTVDsrpOSeDsCsT1FBbaqYzQQbEnA",
@@ -321,6 +324,14 @@ const FIREBASE_CONFIG = {
   storageBucket: "juniors-academy.firebasestorage.app",
   messagingSenderId: "376121999841",
   appId: "1:376121999841:web:356c1c7efa76b908aa12a0"
+};
+const FINANCE_CONFIG = {
+  apiKey: "AIzaSyBlPJejo3xYH9fKdjt_DwI8yq5kvTlVlPI",
+  authDomain: "juniors-finance.firebaseapp.com",
+  projectId: "juniors-finance",
+  storageBucket: "juniors-finance.firebasestorage.app",
+  messagingSenderId: "798368308656",
+  appId: "1:798368308656:web:93697ce01f6e696528ca75"
 };
 const DIRECTOR_EMAILS = ['director@juniors.academy'];
 const CRM_URL = '../crm/';
@@ -352,7 +363,7 @@ const feeOf = b => toNum(b.fee);
 const yearOf = b => String(b.bookedAt || b.createdAt || '').slice(0, 4) || String(new Date().getFullYear());
 
 /* ==================== State ==================== */
-let fb = null, me = null, unsub = [];
+let fb = null, me = null, unsub = [], creds = null;   /* creds: kept in memory only, just long enough to open the finance project */
 let bookings = {}, partners = {}, entries = {}, settings = { rates: Object.assign({}, CURRENCIES) };
 let tab = 'overview', season = String(new Date().getFullYear()), filt = { q: '', kind: '', status: '', partner: '', program: '' }, openId = null, openKind = null;
 const rateOf = cur => cur === 'DZD' ? 1 : toNum((settings.rates || {})[cur]) || CURRENCIES[cur] || 1;
@@ -378,26 +389,46 @@ async function start() {
   gate('loading');
   try {
     const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
-    const app = A0.initializeApp(FIREBASE_CONFIG);
+    const app = A0.initializeApp(FIREBASE_CONFIG), fapp = A0.initializeApp(FINANCE_CONFIG, 'finance');
     let db; try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); } catch (e) { db = F.getFirestore(app); }
-    fb = { auth: A.getAuth(app), db, A, F };
+    let fdb; try { fdb = F.initializeFirestore(fapp, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); } catch (e) { fdb = F.getFirestore(fapp); }
+    fb = { auth: A.getAuth(app), fauth: A.getAuth(fapp), db, fdb, A, F };
     A.onAuthStateChanged(fb.auth, u => { u ? signedIn(u) : signedOut(); });
   } catch (e) { gate('blocked', "Couldn't reach the online database. Check the internet connection, then reload."); }
 }
 function signedOut() { stop(); me = null; bookings = {}; partners = {}; entries = {}; $('app').hidden = true; closeDrawer(); if ($('gate').getAttribute('data-mode') !== 'signin') gate('signin'); }
-function signedIn(u) {
+/* sign in to the finance project with the same email and password */
+async function connectFinance(email) {
+  if (fb.fauth.authStateReady) await fb.fauth.authStateReady();
+  const cur = fb.fauth.currentUser;
+  if (cur && (cur.email || '').toLowerCase() === email) return true;
+  if (!creds || creds.email !== email) return false;
+  try { await fb.A.signInWithEmailAndPassword(fb.fauth, creds.email, creds.pw); return true; }
+  catch (e) {
+    const c = (e && e.code) || '';
+    if (/invalid-credential|wrong-password|user-not-found/.test(c)) throw new Error('This email and password do not exist yet in the juniors-finance project. In Firebase, project juniors-finance, open Authentication, Users, Add user, and create the same email with the same password.');
+    if (/operation-not-allowed/.test(c)) throw new Error('Email and password sign-in is not switched on in the juniors-finance project. In Firebase, open Authentication, Sign-in method, and enable Email/Password.');
+    throw new Error("Couldn't connect to the finance project. Check the connection and try again.");
+  } finally { creds = null; }
+}
+async function signedIn(u) {
   const email = (u.email || '').toLowerCase();
-  if (!DIRECTOR_EMAILS.map(x => x.toLowerCase()).includes(email)) { fb.A.signOut(fb.auth); gate('signin', 'Only the director account can open Juniors Finance.'); return; }
+  if (!DIRECTOR_EMAILS.map(x => x.toLowerCase()).includes(email)) { creds = null; fb.A.signOut(fb.auth); gate('signin', 'Only the director account can open Juniors Finance.'); return; }
+  gate('loading');
+  try {
+    if (!(await connectFinance(email))) { gate('signin', 'Please type your password once more to connect the finance project.', true); $('gEmail').value = email; setTimeout(() => $('gPass').focus(), 60); return; }
+  } catch (e) { gate('signin', e.message); $('gEmail').value = email; return; }
   me = { uid: u.uid, email }; openApp();
 }
-function denied(err) { if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'The finance rules are not published yet. In Firebase, project juniors-academy, publish firestore-rules.txt from the finance folder, then reload.'); } }
+function denied(err) { if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'This account cannot read the CRM bookings. In Firebase, project juniors-academy, check that the director email is listed in the Firestore rules.'); } }
+function deniedFinance(err) { if (err && err.code === 'permission-denied') { stop(); gate('blocked', 'The finance rules are not published yet. In Firebase, project juniors-finance, publish firestore-rules.txt from the finance folder, then reload.'); } }
 function openApp() {
   const { F, db } = fb;
   gate('off'); $('app').hidden = false; $('who').textContent = me.email; stop();
   unsub.push(F.onSnapshot(F.query(F.collection(db, 'leads'), F.where('status', '==', 'booked')), s => { bookings = {}; s.docs.forEach(d => { const b = d.data(); bookings[b.id || d.id] = Object.assign({ id: d.id }, b); }); fillSeasons(); render(); }, denied));
-  unsub.push(F.onSnapshot(F.collection(db, 'finPartners'), s => { partners = {}; s.docs.forEach(d => { partners[d.id] = Object.assign({ id: d.id }, d.data()); }); render(); }, denied));
-  unsub.push(F.onSnapshot(F.collection(db, 'finEntries'), s => { entries = {}; s.docs.forEach(d => { entries[d.id] = Object.assign({ id: d.id }, d.data()); }); render(); }, denied));
-  unsub.push(F.onSnapshot(F.doc(db, 'finMeta', 'settings'), d => { if (d.exists()) settings = Object.assign({ rates: {} }, d.data()); settings.rates = Object.assign({}, CURRENCIES, settings.rates || {}); render(); }, () => {}));
+  unsub.push(F.onSnapshot(F.collection(fb.fdb, 'partners'), s => { partners = {}; s.docs.forEach(d => { partners[d.id] = Object.assign({ id: d.id }, d.data()); }); render(); }, deniedFinance));
+  unsub.push(F.onSnapshot(F.collection(fb.fdb, 'entries'), s => { entries = {}; s.docs.forEach(d => { entries[d.id] = Object.assign({ id: d.id }, d.data()); }); render(); }, deniedFinance));
+  unsub.push(F.onSnapshot(F.doc(fb.fdb, 'meta', 'settings'), d => { if (d.exists()) settings = Object.assign({ rates: {} }, d.data()); settings.rates = Object.assign({}, CURRENCIES, settings.rates || {}); render(); }, () => {}));
 }
 function fillSeasons() {
   const ys = new Set(Object.values(bookings).map(yearOf)); ys.add(String(new Date().getFullYear())); Object.values(entries).forEach(e => { if (e.season) ys.add(String(e.season)); });
@@ -405,7 +436,7 @@ function fillSeasons() {
   sel.innerHTML = list.map(y => '<option value="' + y + '">Season ' + y + '</option>').join('') + '<option value="all">All seasons</option>';
   sel.value = list.includes(cur) || cur === 'all' ? cur : list[0]; season = sel.value;
 }
-const save = (col, id, data) => fb.F.setDoc(fb.F.doc(fb.db, col, id), data, { merge: true }).catch(e => toast(e && e.code === 'permission-denied' ? 'Not saved: publish the finance rules in Firebase.' : 'Not saved. Check the connection.'));
+const save = (col, id, data) => fb.F.setDoc(fb.F.doc(fb.fdb, col, id), data, { merge: true }).catch(e => toast(e && e.code === 'permission-denied' ? 'Not saved: publish the finance rules in the juniors-finance project.' : 'Not saved. Check the connection.'));
 
 /* ==================== Figures ==================== */
 const inSeason = y => season === 'all' || String(y) === season;
@@ -589,7 +620,7 @@ async function saveEntry() {
   if (scope === 'booking') data.program = '';   /* a booking line is not shared by the programme */
   const id = editing ? editing.id : newId(); if (!editing) data.createdAt = now;
   entries[id] = Object.assign({ id }, entries[id] || {}, data); render();
-  await save('finEntries', id, Object.assign({ id }, data)); $('entryPop').close(); toast(editing ? 'Line saved' : (eKind === 'cost' ? 'Cost added' : 'Income added'));
+  await save('entries', id, Object.assign({ id }, data)); $('entryPop').close(); toast(editing ? 'Line saved' : (eKind === 'cost' ? 'Cost added' : 'Income added'));
 }
 /* ---------- partner dialog ---------- */
 let editingP = null, afterPartner = null;
@@ -603,7 +634,7 @@ async function savePartner() {
   const name = $('pName').value.trim(); if (name.length < 2) { $('pErr').textContent = 'Enter the partner\u2019s name.'; $('pErr').hidden = false; return; }
   const id = editingP ? editingP.id : newId(), now = new Date().toISOString();
   const data = { id, name, type: $('pType').value, currency: $('pCur').value, terms: $('pTerms').value.trim(), contact: $('pContact').value.trim(), commission: toNum($('pComm').value), note: $('pNote').value.trim(), updatedAt: now, createdAt: editingP ? editingP.createdAt || now : now };
-  partners[id] = data; render(); await save('finPartners', id, data); $('partnerPop').close(); toast(name + (editingP ? ' saved' : ' added'));
+  partners[id] = data; render(); await save('partners', id, data); $('partnerPop').close(); toast(name + (editingP ? ' saved' : ' added'));
   if (afterPartner) { const f = afterPartner; afterPartner = null; f(id); }
 }
 /* ---------- mark paid ---------- */
@@ -616,7 +647,7 @@ function payUI() { const e = paying; if (!e) return; const r = e.currency === 'D
 async function confirmPay() {
   const e = paying; if (!e) return;
   const data = { status: 'paid', paidDate: $('payDate').value || todayISO(), rate: e.currency === 'DZD' ? 1 : (toNum($('payRate').value) || e.rate), ref: $('payRef').value.trim(), updatedAt: new Date().toISOString() };
-  entries[e.id] = Object.assign({}, e, data); render(); await save('finEntries', e.id, data); $('payPop').close(); toast(e.kind === 'income' ? 'Marked as received' : 'Marked as paid');
+  entries[e.id] = Object.assign({}, e, data); render(); await save('entries', e.id, data); $('payPop').close(); toast(e.kind === 'income' ? 'Marked as received' : 'Marked as paid');
 }
 function csv() {
   const rows = ledgerFiltered(), cell = v => { v = String(v == null ? '' : v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
@@ -639,9 +670,9 @@ document.addEventListener('click', e => {
   if ((el = q('[data-prog]'))) { tab = 'bookings'; filt = { q: '', kind: '', status: '', partner: '', program: el.getAttribute('data-prog') }; window.scrollTo(0, 0); return render(); }
   if (q('#addPartner') || q('#addPartner2')) return openPartner(null);
   if (q('#csv')) return csv();
-  if (q('#saveRates')) { const rates = {}; document.querySelectorAll('[data-rate]').forEach(i => { rates[i.getAttribute('data-rate')] = toNum(i.value) || CURRENCIES[i.getAttribute('data-rate')]; }); settings.rates = Object.assign({}, CURRENCIES, rates); save('finMeta', 'settings', { rates }); toast('Rates saved'); return; }
+  if (q('#saveRates')) { const rates = {}; document.querySelectorAll('[data-rate]').forEach(i => { rates[i.getAttribute('data-rate')] = toNum(i.value) || CURRENCIES[i.getAttribute('data-rate')]; }); settings.rates = Object.assign({}, CURRENCIES, rates); save('meta', 'settings', { rates }); toast('Rates saved'); return; }
   if (q('[data-close]') || e.target.id === 'scrim') { const d = q('dialog'); if (d) d.close(); else closeDrawer(); return; }
-  if (e.target.id === 'btnOut' || e.target.id === 'gOut') { fb.A.signOut(fb.auth); return; }
+  if (e.target.id === 'btnOut' || e.target.id === 'gOut') { fb.A.signOut(fb.fauth).catch(() => {}); fb.A.signOut(fb.auth); return; }
 });
 document.addEventListener('input', e => {
   if (e.target.id === 'fQ') { filt.q = e.target.value; render(); }
@@ -656,27 +687,32 @@ document.addEventListener('change', e => {
   if (e.target.id === 'eScope' || e.target.id === 'eStatus') entryUI();
 });
 $('entryForm').addEventListener('submit', e => { e.preventDefault(); saveEntry(); });
-$('eDelete').addEventListener('click', async () => { if (!editing || !confirm('Delete this line?')) return; const id = editing.id; delete entries[id]; render(); await fb.F.deleteDoc(fb.F.doc(fb.db, 'finEntries', id)).catch(() => toast("Couldn't delete.")); $('entryPop').close(); toast('Line deleted'); });
+$('eDelete').addEventListener('click', async () => { if (!editing || !confirm('Delete this line?')) return; const id = editing.id; delete entries[id]; render(); await fb.F.deleteDoc(fb.F.doc(fb.fdb, 'entries', id)).catch(() => toast("Couldn't delete.")); $('entryPop').close(); toast('Line deleted'); });
 $('partnerForm').addEventListener('submit', e => { e.preventDefault(); savePartner(); });
 $('pDelete').addEventListener('click', async () => {
   const p = editingP; if (!p) return; const n = Object.values(entries).filter(x => x.partnerId === p.id).length;
   if (!confirm('Remove ' + p.name + '?' + (n ? ' Their ' + n + (n === 1 ? ' line stays' : ' lines stay') + ' in the ledger under their name.' : ''))) return;
-  Object.values(entries).filter(x => x.partnerId === p.id).forEach(x => { x.partnerName = p.name; save('finEntries', x.id, { partnerName: p.name }); });
+  Object.values(entries).filter(x => x.partnerId === p.id).forEach(x => { x.partnerName = p.name; save('entries', x.id, { partnerName: p.name }); });
   delete partners[p.id]; if (openKind === 'partner' && openId === p.id) closeDrawer(); render();
-  await fb.F.deleteDoc(fb.F.doc(fb.db, 'finPartners', p.id)).catch(() => toast("Couldn't remove.")); $('partnerPop').close(); toast(p.name + ' removed');
+  await fb.F.deleteDoc(fb.F.doc(fb.fdb, 'partners', p.id)).catch(() => toast("Couldn't remove.")); $('partnerPop').close(); toast(p.name + ' removed');
 });
 $('payForm').addEventListener('submit', e => { e.preventDefault(); confirmPay(); });
 document.querySelectorAll('dialog.pop').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && openId && !document.querySelector('dialog[open]')) closeDrawer(); });
 $('signForm').addEventListener('submit', async e => {
   e.preventDefault(); const btn = $('gSubmit'); btn.disabled = true; btn.textContent = 'Signing in…';
-  try { await fb.A.signInWithEmailAndPassword(fb.auth, $('gEmail').value.trim(), $('gPass').value); $('gPass').value = ''; }
-  catch (err) { gate('signin', authMessage(err)); } finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+  const email = $('gEmail').value.trim().toLowerCase(), pw = $('gPass').value; creds = { email, pw };
+  try {
+    const cur = fb.auth.currentUser;
+    if (cur && (cur.email || '').toLowerCase() === email) await signedIn(cur);   /* already in the CRM: only the finance project was missing */
+    else await fb.A.signInWithEmailAndPassword(fb.auth, email, pw);
+    $('gPass').value = '';
+  } catch (err) { creds = null; gate('signin', authMessage(err)); } finally { btn.disabled = false; btn.textContent = 'Sign in'; }
 });
 $('gForgot').addEventListener('click', async () => {
   const email = $('gEmail').value.trim(); if (!email) { gate('signin', 'Type your email first, then click “Forgot my password” again.', true); return; }
   try { await fb.A.sendPasswordResetEmail(fb.auth, email); } catch (x) {}
-  gate('signin', 'If that account exists, an email to choose a new password is on its way.', true);
+  gate('signin', 'If that account exists, an email to choose a new password is on its way. Use the same new password in the juniors-finance project (Authentication, Users).', true);
 });
 start();
 </script>
