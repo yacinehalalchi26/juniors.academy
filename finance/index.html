@@ -352,7 +352,8 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const icon = n => '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"/></svg>';
 const toNum = v => { const n = parseFloat(String(v == null ? '' : v).replace(/\s/g, '').replace(',', '.')); return isFinite(n) ? n : 0; };
-const nf0 = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }), nf2 = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+/* amounts are written with a comma every three digits and a point for decimals: 96,000 DA · 1,000,000 DA · 3,200.00 £ */
+const nf0 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }), nf2 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const da = n => nf0.format(Math.round(n || 0)) + '\u00A0DA';
 const money = (n, cur) => (cur === 'DZD' || !cur) ? da(n) : nf2.format(n || 0) + '\u00A0' + (SYMBOL[cur] || cur);
 const pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '—';
