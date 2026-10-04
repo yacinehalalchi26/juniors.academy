@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* ============================================================
-       JUNIORS CRM v5 — record pages, sales path, pipeline, reports
+       JUNIORS CRM v6 — record pages, sales path, pipeline, reports, team access
        Same online data as before (Firebase project juniors-academy,
        collection "leads"). Only the SETTINGS block needs editing.
        ============================================================ */
@@ -524,6 +524,7 @@
       <button type="button" data-tab="pipeline">Pipeline</button>
       <button type="button" data-tab="alumni">Alumni</button>
       <button type="button" data-tab="reports">Reports</button>
+      <button type="button" data-tab="team" id="tabTeam" hidden>Team</button>
     </nav>
     <section class="notif" id="notif" aria-label="Summary" hidden></section>
     <div class="menu" id="menu" hidden>
@@ -586,12 +587,27 @@
   </form>
 </dialog>
 
+<!-- ==================== TEAM MEMBER (director) ==================== -->
+<dialog class="pop small" id="memberPop" aria-labelledby="mbTitle">
+  <form id="memberForm" novalidate>
+    <div class="pop-h"><div><h2 id="mbTitle">Add a team member</h2><p>They sign in with this email and password, and see only their own leads</p></div><button type="button" class="xb" data-close aria-label="Close">×</button></div>
+    <div class="pop-b">
+      <div class="fld"><label for="mName">Full name <span class="req">*</span></label><input id="mName" type="text" autocomplete="off" required></div>
+      <div class="fld"><label for="mEmail">Work email (their sign-in) <span class="req">*</span></label><input id="mEmail" type="email" autocomplete="off" placeholder="name@juniors.academy" required></div>
+      <div class="fld"><label for="mPass">First password (6 characters or more) <span class="req">*</span></label><input id="mPass" type="text" autocomplete="off" required><span class="sub">Give it to them; they can change it with “Forgot my password”.</span></div>
+      <p class="lock-msg" id="mErr" hidden></p>
+    </div>
+    <div class="pop-f"><button type="button" class="btn" data-close>Cancel</button><button type="submit" class="btn btn-brand" id="mSave">Create the login</button></div>
+  </form>
+</dialog>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script type="module">
 /* ============================================================
    SETTINGS — the only part of this file you need to edit.
-   Same Firebase project and same data as the previous CRM:
-   nothing to migrate, every record appears as it was.
+   Same Firebase project and same data as the previous CRM.
+   The director (DIRECTOR_EMAILS) sees everything and creates the team's logins in the Team page;
+   a team member sees only the leads assigned to them. The Firestore rules enforce the same.
    ============================================================ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyA2FAPTVDsrpOSeDsCsT1FBbaqYzQQbEnA",
@@ -607,6 +623,7 @@ const LOGO_URL = '';
 /* ============================================================ */
 
 const FB = 'https://www.gstatic.com/firebasejs/12.19.0/';
+let A0mod = null;   /* the firebase-app module, kept to create team logins */
 const READY = !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
 /* The saved "status" field is unchanged (the Tracker reads it). The sales path adds an optional "stage" inside lead/talking. */
 const STATUS = { lead: 'New lead', talking: 'In discussion', booked: 'Booked', lost: 'Lost', alumni: 'Alumni' };
@@ -734,6 +751,7 @@ async function start() {
   gate('loading');
   try {
     const [A0, A, F] = await Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js'), import(FB + 'firebase-firestore.js')]);
+    A0mod = A0;
     const app = A0.initializeApp(FIREBASE_CONFIG);
     let db;
     try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); }
@@ -750,7 +768,7 @@ function signedOut() {
 function denied(err) {
   if (!err || err.code !== 'permission-denied') return;
   fb.A.signOut(fb.auth);
-  gate('signin', 'This email is not on the CRM team list. Ask the Managing Director to add it to the Firestore rules.');
+  gate('signin', 'This account cannot open the CRM. Ask the Managing Director to add you in the Team page, or to publish the latest Firestore rules.');
 }
 async function signedIn(u) {
   const email = (u.email || '').toLowerCase();
@@ -758,8 +776,13 @@ async function signedIn(u) {
   gate('loading');
   try {
     const snap = await fb.F.getDoc(fb.F.doc(fb.db, 'crmUsers', u.uid));
-    if (!snap.exists()) { gate('name'); return; }
-    profile = snap.data(); openApp();
+    if (!snap.exists()) {
+      if (me.isDirector) { gate('name'); return; }
+      await fb.A.signOut(fb.auth); gate('signin', 'This email is not on the CRM team yet. Ask the Managing Director to add you in the Team page.'); return;
+    }
+    profile = snap.data();
+    if (profile.active === false) { await fb.A.signOut(fb.auth); gate('signin', 'Your access to the CRM has been turned off. Ask the Managing Director.'); return; }
+    openApp();
   } catch (e) { if (e && e.code === 'permission-denied') denied(e); else gate('signin', "Couldn't load your profile. Check the connection and try again."); }
 }
 let loaded = false;
@@ -767,9 +790,12 @@ function openApp() {
   const { F, db } = fb;
   gate('off'); $('app').hidden = false; loaded = false;
   $('meInit').textContent = initials(profile.name); $('meName').textContent = profile.name; $('meSub').textContent = me.email + (me.isDirector ? ' · Managing Director' : '');
-  $('btnRestore').hidden = !me.isDirector;
+  $('btnRestore').hidden = !me.isDirector; $('tabTeam').hidden = !me.isDirector;
+  if (!me.isDirector && tab === 'team') tab = 'home';
   stop();
-  unsub.push(F.onSnapshot(F.collection(db, 'leads'), snap => {
+  /* a team member's feed only ever contains the leads assigned to them (the Firestore rules enforce the same) */
+  const leadsSrc = me.isDirector ? F.collection(db, 'leads') : F.query(F.collection(db, 'leads'), F.where('ownerUid', '==', me.uid));
+  unsub.push(F.onSnapshot(leadsSrc, snap => {
     state.bookings = snap.docs.map(d => normalize(Object.assign({ id: d.id }, d.data())));
     loaded = true; route();
   }, denied));
@@ -831,7 +857,7 @@ async function importRecords(list) {
 /* ==================== Navigation ==================== */
 let tab = 'home', recId = null, query = '', lvq = '', sortBy = 'auto', scope = 'all', period = 'year', selStage = null;
 const listView = { leads: 'open', bookings: 'booked', alumni: 'alumni' };
-const TABS = ['home', 'leads', 'bookings', 'pipeline', 'alumni', 'reports'];
+const TABS = ['home', 'leads', 'bookings', 'pipeline', 'alumni', 'reports', 'team'];
 function route() {
   const h = decodeURIComponent(location.hash.replace(/^#/, ''));
   let m;
@@ -867,7 +893,7 @@ function draw() {
   let html;
   if (query.trim()) html = searchView();
   else if (recId) html = recordView();
-  else html = ({ home: homeView, leads: listViewHtml, bookings: listViewHtml, alumni: listViewHtml, pipeline: pipelineView, reports: reportsView }[tab] || homeView)();
+  else html = ({ home: homeView, leads: listViewHtml, bookings: listViewHtml, alumni: listViewHtml, pipeline: pipelineView, reports: reportsView, team: me.isDirector ? teamView : homeView }[tab] || homeView)();
   $('main').innerHTML = html;
   if (keepId && $(keepId)) { $(keepId).focus(); if (sel) try { $(keepId).setSelectionRange(sel[0], sel[1]); } catch (e) {} }
 }
@@ -881,7 +907,7 @@ function attention() {
   const payLate = owing.filter(b => b.dueDate < t).sort((a, b) => a.dueDate < b.dueDate ? -1 : 1);
   const paySoon = owing.filter(b => b.dueDate >= t && b.dueDate <= week).sort((a, b) => a.dueDate < b.dueDate ? -1 : 1);
   const waiting = all.filter(b => stageOf(b) === 'new' && !(b.calls || []).length && String(b.createdAt || '').slice(0, 10) <= yesterday).sort((a, b) => (a.createdAt || '') < (b.createdAt || '') ? -1 : 1);
-  const unassigned = state.bookings.filter(b => isOpen(b) && !b.ownerUid);
+  const unassigned = me.isDirector ? state.bookings.filter(b => isOpen(b) && !b.ownerUid) : [];
   return { late, today, payLate, paySoon, waiting, unassigned, total: late.length + today.length + payLate.length + waiting.length };
 }
 function notifHtml() {
@@ -1000,7 +1026,7 @@ function listViewHtml() {
       (keys.length > 1 ? '<select id="lvSel" aria-label="List view">' + keys.map(k => '<option value="' + k + '"' + (k === vk ? ' selected' : '') + '>' + L.views[k][0] + '</option>').join('') + '</select>' : '<span class="static">' + v[0] + '</span>') + '</div></div>' +
       '<button type="button" class="btn btn-brand" data-new="' + (tab === 'bookings' ? 'booked' : tab === 'alumni' ? 'alumni' : 'new') + '">' + icon('plus') + (tab === 'bookings' ? 'New booking' : tab === 'alumni' ? 'Add alumni' : 'New lead') + '</button></div>' +
     '<div class="lv-tools"><input type="search" id="lvq" placeholder="Search this list" value="' + esc(lvq) + '" aria-label="Search this list">' +
-      '<select id="scope" aria-label="Whose records">' + scopeOpts.replace('value="' + scope + '"', 'value="' + scope + '" selected') + '</select>' +
+      (me.isDirector ? '<select id="scope" aria-label="Whose records">' + scopeOpts.replace('value="' + scope + '"', 'value="' + scope + '" selected') + '</select>' : '') +
       '<select id="sort" aria-label="Sort">' + [['auto', 'Best order for this view'], ['recent', 'Newest first'], ['follow', 'By follow-up date'], ['name', 'By name'], ['balance', 'By balance']].map(o => '<option value="' + o[0] + '"' + (sortBy === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select>' +
       '<span class="count">' + list.length + (list.length === 1 ? ' item' : ' items') + (scope !== 'all' ? ' · filtered' : '') + '</span></div>' +
     (list.length ? tableHtml(list, vk === 'lost') : '<div class="empty-s" style="border-top:1px solid var(--line);padding:40px 16px"><b style="display:block;color:var(--ink);font-size:1rem;margin-bottom:4px">' + (q ? 'No match' : v[3][0]) + '</b>' + (q ? 'Nobody in this list matches “' + esc(lvq.trim()) + '”.' : v[3][1]) + '</div>') + '</section>';
@@ -1016,7 +1042,7 @@ function pipelineView() {
   const all = pool();
   const cols = STAGES.slice(0, 5).map(s => { const items = all.filter(b => stageOf(b) === s[0]).sort((a, b) => { const fa = hasFollow(a) ? a.followUp : '9', fb2 = hasFollow(b) ? b.followUp : '9'; return fa < fb2 ? -1 : fa > fb2 ? 1 : ((b.createdAt || '') < (a.createdAt || '') ? -1 : 1); }); return [s, items]; });
   return '<div style="display:flex;align-items:center;gap:12px;margin:2px 0 12px;flex-wrap:wrap"><span class="obj o-pipe">' + icon('pipe') + '</span><div style="margin-right:auto"><div style="font-size:.78rem;color:var(--muted);font-weight:600">Pipeline</div><div class="title" style="font-size:1.2rem;line-height:1.15">Drag a card to the next stage</div><span class="rule"></span></div>' +
-      '<select id="scope" aria-label="Whose records" style="min-height:32px;padding:4px 8px;border-radius:6px;border:1px solid var(--line)">' + ('<option value="all">Whole team</option><option value="mine">My records</option>' + team.filter(x => x.uid !== me.uid).map(x => '<option value="' + esc(x.uid) + '">' + esc(firstName(x.name)) + '’s records</option>').join('')).replace('value="' + scope + '"', 'value="' + scope + '" selected') + '</select></div>' +
+      (me.isDirector ? '<select id="scope" aria-label="Whose records" style="min-height:32px;padding:4px 8px;border-radius:6px;border:1px solid var(--line)">' + ('<option value="all">Whole team</option><option value="mine">My records</option>' + team.filter(x => x.uid !== me.uid).map(x => '<option value="' + esc(x.uid) + '">' + esc(firstName(x.name)) + '’s records</option>').join('')).replace('value="' + scope + '"', 'value="' + scope + '" selected') + '</select>' : '') + '</div>' +
     '<div class="board">' + cols.map(c => {
       const val = c[1].reduce((s, b) => s + toNum(b.fee), 0);
       return '<section class="col" data-drop="' + c[0][0] + '" aria-label="' + esc(c[0][1]) + '"><div class="col-h"><b>' + esc(c[0][1]) + '</b><span>' + c[1].length + '</span>' + (val ? '<small>' + esc(money(val)) + '</small>' : '<small>&nbsp;</small>') + '</div><div class="col-b">' +
@@ -1081,7 +1107,7 @@ function recordView() {
       '<button type="button" class="btn" data-edit>' + icon('edit') + 'Edit</button>' +
       (isWon(b) ? '<a class="btn btn-brand" href="../tracker/#f=' + encodeURIComponent(b.id) + '">' + icon('plane') + 'Track this file</a>' : '') +
       (me.isDirector ? '<button type="button" class="btn btn-danger" data-delete>Delete</button>' : '') + '</div></div>' +
-      '<div class="hl-fields"><div><span>Program</span><b>' + esc(b.program || '—') + '</b></div><div><span>Source</span><b>' + esc(b.source || '—') + '</b></div><div><span>Assigned to</span><b' + (on ? '' : ' style="color:var(--red)"') + '>' + esc(on || 'Not assigned') + '</b></div><div><span>Phone</span><b>' + esc(b.phone || '—') + '</b></div><div><span>Next follow-up</span><b>' + (hasFollow(b) ? followTag(b) : '—') + '</b></div></div></section>' +
+      '<div class="hl-fields"><div><span>Program</span><b>' + esc(b.program || '—') + '</b></div><div><span>Source</span><b>' + esc(b.source || '—') + '</b></div><div><span>Assigned to</span>' + (me.isDirector ? '<select id="assignSel" aria-label="Assign to" style="width:100%;min-height:30px;padding:3px 6px;border-radius:6px;border:1px solid var(--line);background:#fff"><option value="">Not assigned</option>' + team.map(t => '<option value="' + esc(t.uid) + '"' + (t.uid === b.ownerUid ? ' selected' : '') + '>' + esc(t.name) + (t.active === false ? ' (off)' : '') + '</option>').join('') + '</select>' : '<b' + (on ? '' : ' style="color:var(--red)"') + '>' + esc(on || 'Not assigned') + '</b>') + '</div><div><span>Phone</span><b>' + esc(b.phone || '—') + '</b></div><div><span>Next follow-up</span><b>' + (hasFollow(b) ? followTag(b) : '—') + '</b></div></div></section>' +
     '<section class="card path-card"><div class="path' + (lost ? ' lost' : '') + '" role="group" aria-label="Sales path">' +
       STAGES.map((s, i) => { const cls = lost ? '' : i < ci ? 'done' : i === ci ? 'cur' : ''; return '<button type="button" class="step ' + cls + (selStage === s[0] && s[0] !== cur ? ' sel' : '') + '" data-step="' + s[0] + '"' + (i === ci ? ' aria-current="step"' : '') + '>' + (cls === 'done' ? icon('check') : '') + esc(s[1]) + '</button>'; }).join('') + '</div>' +
       '<div class="path-foot">' + (lost
@@ -1131,6 +1157,38 @@ function addPayment() {
   pay.amt = ''; pay.note = ''; patch(b.id, f, 'Payment of ' + money(amt) + ' added');
 }
 
+/* ---------- Team (director): create logins, assign, switch access on or off ---------- */
+function teamView() {
+  const all = state.bookings;
+  const rows = team.map(t => { const mine = all.filter(b => b.ownerUid === t.uid), open = mine.filter(isOpen).length, booked = mine.filter(isWon).length, dir = DIRECTOR_EMAILS.map(x => x.toLowerCase()).includes(String(t.email || '').toLowerCase());
+    return '<tr><td><b>' + esc(t.name) + '</b>' + (t.uid === me.uid ? '<span class="sub">you</span>' : '') + '</td><td>' + esc(t.email || '') + '</td><td>' + (dir ? '<span class="pill st-booked">Director</span>' : t.active === false ? '<span class="pill st-lost">Access off</span>' : '<span class="pill st-contacted">Team member</span>') + '</td><td class="r num">' + mine.length + '<span class="sub">' + open + ' open · ' + booked + ' booked</span></td><td>' + esc(frDate(t.joinedAt || '')) + '</td>' +
+      '<td style="white-space:nowrap">' + (dir ? '' : '<button type="button" class="btn btn-sm" data-access="' + esc(t.uid) + '">' + (t.active === false ? 'Give access back' : 'Turn access off') + '</button> ') + (t.email ? '<button type="button" class="btn btn-sm" data-resetpw="' + esc(t.email) + '">Reset password</button> ' : '') + '<button type="button" class="btn btn-sm" data-list="leads:all" data-scope="' + esc(t.uid) + '">Their leads</button></td></tr>'; });
+  const unassigned = all.filter(b => isOpen(b) && !b.ownerUid);
+  return '<section class="card"><div class="lv-head"><div class="lv-title"><span class="obj o-home">' + icon('family') + '</span><div><small>Team</small><span class="static">Who can open the CRM</span></div></div><button type="button" class="btn btn-brand" id="addMember">' + icon('plus') + 'Add a team member</button></div>' +
+    '<div class="card-b" style="padding-top:0;color:var(--body);font-size:.88rem">A team member signs in with the email and password you create here. They see only the leads assigned to them and the ones they create; they cannot see the rest of the CRM, delete records, or export everything. You see everything, and you assign leads with the “Assigned to” field on a record.</div>' +
+    '<div class="tscroll"><table class="grid" style="min-width:760px"><thead><tr><th>Name</th><th>Email</th><th>Access</th><th class="r">Leads</th><th>Since</th><th>Actions</th></tr></thead><tbody>' + (rows.length ? rows.join('') : '<tr><td colspan="6" class="empty-s">No team member yet.</td></tr>') + '</tbody></table></div></section>' +
+    (unassigned.length ? '<section class="card" style="margin-top:12px"><div class="card-h"><h2>' + icon('lead') + 'Open leads with nobody assigned <small>' + unassigned.length + '</small></h2><button type="button" class="linkish" data-list="leads:open" data-scope="none">View all</button></div>' + unassigned.slice(0, 8).map(b => '<div class="task" data-open="' + esc(b.id) + '"><span class="ic ic-new">' + icon('lead') + '</span><span class="nm"><b>' + esc(b.name) + '</b><span class="sub">' + esc([b.num, b.program].filter(Boolean).join(' · ')) + '</span></span>' + stagePill(b) + '</div>').join('') + '</section>' : '');
+}
+async function addMember() {
+  const err = t => { $('mErr').textContent = t; $('mErr').hidden = false; };
+  const name = $('mName').value.trim(), email = $('mEmail').value.trim().toLowerCase(), pass = $('mPass').value;
+  if (name.length < 2) return err('Enter their full name.');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return err('Enter a valid email.');
+  if (pass.length < 6) return err('The password needs at least 6 characters.');
+  if (team.some(t => String(t.email || '').toLowerCase() === email)) return err('This email is already on the team.');
+  const btn = $('mSave'); btn.disabled = true; btn.textContent = 'Creating…';
+  try {
+    /* a second connection creates the login, so the director stays signed in */
+    const sec = A0mod.getApps().find(x => x.name === 'add-member') || A0mod.initializeApp(FIREBASE_CONFIG, 'add-member'), secAuth = fb.A.getAuth(sec);
+    const cred = await fb.A.createUserWithEmailAndPassword(secAuth, email, pass); const uid = cred.user.uid; await fb.A.signOut(secAuth);
+    await fb.F.setDoc(fb.F.doc(fb.db, 'crmUsers', uid), { uid, name, email, active: true, joinedAt: todayISO(), addedBy: profile.name });
+    $('memberPop').close(); toast(name + ' can now sign in to the CRM');
+  } catch (e) {
+    const c = (e && e.code) || '';
+    err(/email-already-in-use/.test(c) ? 'A login already exists with this email. Delete it in Firebase (juniors-academy › Authentication › Users) or use another email.' : /operation-not-allowed|admin-restricted/.test(c) ? 'Firebase blocks new logins: in Authentication › Settings › User actions, tick “Enable create (sign-up)”.' : /permission-denied/.test(c) ? 'The login was created but the profile was refused: publish the latest Firestore rules.' : "Couldn't create the login. Check the connection.");
+  } finally { btn.disabled = false; btn.textContent = 'Create the login'; }
+}
+
 /* ---------- New / edit ---------- */
 let editing = null;
 function openEdit(id, stage) {
@@ -1141,8 +1199,8 @@ function openEdit(id, stage) {
   $('fDob').value = b ? b.dob || '' : ''; $('fProgram').value = b ? b.program || '' : '';
   const src = b ? b.source || '' : '';
   $('fSource').innerHTML = '<option value="">Not recorded</option>' + SOURCES.concat(src && !SOURCES.includes(src) ? [src] : []).map(s => '<option' + (s === src ? ' selected' : '') + '>' + esc(s) + '</option>').join('');
-  $('fOwner').innerHTML = '<option value="">Not assigned</option>' + team.map(t => '<option value="' + esc(t.uid) + '">' + esc(t.name) + '</option>').join('');
-  $('fOwner').value = b ? b.ownerUid || '' : me.uid;
+  if (me.isDirector) { $('fOwner').innerHTML = '<option value="">Not assigned</option>' + team.map(t => '<option value="' + esc(t.uid) + '">' + esc(t.name) + (t.active === false ? ' (off)' : '') + '</option>').join(''); $('fOwner').value = b ? b.ownerUid || '' : me.uid; $('fOwner').disabled = false; }
+  else { $('fOwner').innerHTML = '<option value="' + esc(me.uid) + '">' + esc(profile.name) + ' (you)</option>'; $('fOwner').value = me.uid; $('fOwner').disabled = true; }
   $('fStage').innerHTML = STAGES.map(s => '<option value="' + s[0] + '">' + s[1] + '</option>').join(''); $('fStage').value = stage || 'new'; $('fldStage').hidden = !!b;
   $('fFee').value = b && b.fee !== '' && b.fee != null ? b.fee : ''; $('fDue').value = b ? b.dueDate || '' : ''; $('fComments').value = b ? b.comments || '' : '';
   document.querySelectorAll('input[name="gender"]').forEach(r => { r.checked = !!b && r.value === b.gender; });
@@ -1160,7 +1218,7 @@ function dupInfo() {
 async function saveEdit() {
   const name = $('fName').value.trim();
   if (!name) { $('fldName').classList.add('invalid'); $('fName').focus(); return; }
-  const g = document.querySelector('input[name="gender"]:checked'), o = team.filter(t => t.uid === $('fOwner').value)[0];
+  const g = document.querySelector('input[name="gender"]:checked'), o = me.isDirector ? team.filter(t => t.uid === $('fOwner').value)[0] : { uid: me.uid, name: profile.name };
   const f = { name, parentName: $('fParent').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(), gender: g ? g.value : '', dob: $('fDob').value,
     program: $('fProgram').value.trim(), source: $('fSource').value, ownerUid: o ? o.uid : '', ownerName: o ? o.name : '',
     fee: $('fFee').value === '' ? '' : toNum($('fFee').value), dueDate: $('fDue').value, comments: $('fComments').value.trim() };
@@ -1228,7 +1286,10 @@ document.addEventListener('click', e => {
   if (c('[data-closenotif]')) return;
   if (c('#btnMe')) { const open = $('menu').hidden; closeNotif(); $('menu').hidden = !open; $('btnMe').setAttribute('aria-expanded', String(open)); return; }
   if ((el = c('[data-tab]'))) { closeMenu(); return goTab(el.getAttribute('data-tab')); }
-  if ((el = c('[data-list]'))) { const p = el.getAttribute('data-list').split(':'); listView[p[0]] = p[1]; sortBy = 'auto'; return goTab(p[0]); }
+  if ((el = c('[data-list]'))) { const p = el.getAttribute('data-list').split(':'); listView[p[0]] = p[1]; sortBy = 'auto'; if (el.getAttribute('data-scope')) scope = el.getAttribute('data-scope'); return goTab(p[0]); }
+  if (c('#addMember')) { ['mName', 'mEmail', 'mPass'].forEach(i => { $(i).value = ''; }); $('mErr').hidden = true; $('memberPop').showModal(); setTimeout(() => $('mName').focus(), 50); return; }
+  if ((el = c('[data-access]'))) { const t = team.find(x => x.uid === el.getAttribute('data-access')); if (!t) return; const off = t.active !== false; if (!confirm(off ? 'Turn off ' + t.name + '’s access? Their leads stay in the CRM and you can reassign them.' : 'Give ' + t.name + ' access back?')) return; fb.F.setDoc(fb.F.doc(fb.db, 'crmUsers', t.uid), { active: !off }, { merge: true }).then(() => toast(off ? t.name + '’s access is off' : t.name + ' has access again')).catch(() => toast("Couldn't change access. Check the connection.")); return; }
+  if ((el = c('[data-resetpw]'))) { const em = el.getAttribute('data-resetpw'); fb.A.sendPasswordResetEmail(fb.auth, em).then(() => toast('Password email sent to ' + em)).catch(() => toast("Couldn't send the email.")); return; }
   if (c('#btnBell')) return toggleNotif();
   if (c('#btnNew')) return openEdit(null, tab === 'bookings' ? 'booked' : tab === 'alumni' ? 'alumni' : 'new');
   if ((el = c('[data-new]'))) return openEdit(null, el.getAttribute('data-new'));
@@ -1273,6 +1334,7 @@ document.addEventListener('change', e => {
   if (id === 'pDate') pay.date = e.target.value;
   if (e.target.name === 'ctype') { comp.type = e.target.value; return render(); }
   if (id === 'fFollowQ') { const b = curRec(); if (b) patch(b.id, { followUp: e.target.value }, e.target.value ? 'Follow-up set for ' + frDate(e.target.value) : 'Follow-up cleared'); }
+  if (id === 'assignSel') { const b = curRec(); if (!b || !me.isDirector) return; const o = team.find(t => t.uid === e.target.value); return patch(b.id, { ownerUid: o ? o.uid : '', ownerName: o ? o.name : '' }, o ? b.name + ' assigned to ' + o.name : b.name + ' is now unassigned'); }
   if (id === 'currency') { state.currency = e.target.value; fb.F.setDoc(fb.F.doc(fb.db, 'crmMeta', 'settings'), { currency: e.target.value }, { merge: true }).catch(() => {}); render(); }
 });
 document.addEventListener('keydown', e => {
@@ -1291,6 +1353,7 @@ document.addEventListener('drop', e => {
   const b = state.bookings.find(x => x.id === e.dataTransfer.getData('text/plain')); if (b) moveTo(b, col.getAttribute('data-drop'));
 });
 $('editForm').addEventListener('submit', e => { e.preventDefault(); saveEdit(); });
+$('memberForm').addEventListener('submit', e => { e.preventDefault(); addMember(); });
 $('lostForm').addEventListener('submit', e => {
   e.preventDefault(); const b = curRec(); if (!b) { $('lostPop').close(); return; }
   const reason = $('fLost').value, note = $('fLostNote').value.trim();
