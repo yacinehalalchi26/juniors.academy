@@ -263,11 +263,13 @@
 <dialog class="pop" id="entryPop" aria-labelledby="epTitle">
   <div class="pop-head"><div><h2 id="epTitle">Record money</h2><p id="epSub">In the currency it was paid in. Nothing is converted.</p></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
   <form class="pop-body" id="entryForm" novalidate>
-    <div class="seg" role="group" aria-label="What is it" style="flex-wrap:wrap"><button type="button" data-kind="regfee" aria-pressed="true">Registration fee</button><button type="button" data-kind="tuition" aria-pressed="false">Tuition</button><button type="button" data-kind="partner" aria-pressed="false">Payment to partner</button><button type="button" data-kind="commission" aria-pressed="false">Commission</button></div>
+    <div class="seg" role="group" aria-label="What is it" style="flex-wrap:wrap"><button type="button" data-kind="regfee" aria-pressed="true">Registration fee</button><button type="button" data-kind="tuition" aria-pressed="false">Tuition</button><button type="button" data-kind="partner" aria-pressed="false">Payment to partner</button><button type="button" data-kind="commission" aria-pressed="false">Commission</button><button type="button" data-kind="expense" aria-pressed="false">Expense</button></div>
     <p class="info" id="eKindHint"></p>
     <div class="fields">
-      <div class="fld" id="eScopeF"><label for="eScope">For</label><select id="eScope"><option value="booking">One student</option><option value="program">A whole programme (one invoice for the group)</option><option value="general">Not a booking (rent, salaries…)</option></select></div>
+      <div class="fld" id="eScopeF"><label for="eScope">For</label><select id="eScope"><option value="booking">One student</option><option value="program">A whole programme (one invoice for the group)</option><option value="general">Not a booking (general)</option></select></div>
       <div class="fld" id="ePartnerF"><label for="ePartner">Partner</label><select id="ePartner"></select></div>
+      <div class="fld" id="eCatF" hidden><label for="eCat">Category</label><select id="eCat"></select></div>
+      <div class="fld full" id="eVendorF" hidden><label for="eVendor">Paid to</label><input id="eVendor" type="text" maxlength="90" placeholder="Landlord, Sonelgaz, Air Algérie, the embassy…"></div>
       <div class="fld full" id="eBookingF"><label for="eBooking">Student</label><select id="eBooking"></select></div>
       <div class="fld full" id="eProgramF" hidden><label for="eProgram">Programme</label><select id="eProgram"></select><span class="hint">The amount is shared equally between the students booked on this programme this season.</span></div>
       <div class="fld"><label for="eAmount">Amount</label><input id="eAmount" type="number" step="0.01" min="0" inputmode="decimal" required></div>
@@ -451,8 +453,11 @@ const K = {
   regfee:     { name: 'Registration fee',   short: 'Reg. fee',    who: 'client',  dir: 'in',  done: 'Received', pending: 'Due',      hint: 'What the client pays you for your service, normally in dinars. This is your revenue.', color: '#76142E' },
   tuition:    { name: 'Tuition',            short: 'Tuition',     who: 'client',  dir: 'in',  done: 'Received', pending: 'Due',      hint: 'What the client pays for the programme itself (school, camp, stay), in the currency they paid in.', color: '#244E66' },
   partner:    { name: 'Payment to partner', short: 'To partner',  who: 'partner', dir: 'out', done: 'Paid',     pending: 'To pay',   hint: 'What you pay the school, the camp, the airline, the insurer or the agent, in their currency.', color: '#88B4C8' },
-  commission: { name: 'Commission',         short: 'Commission',  who: 'partner', dir: 'in',  done: 'Received', pending: 'Expected', hint: 'What a partner pays you back, in their currency.', color: '#E8C879' }
+  commission: { name: 'Commission',         short: 'Commission',  who: 'partner', dir: 'in',  done: 'Received', pending: 'Expected', hint: 'What a partner pays you back, in their currency.', color: '#E8C879' },
+  expense:    { name: 'Expense',            short: 'Expense',     who: 'other',   dir: 'out', done: 'Paid',     pending: 'To pay',   hint: 'Your running costs: rent, salaries, marketing, missions abroad, visa fees, translations, bank charges… in dinars or in the currency you paid.', color: '#AA819A' }
 };
+/* expense categories, in the order they appear */
+const EXP_CATS = ['Rent & office', 'Salaries', 'Marketing & ads', 'Travel & missions', 'Visa & consular fees', 'Translations', 'Events & salons', 'Bank charges', 'Taxes & fees', 'Software & phone', 'Other'];
 const kindOf = e => e.kind === 'cost' ? 'partner' : e.kind === 'income' ? 'commission' : (K[e.kind] ? e.kind : 'partner');   /* older lines keep working */
 const curOrder = (a, b) => (a === 'DZD' ? -1 : b === 'DZD' ? 1 : a.localeCompare(b));
 const add = (m, c, v) => { if (v) m[c] = (m[c] || 0) + v; return m; };
@@ -490,7 +495,7 @@ function ledgerTotals(es) {
   return t;
 }
 const partnerName = e => (partners[e.partnerId] || {}).name || e.partnerName || '';
-const whoOf = e => { const k = kindOf(e); const b = bookings[e.bookingId]; return K[k].who === 'client' ? (b ? b.name : e.program ? 'Clients, ' + e.program : 'Client') : (partnerName(e) || 'Partner'); };
+const whoOf = e => { const k = kindOf(e); const b = bookings[e.bookingId]; if (k === 'expense') return e.vendor || e.category || 'Expense'; return K[k].who === 'client' ? (b ? b.name : e.program ? 'Clients, ' + e.program : 'Client') : (partnerName(e) || 'Partner'); };
 const estimateDa = m => curs(m).reduce((s, c) => s + m[c] * rateOf(c), 0);   /* only for the optional "about … in dinars" line */
 
 /* ==================== Rendering ==================== */
@@ -506,9 +511,12 @@ function render() {
 const seasonLabel = () => season === 'all' ? 'all seasons' : 'season ' + season;
 function overviewView() {
   const bl = seasonBookings(), es = seasonEntries(), t = ledgerTotals(es);
-  const pend = es.filter(e => e.status !== 'paid'), toPay = pend.filter(e => kindOf(e) === 'partner'), toGet = pend.filter(e => kindOf(e) !== 'partner'), late = pend.filter(isLate);
+  const pend = es.filter(e => e.status !== 'paid'), toPay = pend.filter(e => K[kindOf(e)].dir === 'out'), toGet = pend.filter(e => K[kindOf(e)].dir === 'in'), late = pend.filter(isLate);
   const allCurs = new Set(); es.forEach(e => allCurs.add(e.currency)); const fx = Array.from(allCurs).filter(c => c !== 'DZD').sort();
-  const d = c => ({ reg: (t.done.regfee[c] || 0), tui: (t.done.tuition[c] || 0), par: (t.done.partner[c] || 0), com: (t.done.commission[c] || 0), net: (t.net[c] || 0), regP: (t.pending.regfee[c] || 0), tuiP: (t.pending.tuition[c] || 0), parP: (t.pending.partner[c] || 0), comP: (t.pending.commission[c] || 0) });
+  const d = c => ({ reg: (t.done.regfee[c] || 0), tui: (t.done.tuition[c] || 0), par: (t.done.partner[c] || 0), com: (t.done.commission[c] || 0), exp: (t.done.expense[c] || 0), net: (t.net[c] || 0), regP: (t.pending.regfee[c] || 0), tuiP: (t.pending.tuition[c] || 0), parP: (t.pending.partner[c] || 0), comP: (t.pending.commission[c] || 0), expP: (t.pending.expense[c] || 0) });
+  /* expenses by category, in every currency */
+  const cats = {}; es.filter(e => kindOf(e) === 'expense').forEach(e => { const c = cats[e.category || 'Other'] = cats[e.category || 'Other'] || { done: {}, pend: {} }; add(e.status === 'paid' ? c.done : c.pend, e.currency, toNum(e.amount)); });
+  const ck = Object.keys(cats).sort((a, b) => ((cats[b].done.DZD || 0) + (cats[b].pend.DZD || 0)) - ((cats[a].done.DZD || 0) + (cats[a].pend.DZD || 0)));
   const z = d('DZD');
   const progs = {}; bl.forEach(b => { const f = bookingFigures(b), k = progOf(b); const p = progs[k] = progs[k] || { n: 0, reg: 0, regP: 0 }; p.n++; p.reg += f.done.regfee.DZD || 0; p.regP += f.pending.regfee.DZD || 0; });
   const pk = Object.keys(progs).sort((a, b) => (progs[b].reg + progs[b].regP) - (progs[a].reg + progs[a].regP));
@@ -519,22 +527,28 @@ function overviewView() {
   /* dinars */
   out += '<h2 style="margin:0 0 10px;font-size:1.05rem;font-weight:600">Dinars <small style="font-weight:500;color:var(--muted)">what you earn</small></h2>' +
     '<section class="stats"><div class="stat dark"><b class="num">' + esc(da(z.reg)) + '</b><span>Registration fees received</span><small>' + (z.regP ? esc(da(z.regP)) + ' still due' : 'nothing due') + (bl.length ? ' · ' + esc(da((z.reg + z.regP) / bl.length)) + ' per student' : '') + '</small></div>' +
-      '<div class="stat"><b class="num">' + esc(da(z.tui)) + '</b><span>Tuition received in dinars</span><small>' + (z.tuiP ? esc(da(z.tuiP)) + ' still due' : 'clients who pay the programme in dinars') + '</small></div>' +
-      '<div class="stat"><b class="num">' + esc(da(z.par)) + '</b><span>Paid to partners in dinars</span><small>' + (z.parP ? esc(da(z.parP)) + ' still to pay' : 'flights, insurance, agents paid in dinars') + '</small></div>' +
-      '<div class="stat ' + (z.net >= 0 ? 'good' : 'bad') + '"><b class="num">' + esc(da(z.net)) + '</b><span>Net in dinars</span><small>received − paid, in dinars only</small></div></section>';
+      '<div class="stat"><b class="num">' + esc(da(z.exp)) + '</b><span>Expenses paid in dinars</span><small>' + (z.expP ? esc(da(z.expP)) + ' still to pay' : 'rent, salaries, marketing, missions…') + '</small></div>' +
+      '<div class="stat"><b class="num">' + esc(da(z.par)) + '</b><span>Paid to partners in dinars</span><small>' + (z.parP ? esc(da(z.parP)) + ' still to pay' : 'flights, insurance, agents paid in dinars') + (z.tui ? ' · tuition received ' + esc(da(z.tui)) : '') + '</small></div>' +
+      '<div class="stat ' + (z.net >= 0 ? 'good' : 'bad') + '"><b class="num">' + esc(da(z.net)) + '</b><span>Net in dinars</span><small>received − partners − expenses, in dinars only</small></div></section>';
   /* each foreign currency */
   if (fx.length) {
-    out += '<h2 style="margin:4px 0 10px;font-size:1.05rem;font-weight:600">Foreign currency <small style="font-weight:500;color:var(--muted)">kept in each currency, not converted</small></h2><div class="fxgrid">' + fx.map(c => { const v = d(c), inn = v.tui + v.com, outv = v.par, max = Math.max(inn, outv, 1);
+    out += '<h2 style="margin:4px 0 10px;font-size:1.05rem;font-weight:600">Foreign currency <small style="font-weight:500;color:var(--muted)">kept in each currency, not converted</small></h2><div class="fxgrid">' + fx.map(c => { const v = d(c), inn = v.tui + v.com, outv = v.par + v.exp, max = Math.max(inn, outv, 1);
       return '<section class="card pad fx"><h3 class="h"><span><span class="cur" style="font-size:.9rem;padding:3px 9px">' + c + '</span> ' + esc(SYMBOL[c] || '') + '</span><small>net <b class="num ' + (v.net >= 0 ? 'pos' : 'neg') + '">' + (v.net >= 0 ? '+' : '') + esc(money(v.net, c)) + '</b></small></h3>' +
         '<div class="io"><div><span>In</span><div class="pbar"><i style="width:' + Math.round(inn / max * 100) + '%;background:#244E66"></i></div><b class="num">' + esc(money(inn, c)) + '</b></div><div><span>Out</span><div class="pbar"><i style="width:' + Math.round(outv / max * 100) + '%;background:#76142E"></i></div><b class="num">' + esc(money(outv, c)) + '</b></div></div>' +
-        '<table class="mini">' + row('Tuition from clients', v.tui, c) + row('Commissions from partners', v.com, c) + row('Paid to partners', v.par, c, 'neg') + '</table>' +
-        ((v.tuiP || v.comP || v.parP) ? '<p style="margin:10px 0 0;font-size:.8rem;color:var(--muted)">Open: ' + [v.tuiP ? 'tuition due ' + money(v.tuiP, c) : '', v.comP ? 'commissions expected ' + money(v.comP, c) : '', v.parP ? 'to pay ' + money(v.parP, c) : ''].filter(Boolean).map(esc).join(' · ') + '</p>' : '') + '</section>'; }).join('') + '</div>';
-  } else out += '<p class="info" style="margin:0 0 14px">No foreign currency yet. Record tuition in euros or pounds, a payment to a partner or a commission, and that currency gets its own block here.</p>';
+        '<table class="mini">' + row('Tuition from clients', v.tui, c) + row('Commissions from partners', v.com, c) + row('Paid to partners', v.par, c, 'neg') + row('Expenses', v.exp, c, 'neg') + '</table>' +
+        ((v.tuiP || v.comP || v.parP || v.expP) ? '<p style="margin:10px 0 0;font-size:.8rem;color:var(--muted)">Open: ' + [v.tuiP ? 'tuition due ' + money(v.tuiP, c) : '', v.comP ? 'commissions expected ' + money(v.comP, c) : '', v.parP ? 'partners to pay ' + money(v.parP, c) : '', v.expP ? 'expenses to pay ' + money(v.expP, c) : ''].filter(Boolean).map(esc).join(' · ') + '</p>' : '') + '</section>'; }).join('') + '</div>';
+  } else out += '<p class="info" style="margin:0 0 14px">No foreign currency yet. Record tuition in euros or pounds, a payment to a partner, a commission or an expense abroad, and that currency gets its own block here.</p>';
+  /* expenses by category: bars in dinars, the other currencies listed */
+  const expAll = {}, expOpen = {}; es.filter(e => kindOf(e) === 'expense').forEach(e => add(e.status === 'paid' ? expAll : expOpen, e.currency, toNum(e.amount)));
+  out += '<section class="card pad" style="margin-bottom:14px"><h3 class="h"><span>Expenses by category <small>paid · ' + esc(list(expAll)) + (curs(expOpen).length ? ' · to pay ' + esc(list(expOpen)) : '') + '</small></span><button type="button" class="btn btn-light btn-small" data-new="expense">' + icon('plus') + 'Add an expense</button></h3>' +
+    (ck.length ? '<div class="grid2" style="margin:0">' + '<div>' + (ck.some(k => (cats[k].done.DZD || 0) + (cats[k].pend.DZD || 0)) ? bars(ck.filter(k => (cats[k].done.DZD || 0) + (cats[k].pend.DZD || 0)).map(k => ({ l: k, done: cats[k].done.DZD || 0, pend: cats[k].pend.DZD || 0 }))) : '<p style="margin:0;color:var(--muted);font-size:.88rem">No expense in dinars yet.</p>') + '</div>' +
+      '<table class="mini">' + ck.map(k => '<tr class="go" data-expcat="' + esc(k) + '" style="cursor:pointer"><td><b>' + esc(k) + '</b>' + (curs(cats[k].pend).length ? '<br><small style="color:var(--st-warn)">to pay ' + esc(list(cats[k].pend)) + '</small>' : '') + '</td><td class="r">' + listHtml(cats[k].done) + '</td></tr>').join('') + '</table></div>'
+    : '<p style="margin:0;color:var(--muted)">Nothing yet. Record rent, salaries, marketing, a mission abroad or a visa fee with “Add an expense”; dinars and foreign currency are kept apart, like everything else here.</p>') + '</section>';
   /* visuals + lists */
   out += '<div class="grid2"><section class="card pad"><h3 class="h">Registration fees by programme <small>in dinars</small></h3>' + (pk.length ? bars(pk.map(k => ({ l: k + ' · ' + progs[k].n + (progs[k].n === 1 ? ' student' : ' students'), done: progs[k].reg, pend: progs[k].regP }))) : '<p style="margin:0;color:var(--muted)">No booking for ' + seasonLabel() + '. Bookings come from the CRM when a client is marked as Booked.</p>') + '</section>' +
     '<section class="card pad"><h3 class="h">Partners <small>paid · commissions</small></h3>' + (parts.length ? '<table class="mini">' + parts.map(x => '<tr class="go" data-partner="' + esc(x.p.id) + '" style="cursor:pointer"><td><b>' + esc(x.p.name) + '</b>' + (curs(x.toPay).length ? '<br><small style="color:var(--st-warn)">to pay ' + esc(list(x.toPay)) + '</small>' : '') + '</td><td class="r">' + listHtml(x.paid) + '</td><td class="r">' + (curs(x.com).length ? '<small style="color:var(--muted)">commission</small><br>' + listHtml(x.com) : '') + '</td></tr>').join('') + '</table>' : '<p style="margin:0;color:var(--muted)">Pay a partner and it appears here.</p>') + '</section></div>' +
     '<div class="grid2"><section class="card pad"><h3 class="h">Still to receive <small>from clients and partners</small></h3>' + (toGet.length ? '<table class="mini">' + toGet.sort((a, b) => String(a.dueDate || '9').localeCompare(String(b.dueDate || '9'))).slice(0, 8).map(e => '<tr class="go" data-entry="' + esc(e.id) + '" style="cursor:pointer"><td><b>' + esc(whoOf(e)) + '</b><br><small style="color:var(--muted)">' + esc(K[kindOf(e)].name) + (e.label ? ' · ' + esc(e.label) : '') + (e.dueDate ? ' · by ' + esc(niceDate(e.dueDate)) : '') + '</small></td><td class="r num">' + esc(money(toNum(e.amount), e.currency)) + '</td><td class="r"><span class="st ' + (isLate(e) ? 'st-late' : 'st-due') + '">' + (isLate(e) ? 'Overdue' : K[kindOf(e)].pending) + '</span></td></tr>').join('') + '</table>' : '<p style="margin:0;color:var(--muted)">Everything due has been received.</p>') + '</section>' +
-    '<section class="card pad"><h3 class="h">Still to pay <small>to partners</small></h3>' + (toPay.length ? '<table class="mini">' + toPay.sort((a, b) => String(a.dueDate || '9').localeCompare(String(b.dueDate || '9'))).slice(0, 8).map(e => '<tr class="go" data-entry="' + esc(e.id) + '" style="cursor:pointer"><td><b>' + esc(partnerName(e) || 'Partner') + '</b><br><small style="color:var(--muted)">' + esc(e.label || 'Payment') + (e.dueDate ? ' · by ' + esc(niceDate(e.dueDate)) : '') + '</small></td><td class="r num">' + esc(money(toNum(e.amount), e.currency)) + '</td><td class="r"><span class="st ' + (isLate(e) ? 'st-late' : 'st-due') + '">' + (isLate(e) ? 'Overdue' : 'To pay') + '</span></td></tr>').join('') + '</table>' : '<p style="margin:0;color:var(--muted)">Every partner is paid for ' + seasonLabel() + '.</p>') + '</section></div>';
+    '<section class="card pad"><h3 class="h">Still to pay <small>partners and expenses</small></h3>' + (toPay.length ? '<table class="mini">' + toPay.sort((a, b) => String(a.dueDate || '9').localeCompare(String(b.dueDate || '9'))).slice(0, 8).map(e => '<tr class="go" data-entry="' + esc(e.id) + '" style="cursor:pointer"><td><b>' + esc(whoOf(e)) + '</b><br><small style="color:var(--muted)">' + esc(kindOf(e) === 'expense' ? (e.label || e.category || 'Expense') : (e.label || 'Payment')) + (e.dueDate ? ' · by ' + esc(niceDate(e.dueDate)) : '') + '</small></td><td class="r num">' + esc(money(toNum(e.amount), e.currency)) + '</td><td class="r"><span class="st ' + (isLate(e) ? 'st-late' : 'st-due') + '">' + (isLate(e) ? 'Overdue' : 'To pay') + '</span></td></tr>').join('') + '</table>' : '<p style="margin:0;color:var(--muted)">Every partner and every expense is paid for ' + seasonLabel() + '.</p>') + '</section></div>';
   /* the optional estimate, in one line */
   const estIn = estimateDa(t.in), estOut = estimateDa(t.out);
   out += '<p style="margin:0;font-size:.82rem;color:var(--muted)">About, at your rates (Rates & settings): received ' + esc(da(estIn)) + ' · paid ' + esc(da(estOut)) + ' · net ' + esc(da(estIn - estOut)) + '. An estimate only; the figures above are the real ones.</p>';
@@ -572,7 +586,7 @@ function partnersView() {
 function ledgerFiltered() {
   const q = filt.q.trim().toLowerCase();
   return seasonEntries().filter(e => (!filt.kind || kindOf(e) === filt.kind) && (!filt.status || (filt.status === 'late' ? isLate(e) : e.status === filt.status)) && (!filt.partner || e.partnerId === filt.partner) && (!filt.cur || e.currency === filt.cur) && (!filt.program || e.program === filt.program || (e.bookingId && bookings[e.bookingId] && progOf(bookings[e.bookingId]) === filt.program)) &&
-    (!q || [e.label, whoOf(e), e.ref, e.note, e.program, (bookings[e.bookingId] || {}).name].join(' ').toLowerCase().includes(q))).sort((a, b) => String(dateOf(b)).localeCompare(String(dateOf(a))) || (a.createdAt < b.createdAt ? 1 : -1));
+    (!q || [e.label, whoOf(e), e.ref, e.note, e.program, e.category, e.vendor, (bookings[e.bookingId] || {}).name].join(' ').toLowerCase().includes(q))).sort((a, b) => String(dateOf(b)).localeCompare(String(dateOf(a))) || (a.createdAt < b.createdAt ? 1 : -1));
 }
 function ledgerView() {
   const l = ledgerFiltered(), progs = Array.from(new Set(seasonBookings().map(progOf).concat(seasonEntries().map(e => e.program).filter(Boolean)))).sort(), cl = Array.from(new Set(seasonEntries().map(e => e.currency))).sort(curOrder);
@@ -609,8 +623,8 @@ function drawDrawer(keep) {
     const b = bookings[openId]; if (!b) { closeDrawer(); return; }
     const f = bookingFigures(b);
     h = '<div class="d-head"><div class="d-row"><span class="av" style="--c:' + colorOf(b.id) + ';width:48px;height:48px;font-size:1rem">' + esc(initials(b.name)) + '</span><div style="min-width:0"><h2>' + esc(b.name) + '</h2><small>' + esc(b.num || '') + ' · ' + esc(progOf(b)) + ' · booked ' + esc(niceDate(b.bookedAt || b.createdAt)) + '</small></div><button type="button" class="x" data-close aria-label="Close">×</button></div>' +
-      '<div class="d-acts">' + Object.keys(K).map(k => '<button type="button" class="btn ' + (k === 'regfee' ? 'btn-main' : 'btn-light') + ' btn-small" data-new="' + k + '" data-for="' + esc(b.id) + '">' + icon('plus') + esc(K[k].name) + '</button>').join('') + '<a class="btn btn-light btn-small" href="' + CRM_URL + '#open=' + encodeURIComponent(b.id) + '" target="_blank" rel="noopener">' + icon('open') + 'CRM</a></div></div><div class="d-body">' +
-      '<div class="box"><div class="facts">' + Object.keys(K).map(k => '<div class="fact"><span>' + esc(K[k].name) + '</span><b style="white-space:normal">' + listHtml(f.done[k]) + '</b>' + (curs(f.pending[k]).length ? '<small style="color:var(--st-warn)">' + esc(K[k].pending.toLowerCase()) + ' ' + esc(list(f.pending[k])) + '</small>' : '') + '</div>').join('') + '<div class="fact"><span>Net, by currency</span><b style="white-space:normal">' + netHtml(f.net) + '</b></div><div class="fact"><span>CRM price (reference)</span><b class="num">' + esc(da(f.fee)) + '</b><small>' + esc(da(f.paid)) + ' recorded in the CRM</small></div></div></div>' +
+      '<div class="d-acts">' + Object.keys(K).filter(k => k !== 'expense').map(k => '<button type="button" class="btn ' + (k === 'regfee' ? 'btn-main' : 'btn-light') + ' btn-small" data-new="' + k + '" data-for="' + esc(b.id) + '">' + icon('plus') + esc(K[k].name) + '</button>').join('') + '<a class="btn btn-light btn-small" href="' + CRM_URL + '#open=' + encodeURIComponent(b.id) + '" target="_blank" rel="noopener">' + icon('open') + 'CRM</a></div></div><div class="d-body">' +
+      '<div class="box"><div class="facts">' + Object.keys(K).filter(k => k !== 'expense' || curs(f.done[k]).length || curs(f.pending[k]).length).map(k => '<div class="fact"><span>' + esc(K[k].name) + '</span><b style="white-space:normal">' + listHtml(f.done[k]) + '</b>' + (curs(f.pending[k]).length ? '<small style="color:var(--st-warn)">' + esc(K[k].pending.toLowerCase()) + ' ' + esc(list(f.pending[k])) + '</small>' : '') + '</div>').join('') + '<div class="fact"><span>Net, by currency</span><b style="white-space:normal">' + netHtml(f.net) + '</b></div><div class="fact"><span>CRM price (reference)</span><b class="num">' + esc(da(f.fee)) + '</b><small>' + esc(da(f.paid)) + ' recorded in the CRM</small></div></div></div>' +
       '<div class="box"><h3>Lines <small>' + f.lines.length + '</small></h3>' + (f.lines.length ? '<table class="mini">' + f.lines.sort((a, c) => String(dateOf(a)).localeCompare(String(dateOf(c)))).map(e => lineRow(e, b)).join('') + '</table>' : '<p style="margin:0;color:var(--muted);font-size:.88rem">Nothing recorded for this student yet. Start with the registration fee, then the tuition the client paid and what you paid the partner.</p>') + '</div></div>';
   } else {
     const p = partners[openId]; if (!p) { closeDrawer(); return; }
@@ -635,8 +649,8 @@ function setKind(k) {
   document.querySelectorAll('[data-kind]').forEach(b => b.setAttribute('aria-pressed', String(b.getAttribute('data-kind') === k)));
   $('epTitle').textContent = (editing ? 'Edit: ' : '') + m.name; $('eKindHint').textContent = m.hint;
   $('eStatus').options[0].text = m.done; $('eStatus').options[1].text = m.pending === 'Due' ? 'Not received yet' : m.pending === 'To pay' ? 'Not paid yet' : 'Not received yet';
-  $('ePartnerF').hidden = m.who !== 'partner';
-  if (!editing) { if (k === 'regfee') $('eCur').value = 'DZD'; else if (m.who === 'partner') { const p = partners[$('ePartner').value]; if (p && p.currency) $('eCur').value = p.currency; } }
+  $('ePartnerF').hidden = m.who !== 'partner'; $('eCatF').hidden = k !== 'expense'; $('eVendorF').hidden = k !== 'expense';
+  if (!editing) { if (k === 'regfee' || k === 'expense') $('eCur').value = 'DZD'; else if (m.who === 'partner') { const p = partners[$('ePartner').value]; if (p && p.currency) $('eCur').value = p.currency; } if (k === 'expense' && !$('eScope').value.match(/booking|program/)) $('eScope').value = 'general'; if (k === 'expense' && !$('eBooking').value && !$('eProgram').value) $('eScope').value = 'general'; }
   entryUI();
 }
 function openEntry(kind, e, pre) {
@@ -644,9 +658,10 @@ function openEntry(kind, e, pre) {
   $('ePartner').innerHTML = partnerOptions(e ? e.partnerId : pre.partnerId || '');
   $('eBooking').innerHTML = bookingOptions(e ? e.bookingId : pre.bookingId || '');
   $('eProgram').innerHTML = programOptions(e ? e.program : pre.program || '');
+  $('eCat').innerHTML = EXP_CATS.map(c => '<option value="' + esc(c) + '"' + (e && e.category === c ? ' selected' : '') + '>' + esc(c) + '</option>').join(''); $('eVendor').value = e ? e.vendor || '' : '';
   $('eCur').innerHTML = Object.keys(CURRENCIES).map(c => '<option value="' + c + '">' + c + (c !== 'DZD' ? ' ' + SYMBOL[c] : '') + '</option>').join('');
-  $('eScope').value = e ? (e.bookingId ? 'booking' : e.program ? 'program' : 'general') : pre.bookingId ? 'booking' : pre.program ? 'program' : 'booking';
-  $('eAmount').value = e ? e.amount : ''; $('eCur').value = e ? e.currency : (kind === 'regfee' ? 'DZD' : (partners[pre.partnerId] || {}).currency || 'EUR');
+  $('eScope').value = e ? (e.bookingId ? 'booking' : e.program ? 'program' : 'general') : pre.bookingId ? 'booking' : pre.program ? 'program' : (kind === 'expense' ? 'general' : 'booking');
+  $('eAmount').value = e ? e.amount : ''; $('eCur').value = e ? e.currency : (kind === 'regfee' || kind === 'expense' ? 'DZD' : (partners[pre.partnerId] || {}).currency || 'EUR');
   $('eStatus').value = e ? e.status : 'paid'; $('eDate').value = e ? dateOf(e) : todayISO(); $('eLabel').value = e ? e.label || '' : ''; $('eRef').value = e ? e.ref || '' : ''; $('eNote').value = e ? e.note || '' : '';
   $('eDelete').hidden = !e; $('eErr').hidden = true; setKind(e ? kindOf(e) : kind); $('entryPop').showModal(); setTimeout(() => $('eAmount').focus(), 60);
 }
@@ -656,17 +671,19 @@ function entryUI() {
   $('eScope').options[2].hidden = m.who === 'client';   /* money from a client is always for a student or a programme */
   if (m.who === 'client' && scope === 'general') $('eScope').value = 'booking';
   $('eDateL').textContent = $('eStatus').value === 'paid' ? (m.done + ' on') : (m.pending === 'To pay' ? 'Due by' : 'Expected by');
+  $('eLabel').placeholder = eKind === 'expense' ? 'October rent, Instagram ads, mission Beijing…' : 'Deposit, balance, flight…';
 }
 async function saveEntry() {
   const err = t => { $('eErr').textContent = t; $('eErr').hidden = false; };
   const m = K[eKind], amount = toNum($('eAmount').value), cur = $('eCur').value, scope = $('eScope').value;
   if (!(amount > 0)) return err('Enter the amount.');
   if (m.who === 'partner' && !$('ePartner').value) return err('Choose the partner.');
+  if (eKind === 'expense' && !$('eCat').value) return err('Choose a category.');
   if (scope === 'booking' && !$('eBooking').value) return err('Choose the student.');
   if (scope === 'program' && !$('eProgram').value) return err('Choose the programme.');
   const b = scope === 'booking' ? bookings[$('eBooking').value] : null, now = new Date().toISOString();
   const seasonOf = b ? yearOf(b) : (editing && editing.season) || (season === 'all' ? String(new Date().getFullYear()) : season);
-  const data = { kind: eKind, label: $('eLabel').value.trim(), partnerId: m.who === 'partner' && $('ePartner').value !== '__new' ? $('ePartner').value : '', partnerName: m.who === 'partner' ? ((partners[$('ePartner').value] || {}).name || '') : '', bookingId: b ? b.id : '', program: scope === 'program' ? $('eProgram').value : '', season: seasonOf,
+  const data = { kind: eKind, label: $('eLabel').value.trim(), partnerId: m.who === 'partner' && $('ePartner').value !== '__new' ? $('ePartner').value : '', partnerName: m.who === 'partner' ? ((partners[$('ePartner').value] || {}).name || '') : '', bookingId: b ? b.id : '', program: scope === 'program' ? $('eProgram').value : '', season: seasonOf, category: eKind === 'expense' ? $('eCat').value : '', vendor: eKind === 'expense' ? $('eVendor').value.trim() : '',
     amount, currency: cur, status: $('eStatus').value, dueDate: $('eStatus').value === 'paid' ? (editing && editing.dueDate) || '' : $('eDate').value, paidDate: $('eStatus').value === 'paid' ? ($('eDate').value || todayISO()) : '', ref: $('eRef').value.trim(), note: $('eNote').value.trim(), updatedAt: now };
   const id = editing ? editing.id : newId(); if (!editing) data.createdAt = now;
   entries[id] = Object.assign({ id }, entries[id] || {}, data); render();
@@ -701,8 +718,8 @@ async function confirmPay() {
 }
 function csv() {
   const rows = ledgerFiltered(), cell = v => { v = String(v == null ? '' : v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-  const head = ['Season', 'Kind', 'Direction', 'Status', 'Date', 'Who', 'Student', 'Programme', 'Amount', 'Currency', 'Label', 'Reference', 'Note'];
-  const out = rows.map(e => { const k = kindOf(e), b = bookings[e.bookingId]; return [e.season, K[k].name, K[k].dir, e.status === 'paid' ? K[k].done : K[k].pending, dateOf(e), whoOf(e), b ? b.name + ' (' + (b.num || '') + ')' : '', e.program || (b ? progOf(b) : ''), e.amount, e.currency, e.label, e.ref, e.note].map(cell).join(';'); });
+  const head = ['Season', 'Kind', 'Category', 'Direction', 'Status', 'Date', 'Who', 'Student', 'Programme', 'Amount', 'Currency', 'Label', 'Reference', 'Note'];
+  const out = rows.map(e => { const k = kindOf(e), b = bookings[e.bookingId]; return [e.season, K[k].name, e.category || '', K[k].dir, e.status === 'paid' ? K[k].done : K[k].pending, dateOf(e), whoOf(e), b ? b.name + ' (' + (b.num || '') + ')' : '', e.program || (b ? progOf(b) : ''), e.amount, e.currency, e.label, e.ref, e.note].map(cell).join(';'); });
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF' + [head.join(';')].concat(out).join('\r\n')], { type: 'text/csv;charset=utf-8' })); a.download = 'finance-' + (season === 'all' ? 'all' : season) + '-' + todayISO() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); toast(rows.length + ' lines exported');
 }
 
@@ -713,6 +730,7 @@ document.addEventListener('click', e => {
   if ((el = q('[data-kind]'))) return setKind(el.getAttribute('data-kind'));
   if ((el = q('[data-new]'))) { const pre = {}; if (el.getAttribute('data-for')) pre.bookingId = el.getAttribute('data-for'); if (el.getAttribute('data-partner-for')) pre.partnerId = el.getAttribute('data-partner-for'); return openEntry(el.getAttribute('data-new'), null, pre); }
   if ((el = q('[data-pay]'))) { const en = entries[el.getAttribute('data-pay')]; if (en) openPay(en); return; }
+  if ((el = q('[data-expcat]'))) { filt.kind = 'expense'; filt.q = el.getAttribute('data-expcat'); tab = 'ledger'; render(); return; }
   if ((el = q('[data-entry]'))) { const en = entries[el.getAttribute('data-entry')]; if (en) openEntry(kindOf(en), en); return; }
   if ((el = q('[data-booking]'))) return openDrawer('booking', el.getAttribute('data-booking'));
   if ((el = q('[data-partner]'))) return openDrawer('partner', el.getAttribute('data-partner'));
