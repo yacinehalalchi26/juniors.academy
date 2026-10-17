@@ -31,7 +31,7 @@
     html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
     body{margin:0;background:var(--bg);color:var(--ink);font-family:'Poppins','Cairo',system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
     button,input,select{font:inherit;color:inherit} button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.55}
-    [hidden]{display:none!important}.num{font-variant-numeric:tabular-nums}.sp{flex:1}.muted{color:var(--muted)}
+    [hidden]{display:none!important}.qfig{display:block;max-width:min(100%,420px);max-height:260px;margin:4px 0 18px;border:1px solid rgba(37,37,42,.1);border-radius:10px;background:#fff;padding:8px}.ofig{display:block;max-width:220px;max-height:150px;margin:6px 0 2px;background:#fff;border-radius:6px;padding:4px}.rq .qfig{max-width:300px;max-height:200px;margin:2px 0 10px}.rq .ofig{max-width:150px;max-height:110px;display:inline-block;vertical-align:middle;margin:2px 0 2px 8px}.num{font-variant-numeric:tabular-nums}.sp{flex:1}.muted{color:var(--muted)}
     :focus-visible{outline:3px solid rgba(118,20,46,.25);outline-offset:2px}
     svg.i{width:18px;height:18px;flex:none}
 
@@ -291,6 +291,10 @@ const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct
 const when = t => { const x = ms(t); if (!x) return '—'; const d = new Date(x); return d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear() + ', ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
 const mmss = s => { s = Math.max(0, Math.ceil(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : String(m).padStart(2, '0')) + ':' + String(x).padStart(2, '0'); };
 const hasZh = s => /[\u3400-\u9fff]/.test(String(s || ''));
+/* figures: q.img sits under the question text, q.oi[k] beside option k (data URLs or https) */
+const safeSrc = u => (typeof u === 'string' && /^(data:image\/(png|jpeg|gif|webp);base64,|https:\/\/)/.test(u)) ? u : '';
+const qFig = q => q && safeSrc(q.img) ? '<img class="qfig" src="' + safeSrc(q.img) + '" alt="Figure">' : '';
+const oFig = (q, k) => q && q.oi && safeSrc(q.oi[k]) ? '<img class="ofig" src="' + safeSrc(q.oi[k]) + '" alt="">' : '';
 let toastTimer;
 function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3400); }
 
@@ -496,8 +500,8 @@ function drawQ() {
   const E = ex, t = E.test, q = t.questions[E.cur], sec = sectionOf(t, E.cur), zh = hasZh(q.q);
   const pass = q.p != null && t.passages ? t.passages[q.p] : null;
   const qb = '<div><div class="qno">Question ' + (E.cur + 1) + ' <span class="muted" style="font-weight:500">of ' + t.questions.length + '</span>' + (E.flags[E.cur] ? ' <span class="chip run">Marked for review</span>' : '') + '</div>' +
-    '<p class="qtext"' + (zh ? ' lang="zh"' : '') + '>' + esc(q.q) + '</p><div class="opts" role="radiogroup" aria-label="Answers">' +
-    q.o.map((o, k) => '<button type="button" class="opt" role="radio" aria-checked="' + (E.answers[E.cur] === k) + '" aria-pressed="' + (E.answers[E.cur] === k) + '" data-opt="' + k + '"' + (hasZh(o) ? ' lang="zh"' : '') + '><i>' + LETTERS[k] + '</i><span>' + esc(o) + '</span></button>').join('') + '</div>' +
+    '<p class="qtext"' + (zh ? ' lang="zh"' : '') + '>' + esc(q.q) + '</p>' + qFig(q) + '<div class="opts" role="radiogroup" aria-label="Answers">' +
+    q.o.map((o, k) => '<button type="button" class="opt" role="radio" aria-checked="' + (E.answers[E.cur] === k) + '" aria-pressed="' + (E.answers[E.cur] === k) + '" data-opt="' + k + '"' + (hasZh(o) ? ' lang="zh"' : '') + '><i>' + LETTERS[k] + '</i><span>' + esc(o) + oFig(q, k) + '</span></button>').join('') + '</div>' +
     '<div class="qnav"><button type="button" class="btn btn-light" data-go="' + (E.cur - 1) + '"' + (E.cur ? '' : ' disabled') + '>' + icon('l') + 'Previous</button>' +
     '<button type="button" class="btn btn-light flagbtn" data-flag aria-pressed="' + !!E.flags[E.cur] + '">' + icon('flag') + (E.flags[E.cur] ? 'Marked' : 'Mark for review') + '</button><span class="sp"></span>' +
     (E.cur < t.questions.length - 1 ? '<button type="button" class="btn btn-main" data-go="' + (E.cur + 1) + '">Next' + icon('r') + '</button>' : '<button type="button" class="btn btn-main" data-submit>Review and submit</button>') + '</div></div>';
@@ -653,7 +657,7 @@ async function openReview(aid) {
     '<div class="rlist">' + rows.map(o => { const q = test && test.questions[o.i];
       return '<div class="rq ' + (o.got == null ? 'blank' : o.got === o.key ? 'good' : 'bad') + '"><div class="top2"><b>Q' + (o.i + 1) + '</b><span class="chip">' + esc(o.topic || '—') + '</span>' + (flags[o.i] ? '<span class="chip run">marked</span>' : '') +
         '<span>' + (o.got == null ? 'Not answered' : 'Answered ' + LETTERS[o.got]) + ' · correct ' + LETTERS[o.key] + '</span></div>' +
-        (q ? '<p' + (hasZh(q.q) ? ' lang="zh"' : '') + '>' + esc(q.q) + '</p><ol>' + q.o.map((op, j) => '<li class="' + (j === o.key ? 'key' : j === o.got ? 'wrong' : '') + '"' + (hasZh(op) ? ' lang="zh"' : '') + '>' + LETTERS[j] + '. ' + esc(op) + '</li>').join('') + '</ol>' : '') + '</div>'; }).join('') + '</div>';
+        (q ? '<p' + (hasZh(q.q) ? ' lang="zh"' : '') + '>' + esc(q.q) + '</p>' + qFig(q) + '<ol>' + q.o.map((op, j) => '<li class="' + (j === o.key ? 'key' : j === o.got ? 'wrong' : '') + '"' + (hasZh(op) ? ' lang="zh"' : '') + '>' + LETTERS[j] + '. ' + esc(op) + oFig(q, j) + '</li>').join('') + '</ol>' : '') + '</div>'; }).join('') + '</div>';
   $('rvBody').setAttribute('data-aid', aid);
 }
 /* ---------- diagnosis of one student across all papers ---------- */
@@ -683,7 +687,7 @@ async function openPreview(tid) {
   $('rvBody').innerHTML = '<div class="rlist">' + test.questions.map((q, i) => { const sec = sectionOf(test, i); let h = '';
     if (sec && sec !== lastSec) { lastSec = sec; h += '<div class="sect" lang="zh"><b>' + esc(sec.title) + '</b>' + (sec.instruction ? '<span>' + esc(sec.instruction) + '</span>' : '') + '</div>'; }
     if (q.p != null && q.p !== lastP && test.passages) { lastP = q.p; h += '<div class="passage" lang="zh" style="max-height:none">' + passageHTML(test.passages[q.p].text) + '</div>'; }
-    return h + '<div class="rq"><div class="top2"><b>Q' + (i + 1) + '</b><span class="chip">' + esc((k.topics || [])[i] || '—') + '</span></div><p' + (hasZh(q.q) ? ' lang="zh"' : '') + '>' + esc(q.q) + '</p><ol>' + q.o.map((op, j) => '<li class="' + (j === (k.answers || [])[i] ? 'key' : '') + '"' + (hasZh(op) ? ' lang="zh"' : '') + '>' + LETTERS[j] + '. ' + esc(op) + '</li>').join('') + '</ol></div>'; }).join('') + '</div>';
+    return h + '<div class="rq"><div class="top2"><b>Q' + (i + 1) + '</b><span class="chip">' + esc((k.topics || [])[i] || '—') + '</span></div><p' + (hasZh(q.q) ? ' lang="zh"' : '') + '>' + esc(q.q) + '</p>' + qFig(q) + '<ol>' + q.o.map((op, j) => '<li class="' + (j === (k.answers || [])[i] ? 'key' : '') + '"' + (hasZh(op) ? ' lang="zh"' : '') + '>' + LETTERS[j] + '. ' + esc(op) + oFig(q, j) + '</li>').join('') + '</ol></div>'; }).join('') + '</div>';
 }
 /* ---------- question bank import ---------- */
 async function importBank(file) {
@@ -697,7 +701,7 @@ async function importBank(file) {
     let i = 0;
     for (const t of bank.tests) {
       const minutes = +t.minutes || SUBJ[t.subject].min, count = t.questions.length;
-      await fb.F.setDoc(fb.F.doc(fb.db, 'tests', t.id), { id: t.id, subject: t.subject, n: t.n || 0, title: t.title, minutes, count, sections: t.sections || [], passages: t.passages || [], questions: t.questions.map(x => { const o = { q: x.q, o: x.o }; if (x.p != null) o.p = x.p; return o; }) });
+      await fb.F.setDoc(fb.F.doc(fb.db, 'tests', t.id), { id: t.id, subject: t.subject, n: t.n || 0, title: t.title, minutes, count, sections: t.sections || [], passages: t.passages || [], questions: t.questions.map(x => { const o = { q: x.q, o: x.o }; if (x.p != null) o.p = x.p; if (x.img) o.img = x.img; if (Array.isArray(x.oi) && x.oi.some(Boolean)) o.oi = x.oi.map(v => v || null); return o; }) });
       await fb.F.setDoc(fb.F.doc(fb.db, 'keys', t.id), { answers: t.questions.map(x => x.a), topics: t.questions.map(x => x.t || '') });
       await fb.F.setDoc(fb.F.doc(fb.db, 'catalog', t.id), { id: t.id, subject: t.subject, n: t.n || 0, title: t.title, minutes, count });
       delete testCache[t.id]; i++;
