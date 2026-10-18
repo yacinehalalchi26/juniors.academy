@@ -66,10 +66,30 @@
     .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,28px);scroll-margin-top:76px}
     .success{scroll-margin-top:76px}
     .side{position:sticky;top:76px;display:grid;gap:14px}
-    .side h3{font-size:1.02rem;margin-bottom:8px}
-    .side ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:.9rem;color:var(--body)}
-    .side li{position:relative;padding-left:22px}
-    .side li::before{content:"";position:absolute;left:0;top:.5em;width:12px;height:2px;background:var(--b)}
+    .side h3{font-size:1.02rem;margin-bottom:6px}
+    .flow-lead{margin:0 0 16px;font-size:.88rem;color:var(--muted)}
+    .tl{list-style:none;margin:0;padding:0;position:relative}
+    .tl::before{content:"";position:absolute;left:11px;top:12px;bottom:12px;width:2px;background:var(--line);border-radius:2px}
+    .tl::after{content:"";position:absolute;left:11px;top:12px;bottom:12px;width:2px;border-radius:2px;background:linear-gradient(var(--b),var(--blue));transform-origin:top;transform:scaleY(0);transition:transform 1.6s cubic-bezier(.65,0,.35,1) .2s}
+    .flow.go .tl::after{transform:scaleY(1)}
+    .tl-item{position:relative;display:grid;grid-template-columns:24px 1fr;gap:14px;padding:0 0 18px;opacity:0;transform:translateX(-10px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+    .tl-item:last-child{padding-bottom:0}
+    .flow.go .tl-item{opacity:1;transform:none}
+    .flow.go .tl-item:nth-child(1){transition-delay:.15s}.flow.go .tl-item:nth-child(2){transition-delay:.55s}.flow.go .tl-item:nth-child(3){transition-delay:.95s}.flow.go .tl-item:nth-child(4){transition-delay:1.35s}
+    .tl-dot{position:relative;z-index:1;width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid var(--line);display:grid;place-items:center;margin-top:1px;transition:border-color .4s,background .4s}
+    .tl-dot i{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .4s}
+    .flow.go .tl-item .tl-dot{border-color:var(--b)}.flow.go .tl-item .tl-dot i{background:var(--b)}
+    .flow.go .tl-item:nth-child(1) .tl-dot{transition-delay:.3s}.flow.go .tl-item:nth-child(1) .tl-dot i{transition-delay:.3s}
+    .flow.go .tl-item:nth-child(2) .tl-dot{transition-delay:.7s}.flow.go .tl-item:nth-child(2) .tl-dot i{transition-delay:.7s}
+    .flow.go .tl-item:nth-child(3) .tl-dot{transition-delay:1.1s}.flow.go .tl-item:nth-child(3) .tl-dot i{transition-delay:1.1s}
+    .flow.go .tl-item:nth-child(4) .tl-dot{transition-delay:1.5s}.flow.go .tl-item:nth-child(4) .tl-dot i{transition-delay:1.5s}
+    .tl-item.is-now .tl-dot{background:var(--b);border-color:var(--b)}.tl-item.is-now .tl-dot i{background:#fff}
+    .tl-item.is-now .tl-dot::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--b);animation:tlpulse 2.2s ease-out infinite}
+    @keyframes tlpulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.9);opacity:0}}
+    .tl-body b{display:block;font-weight:600;font-size:.98rem;line-height:1.25}
+    .tl-body p{margin:3px 0 0;font-size:.86rem;color:var(--body);line-height:1.45}
+    .tl-tag{display:inline-block;font-size:.66rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--b);background:rgba(118,20,46,.08);border-radius:999px;padding:3px 8px;margin-bottom:5px}
+    .tl-item:hover .tl-body b{color:var(--b)}
     .side .dark{background:var(--b);color:#fff;border-color:var(--b)}
     .side .dark h3{color:#fff}.side .dark p{margin:0 0 6px;font-size:.9rem;color:rgba(255,255,255,.9)}.side .dark a{color:#fff}
     .side .dark .sig{color:var(--gold);font-weight:500;font-size:.88rem;margin-top:10px}
@@ -123,16 +143,10 @@
     .info h2{font-size:1.35rem;margin:8px 0 14px}
     .info p,.info li{font-size:.92rem;color:var(--body)}
     .info ol,.info ul{padding-left:20px;margin:0;display:grid;gap:8px}
-    details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0 18px;margin-bottom:10px}
-    details summary{cursor:pointer;list-style:none;padding:16px 0;font-weight:600;font-size:.98rem;display:flex;justify-content:space-between;align-items:center;gap:12px}
-    details summary::-webkit-details-marker{display:none}
-    details summary::after{content:"+";font-size:1.3rem;color:var(--b);font-weight:400;transition:transform .2s}
-    details[open] summary::after{transform:rotate(45deg)}
-    details .in{padding:0 0 18px}
-    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .stepcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
-    .stepcard b{display:block;font-size:1.3rem;color:var(--b);line-height:1;letter-spacing:-.03em;margin-bottom:8px}
-    .stepcard h3{font-size:.98rem;margin-bottom:4px}.stepcard p{margin:0;font-size:.86rem}
+    .faq{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+    .faq-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+    .faq-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,37,42,.07)}
+    .faq-card h3{font-size:.98rem;margin-bottom:6px}.faq-card p{margin:0;font-size:.9rem}
     /* footer */
     footer{background:var(--ink);color:rgba(255,255,255,.85);padding:clamp(32px,5vw,48px) 0 28px}
     footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px}
@@ -151,7 +165,7 @@
       .photo{aspect-ratio:1/1;order:-1}
       .main .wrap{grid-template-columns:1fr}
       .side{position:static}
-      .grid3{grid-template-columns:1fr}
+      .faq{grid-template-columns:1fr}
       footer .wrap{grid-template-columns:1fr}
     }
     @media(max-width:640px){
@@ -163,7 +177,7 @@
       .btn{width:100%}
       .hero .facts span{font-size:.8rem}
     }
-    @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none!important}.btn,.prog{transition:none!important}}
+    @media(prefers-reduced-motion:reduce){.reveal,.tl-item,.tl::after{opacity:1!important;transform:none!important;transition:none!important}.tl-item.is-now .tl-dot::after{animation:none}.btn,.prog{transition:none!important}}
   </style>
 </head>
 <body>
@@ -298,7 +312,7 @@
           <p class="lead">Cette demande de préinscription est gratuite et sans engagement : la place est réservée après notre consultation et la signature du contrat.</p>
           <div class="form">
             <div class="summary" id="summary"></div>
-            <label class="consent" id="c1"><input type="checkbox" name="accepte_conditions" value="Oui" required><span>J'ai lu et j'accepte les <a href="#conditions">conditions de préinscription</a> de Juniors Academy. *</span></label>
+            <label class="consent" id="c1"><input type="checkbox" name="accepte_conditions" value="Oui" required><span>Je confirme être le parent ou tuteur légal du participant et accepte d'être recontacté(e) par Juniors Academy pour cette demande. *</span></label>
             <label class="consent" id="c2"><input type="checkbox" name="accepte_donnees" value="Oui" required><span>J'accepte que mes données et celles de mon enfant soient traitées par Juniors Academy pour le suivi de cette demande, conformément à la <a href="/privacy/">politique de confidentialité</a>. *</span></label>
             <label class="consent"><input type="checkbox" name="accepte_infos" value="Oui"><span>Je souhaite recevoir les informations et offres de Juniors Academy par email ou WhatsApp (facultatif).</span></label>
             <p class="status" id="status" role="status" aria-live="polite"></p>
@@ -318,23 +332,40 @@
 
     <!-- ================= SIDE ================= -->
     <aside class="side reveal">
-      <div class="card">
+      <div class="card flow" id="flow">
         <h3>Comment ça se passe</h3>
-        <ul>
-          <li><b>La préinscription</b> — ce formulaire, trois minutes, sans engagement.</li>
-          <li><b>La consultation</b> — un appel WhatsApp, un rendez-vous au siège à El Biar ou dans votre école partenaire pour finaliser l'inscription.</li>
-          <li><b>Le dossier</b> — contrat, frais d'inscription, passeport, autorisation parentale, fiche médicale, visa : on avance ensemble.</li>
-          <li><b>Le départ</b> — réunion d'information, puis des nouvelles régulières pendant le séjour.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Ce qui est compris sur place</h3>
-        <ul>
-          <li>Accueil à l'aéroport et transferts en autocar privé</li>
-          <li>Hôtel ou résidence de qualité, chambres partagées</li>
-          <li>Petit-déjeuner à l'hôtel et dîner halal</li>
-          <li>Guides à chaque visite, encadrement 24 h/24</li>
-        </ul>
+        <p class="flow-lead">Quatre étapes, et on vous accompagne à chacune.</p>
+        <ol class="tl">
+          <li class="tl-item is-now">
+            <span class="tl-dot"><i></i></span>
+            <div class="tl-body">
+              <span class="tl-tag">Vous êtes ici</span>
+              <b>Préinscription</b>
+              <p>Ce formulaire, trois minutes, sans engagement.</p>
+            </div>
+          </li>
+          <li class="tl-item">
+            <span class="tl-dot"><i></i></span>
+            <div class="tl-body">
+              <b>Consultation</b>
+              <p>Un appel WhatsApp ou un rendez-vous, à El Biar ou dans votre école.</p>
+            </div>
+          </li>
+          <li class="tl-item">
+            <span class="tl-dot"><i></i></span>
+            <div class="tl-body">
+              <b>Dossier</b>
+              <p>Contrat, passeport, visa : on le prépare ensemble, pièce par pièce.</p>
+            </div>
+          </li>
+          <li class="tl-item">
+            <span class="tl-dot"><i></i></span>
+            <div class="tl-body">
+              <b>Départ</b>
+              <p>Réunion d'information, puis des nouvelles régulières pendant le séjour.</p>
+            </div>
+          </li>
+        </ol>
       </div>
       <div class="card dark">
         <h3>Une question avant de remplir ?</h3>
@@ -346,49 +377,17 @@
   </div>
 </section>
 
-<!-- ================= INFOS ================= -->
+<!-- ================= FAQ ================= -->
 <section class="info" id="infos">
   <div class="wrap" style="display:block">
-    <span class="eyebrow">Les deux séjours</span>
-    <h2>Ce qu'il faut savoir avant de vous inscrire</h2>
-    <div class="grid3" style="margin-bottom:22px">
-      <div class="stepcard"><b>01</b><h3>Dates et tarifs</h3><p>Communiqués lors de la consultation, avec les modalités de paiement : frais d'inscription en dinars à Juniors Academy, frais de programme réglés au partenaire d'accueil.</p></div>
-      <div class="stepcard"><b>02</b><h3>Voyage et hébergement</h3><p>Billets d'avion, hôtel et activités sur place sont organisés par nos partenaires de voyage et d'accueil. Juniors Academy vous conseille, prépare le dossier et reste votre interlocuteur unique.</p></div>
-      <div class="stepcard"><b>03</b><h3>Passeport et visa</h3><p>Passeport valide six mois après la date de retour. Le visa (Chine ou Royaume-Uni) se prépare avec vous, pièce par pièce, après la préinscription.</p></div>
+    <span class="eyebrow">Questions fréquentes</span>
+    <h2>Ce que les parents nous demandent</h2>
+    <div class="faq">
+      <div class="faq-card reveal"><h3>Mon enfant voyage-t-il seul ?</h3><p>Non. Il part en groupe avec un encadrement Juniors Academy présent 24 h/24, de l'aéroport d'Alger au retour.</p></div>
+      <div class="faq-card reveal"><h3>Les repas sont-ils halal ?</h3><p>Le petit-déjeuner est pris à l'hôtel et le dîner halal est organisé chaque soir. Les allergies signalées sont transmises à l'avance.</p></div>
+      <div class="faq-card reveal"><h3>Et si je change d'avis ?</h3><p>La préinscription est sans engagement. Tout se décide avec vous lors de la consultation, avant toute signature.</p></div>
+      <div class="faq-card reveal"><h3>Puis-je inscrire deux enfants ?</h3><p>Oui : remplissez un formulaire par enfant, nous regroupons les dossiers.</p></div>
     </div>
-
-    <details id="conditions"><summary>Conditions de préinscription</summary><div class="in">
-      <ol>
-        <li><b>Objet.</b> Ce formulaire est une demande de préinscription à un séjour conseillé par Juniors Academy, société de conseil et d'accompagnement académique international établie à Alger. Il ne constitue ni une réservation ferme ni un engagement financier.</li>
-        <li><b>Réservation.</b> La place est réservée à la signature du contrat de préinscription et au règlement des frais d'inscription, dans la limite des places disponibles. Les demandes sont traitées dans l'ordre d'arrivée.</li>
-        <li><b>Rôle de Juniors Academy.</b> Juniors Academy conseille les familles, constitue le dossier, assure le lien avec le partenaire d'accueil et l'encadrement du groupe. Les prestations de voyage (transport aérien, hébergement, restauration, activités) sont fournies par nos partenaires de voyage et d'accueil, selon leurs propres conditions.</li>
-        <li><b>Programme.</b> Le contenu des séjours est établi d'après le plan de notre partenaire d'accueil ; l'ordre des visites peut être ajusté pour des raisons de sécurité, de météo ou de disponibilité des hôtes, sans que la qualité du séjour en soit affectée.</li>
-        <li><b>Formalités.</b> Les parents s'engagent à fournir un passeport valide, l'autorisation parentale, la fiche médicale et les pièces nécessaires au visa dans les délais communiqués. Un refus de visa ou un passeport non conforme ne peut être imputé à Juniors Academy.</li>
-        <li><b>Santé et comportement.</b> Toute allergie, traitement ou situation particulière doit être signalé avant le départ. Le participant s'engage à respecter les règles du groupe et des établissements visités.</li>
-        <li><b>Droit applicable.</b> Les présentes conditions et le contrat qui les suit sont soumis au droit algérien.</li>
-      </ol>
-    </div></details>
-
-    <details id="confidentialite"><summary>Politique de confidentialité</summary><div class="in">
-      <ul>
-        <li><b>Responsable du traitement.</b> Juniors Academy, 25 Rue Rabah Bourbia, El Biar, Alger — admin@juniors.academy.</li>
-        <li><b>Données collectées.</b> Identité et date de naissance du participant, niveau scolaire, niveau d'anglais, informations de santé que vous choisissez de signaler, coordonnées du parent ou tuteur, wilaya, et le contenu de votre message.</li>
-        <li><b>Finalité.</b> Traiter votre demande de préinscription, vous recontacter, préparer le dossier du séjour et, si vous l'acceptez, vous informer de nos programmes. Nous ne vendons ni ne louons vos données.</li>
-        <li><b>Destinataires.</b> L'équipe Juniors Academy ; nos prestataires techniques pour la réception du formulaire et l'hébergement sécurisé des données (Formspree, Google Firebase) ; et, après signature du contrat, le partenaire d'accueil pour les seules informations nécessaires au séjour.</li>
-        <li><b>Conservation.</b> Les demandes sans suite sont supprimées au plus tard 24 mois après leur réception ; les dossiers d'inscrits sont conservés pendant la durée du séjour et les délais légaux.</li>
-        <li><b>Vos droits.</b> Conformément à la loi n° 18-07 du 10 juin 2018 relative à la protection des personnes physiques dans le traitement des données à caractère personnel, vous disposez d'un droit d'accès, de rectification, d'opposition et de suppression. Écrivez à admin@juniors.academy ; nous répondons sous 30 jours.</li>
-        <li><b>Mineurs.</b> Les données du participant mineur sont fournies par son parent ou tuteur légal, qui en autorise le traitement en cochant la case prévue.</li>
-      </ul>
-    </div></details>
-
-    <details><summary>Questions fréquentes</summary><div class="in">
-      <ul>
-        <li><b>Mon enfant voyage-t-il seul ?</b> Non. Il part en groupe avec un encadrement Juniors Academy présent 24 h/24, de l'aéroport d'Alger au retour.</li>
-        <li><b>Les repas sont-ils halal ?</b> Le petit-déjeuner est pris à l'hôtel et le dîner halal est organisé chaque soir. Les allergies signalées sont transmises à l'avance.</li>
-        <li><b>Et si je change d'avis après la préinscription ?</b> La préinscription est sans engagement. Les conditions d'annulation s'appliquent uniquement après la signature du contrat ; elles vous sont expliquées lors de la consultation.</li>
-        <li><b>Puis-je inscrire deux enfants ?</b> Oui : remplissez un formulaire par enfant, nous regroupons les dossiers.</li>
-      </ul>
-    </div></details>
   </div>
 </section>
 
@@ -411,7 +410,6 @@
         <li><a href="/registration/">Préinscription</a></li>
         <li><a href="/brochure/">Brochure gratuite</a></li>
         <li><a href="/blog/">Blog</a></li>
-        <li><a href="#conditions">Conditions de préinscription</a></li>
         <li><a href="/privacy/">Politique de confidentialité</a></li>
         <li><a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener noreferrer">Instagram @juniors.academy.dz</a></li>
       </ul>
@@ -451,6 +449,12 @@
   const els = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .08 }); els.forEach(el => io.observe(el)); }
   else els.forEach(el => el.classList.add('in'));
+  /* timeline draw-in */
+  const flow = document.getElementById('flow');
+  if (flow) {
+    if ('IntersectionObserver' in window) { const fo = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { flow.classList.add('go'); fo.disconnect(); } }), { threshold: .3 }); fo.observe(flow); }
+    else flow.classList.add('go');
+  }
 
   /* ===================== Steps ===================== */
   const $ = id => document.getElementById(id);
