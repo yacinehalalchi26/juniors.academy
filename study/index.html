@@ -54,7 +54,7 @@
     @media(max-width:640px){.sa-header{padding:8px 14px}.sa-header-logo img{height:42px}.sa-header-link{display:none}.sa-header-phone span{display:none}.sa-header-phone{padding:9px}}
 
     /* hero */
-    .sa-hero{padding:clamp(48px,8vw,96px) 0 clamp(40px,6vw,64px);text-align:center}
+    .sa-hero{padding:clamp(56px,9vw,112px) 0 clamp(56px,8vw,88px);text-align:center}
     .sa-hero h1{font-size:clamp(2rem,4.8vw,3.3rem);margin:14px auto 14px;max-width:18ch}
     .sa-hero p{margin:0 auto;color:var(--body);font-size:1.05rem;max-width:54ch;position:relative}
     .sa-hero{position:relative;overflow:hidden;background:radial-gradient(900px 420px at 50% 115%,rgba(136,180,200,.28),transparent 60%),var(--paper)}
@@ -62,11 +62,14 @@
     .sa-glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
     .sa-glow.g1{width:520px;height:520px;left:-160px;top:-220px;background:radial-gradient(circle,rgba(136,180,200,.55),transparent 65%)}
     .sa-glow.g2{width:460px;height:460px;right:-140px;top:-120px;background:radial-gradient(circle,rgba(232,200,121,.45),transparent 65%)}
-    .sa-routes{position:absolute;left:0;top:0;width:100%;height:100%}
-    .sa-route{stroke-dashoffset:0;animation:sa-dash 12s linear infinite}
-    @keyframes sa-dash{to{stroke-dashoffset:-240}}
-    .sa-ping{transform-origin:700px 500px;animation:sa-ping 2.6s ease-out infinite}
-    @keyframes sa-ping{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+    .sa-glow.g3{width:520px;height:520px;left:50%;bottom:-320px;translate:-50% 0;background:radial-gradient(circle,rgba(136,180,200,.35),transparent 65%)}
+    .sa-grid-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(36,78,102,.14) 1px,transparent 1.2px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse 70% 80% at 50% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 80% at 50% 40%,#000 20%,transparent 75%)}
+    .sa-icos{position:absolute;inset:0;transition:transform .6s var(--ease)}
+    .sa-ico{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);fill:none;stroke:var(--accent);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;opacity:.38;transform:rotate(var(--r));animation:sa-bob var(--t) ease-in-out infinite alternate;animation-delay:var(--d);filter:drop-shadow(0 6px 10px rgba(36,78,102,.08))}
+    .sa-ico:nth-child(3n){stroke:#B8893A;opacity:.42}
+    .sa-ico:nth-child(4n){stroke:#5E8FA8}
+    @keyframes sa-bob{from{transform:translateY(0) rotate(var(--r))}to{transform:translateY(-16px) rotate(calc(var(--r) + 6deg))}}
+    .sa-orbit{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%}
     .sa-hero .sa-wrap{position:relative}
     .sa-hero h1{position:relative;min-height:2.3em}
     .sa-hero h1 em{font-style:normal}
@@ -78,7 +81,7 @@
     @keyframes sa-rule{to{transform:scaleX(1)}}
     .sa-caret{display:inline-block;width:3px;height:.85em;background:var(--highlight);margin-left:4px;vertical-align:-.08em;border-radius:2px;animation:sa-blink 1s steps(2,start) infinite}
     @keyframes sa-blink{to{visibility:hidden}}
-    @media(max-width:640px){.sa-routes{opacity:.7}}
+    @media(max-width:640px){.sa-ico{opacity:.22;width:calc(var(--s)*.7);height:calc(var(--s)*.7)}.sa-orbit{opacity:.8}}
 
     /* destinations */
     .sa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:clamp(16px,3vw,28px) 0 clamp(56px,8vw,96px)}
@@ -148,7 +151,7 @@
     .sa-final-card .sa-btn--primary{background:#fff;color:var(--accent);box-shadow:none}
     .sa-final-card .sa-btn--ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
     .sa-final-card .sa-btn--ghost:hover{background:rgba(255,255,255,.1)}
-    .sa-sig{margin:22px 0 0;color:var(--highlight);font-weight:500;position:relative}
+    .sa-sig{margin:36px 0 0;color:var(--highlight);font-weight:500;position:relative}
 
     /* footer (identique aux autres pages) */
     .sa-footer{background:var(--ink);color:rgba(255,255,255,.85);padding:clamp(32px,5vw,48px) clamp(14px,3vw,40px) 28px}
@@ -189,33 +192,16 @@
 <main>
 <section class="sa-hero">
   <div class="sa-bg" aria-hidden="true">
-    <span class="sa-glow g1"></span><span class="sa-glow g2"></span>
-    <svg class="sa-routes" viewBox="0 0 1400 560" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="saLine" x1="0" x2="1"><stop offset="0" stop-color="#244E66" stop-opacity=".0"/><stop offset=".5" stop-color="#244E66" stop-opacity=".55"/><stop offset="1" stop-color="#E8C879" stop-opacity=".9"/></linearGradient>
-        <radialGradient id="saDot"><stop offset="0" stop-color="#E8C879"/><stop offset="1" stop-color="#E8C879" stop-opacity="0"/></radialGradient>
-      </defs>
-      <!-- lignes d'horizon -->
-      <path d="M-50 520 Q 700 380 1450 520" fill="none" stroke="#244E66" stroke-opacity=".09" stroke-width="1.2"/>
-      <path d="M-50 560 Q 700 430 1450 560" fill="none" stroke="#244E66" stroke-opacity=".065" stroke-width="1.2"/>
-      <path d="M-50 600 Q 700 480 1450 600" fill="none" stroke="#244E66" stroke-opacity=".05" stroke-width="1.2"/>
-      <!-- départ : Alger -->
-      <circle cx="700" cy="500" r="4" fill="#244E66" fill-opacity=".6"/>
-      <circle cx="700" cy="500" r="12" fill="none" stroke="#244E66" stroke-opacity=".3" class="sa-ping"/>
-      <!-- trois routes -->
-      <path id="r1" d="M700 500 C 450 520, 200 420, 150 110" fill="none" stroke="url(#saLine)" stroke-width="1.8" stroke-dasharray="6 7" class="sa-route"/>
-      <path id="r2" d="M700 500 C 950 520, 1200 420, 1250 110" fill="none" stroke="url(#saLine)" stroke-width="1.8" stroke-dasharray="6 7" class="sa-route" style="animation-delay:-4s"/>
-      <path id="r3" d="M700 500 C 1000 560, 1340 480, 1365 260" fill="none" stroke="url(#saLine)" stroke-width="1.8" stroke-dasharray="6 7" class="sa-route" style="animation-delay:-8s"/>
-      <!-- destinations -->
-      <g fill="#E8C879"><circle cx="150" cy="110" r="4"/><circle cx="1250" cy="110" r="4"/><circle cx="1365" cy="260" r="4"/></g>
-      <g fill="none" stroke="#E8C879" stroke-opacity=".55"><circle cx="150" cy="110" r="9"/><circle cx="1250" cy="110" r="9"/><circle cx="1365" cy="260" r="9"/></g>
-      <!-- points en vol -->
-      <circle r="10" fill="url(#saDot)"><animateMotion dur="9s" repeatCount="indefinite" rotate="auto"><mpath href="#r1"/></animateMotion></circle>
-      <circle r="10" fill="url(#saDot)"><animateMotion dur="11s" begin="-4s" repeatCount="indefinite"><mpath href="#r2"/></animateMotion></circle>
-      <circle r="10" fill="url(#saDot)"><animateMotion dur="10s" begin="-7s" repeatCount="indefinite"><mpath href="#r3"/></animateMotion></circle>
-      <circle r="2.6" fill="#244E66"><animateMotion dur="9s" repeatCount="indefinite"><mpath href="#r1"/></animateMotion></circle>
-      <circle r="2.6" fill="#244E66"><animateMotion dur="11s" begin="-4s" repeatCount="indefinite"><mpath href="#r2"/></animateMotion></circle>
-      <circle r="2.6" fill="#244E66"><animateMotion dur="10s" begin="-7s" repeatCount="indefinite"><mpath href="#r3"/></animateMotion></circle>
+    <span class="sa-glow g1"></span><span class="sa-glow g2"></span><span class="sa-glow g3"></span>
+    <div class="sa-grid-dots"></div>
+    <div class="sa-icos" id="saIcos"><svg class="sa-ico" style="--x:5%;--y:14%;--s:3.2rem;--d:0s;--t:9s;--r:-8deg" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.2V16c0 1.6 2.7 3 6 3s6-1.4 6-3v-4.8"/><path d="M22 9v6"/></svg><svg class="sa-ico" style="--x:13%;--y:56%;--s:2.2rem;--d:-2s;--t:11s;--r:6deg" viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/><path d="M20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg><svg class="sa-ico" style="--x:22%;--y:22%;--s:2.6rem;--d:-5s;--t:13s;--r:0deg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><svg class="sa-ico" style="--x:9%;--y:82%;--s:1.9rem;--d:-1s;--t:10s;--r:-14deg" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><svg class="sa-ico" style="--x:19%;--y:74%;--s:2.0rem;--d:-7s;--t:12s;--r:8deg" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2.2h5a3 3 0 0 1 1.1-2.2A6 6 0 0 0 12 3z"/></svg><svg class="sa-ico" style="--x:72%;--y:18%;--s:2.8rem;--d:-3s;--t:12s;--r:-10deg" viewBox="0 0 24 24"><path d="M2 12l19-8-6 18-3-7z"/><path d="M12 15l9-11"/></svg><svg class="sa-ico" style="--x:80%;--y:60%;--s:2.1rem;--d:-6s;--t:10s;--r:6deg" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4 20a1 1 0 0 0 .9 1.5h14.2A1 1 0 0 0 20 20l-6-11V3"/></svg><svg class="sa-ico" style="--x:90%;--y:32%;--s:2.4rem;--d:-4s;--t:11s;--r:10deg" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.2V16c0 1.6 2.7 3 6 3s6-1.4 6-3v-4.8"/><path d="M22 9v6"/></svg><svg class="sa-ico" style="--x:94%;--y:74%;--s:2.2rem;--d:-8s;--t:13s;--r:-6deg" viewBox="0 0 24 24"><path d="M4 7h16M8 7v10M16 7v8a2 2 0 0 0 3 1.7"/></svg><svg class="sa-ico" style="--x:84%;--y:10%;--s:1.8rem;--d:-2s;--t:9s;--r:12deg" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 17h8"/></svg><svg class="sa-ico" style="--x:70%;--y:84%;--s:1.7rem;--d:-9s;--t:12s;--r:-4deg" viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/><path d="M20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg><svg class="sa-ico" style="--x:3%;--y:44%;--s:1.6rem;--d:-6s;--t:14s;--r:0deg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+    <svg class="sa-orbit" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMax slice">
+      <ellipse cx="700" cy="640" rx="760" ry="300" fill="none" stroke="#244E66" stroke-opacity=".14" stroke-width="1.2"/>
+      <ellipse cx="700" cy="640" rx="620" ry="240" fill="none" stroke="#244E66" stroke-opacity=".12" stroke-width="1.2" stroke-dasharray="4 10"/>
+      <ellipse cx="700" cy="640" rx="480" ry="180" fill="none" stroke="#E8C879" stroke-opacity=".35" stroke-width="1.4"/>
+      <circle r="5" fill="#E8C879"><animateMotion dur="26s" repeatCount="indefinite" path="M700 940 a760 300 0 1 1 0 -600 a760 300 0 1 1 0 600"/></circle>
+      <circle r="3.5" fill="#244E66" fill-opacity=".7"><animateMotion dur="19s" begin="-6s" repeatCount="indefinite" path="M700 880 a620 240 0 1 0 0 -480 a620 240 0 1 0 0 480"/></circle>
+      <circle r="4" fill="#88B4C8"><animateMotion dur="15s" begin="-3s" repeatCount="indefinite" path="M700 820 a480 180 0 1 1 0 -360 a480 180 0 1 1 0 360"/></circle>
     </svg>
   </div>
   <div class="sa-wrap">
@@ -399,6 +385,15 @@
     var p=b.closest('.sa-panel'); var card=cards.filter(function(c){return panelOf(c)===p;})[0];
     closeAll(); if(card){card.focus({preventScroll:true}); var y=card.getBoundingClientRect().top+window.pageYOffset-84; window.scrollTo({top:y,behavior:'smooth'});}
   });});
+  /* parallaxe douce des icônes au mouvement de la souris */
+  var icos=document.getElementById('saIcos');
+  if(icos && window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.querySelector('.sa-hero').addEventListener('mousemove',function(e){
+      var r=e.currentTarget.getBoundingClientRect(), dx=(e.clientX-r.left)/r.width-.5, dy=(e.clientY-r.top)/r.height-.5;
+      icos.style.transform='translate('+(dx*-18)+'px,'+(dy*-12)+'px)';
+    });
+  }
+
   /* machine à écrire : les villes défilent dans le titre */
   var word=document.getElementById('saWord');
   var cities=['Londres','Pékin','New York','Édimbourg','Shanghai','San Francisco']; var ci=0, typing=true, timer;
