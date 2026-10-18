@@ -110,54 +110,51 @@
     .sa-panel{order:2;grid-column:1/-1;min-width:0;display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s var(--ease)}
     .sa-panel.open{grid-template-rows:1fr}
     .sa-panel>div{overflow:hidden;min-height:0}
-    .sa-panel-in{background:#fff;border:1px solid var(--line);border-radius:26px;padding:clamp(22px,4vw,40px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(22px,4vw,48px);margin-top:4px;position:relative;overflow:hidden}
-    .sa-panel-in::before{content:"";position:absolute;right:-120px;top:-140px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(136,180,200,.28),transparent 65%);pointer-events:none}
-    .sa-panel h3{font-size:clamp(1.4rem,2.8vw,1.9rem);margin:8px 0 12px}
-    .sa-panel .sa-lead{margin:0 0 18px;color:var(--body);font-size:1.02rem}
-    .sa-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 18px}
-    .sa-stat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 14px 12px;position:relative;overflow:hidden}
-    .sa-stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--accent),var(--blue))}
-    .sa-stat b{display:block;font-size:1.7rem;font-weight:600;letter-spacing:-.03em;color:var(--accent);line-height:1.05;font-variant-numeric:tabular-nums}
-    .sa-stat>span{font-size:.8rem;color:var(--body)}
+    .sa-panel-in{background:#fff;border:1px solid var(--line);border-radius:28px;margin-top:4px;position:relative;overflow:hidden;box-shadow:0 30px 70px rgba(26,58,77,.08)}
+    .sa-x{position:absolute;top:18px;right:18px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;display:grid;place-items:center;transition:transform .3s var(--ease),border-color .3s}
+    .sa-x svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+    .sa-x:hover{transform:rotate(90deg);border-color:var(--ink)}
+    .sa-main{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(28px,5vw,72px);padding:clamp(28px,4.5vw,52px) clamp(22px,4.5vw,52px) clamp(26px,4vw,44px)}
+    .sa-panel h3{font-size:clamp(1.7rem,3.2vw,2.5rem);margin:10px 0 14px;letter-spacing:-.03em}
+    .sa-panel h3 em{font-style:normal;color:var(--accent);white-space:nowrap}
+    .sa-panel .sa-lead{margin:0 0 28px;color:var(--body);font-size:1.02rem;max-width:46ch}
+    .sa-facts{border-left:1px solid var(--line);padding-left:clamp(22px,3.5vw,40px)}
+    .sa-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 22px}
+    .sa-stat b{display:block;font-size:clamp(1.9rem,3vw,2.5rem);font-weight:600;letter-spacing:-.045em;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
     .sa-stat b span{font-size:inherit;color:inherit}
-    .sa-chips{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-    .sa-chips li{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:.86rem;font-weight:500;transition:border-color .3s,transform .3s var(--ease)}
-    .sa-chips li:hover{border-color:var(--accent);transform:translateY(-2px)}
-    .sa-chips svg{width:14px;height:14px;fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-    /* apparition en cascade à l'ouverture */
-    .sa-a{opacity:0;transform:translateY(14px)}
-    .sa-panel.open .sa-a{animation:sa-up .7s var(--ease) forwards}
-    .sa-panel.open .sa-a:nth-child(1){animation-delay:.15s}.sa-panel.open .sa-a:nth-child(2){animation-delay:.25s}.sa-panel.open .sa-a:nth-child(3){animation-delay:.35s}.sa-panel.open .sa-a:nth-child(4){animation-delay:.45s}.sa-panel.open .sa-a:nth-child(5){animation-delay:.55s}.sa-panel.open .sa-a:nth-child(6){animation-delay:.65s}
-    .sa-panel.open aside.sa-a{animation-delay:.3s}
-    @keyframes sa-up{to{opacity:1;transform:none}}
-    .sa-panel.open .sa-cities li{animation:sa-up .6s var(--ease) both}
-    .sa-cities li{opacity:0}
-    .sa-panel.open .sa-cities li:nth-child(1){animation-delay:.45s}.sa-panel.open .sa-cities li:nth-child(2){animation-delay:.52s}.sa-panel.open .sa-cities li:nth-child(3){animation-delay:.59s}.sa-panel.open .sa-cities li:nth-child(4){animation-delay:.66s}.sa-panel.open .sa-cities li:nth-child(5){animation-delay:.73s}.sa-panel.open .sa-cities li:nth-child(6){animation-delay:.8s}.sa-panel.open .sa-cities li:nth-child(7){animation-delay:.87s}.sa-panel.open .sa-cities li:nth-child(8){animation-delay:.94s}.sa-panel.open .sa-cities li:nth-child(9){animation-delay:1.01s}.sa-panel.open .sa-cities li:nth-child(10){animation-delay:1.08s}
-    .sa-cities .pin{position:relative}
-    .sa-panel.open .sa-cities .pin::after{content:"";position:absolute;inset:0;border-radius:9px;border:2px solid var(--accent);animation:sa-pulse 2.4s ease-out infinite;animation-delay:inherit}
-    @keyframes sa-pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.7);opacity:0}}
-    .sa-ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-    .sa-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:14px 24px;font-weight:600;font-size:.95rem;text-decoration:none;border:1.5px solid transparent;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
-    .sa-btn svg{width:18px;height:18px}
-    .sa-btn--primary{background:var(--accent);color:#fff;box-shadow:0 10px 26px rgba(36,78,102,.25)}
-    .sa-btn--primary:hover{transform:translateY(-2px)}
+    .sa-stat>span{display:block;margin-top:6px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+    .sa-reasons{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+    .sa-reasons li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);position:relative}
+    .sa-reasons li::before{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--accent);transition:width .5s var(--ease)}
+    .sa-reasons li:hover::before{width:100%}
+    .sa-reasons b{font-size:.95rem;font-weight:600;white-space:nowrap}
+    .sa-reasons span{font-size:.84rem;color:var(--muted);text-align:right}
+    .sa-ctas{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+    .sa-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:15px 26px;font-weight:600;font-size:.95rem;text-decoration:none;border:1.5px solid transparent;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+    .sa-btn svg{width:18px;height:18px;transition:transform .3s var(--ease)}
+    .sa-btn--primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px rgba(36,78,102,.26)}
+    .sa-btn--primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(36,78,102,.32)}
+    .sa-btn--primary:hover svg{transform:translateX(4px)}
     .sa-btn--ghost{background:#fff;color:var(--ink);border-color:var(--line)}
     .sa-btn--ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
-    .sa-close{background:none;border:0;color:var(--muted);font-size:.85rem;cursor:pointer;text-decoration:underline;padding:0}
-    .sa-side{align-self:start;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:20px}
-    .sa-side h4{margin:0 0 4px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
-    .sa-side p.sub{margin:0 0 16px;font-size:.88rem;color:var(--body)}
-    .sa-cities{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .sa-cities li{display:grid;grid-template-columns:30px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:14px;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s}
-    .sa-cities li:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 24px rgba(36,78,102,.1)}
-    .sa-cities .pin{grid-row:1/3;width:30px;height:30px;border-radius:9px;background:rgba(36,78,102,.1);color:var(--accent);display:grid;place-items:center}
-    .sa-cities .pin svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linejoin:round}
-    .sa-cities b{font-size:.95rem;font-weight:600;line-height:1.2}
-    .sa-cities small{font-size:.74rem;color:var(--muted)}
-    .sa-facts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-    .sa-facts li{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;font-size:.9rem;color:var(--body)}
-    .sa-facts li b{color:var(--accent);font-weight:600;white-space:nowrap}
-
+    .sa-call{font-size:.9rem;font-weight:600;color:var(--accent);text-decoration:none;border-bottom:1.5px solid rgba(36,78,102,.3)}
+    .sa-call:hover{border-color:var(--accent)}
+    /* bandeau des villes */
+    .sa-strip{display:flex;align-items:center;gap:18px;background:var(--paper);border-top:1px solid var(--line);padding:0 clamp(22px,4.5vw,52px);height:54px}
+    .sa-strip-label{flex:none;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--muted);padding-right:18px;border-right:1px solid var(--line)}
+    .sa-strip-mask{flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+    .sa-strip-track{display:flex;width:max-content;animation:sa-strip 34s linear infinite}
+    .sa-strip:hover .sa-strip-track{animation-play-state:paused}
+    .sa-strip-group{display:flex}
+    .sa-strip-group span{color:var(--ink);font-size:.9rem;font-weight:500;padding:0 22px;position:relative;white-space:nowrap}
+    .sa-strip-group span::before{content:"";position:absolute;left:-2px;top:50%;width:4px;height:4px;border-radius:50%;background:var(--highlight);transform:translateY(-50%)}
+    @keyframes sa-strip{to{transform:translateX(-50%)}}
+    /* apparition en cascade à l'ouverture */
+    .sa-a{opacity:0;transform:translateY(12px)}
+    .sa-panel.open .sa-a{animation:sa-up .7s var(--ease) forwards}
+    .sa-panel.open .sa-text .sa-a:nth-child(1){animation-delay:.15s}.sa-panel.open .sa-text .sa-a:nth-child(2){animation-delay:.25s}.sa-panel.open .sa-text .sa-a:nth-child(3){animation-delay:.35s}.sa-panel.open .sa-text .sa-a:nth-child(4){animation-delay:.45s}
+    .sa-panel.open .sa-facts .sa-a:nth-child(1){animation-delay:.35s}.sa-panel.open .sa-facts .sa-a:nth-child(2){animation-delay:.5s}
+    @keyframes sa-up{to{opacity:1;transform:none}}
     /* bandeau final */
     .sa-final{padding:0 0 clamp(56px,8vw,96px)}
     .sa-final-card{background:var(--accent);color:#fff;border-radius:28px;padding:clamp(28px,5vw,52px);text-align:center;position:relative;overflow:hidden}
@@ -184,12 +181,12 @@
     @media(max-width:960px){
       .sa-grid{grid-template-columns:1fr;max-width:600px;margin:0 auto}
       .sa-card,.sa-panel{order:0}   /* sur mobile, le panneau suit sa carte */
-      .sa-panel-in{grid-template-columns:minmax(0,1fr)}
-      .sa-panel-in>*{min-width:0}
+      .sa-main{grid-template-columns:minmax(0,1fr);gap:26px}
+      .sa-facts{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:22px}
       .sa-footer-in{grid-template-columns:1fr;gap:22px}
     }
-    @media(max-width:600px){.sa-name b{font-size:1.5rem}.sa-stats{gap:8px}.sa-stat b{font-size:1.3rem}.sa-stat{padding:12px 10px 10px}.sa-stat>span{font-size:.74rem}.sa-ctas .sa-btn--primary{width:100%;font-size:.9rem;padding:14px 18px}.sa-panel-in{padding:20px 16px}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.sa-card{opacity:1;translate:0 0}.sa-caret{display:none}.sa-a,.sa-cities li{opacity:1!important;transform:none!important}}
+    @media(max-width:600px){.sa-name b{font-size:1.5rem}.sa-stats{gap:8px}.sa-stat b{font-size:1.3rem}.sa-stat{padding:12px 10px 10px}.sa-stat>span{font-size:.74rem}.sa-ctas .sa-btn--primary{width:100%;font-size:.9rem;padding:14px 18px}.sa-main{padding:24px 18px 22px}.sa-x{top:12px;right:12px;width:36px;height:36px}.sa-reasons li{flex-direction:column;gap:2px;align-items:flex-start}.sa-reasons span{text-align:left}.sa-strip{padding:0 18px;height:50px}.sa-strip-label{display:none}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.sa-card{opacity:1;translate:0 0}.sa-caret{display:none}.sa-a{opacity:1!important;transform:none!important}.sa-strip-track{animation:none}}
   </style>
 </head>
 <body>
@@ -240,18 +237,23 @@
     </button>
     <div class="sa-panel" id="sa-uk" role="region" aria-label="Étudier au Royaume-Uni"><div>
       <div class="sa-panel-in">
-        <div>
-          <span class="sa-eyebrow sa-a">Royaume-Uni</span>
-          <h3 class="sa-a">Étudier au Royaume-Uni</h3>
-          <p class="sa-lead sa-a">Entrer directement dans sa spécialité, décrocher une licence en trois ans et un master en un an : le Royaume-Uni forme vite, dans des universités reconnues partout dans le monde.</p>
-          <div class="sa-stats sa-a"><div class="sa-stat"><b><span data-count="3">0</span> ans</b><span>pour une licence</span></div><div class="sa-stat"><b><span data-count="1">0</span> an</b><span>pour un master</span></div><div class="sa-stat"><b><span data-count="2">0</span></b><span>rentrées par an</span></div></div>
-          <ul class="sa-chips sa-a"><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Diplômes reconnus mondialement</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Cours en anglais</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Entrée possible après le bac</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Campus à taille humaine</li></ul>
-          <div class="sa-ctas sa-a">
-            <a class="sa-btn sa-btn--primary" href="/register/?destination=uk">S'inscrire pour étudier à l'étranger<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-            <button class="sa-close" type="button" data-close>Fermer</button>
+        <button class="sa-x" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <div class="sa-main">
+          <div class="sa-text">
+            <span class="sa-eyebrow sa-a">Royaume-Uni</span>
+            <h3 class="sa-a">Étudier au <em>Royaume-Uni.</em></h3>
+            <p class="sa-lead sa-a">Entrer directement dans sa spécialité, décrocher une licence en trois ans et un master en un an : le Royaume-Uni forme vite, dans des universités reconnues partout dans le monde.</p>
+            <div class="sa-ctas sa-a">
+              <a class="sa-btn sa-btn--primary" href="/register/?destination=uk">S'inscrire pour étudier à l'étranger<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <a class="sa-call" href="tel:+213550527722">ou appelez-nous</a>
+            </div>
+          </div>
+          <div class="sa-facts">
+            <div class="sa-stats sa-a"><div class="sa-stat"><b><span data-count="3">0</span> ans</b><span>licence</span></div><div class="sa-stat"><b><span data-count="1">0</span> an</b><span>master</span></div><div class="sa-stat"><b><span data-count="2">0</span></b><span>rentrées / an</span></div></div>
+            <ul class="sa-reasons sa-a"><li><b>Diplômes reconnus</b><span>partout dans le monde</span></li><li><b>Cours en anglais</b><span>avec un soutien linguistique</span></li><li><b>Entrée après le bac</b><span>année de fondation ou directe</span></li><li><b>Campus à taille humaine</b><span>logement étudiant inclus</span></li></ul>
           </div>
         </div>
-        <aside class="sa-side sa-a"><h4>Villes d'études</h4><p class="sub">Nos universités partenaires vous accueillent dans ces villes.</p><ul class="sa-cities"><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Londres</b><small>Angleterre</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Édimbourg</b><small>Écosse</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Dundee</b><small>Écosse</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Belfast</b><small>Irlande du Nord</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Sheffield</b><small>Angleterre</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Bradford</b><small>Angleterre</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Canterbury</b><small>Angleterre</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Bangor</b><small>Pays de Galles</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Winchester</b><small>Angleterre</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Lincoln</b><small>Angleterre</small></li></ul></aside>
+        <div class="sa-strip" aria-label="Villes d'études"><span class="sa-strip-label">Villes d'études</span><div class="sa-strip-mask"><div class="sa-strip-track"><div class="sa-strip-group"><span>Londres</span><span>Édimbourg</span><span>Dundee</span><span>Belfast</span><span>Sheffield</span><span>Bradford</span><span>Canterbury</span><span>Bangor</span><span>Winchester</span><span>Lincoln</span></div><div class="sa-strip-group" aria-hidden="true"><span>Londres</span><span>Édimbourg</span><span>Dundee</span><span>Belfast</span><span>Sheffield</span><span>Bradford</span><span>Canterbury</span><span>Bangor</span><span>Winchester</span><span>Lincoln</span></div></div></div></div>
       </div>
     </div></div>
 
@@ -263,18 +265,23 @@
     </button>
     <div class="sa-panel" id="sa-cn" role="region" aria-label="Étudier en Chine"><div>
       <div class="sa-panel-in">
-        <div>
-          <span class="sa-eyebrow sa-a">Chine</span>
-          <h3 class="sa-a">Étudier en Chine</h3>
-          <p class="sa-lead sa-a">Des campus modernes, des cursus en anglais ou en mandarin, et des bourses qui rendent le projet accessible : la Chine est devenue l'une des grandes destinations d'études.</p>
-          <div class="sa-stats sa-a"><div class="sa-stat"><b><span data-count="4">0</span> ans</b><span>pour une licence</span></div><div class="sa-stat"><b><span data-count="2–3">2–3</span> ans</b><span>pour un master</span></div><div class="sa-stat"><b><span data-count="1">0</span> an</b><span>de langue ou de prépa</span></div></div>
-          <ul class="sa-chips sa-a"><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Bourses nombreuses</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Anglais ou Mandarin</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Du programme de langue au doctorat</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Une langue d'avenir</li></ul>
-          <div class="sa-ctas sa-a">
-            <a class="sa-btn sa-btn--primary" href="/register/?destination=chine">S'inscrire pour étudier à l'étranger<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-            <button class="sa-close" type="button" data-close>Fermer</button>
+        <button class="sa-x" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <div class="sa-main">
+          <div class="sa-text">
+            <span class="sa-eyebrow sa-a">Chine</span>
+            <h3 class="sa-a">Étudier en <em>Chine.</em></h3>
+            <p class="sa-lead sa-a">Des campus modernes, des cursus en anglais ou en mandarin, et des bourses qui rendent le projet accessible : la Chine est devenue l'une des grandes destinations d'études.</p>
+            <div class="sa-ctas sa-a">
+              <a class="sa-btn sa-btn--primary" href="/register/?destination=chine">S'inscrire pour étudier à l'étranger<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <a class="sa-call" href="tel:+213550527722">ou appelez-nous</a>
+            </div>
+          </div>
+          <div class="sa-facts">
+            <div class="sa-stats sa-a"><div class="sa-stat"><b><span data-count="4">0</span> ans</b><span>licence</span></div><div class="sa-stat"><b><span data-count="2–3">2–3</span> ans</b><span>master</span></div><div class="sa-stat"><b><span data-count="1">0</span> an</b><span>langue ou prépa</span></div></div>
+            <ul class="sa-reasons sa-a"><li><b>Bourses nombreuses</b><span>État, provinces, universités</span></li><li><b>Anglais ou Mandarin</b><span>au choix selon le cursus</span></li><li><b>De la langue au doctorat</b><span>chaque niveau ouvre le suivant</span></li><li><b>Une langue d'avenir</b><span>et une économie qui recrute</span></li></ul>
           </div>
         </div>
-        <aside class="sa-side sa-a"><h4>Villes d'études</h4><p class="sub">Des universités d'accueil dans les grandes villes du pays.</p><ul class="sa-cities"><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Pékin</b><small>Beijing</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Shanghai</b></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Guangzhou</b><small>Canton</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Shenzhen</b></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Chengdu</b><small>Sichuan</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Chongqing</b></li></ul></aside>
+        <div class="sa-strip" aria-label="Villes d'études"><span class="sa-strip-label">Villes d'études</span><div class="sa-strip-mask"><div class="sa-strip-track"><div class="sa-strip-group"><span>Pékin</span><span>Shanghai</span><span>Guangzhou</span><span>Shenzhen</span><span>Chengdu</span><span>Chongqing</span></div><div class="sa-strip-group" aria-hidden="true"><span>Pékin</span><span>Shanghai</span><span>Guangzhou</span><span>Shenzhen</span><span>Chengdu</span><span>Chongqing</span></div></div></div></div>
       </div>
     </div></div>
 
@@ -286,18 +293,23 @@
     </button>
     <div class="sa-panel" id="sa-us" role="region" aria-label="Étudier aux États-Unis"><div>
       <div class="sa-panel-in">
-        <div>
-          <span class="sa-eyebrow sa-a">États-Unis</span>
-          <h3 class="sa-a">Étudier aux États-Unis</h3>
-          <p class="sa-lead sa-a">Un campus, le temps de choisir sa majeure et une vie étudiante unique : aux États-Unis, les études sont une expérience complète, des cours aux clubs et aux stages.</p>
-          <div class="sa-stats sa-a"><div class="sa-stat"><b><span data-count="4">0</span> ans</b><span>pour un bachelor</span></div><div class="sa-stat"><b><span data-count="1–2">1–2</span> ans</b><span>pour un master</span></div><div class="sa-stat"><b><span data-count="2">0</span></b><span>rentrées par an</span></div></div>
-          <ul class="sa-chips sa-a"><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Choix de la majeure en cours de route</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Vie de campus</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Cours en anglais</li><li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Stages et recherche</li></ul>
-          <div class="sa-ctas sa-a">
-            <a class="sa-btn sa-btn--primary" href="/register/?destination=usa">S'inscrire pour étudier à l'étranger<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-            <button class="sa-close" type="button" data-close>Fermer</button>
+        <button class="sa-x" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <div class="sa-main">
+          <div class="sa-text">
+            <span class="sa-eyebrow sa-a">États-Unis</span>
+            <h3 class="sa-a">Étudier aux <em>États-Unis.</em></h3>
+            <p class="sa-lead sa-a">Un campus, le temps de choisir sa majeure et une vie étudiante unique : aux États-Unis, les études sont une expérience complète, des cours aux clubs et aux stages.</p>
+            <div class="sa-ctas sa-a">
+              <a class="sa-btn sa-btn--primary" href="/register/?destination=usa">S'inscrire pour étudier à l'étranger<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <a class="sa-call" href="tel:+213550527722">ou appelez-nous</a>
+            </div>
+          </div>
+          <div class="sa-facts">
+            <div class="sa-stats sa-a"><div class="sa-stat"><b><span data-count="4">0</span> ans</b><span>bachelor</span></div><div class="sa-stat"><b><span data-count="1–2">1–2</span> ans</b><span>master</span></div><div class="sa-stat"><b><span data-count="2">0</span></b><span>rentrées / an</span></div></div>
+            <ul class="sa-reasons sa-a"><li><b>Majeure à choisir</b><span>en cours de route</span></li><li><b>Vie de campus</b><span>clubs, sport, associations</span></li><li><b>Cours en anglais</b><span>admission sans test après le pathway</span></li><li><b>Stages et recherche</b><span>intégrés aux études</span></li></ul>
           </div>
         </div>
-        <aside class="sa-side sa-a"><h4>Villes d'études</h4><p class="sub">Nos universités partenaires vous accueillent dans ces villes.</p><ul class="sa-cities"><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>New York</b><small>État de New York</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>San Francisco</b><small>Californie</small></li><li><span class="pin"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Louisville</b><small>Kentucky</small></li></ul></aside>
+        <div class="sa-strip" aria-label="Villes d'études"><span class="sa-strip-label">Villes d'études</span><div class="sa-strip-mask"><div class="sa-strip-track"><div class="sa-strip-group"><span>New York</span><span>San Francisco</span><span>Louisville</span></div><div class="sa-strip-group" aria-hidden="true"><span>New York</span><span>San Francisco</span><span>Louisville</span></div></div></div></div>
       </div>
     </div></div>
 
