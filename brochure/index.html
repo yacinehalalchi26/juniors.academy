@@ -6,31 +6,31 @@
   <title>Brochure gratuite | Juniors Academy</title>
   <meta name="description" content="Recevez gratuitement la brochure Juniors Academy : guide des programmes, prix, dates de départ et dernières offres pour les jeunes de 6 à 18 ans.">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#FAFAF7">
+  <meta name="theme-color" content="#76142E">
 
-  <!-- Icône d'onglet : fichier « Juniors Academy Logo Red.jpg » à la racine du site (nom exact, majuscules comprises) -->
-  <link rel="icon" type="image/jpeg" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
-  <link rel="shortcut icon" type="image/jpeg" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
-  <link rel="apple-touch-icon" href="../Juniors%20Academy%20Logo%20Red.jpg?v=4">
+  <!-- Icône d'onglet : fichier « Juniors Academy Logo.png » à la racine du site (nom exact, majuscules comprises) -->
+  <link rel="icon" type="image/png" href="../Juniors%20Academy%20Logo.png?v=5">
+  <link rel="shortcut icon" type="image/png" href="../Juniors%20Academy%20Logo.png?v=5">
+  <link rel="apple-touch-icon" href="../Juniors%20Academy%20Logo.png?v=5">
 
   <!-- Polices -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     html { scroll-behavior: smooth; }
-    body { margin: 0; background: #FAFAF7; }
+    body { margin: 0; background: #F7F4EE; }
 
     .jbc-page {
-      --jah-ink: #14181D;
-      --jah-paper: #FAFAF7;
-      --jah-accent: #DC143C;
-      --jah-highlight: #FFD23F;
-      --jah-muted: #7A828C;
+      --jah-ink: #25252A;
+      --jah-paper: #F7F4EE;
+      --jah-accent: #76142E;
+      --jah-highlight: #E8C879;
+      --jah-muted: #6E6E73;
       --jah-ease: cubic-bezier(.16, 1, .3, 1);
       background: var(--jah-paper);
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
       color: var(--jah-ink);
       min-height: 100vh;
       padding: clamp(20px, 3vw, 40px) clamp(14px, 3vw, 40px) clamp(60px, 8vw, 100px);
@@ -56,9 +56,9 @@
 
     /* ---------- Titre ---------- */
     .jbc-title {
-      font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+      font-family: 'Poppins', system-ui, sans-serif;
       font-size: clamp(2rem, 4.6vw, 3.4rem);
-      font-weight: 800; letter-spacing: -.02em; line-height: 1.05;
+      font-weight: 700; letter-spacing: -.02em; line-height: 1.05;
       text-align: center;
       margin: 0 0 clamp(36px, 6vw, 64px);
     }
@@ -76,13 +76,13 @@
       display: flex; align-items: center; justify-content: center;
       border-radius: 28px;
       padding: clamp(28px, 5vw, 52px);
-      background: linear-gradient(135deg, rgba(220,20,60,.10), rgba(255,210,63,.16));
-      box-shadow: 0 24px 60px rgba(20,24,29,.08);
+      background: rgba(136,180,200,.18);
+      box-shadow: 0 24px 60px rgba(37,37,42,.08);
     }
     .jbc-visual-frame img {
       width: 100%; max-width: 340px; height: auto; display: block;
       border-radius: 14px;
-      box-shadow: 0 30px 60px rgba(20,24,29,.22), 0 10px 24px rgba(20,24,29,.14);
+      box-shadow: 0 30px 60px rgba(37,37,42,.22), 0 10px 24px rgba(37,37,42,.14);
       transform: rotate(-2.5deg);
       transition: transform .5s var(--jah-ease);
     }
@@ -90,8 +90,8 @@
 
     .jbc-includes { margin: clamp(28px, 4vw, 40px) 4px 0; }
     .jbc-includes h2 {
-      font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
-      font-size: 1.3rem; font-weight: 800; letter-spacing: -.01em;
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em;
       margin: 0 0 16px; color: var(--jah-ink);
     }
     .jbc-includes ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
@@ -99,19 +99,21 @@
       position: relative; padding-left: 28px;
       font-size: .98rem; color: var(--jah-ink);
     }
+    .jbc-hint { margin: 22px 0 0; font-size: .9rem; color: #444B54; line-height: 1.55; }
+    .jbc-hint a { color: var(--jah-accent); font-weight: 600; }
     .jbc-includes li::before {
       content: "✓";
       position: absolute; left: 0; top: 1px;
       width: 19px; height: 19px; border-radius: 50%;
       display: grid; place-items: center;
       background: var(--jah-highlight); color: var(--jah-ink);
-      font-size: .68rem; font-weight: 800;
+      font-size: .68rem; font-weight: 700;
     }
 
     /* ---------- Formulaire ---------- */
     .jbc-form-heading {
-      font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
-      font-size: 1.15rem; font-weight: 800;
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-size: 1.15rem; font-weight: 700;
       margin: 0 0 20px; color: var(--jah-ink);
     }
     .jbc-form { display: grid; gap: 16px; }
@@ -119,11 +121,11 @@
     .jbc-field select {
       width: 100%;
       appearance: none; -webkit-appearance: none;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Poppins', system-ui, sans-serif;
       font-size: 1rem;
       color: var(--jah-ink);
       background: #fff;
-      border: 1.5px solid rgba(20,24,29,.14);
+      border: 1.5px solid rgba(37,37,42,.14);
       border-radius: 14px;
       padding: 17px 18px;
       transition: border-color .25s var(--jah-ease), box-shadow .25s var(--jah-ease), background .25s var(--jah-ease), color .25s var(--jah-ease);
@@ -132,13 +134,13 @@
     .jbc-field select:disabled {
       background: #EFEFEC;
       color: var(--jah-muted);
-      border-color: rgba(20,24,29,.08);
+      border-color: rgba(37,37,42,.08);
       cursor: not-allowed;
       opacity: 1;
       -webkit-text-fill-color: var(--jah-muted);
     }
     .jbc-field select {
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A828C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E6E73' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
       background-repeat: no-repeat;
       background-position: right 16px center;
       background-size: 18px;
@@ -151,7 +153,7 @@
     .jbc-field select:focus {
       outline: none;
       border-color: var(--jah-accent);
-      box-shadow: 0 0 0 4px rgba(220,20,60,.12);
+      box-shadow: 0 0 0 4px rgba(118,20,46,.12);
     }
     .jbc-field--date { display: grid; gap: 8px; }
     .jbc-field--date label { font-size: .84rem; font-weight: 600; color: var(--jah-muted); padding-left: 2px; }
@@ -174,13 +176,13 @@
       width: fit-content;
       padding: 17px 40px; border: none; border-radius: 999px;
       background: var(--jah-accent); color: #fff;
-      font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600;
+      font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba(220,20,60,.32);
+      box-shadow: 0 10px 30px rgba(118,20,46,.32);
       transition: transform .3s var(--jah-ease), box-shadow .3s var(--jah-ease), opacity .3s var(--jah-ease);
       margin-top: 6px;
     }
-    .jbc-submit:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(220,20,60,.4); }
+    .jbc-submit:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(118,20,46,.4); }
     .jbc-submit:disabled { opacity: .65; cursor: default; transform: none; pointer-events: none; }
     .jbc-submit--sent { opacity: 1 !important; }
     .jbc-submit-check {
@@ -208,8 +210,8 @@
       margin-top: clamp(20px, 3vw, 28px);
     }
     .jbc-success h2 {
-      font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
-      font-size: 1.6rem; font-weight: 800; margin: 0 0 12px;
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-size: 1.6rem; font-weight: 700; margin: 0 0 12px;
     }
     .jbc-success p { font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,.82); margin: 0; }
 
@@ -218,13 +220,17 @@
     .jah-reveal.jah-in { opacity: 1; transform: translateY(0); }
 
     /* ---------- Pied de page ---------- */
-    .jah-footer {
-      background: var(--jah-paper, #FAFAF7);
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      text-align: center;
-      padding: 4px 16px 26px;
-    }
-    .jah-footer p { margin: 0; font-size: .82rem; font-weight: 500; color: #7A828C; }
+    .jah-footer { background: #25252A; color: rgba(255,255,255,.85); font-family: 'Poppins', system-ui, -apple-system, sans-serif; padding: clamp(32px, 5vw, 48px) clamp(14px, 3vw, 40px) 28px; }
+    .jah-footer * { box-sizing: border-box; }
+    .jah-footer-in { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 28px; }
+    .jah-footer h4 { margin: 0 0 10px; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: #88B4C8; font-weight: 600; }
+    .jah-footer p, .jah-footer li { margin: 0; font-size: .9rem; line-height: 1.7; }
+    .jah-footer ul { list-style: none; margin: 0; padding: 0; }
+    .jah-footer a { color: #fff; text-decoration: none; } .jah-footer a:hover { text-decoration: underline; }
+    .jah-footer-mark { height: 28px; width: auto; margin-bottom: 12px; filter: brightness(0) invert(1); display: block; }
+    .jah-footer-bottom { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.12); padding-top: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: .8rem; color: rgba(255,255,255,.6); }
+    .jah-footer-bottom b { color: #E8C879; font-weight: 500; }
+    @media (max-width: 860px) { .jah-footer-in { grid-template-columns: 1fr; } }
 
     @media (max-width: 860px) {
       .jbc-grid { grid-template-columns: 1fr; }
@@ -255,9 +261,7 @@
         Retour
       </a>
       <a href="/" aria-label="Juniors Academy — accueil">
-        <!-- Logo : essaie d'abord ce fichier ; s'il n'existe pas, utilise le même logo que la page d'accueil -->
-        <img src="../Juniors-Academy-Black-Logo.png" alt="Juniors Academy" class="jbc-logo"
-             onerror="if(!this.dataset.f){this.dataset.f=1;this.src='../JA%20Black%20Logo.png'}else{this.style.display='none'}">
+        <img src="../Juniors%20Academy%20Full%20Logo.png" alt="Juniors Academy" class="jbc-logo" onerror="this.style.display='none'">
       </a>
     </div>
 
@@ -278,6 +282,7 @@
             <li>Prix et dates de départ</li>
             <li>Dernières offres</li>
           </ul>
+          <p class="jbc-hint">Vous avez déjà choisi votre séjour ? <a href="/registration/">Préinscrivez votre enfant</a> pour Shanghai (hiver) ou Oxford (printemps).</p>
         </div>
       </div>
 
@@ -315,7 +320,8 @@
               <option value="Reseaux sociaux">Réseaux sociaux</option>
               <option value="Recommandation">Recommandation d'un proche</option>
               <option value="Recherche Google">Recherche Google</option>
-              <option value="Ecole / Enseignant">École / Enseignant</option>
+              <option value="Ecole partenaire">École partenaire</option>
+              <option value="Partenaire">Partenaire</option>
               <option value="Salon ou evenement">Salon ou événement</option>
               <option value="Autre">Autre</option>
             </select>
@@ -323,7 +329,7 @@
 
           <label class="jbc-consent">
             <input type="checkbox" name="consentement" required>
-            <span>En cliquant sur « Envoyer », je consens au traitement de mes données personnelles et à la réception d'informations et d'offres de Juniors Academy par email ou téléphone. *</span>
+            <span>En cliquant sur « Envoyer », je consens au traitement de mes données personnelles et à la réception d'informations et d'offres de Juniors Academy par email ou téléphone, conformément à la <a href="/privacy/" style="color:var(--jah-accent)">politique de confidentialité</a>. *</span>
           </label>
 
           <button type="submit" class="jbc-submit">
@@ -345,7 +351,30 @@
 </div>
 
 <footer class="jah-footer">
-  <p>&copy; 2026 Juniors Academy. Tous droits réservés.</p>
+  <div class="jah-footer-in">
+    <div>
+      <img class="jah-footer-mark" src="data:image/png;base64,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" alt="JA">
+      <p>Juniors Academy — conseil et accompagnement académique international pour les jeunes d'Algérie. Séjours scientifiques et linguistiques, études en Chine, au Royaume-Uni et aux États-Unis.</p>
+    </div>
+    <div>
+      <h4>Siège</h4>
+      <p>25 Rue Rabah Bourbia<br>El Biar, Alger</p>
+      <p><a href="tel:+213550527722">+213 (0) 550 52 77 22</a><br><a href="mailto:admin@juniors.academy">admin@juniors.academy</a></p>
+    </div>
+    <div>
+      <h4>Liens</h4>
+      <ul>
+        <li><a href="/">Nos séjours</a></li>
+        <li><a href="/study/">Étudier en Chine</a></li>
+        <li><a href="/registration/">Préinscription</a></li>
+        <li><a href="/brochure/">Brochure gratuite</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/privacy/">Politique de confidentialité</a></li>
+        <li><a href="https://www.instagram.com/juniors.academy.dz" target="_blank" rel="noopener noreferrer">Instagram @juniors.academy.dz</a></li>
+      </ul>
+    </div>
+    <div class="jah-footer-bottom"><span>© 2026 Juniors Academy. Tous droits réservés.</span><b>A bigger world. A clearer path.</b></div>
+  </div>
 </footer>
 
 <script>
