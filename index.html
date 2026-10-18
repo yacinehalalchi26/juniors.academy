@@ -458,7 +458,7 @@
   @media (prefers-reduced-motion: reduce) { .jah-flip-in { transition: none !important; } }
 
   /* ---------- Pourquoi choisir Juniors Academy ---------- */
-  .jah-why { padding: 0 clamp(14px, 3vw, 40px) 0; }
+  .jah-why { padding: 0 clamp(14px, 3vw, 40px) clamp(48px, 7vw, 90px); }
   .jah-why-head {
     text-align: center;
     max-width: 720px;
@@ -616,8 +616,9 @@
   .jah-footer-bottom b { color: #E8C879; font-weight: 500; }
   @media (max-width: 860px) { .jah-footer-in { grid-template-columns: 1fr; } }
 
-  /* ---------- Pop-up « Inscriptions ouvertes » ---------- */
-  .jah-pop { position: fixed; right: 18px; bottom: 18px; z-index: 900; width: min(380px, calc(100vw - 36px)); padding: 20px 20px 18px; border-radius: 22px; background: #fff; color: var(--jah-ink, #25252A); border: 1px solid rgba(37,37,42,.08); box-shadow: 0 24px 60px rgba(37,37,42,.18), 0 4px 14px rgba(37,37,42,.08); font-family: 'Poppins', system-ui, sans-serif; opacity: 0; transform: translateY(24px) scale(.98); pointer-events: none; transition: opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1); }
+  /* ---------- Pop-up « Inscriptions ouvertes » : glisse depuis la droite, se replie en onglet ---------- */
+  .jah-pop, .jah-pop *, .jah-pop-tab { box-sizing: border-box; }
+  .jah-pop { position: fixed; right: 18px; bottom: 18px; z-index: 900; width: min(380px, calc(100vw - 36px)); padding: 20px 20px 18px; border-radius: 22px; background: #fff; color: var(--jah-ink, #25252A); border: 1px solid rgba(37,37,42,.08); box-shadow: 0 24px 60px rgba(37,37,42,.18), 0 4px 14px rgba(37,37,42,.08); font-family: 'Poppins', system-ui, sans-serif; opacity: 0; transform: translateX(calc(100% + 30px)); pointer-events: none; transition: opacity .5s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
   .jah-pop.on { opacity: 1; transform: none; pointer-events: auto; }
   .jah-pop-x { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: rgba(37,37,42,.06); color: var(--jah-ink, #25252A); font-size: 20px; line-height: 1; cursor: pointer; }
   .jah-pop-x:hover { background: rgba(37,37,42,.12); }
@@ -633,15 +634,21 @@
   .jah-pop-opt small { font-size: .7rem; font-weight: 500; opacity: .85; }
   .jah-pop-cta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; padding: 11px; border-radius: 999px; background: var(--jah-paper, #F7F4EE); color: var(--jah-ink, #25252A); font-size: .9rem; font-weight: 600; text-decoration: none; }
   .jah-pop-cta:hover { background: #E8C879; }
-  .jah-pop-veil { display: none; }
+  .jah-pop-veil { display: none !important; }
+  /* l'onglet replié, collé au bord droit, qui « rayonne » tant que l'offre est ouverte */
+  .jah-pop-tab { position: fixed; right: 0; bottom: 110px; z-index: 899; display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px 12px 14px; border: 0; border-radius: 14px 0 0 14px; background: #76142E; color: #fff; font-family: 'Poppins', system-ui, sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: .02em; cursor: pointer; box-shadow: 0 10px 30px rgba(118,20,46,.35); transform: translateX(110%); transition: transform .5s cubic-bezier(.16,1,.3,1); }
+  .jah-pop-tab.on { transform: none; animation: jah-tab-glow 2.4s ease-out infinite; }
+  .jah-pop-tab i { width: 9px; height: 9px; border-radius: 50%; background: #E8C879; box-shadow: 0 0 0 0 rgba(232,200,121,.7); animation: jah-tab-ping 2.4s ease-out infinite; }
+  .jah-pop-tab b { font-weight: 700; }
+  .jah-pop-tab:hover { background: #4E1022; }
+  @keyframes jah-tab-glow { 0% { box-shadow: 0 10px 30px rgba(118,20,46,.35), 0 0 0 0 rgba(118,20,46,.45); } 70% { box-shadow: 0 10px 30px rgba(118,20,46,.35), 0 0 0 16px rgba(118,20,46,0); } 100% { box-shadow: 0 10px 30px rgba(118,20,46,.35), 0 0 0 0 rgba(118,20,46,0); } }
+  @keyframes jah-tab-ping { 0% { box-shadow: 0 0 0 0 rgba(232,200,121,.7); } 70% { box-shadow: 0 0 0 8px rgba(232,200,121,0); } 100% { box-shadow: 0 0 0 0 rgba(232,200,121,0); } }
   @media (max-width: 640px) {
-    .jah-pop { right: 0; left: 0; bottom: 0; width: 100%; border-radius: 24px 24px 0 0; padding: 18px 16px calc(16px + env(safe-area-inset-bottom)); transform: translateY(100%); }
-    .jah-pop.on { transform: none; }
-    .jah-pop-veil { display: block; position: fixed; inset: 0; z-index: 890; background: rgba(37,37,42,.35); opacity: 0; transition: opacity .4s; pointer-events: none; }
-    .jah-pop-veil.on { opacity: 1; pointer-events: auto; }
-    .jah-pop-veil[hidden] { display: none; }
+    .jah-pop { right: 12px; bottom: 12px; width: calc(100vw - 24px); padding: 16px 16px 14px; border-radius: 20px; }
+    .jah-pop-tab { bottom: 96px; padding: 11px 14px 11px 12px; font-size: .78rem; }
+    .jah-pop-tab span span { display: none; }
   }
-  @media (prefers-reduced-motion: reduce) { .jah-pop, .jah-pop-veil, .jah-pop-opt { transition: none !important; } .jah-pop-dot { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .jah-pop, .jah-pop-tab, .jah-pop-opt { transition: none !important; } .jah-pop-dot, .jah-pop-tab, .jah-pop-tab i { animation: none !important; } }
 
   /* ---------- Apparitions au scroll (autonome) ---------- */
   .jah-reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--jah-ease), transform .9s var(--jah-ease); }
@@ -787,7 +794,7 @@
     .jah-section-head { margin-bottom: 20px; }
     .jah-section-sub { font-size: .92rem; }
     /* Pourquoi choisir : séparateur avion + titre centrés, colonne unique */
-    .jah-why { padding: 0 14px 0; }
+    .jah-why { padding: 0 14px 44px; }
     .jah-why-head { margin-bottom: 32px; }
     .jah-why-flight { width: min(200px, 65%); height: 20px; margin-bottom: 16px; }
     .jah-why-flight-plane { width: 18px; height: 18px; }
@@ -1191,7 +1198,7 @@
   </div>
   <a href="/registration/" class="jah-pop-cta">Préinscrire mon enfant <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
 </aside>
-<div class="jah-pop-veil" id="jahPopVeil" hidden></div>
+<button type="button" class="jah-pop-tab" id="jahPopTab" aria-label="Inscriptions ouvertes : voir les séjours"><i aria-hidden="true"></i><span><b>Inscriptions ouvertes</b><span> · Shanghai &amp; Oxford</span></span></button>
 
 <!-- ==================== 5. PIED DE PAGE ==================== -->
 <footer class="jah-footer">
@@ -1312,35 +1319,32 @@
 
 
 <script>
-  /* Pop-up « Inscriptions ouvertes » : apparaît quand on a fait défiler la page jusqu'aux destinations (ou après 9 s), une fois par visite */
+  /* Pop-up « Inscriptions ouvertes » : glisse depuis la droite en descendant la page (ou après 9 s),
+     à chaque visite ; fermé, il se replie en onglet rayonnant sur le bord droit, qui le rouvre d'un clic */
   (function () {
-    var pop = document.getElementById('jahPop'), veil = document.getElementById('jahPopVeil'), x = document.getElementById('jahPopX');
-    if (!pop) return;
-    var KEY = 'ja-pop-2027';
-    try { if (sessionStorage.getItem(KEY)) return; } catch (e) {}
-    var shown = false;
-    function show() {
-      if (shown) return; shown = true;
+    var pop = document.getElementById('jahPop'), tab = document.getElementById('jahPopTab'), x = document.getElementById('jahPopX');
+    if (!pop || !tab) return;
+    var shown = false, timer = null;
+    function open() {
+      shown = true; clearTimeout(timer);
+      tab.classList.remove('on');
       pop.setAttribute('aria-hidden', 'false'); pop.classList.add('on');
-      if (veil) { veil.hidden = false; requestAnimationFrame(function () { veil.classList.add('on'); }); }
       window.removeEventListener('scroll', onScroll);
     }
-    function hide() {
+    function close() {
       pop.classList.remove('on'); pop.setAttribute('aria-hidden', 'true');
-      if (veil) { veil.classList.remove('on'); setTimeout(function () { veil.hidden = true; }, 400); }
-      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      setTimeout(function () { tab.classList.add('on'); }, 350);
     }
     function onScroll() {
       var d = document.getElementById('jah-destinations');
       var y = d ? d.getBoundingClientRect().top : 1e9;
-      if (y < window.innerHeight * .6) show();
+      if (y < window.innerHeight * .6) open();
     }
     window.addEventListener('scroll', onScroll, { passive: true });
-    setTimeout(show, 9000);
-    x.addEventListener('click', hide);
-    if (veil) veil.addEventListener('click', hide);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && pop.classList.contains('on')) hide(); });
-    pop.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} }); });
+    timer = setTimeout(open, 9000);
+    x.addEventListener('click', close);
+    tab.addEventListener('click', open);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && pop.classList.contains('on')) close(); });
   })();
 </script>
 <!-- Scroll fluide (Lenis) — repli automatique sur le scroll natif -->
