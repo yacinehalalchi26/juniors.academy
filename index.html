@@ -494,9 +494,9 @@
   .jah-vcard-btn { flex: none; width: 56px; height: 56px; border-radius: 16px; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.18); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #fff; display: grid; place-items: center; cursor: pointer; transition: transform .3s cubic-bezier(.16,1,.3,1), background .3s; }
   .jah-vcard-btn svg { width: 24px; height: 24px; }
   .jah-vcard-btn:hover { background: rgba(255,255,255,.3); transform: scale(1.06); }
-  .jah-vcard .jah-ic-pause { display: none; }
-  .jah-vcard.playing .jah-ic-pause { display: block; }
-  .jah-vcard.playing .jah-ic-play { display: none; }
+  .jah-vcard .jah-ic-sound { display: none; }
+  .jah-vcard.playing .jah-ic-sound { display: block; }
+  .jah-vcard.playing .jah-ic-muted { display: none; }
   .jah-vcard-btn:focus-visible { outline: 3px solid #E8C879; outline-offset: 3px; }
   @media (max-width: 640px) { .jah-video-grid { grid-template-columns: min(100%, 340px); } .jah-vcard { aspect-ratio: 9 / 16; border-radius: 22px; } .jah-vcard-cap { padding: 18px 16px 16px; } .jah-vcard-text b { font-size: 1.05rem; } .jah-vcard-btn { width: 50px; height: 50px; } }
   @media (prefers-reduced-motion: reduce) { .jah-vcard-btn { transition: none !important; } }
@@ -677,19 +677,22 @@
   .jah-pop-cta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; padding: 11px; border-radius: 999px; background: var(--jah-paper, #F7F4EE); color: var(--jah-ink, #25252A); font-size: .9rem; font-weight: 600; text-decoration: none; }
   .jah-pop-cta:hover { background: #E8C879; }
   /* l'onglet replié, collé au bord droit, qui « rayonne » tant que l'offre est ouverte */
-  .jah-pop-tab { position: fixed; right: 0; bottom: 110px; z-index: 899; display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px 12px 14px; border: 0; border-radius: 14px 0 0 14px; background: #76142E; color: #fff; font-family: 'Poppins', system-ui, sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: .02em; cursor: pointer; box-shadow: 0 10px 30px rgba(118,20,46,.35); transform: translateX(110%); transition: transform .5s cubic-bezier(.16,1,.3,1); }
-  .jah-pop-tab.on { transform: none; animation: jah-tab-glow 2.4s ease-out infinite; }
-  .jah-pop-tab i { width: 9px; height: 9px; border-radius: 50%; background: #E8C879; box-shadow: 0 0 0 0 rgba(232,200,121,.7); animation: jah-tab-ping 2.4s ease-out infinite; }
+  /* onglet replié : petite pastille ronde en bas à droite, s'élargit au survol */
+  .jah-pop-tab { position: fixed; right: 16px; bottom: 18px; z-index: 899; display: inline-flex; align-items: center; gap: 0; height: 48px; padding: 0 0 0 0; border: 0; border-radius: 999px; background: #76142E; color: #fff; font-family: 'Poppins', system-ui, sans-serif; font-size: .8rem; font-weight: 600; cursor: pointer; box-shadow: 0 10px 28px rgba(118,20,46,.35); transform: translateY(90px) scale(.6); opacity: 0; transition: transform .6s cubic-bezier(.16,1,.3,1), opacity .4s, gap .3s, padding .3s, background .3s; overflow: hidden; max-width: 48px; }
+  .jah-pop-tab.on { transform: none; opacity: 1; animation: jah-tab-glow 2.6s ease-out infinite; }
+  .jah-pop-tab i { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: transparent; box-shadow: none; animation: none; }
+  .jah-pop-tab i::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #E8C879; box-shadow: 0 0 0 0 rgba(232,200,121,.7); animation: jah-tab-ping 2.4s ease-out infinite; }
+  .jah-pop-tab span { white-space: nowrap; padding-right: 18px; opacity: 0; transition: opacity .25s; }
   .jah-pop-tab b { font-weight: 700; }
-  .jah-pop-tab:hover { background: #4E1022; }
-  @keyframes jah-tab-glow { 0% { box-shadow: 0 10px 30px rgba(118,20,46,.35), 0 0 0 0 rgba(118,20,46,.45); } 70% { box-shadow: 0 10px 30px rgba(118,20,46,.35), 0 0 0 16px rgba(118,20,46,0); } 100% { box-shadow: 0 10px 30px rgba(118,20,46,.35), 0 0 0 0 rgba(118,20,46,0); } }
+  .jah-pop-tab span span { display: none; }
+  @media (hover: hover) and (pointer: fine) { .jah-pop-tab:hover { max-width: 320px; background: #4E1022; } .jah-pop-tab:hover span { opacity: 1; } }
+  @keyframes jah-tab-glow { 0% { box-shadow: 0 10px 28px rgba(118,20,46,.35), 0 0 0 0 rgba(118,20,46,.45); } 70% { box-shadow: 0 10px 28px rgba(118,20,46,.35), 0 0 0 14px rgba(118,20,46,0); } 100% { box-shadow: 0 10px 28px rgba(118,20,46,.35), 0 0 0 0 rgba(118,20,46,0); } }
   @keyframes jah-tab-ping { 0% { box-shadow: 0 0 0 0 rgba(232,200,121,.7); } 70% { box-shadow: 0 0 0 8px rgba(232,200,121,0); } 100% { box-shadow: 0 0 0 0 rgba(232,200,121,0); } }
   @media (max-width: 640px) {
     .jah-pop { width: calc(100vw - 28px); padding: 20px 16px 16px; border-radius: 20px; }
-    .jah-pop-tab { bottom: 96px; padding: 11px 14px 11px 12px; font-size: .78rem; }
-    .jah-pop-tab span span { display: none; }
+    .jah-pop-tab { right: 12px; bottom: 14px; }
   }
-  @media (prefers-reduced-motion: reduce) { .jah-pop, .jah-pop-veil, .jah-pop-tab, .jah-pop-opt { transition: none !important; } .jah-pop-dot, .jah-pop-tab, .jah-pop-tab i { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .jah-pop, .jah-pop-veil, .jah-pop-tab, .jah-pop-opt { transition: none !important; } .jah-pop-dot, .jah-pop-tab, .jah-pop-tab i::before { animation: none !important; } }
 
   /* ---------- Apparitions au scroll (autonome) ---------- */
   .jah-reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--jah-ease), transform .9s var(--jah-ease); }
@@ -1262,9 +1265,9 @@
         <video class="jah-vcard-media" src="Juniors%20Academy%20UK.mp4" playsinline muted loop autoplay preload="auto" aria-label="Témoignage d'un partenaire de Juniors Academy au Royaume-Uni"></video>
         <figcaption class="jah-vcard-cap">
           <span class="jah-vcard-text"><b>Partenaire · Royaume-Uni</b><small>Témoignage sur Juniors Academy</small></span>
-          <button type="button" class="jah-vcard-btn" aria-label="Lire la vidéo">
-            <svg class="jah-ic-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="jah-ic-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+          <button type="button" class="jah-vcard-btn" aria-label="Activer le son">
+            <svg class="jah-ic-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>
+            <svg class="jah-ic-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
           </button>
         </figcaption>
       </figure>
@@ -1300,7 +1303,7 @@
   </div>
   <a href="/registration/" class="jah-pop-cta">Préinscrire mon enfant <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
 </aside>
-<button type="button" class="jah-pop-tab" id="jahPopTab" aria-label="Inscriptions ouvertes : voir les séjours"><i aria-hidden="true"></i><span><b>Inscriptions ouvertes</b><span> · Shanghai &amp; Oxford</span></span></button>
+<button type="button" class="jah-pop-tab" id="jahPopTab" aria-label="Inscriptions ouvertes : voir les séjours" title="Inscriptions ouvertes"><i aria-hidden="true"></i><span><b>Inscriptions ouvertes</b><span> · Shanghai &amp; Oxford</span></span></button>
 
 <!-- ==================== 5. PIED DE PAGE ==================== -->
 <footer class="jah-footer">
@@ -1498,12 +1501,12 @@
           stopOthers(card);
           v.pause(); v.currentTime = 0; v.muted = false; v.loop = false;
           var p = v.play(); if (p && p.catch) p.catch(function () { v.muted = true; v.play(); });
-          card.classList.add('playing'); btn.setAttribute('aria-label', 'Mettre en pause');
+          card.classList.add('playing'); btn.setAttribute('aria-label', 'Couper le son');
         } else {
-          v.pause(); card.classList.remove('playing'); btn.setAttribute('aria-label', 'Lire la vidéo');
+          preview(card); btn.setAttribute('aria-label', 'Activer le son');
         }
       }
-      v.addEventListener('ended', function () { preview(card); btn.setAttribute('aria-label', 'Lire la vidéo'); });
+      v.addEventListener('ended', function () { preview(card); btn.setAttribute('aria-label', 'Activer le son'); });
       card.addEventListener('click', toggle);
       btn.addEventListener('click', toggle);
       preview(card);
