@@ -99,7 +99,14 @@
 
     /* 3 · parcours : les cartes glissent vers la gauche quand on descend */
     .jour{padding:0;height:220vh;position:relative}
-    .jour-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;gap:clamp(18px,3vh,28px);background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .jour{background:var(--ink)}
+    .jour-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;gap:clamp(18px,3vh,28px);color:#fff;background:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.3px) 0 0/26px 26px,linear-gradient(180deg,#25252A,#1B2A33)}
+    .jour-sticky::before{content:"";position:absolute;left:-10%;right:-10%;top:50%;height:2px;background:repeating-linear-gradient(90deg,rgba(232,200,121,.55) 0 10px,transparent 10px 22px);transform:translateY(-50%);pointer-events:none}
+    .jour-sticky .ch-num{color:var(--gold)}
+    .jour-sticky h2{color:#fff}
+    .jour-dots span{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7)}
+    .jour-dots span.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+    .jour-dots i{background:rgba(255,255,255,.2)}
     .jour-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
     .jour-head h2{margin-bottom:0}
     .jour-dots{display:flex;align-items:center;gap:10px}
@@ -107,18 +114,18 @@
     .jour-dots span.on{background:var(--b);border-color:var(--b);color:#fff;transform:scale(1.1)}
     .jour-dots i{width:26px;height:2px;background:var(--line)}
     .jour-track{display:flex;gap:clamp(16px,2vw,28px);padding:0 clamp(16px,4vw,32px);padding-left:max(clamp(16px,4vw,32px),calc((100vw - 1080px)/2 + clamp(16px,4vw,32px)));will-change:transform;transition:transform .08s linear}
-    .jc{flex:none;width:min(460px,80vw);background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:clamp(24px,3.5vw,40px);display:flex;flex-direction:column;gap:12px;min-height:min(330px,46vh);box-shadow:0 20px 50px rgba(37,37,42,.07);position:relative;overflow:hidden}
+    .jc{flex:none;width:min(460px,80vw);background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:26px;padding:clamp(24px,3.5vw,40px);display:flex;flex-direction:column;gap:12px;min-height:min(330px,46vh);box-shadow:0 20px 50px rgba(37,37,42,.07);position:relative;overflow:hidden}
     .jc::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--b) 0 60%,var(--blue) 60% 85%,var(--gold) 85%)}
     .jc-n{font-size:clamp(3rem,6vw,4.6rem);font-weight:700;letter-spacing:-.05em;line-height:1;color:var(--b);opacity:.14;position:absolute;right:22px;top:12px}
     .jc-tag{align-self:flex-start;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:rgba(136,180,200,.3);color:var(--deepblue)}
     .jc h3{font-size:clamp(1.3rem,2.4vw,1.7rem);max-width:16ch}
     .jc p{margin:0;color:var(--body);font-size:1rem;max-width:40ch}
     .jc-foot{margin-top:auto;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-    .jc-cta{background:var(--ink);color:#fff;border-color:var(--ink);justify-content:center}
+    .jc-cta{background:var(--b);color:#fff;border-color:var(--b);justify-content:center}
     .jc-cta .jc-tag{background:rgba(232,200,121,.25);color:var(--gold)}
     .jc-cta h3{font-size:clamp(1.8rem,3vw,2.4rem)}
     .jc-cta p{color:rgba(255,255,255,.75)}
-    .jc-cta .btn{align-self:flex-start;margin-top:8px}
+    .jc-cta .btn{align-self:flex-start;margin-top:8px;background:#fff;color:var(--b);box-shadow:none}
     .jc-cta::after{display:none}
     @media(max-width:640px){.jour{height:200vh}.jc{width:84vw;min-height:0}.jour-dots{display:none}}
     @media(prefers-reduced-motion:reduce){.jour{height:auto}.jour-sticky{position:static;height:auto;overflow:visible;padding:clamp(56px,8vw,104px) 0}.jour-track{flex-wrap:wrap;transform:none!important}.jc{width:100%}}
