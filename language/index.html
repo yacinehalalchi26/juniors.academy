@@ -76,16 +76,25 @@
     .ch-line{display:none}
 
     /* 0 · hero */
-    .hero{padding:clamp(24px,4vw,44px) 0 clamp(28px,4vw,44px)}
-    .hero-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(24px,5vw,56px);align-items:center}
+    .hero{padding:clamp(24px,4vw,44px) 0 clamp(28px,4vw,52px);overflow:hidden}
+    .hero .wrap{max-width:1280px}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,4vw,48px);align-items:center}
     .hero h1{font-size:clamp(2.2rem,5vw,3.6rem);margin:14px 0 14px;line-height:1.05}
     .hero h1 em{font-style:normal;color:var(--b)}
+    .hero h1 .w{display:inline-block;white-space:nowrap}
+    .hero h1 .l{display:inline-block;transition:transform .35s cubic-bezier(.2,.9,.3,1.4),color .3s;cursor:default}
+    .hero h1 .l:hover{transform:translateY(-8px) rotate(-4deg);color:var(--b)}
+    .hero h1 .rot{display:inline-block;min-height:1.05em;vertical-align:top}
+    .hero h1 .rot::after{content:"";display:inline-block;width:3px;height:.85em;margin-left:4px;background:var(--gold);vertical-align:-.08em;animation:lg-caret 1s steps(2,start) infinite}
+    @keyframes lg-caret{to{visibility:hidden}}
+    @media(prefers-reduced-motion:reduce){.hero h1 .l{transition:none}.hero h1 .rot::after{animation:none}}
     .hero p{margin:0 0 22px;color:var(--body);font-size:1.05rem;max-width:46ch}
     .hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
     .hero-list{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:.88rem;font-weight:500;color:var(--body)}
     .hero-list li{padding-left:16px;position:relative}
     .hero-list li::before{content:"";position:absolute;left:0;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
-    .hero-pic{margin:0;border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(78,16,34,.16);background:var(--deep)}
+    .hero-pic{margin:0;border-radius:28px;overflow:hidden;box-shadow:0 28px 70px rgba(78,16,34,.18);background:var(--deep)}
+    @media(min-width:1100px){.hero-pic{width:calc(100% + 6vw);max-width:none}}
     .hero-pic img{width:100%;height:auto;display:block}
     .ch.alt{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
     /* 1 · le problème : comparaison */
@@ -280,7 +289,7 @@
   <div class="wrap hero-grid">
     <div class="hero-txt">
       <span class="eyebrow">Anglais en ligne · professeurs natifs</span>
-      <h1>Parlez anglais. <em>Vraiment.</em></h1>
+      <h1><span class="w" data-split>Parlez</span> <span class="w" data-split>anglais.</span><br><em class="rot" data-rot='["Vraiment.","Avec confiance.","Avec un prof natif.","Depuis chez vous."]'>Vraiment.</em></h1>
       <p>Des cours individuels en ligne, en direct, avec un professeur dont l'anglais est la langue maternelle. Enfants, ados et adultes, depuis chez vous.</p>
       <div class="ctas">
         <a class="btn btn-main" href="#essai">Réserver mon cours d'essai<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -601,6 +610,24 @@
       .catch(function(err){status.textContent="L'envoi n'a pas abouti ("+err.message+"). Réessayez ou écrivez-nous sur WhatsApp au 0550 52 77 22.";send.disabled=false;send.firstChild.textContent="Réserver mon cours d'essai";});
   });
 })();
+
+  // headline : lettres réactives + deuxième ligne qui s'écrit
+  document.querySelectorAll('[data-split]').forEach(el=>{
+    const t=el.textContent; el.textContent='';
+    [...t].forEach(ch=>{const i=document.createElement('span');i.className='l';i.textContent=ch;el.appendChild(i);});
+  });
+  (function(){
+    const el=document.querySelector('[data-rot]'); if(!el) return;
+    const words=JSON.parse(el.dataset.rot); let wi=0, ci=words[0].length, del=false;
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches; if(reduce) return;
+    function tick(){
+      const w=words[wi];
+      if(!del){ ci++; el.textContent=w.slice(0,ci); if(ci>=w.length){ del=true; return setTimeout(tick,2200);} return setTimeout(tick,85);}
+      ci--; el.textContent=w.slice(0,ci);
+      if(ci<=0){ del=false; wi=(wi+1)%words.length; return setTimeout(tick,350);} setTimeout(tick,45);
+    }
+    setTimeout(tick,2200);
+  })();
 </script>
 </body>
 </html>
