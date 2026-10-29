@@ -63,31 +63,29 @@
     @media(max-width:640px){.nav a:not(.cta){display:none}.brand img{height:40px}}
 
     /* chapitres */
-    .ch{padding:clamp(56px,8vw,104px) 0;position:relative}
-    .ch-num{display:inline-flex;align-items:center;gap:10px;font-size:.74rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-    .ch-num b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:.72rem}
-    .ch h2{font-size:clamp(1.7rem,3.8vw,2.7rem);max-width:20ch;margin-bottom:14px}
+    .ch{padding:clamp(32px,5vw,56px) 0;position:relative}
+    .ch-num{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--b);margin-bottom:10px}
+    .ch-num b{display:none}
+    .ch h2{font-size:clamp(1.6rem,3.2vw,2.3rem);max-width:22ch;margin-bottom:10px}
     .ch .lead{margin:0;color:var(--body);font-size:1.05rem;max-width:56ch}
-    .ch-line{position:absolute;left:50%;bottom:-28px;width:2px;height:56px;background:linear-gradient(var(--line),transparent);transform:translateX(-50%)}
+    .ch-line{display:none}
 
     /* 0 · hero */
-    .hero{padding:clamp(48px,8vw,100px) 0 clamp(40px,6vw,72px);text-align:center;position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;width:720px;height:720px;border-radius:50%;left:50%;top:-420px;transform:translateX(-50%);background:radial-gradient(circle,rgba(136,180,200,.35),transparent 65%);pointer-events:none}
-    .hero .wrap{position:relative}
-    .hero h1{font-size:clamp(2.3rem,6vw,4.2rem);margin:16px auto 18px;max-width:16ch;line-height:1.05}
-    .hero h1 em{font-style:normal;color:var(--b);position:relative;white-space:nowrap}
-    .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.02em;height:.14em;background:var(--gold);z-index:-1;border-radius:3px;transform:scaleX(0);transform-origin:left;animation:lg-under 1s var(--ease) .6s forwards}
-    @keyframes lg-under{to{transform:scaleX(1)}}
-    .hero p{margin:0 auto 26px;color:var(--body);font-size:1.08rem;max-width:54ch}
-    .hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
-    .hero .facts{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:26px}
-    .hero .facts span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.82rem;font-weight:500}
-    .hero-pic{margin:38px auto 0;max-width:960px;border-radius:26px;overflow:hidden;box-shadow:0 30px 70px rgba(37,37,42,.14);position:relative}
-    .hero-pic img{width:100%;height:auto}
-    .hero-pic::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--b) 0 60%,var(--blue) 60% 85%,var(--gold) 85%)}
+    .hero{padding:clamp(24px,4vw,44px) 0 clamp(28px,4vw,44px)}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(24px,5vw,56px);align-items:center}
+    .hero h1{font-size:clamp(2.2rem,5vw,3.6rem);margin:14px 0 14px;line-height:1.05}
+    .hero h1 em{font-style:normal;color:var(--b)}
+    .hero p{margin:0 0 22px;color:var(--body);font-size:1.05rem;max-width:46ch}
+    .hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
+    .hero-list{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:.88rem;font-weight:500;color:var(--body)}
+    .hero-list li{padding-left:16px;position:relative}
+    .hero-list li::before{content:"";position:absolute;left:0;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+    .hero-pic{margin:0;border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(78,16,34,.16);background:var(--deep)}
+    .hero-pic img{width:100%;height:auto;display:block}
+    .ch.alt{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
     /* 1 · le problème : comparaison */
-    .cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
-    .cmp div{border-radius:22px;padding:24px 22px;border:1px solid var(--line);background:#fff;position:relative}
+    .cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+    .cmp div{border-radius:20px;padding:20px;border:1px solid var(--line);background:var(--paper);position:relative}
     .cmp div.bad{opacity:.75}
     .cmp div.good{border-color:var(--b);box-shadow:0 20px 50px rgba(118,20,46,.12)}
     .cmp h3{font-size:1.05rem;margin-bottom:12px;display:flex;align-items:center;gap:10px}
@@ -100,8 +98,8 @@
     .cmp .good li::before{background:var(--gold);width:10px;height:10px;border-radius:50%;top:.35em}
 
     /* 3 · parcours : les cartes glissent vers la gauche quand on descend */
-    .jour{padding:0;height:320vh;position:relative}
-    .jour-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;gap:clamp(22px,4vh,40px)}
+    .jour{padding:0;height:220vh;position:relative}
+    .jour-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;gap:clamp(18px,3vh,28px);background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
     .jour-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
     .jour-head h2{margin-bottom:0}
     .jour-dots{display:flex;align-items:center;gap:10px}
@@ -109,7 +107,7 @@
     .jour-dots span.on{background:var(--b);border-color:var(--b);color:#fff;transform:scale(1.1)}
     .jour-dots i{width:26px;height:2px;background:var(--line)}
     .jour-track{display:flex;gap:clamp(16px,2vw,28px);padding:0 clamp(16px,4vw,32px);padding-left:max(clamp(16px,4vw,32px),calc((100vw - 1080px)/2 + clamp(16px,4vw,32px)));will-change:transform;transition:transform .08s linear}
-    .jc{flex:none;width:min(520px,80vw);background:#fff;border:1px solid var(--line);border-radius:26px;padding:clamp(24px,3.5vw,40px);display:flex;flex-direction:column;gap:12px;min-height:min(380px,52vh);box-shadow:0 20px 50px rgba(37,37,42,.07);position:relative;overflow:hidden}
+    .jc{flex:none;width:min(460px,80vw);background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:clamp(24px,3.5vw,40px);display:flex;flex-direction:column;gap:12px;min-height:min(330px,46vh);box-shadow:0 20px 50px rgba(37,37,42,.07);position:relative;overflow:hidden}
     .jc::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--b) 0 60%,var(--blue) 60% 85%,var(--gold) 85%)}
     .jc-n{font-size:clamp(3rem,6vw,4.6rem);font-weight:700;letter-spacing:-.05em;line-height:1;color:var(--b);opacity:.14;position:absolute;right:22px;top:12px}
     .jc-tag{align-self:flex-start;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:rgba(136,180,200,.3);color:var(--deepblue)}
@@ -122,13 +120,24 @@
     .jc-cta p{color:rgba(255,255,255,.75)}
     .jc-cta .btn{align-self:flex-start;margin-top:8px}
     .jc-cta::after{display:none}
-    @media(max-width:640px){.jour{height:300vh}.jc{width:84vw;min-height:0}.jour-dots{display:none}}
+    @media(max-width:640px){.jour{height:200vh}.jc{width:84vw;min-height:0}.jour-dots{display:none}}
     @media(prefers-reduced-motion:reduce){.jour{height:auto}.jour-sticky{position:static;height:auto;overflow:visible;padding:clamp(56px,8vw,104px) 0}.jour-track{flex-wrap:wrap;transform:none!important}.jc{width:100%}}
     /* 4 · test de niveau */
-    .quiz{background:var(--ink);color:#fff;border-radius:28px;padding:clamp(24px,4vw,44px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:start;margin-top:30px;position:relative;overflow:hidden}
-    .quiz::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(118,20,46,.55),transparent 65%);top:-260px;right:-160px}
+    .quiz{background:var(--ink);color:#fff;border-radius:24px;padding:clamp(22px,3.5vw,36px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(22px,4vw,48px);align-items:start;margin-top:24px;position:relative;overflow:hidden}
+    .quiz::before{display:none}
     .quiz>*{position:relative}
-    .quiz .eyebrow{color:var(--gold)}.quiz .eyebrow::before{background:var(--gold)}
+    .quiz-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--ink);border-radius:999px;padding:7px 13px;font-size:.78rem;font-weight:700;letter-spacing:.02em}
+    .quiz-perks{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:8px;font-size:.92rem;color:rgba(255,255,255,.9)}
+    .quiz-perks li{padding-left:24px;position:relative}
+    .quiz-perks li::before{content:"";position:absolute;left:0;top:.25em;width:15px;height:15px;border-radius:50%;background:var(--gold);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/contain no-repeat}
+    .quiz-live{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;color:rgba(255,255,255,.65)}
+    .quiz-live .dot{width:8px;height:8px;border-radius:50%;background:#3DDC84;box-shadow:0 0 0 0 rgba(61,220,132,.6);animation:lg-ping 1.8s ease-out infinite}
+    @keyframes lg-ping{0%{box-shadow:0 0 0 0 rgba(61,220,132,.6)}70%{box-shadow:0 0 0 8px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+    .qcard{border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 50px rgba(0,0,0,.25)}
+    .quiz h3 em{font-style:normal;color:var(--gold)}
+    .qstep h4{font-size:1.3rem}
+    .opt{padding:14px 16px;font-size:1rem}
+    .opt .k{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.1);display:grid;place-items:center;font-size:.72rem;font-weight:700;flex:none}
     .quiz h3{font-size:clamp(1.4rem,2.8vw,2rem);margin:10px 0 12px}
     .quiz p{color:rgba(255,255,255,.78);margin:0 0 14px}
     .qcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:clamp(18px,3vw,26px)}
@@ -154,7 +163,7 @@
     .qres .again{display:block;margin:14px auto 0;background:none;border:0;color:rgba(255,255,255,.6);text-decoration:underline;cursor:pointer;font-size:.85rem}
 
     /* 5 · la formule premium */
-    .prem{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0;margin-top:30px;border-radius:26px;overflow:hidden;border:1px solid var(--line);box-shadow:0 26px 60px rgba(37,37,42,.1)}
+    .prem{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0;margin-top:24px;border-radius:26px;overflow:hidden;border:1px solid var(--line);box-shadow:0 26px 60px rgba(37,37,42,.1)}
     .prem-main{background:#fff;padding:clamp(24px,4vw,40px)}
     .prem .tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:rgba(232,200,121,.4);color:#6B4F00;margin-bottom:14px}
     .prem h3{font-size:clamp(1.5rem,3vw,2.1rem);margin-bottom:10px}
@@ -169,15 +178,15 @@
     .prem-side small{display:block;font-size:.84rem;color:rgba(255,255,255,.72)}
     .prem-side p{margin:4px 0 0;font-size:.82rem;color:rgba(255,255,255,.6)}
     /* 6 · professeurs */
-    .teach{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+    .teach{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:24px}
     .tc{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start}
     .tc .fl{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;background:var(--paper);border:1px solid var(--line)}
     .tc b{display:block;font-size:1rem}
     .tc small{display:block;color:var(--muted);font-size:.82rem;margin-bottom:6px}
     .tc p{margin:0;font-size:.9rem;color:var(--body)}
     /* 7 · cours d'essai */
-    .trial{background:var(--b);color:#fff;border-radius:28px;padding:clamp(26px,4vw,46px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:start;position:relative;overflow:hidden;margin-top:30px}
-    .trial::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%);top:-260px;right:-140px}
+    .trial{background:var(--b);color:#fff;border-radius:24px;padding:clamp(22px,3.5vw,38px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:start;position:relative;overflow:hidden;margin-top:30px}
+    .trial::before{display:none}
     .trial>*{position:relative}
     .trial .eyebrow{color:var(--gold)}.trial .eyebrow::before{background:var(--gold)}
     .trial h3{font-size:clamp(1.5rem,3vw,2.2rem);margin:10px 0 12px}
@@ -205,7 +214,7 @@
     .ok h4{margin:0 0 6px}.ok p{margin:0;color:var(--body)}
 
     /* FAQ */
-    .faq{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+    .faq{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
     .faq details{background:#fff;border:1px solid var(--line);border-radius:18px;padding:0 18px}
     .faq summary{cursor:pointer;list-style:none;padding:16px 0;font-weight:600;font-size:.95rem;display:flex;justify-content:space-between;align-items:center;gap:12px}
     .faq summary::-webkit-details-marker{display:none}
@@ -214,7 +223,7 @@
     .faq p{margin:0;padding:0 0 16px;font-size:.9rem;color:var(--body)}
 
     /* footer */
-    footer{background:var(--ink);color:rgba(255,255,255,.85);padding:clamp(32px,5vw,48px) 0 28px;margin-top:clamp(40px,6vw,72px)}
+    footer{background:var(--ink);color:rgba(255,255,255,.85);padding:clamp(32px,5vw,48px) 0 28px;margin-top:clamp(24px,4vw,40px)}
     footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px}
     footer h4{margin:0 0 10px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
     footer p,footer li{margin:0;font-size:.9rem;line-height:1.7}
@@ -225,6 +234,7 @@
     footer .bottom b{color:var(--gold);font-weight:500}
 
     @media(max-width:960px){
+      .hero-grid{grid-template-columns:1fr}.hero-pic{order:-1}
       .steps,.teach{grid-template-columns:1fr 1fr}.prem{grid-template-columns:1fr}
       .quiz,.trial{grid-template-columns:1fr}
       footer .wrap{grid-template-columns:1fr;gap:22px}
@@ -232,7 +242,7 @@
     @media(max-width:640px){
       .cmp,.steps,.teach,.faq,.grid2{grid-template-columns:1fr}
     }
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal,.bub{opacity:1;transform:none}.hero h1 em::after{transform:none}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal,.bub{opacity:1;transform:none}}
   </style>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebPage","name":"Anglais en ligne avec des natifs | Juniors Academy","url":"https://juniors.academy/language/","primaryImageOfPage":{"@type":"ImageObject","contentUrl":"https://juniors.academy/Juniors%20Academy%20English%20Language.png","name":"Cours d'anglais en ligne Juniors Academy","description":"Cours d'anglais en ligne, en direct, avec un professeur natif.","creditText":"Juniors Academy"},"provider":{"@type":"Organization","name":"Juniors Academy","url":"https://juniors.academy/"}}
@@ -255,24 +265,30 @@
 <main>
 <!-- ================= 0 · HERO ================= -->
 <section class="hero">
-  <div class="wrap">
-    <span class="eyebrow">Anglais en ligne · professeurs natifs</span>
-    <h1>Parlez anglais. <em>Vraiment.</em></h1>
-    <p>Des cours en ligne, en direct, avec des professeurs dont l'anglais est la langue maternelle. Enfants, ados et adultes, depuis chez vous.</p>
-    <div class="ctas">
-      <a class="btn btn-main" href="#essai">Réserver mon cours d'essai<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      <a class="btn btn-light" href="#niveau">Tester mon niveau</a>
+  <div class="wrap hero-grid">
+    <div class="hero-txt">
+      <span class="eyebrow">Anglais en ligne · professeurs natifs</span>
+      <h1>Parlez anglais. <em>Vraiment.</em></h1>
+      <p>Des cours individuels en ligne, en direct, avec un professeur dont l'anglais est la langue maternelle. Enfants, ados et adultes, depuis chez vous.</p>
+      <div class="ctas">
+        <a class="btn btn-main" href="#essai">Réserver mon cours d'essai<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a class="btn btn-light" href="#niveau">Tester mon niveau</a>
+      </div>
+      <ul class="hero-list">
+        <li>Professeurs natifs 🇬🇧 🇺🇸</li>
+        <li>Cours individuels, en direct</li>
+        <li>Depuis chez vous</li>
+        <li>Cours d'essai offert</li>
+      </ul>
     </div>
-    <div class="facts"><span>Professeurs natifs 🇬🇧 🇺🇸</span><span>En direct, depuis chez vous</span><span>Enfants, ados et adultes</span><span>Test de niveau gratuit</span></div>
-
-    <figure class="hero-pic reveal">
-      <img src="/Juniors%20Academy%20English%20Language.png" alt="Cours d'anglais en ligne Juniors Academy avec un professeur natif" width="1200" height="800" fetchpriority="high" decoding="async">
+    <figure class="hero-pic">
+      <img src="/Juniors%20Academy%20English%20Language.png" alt="Professeur d'anglais natif en cours en ligne avec Juniors Academy" width="1535" height="1025" fetchpriority="high" decoding="async">
     </figure>
   </div>
 </section>
 
 <!-- ================= 1 · LE PROBLÈME ================= -->
-<section class="ch" id="pourquoi">
+<section class="ch alt" id="pourquoi">
   <div class="wrap">
     <div class="reveal">
       <span class="ch-num"><b>1</b>Le constat</span>
@@ -337,13 +353,15 @@
     <div class="reveal">
       <span class="ch-num"><b>3</b>Votre niveau</span>
       <h2>Testez votre anglais en 1 minute.</h2>
-      <p class="lead">Cinq questions rapides pour vous situer. Le vrai test, avec un professeur, vient ensuite.</p>
+      <p class="lead">Cinq questions, une minute, et vous savez où vous en êtes.</p>
     </div>
     <div class="quiz reveal">
-      <div>
-        <span class="eyebrow">Mini-test</span>
-        <h3>Répondez spontanément.</h3>
-        <p>Le résultat aide le professeur à préparer votre premier cours. Personne d'autre ne le voit.</p>
+      <div class="quiz-intro">
+        <span class="quiz-badge">⏱ 1 minute · 5 questions</span>
+        <h3>Vous êtes plutôt A1, B1… <em>ou déjà B2 ?</em></h3>
+        <p>Cinq petites phrases, un résultat immédiat et une formule conseillée. Sans inscription.</p>
+        <ul class="quiz-perks"><li>Résultat instantané</li><li>Niveau du CECR (A1 → B2)</li><li>Rien à envoyer</li></ul>
+        <div class="quiz-live" aria-hidden="true"><span class="dot"></span>Le résultat reste entre vous et votre professeur</div>
       </div>
       <div class="qcard" id="qcard">
         <div class="qprog" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
@@ -361,7 +379,7 @@
           <span class="lvl" id="qlvl">B1</span>
           <h4 id="qtitle">Niveau intermédiaire</h4>
           <p id="qtext"></p>
-          <a class="btn btn-main" href="#essai" id="qcta">Réserver mon cours d'essai</a>
+          <a class="btn btn-main" href="#essai" id="qcta">Confirmer mon niveau avec un professeur</a>
           <button class="again" type="button" data-again>Recommencer</button>
         </div>
       </div>
@@ -371,7 +389,7 @@
 </section>
 
 <!-- ================= 5 · LA FORMULE ================= -->
-<section class="ch" id="formats">
+<section class="ch alt" id="formats">
   <div class="wrap">
     <div class="reveal">
       <span class="ch-num"><b>4</b>La formule</span>
@@ -410,7 +428,7 @@
     <div class="reveal">
       <span class="ch-num"><b>5</b>Vos professeurs</span>
       <h2>Vos professeurs.</h2>
-      <p class="lead">Chaque professeur enseigne dans sa langue maternelle et a l'habitude des élèves francophones et arabophones. Vous rencontrez le vôtre dès le test de niveau.</p>
+      <p class="lead">Natifs du Royaume-Uni ou des États-Unis, formés à l'enseignement, habitués aux élèves francophones et arabophones. Vous rencontrez le vôtre dès le cours d'essai.</p>
     </div>
     <div class="teach reveal">
       <div class="tc"><span class="fl">🇬🇧</span><div><b>Royaume-Uni</b><small>Accent britannique</small><p>Idéal avant un séjour à Londres ou Oxford, ou pour préparer l'IELTS.</p></div></div>
