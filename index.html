@@ -167,7 +167,11 @@
   @keyframes jah-study-shine { 0% { left: -40%; } 22%, 100% { left: 130%; } }
 
   /* ----- bandeau (téléphone uniquement) ----- */
-  .jah-study-bar { display: none; }
+  /* liens de navigation (en-tête) */
+  .jah-nav-link { font-family: 'Poppins', system-ui, sans-serif; font-size: .9rem; font-weight: 600; color: #6E6E73; text-decoration: none; white-space: nowrap; transition: color .2s; }
+  .jah-nav-link:hover { color: #76142E; }
+  @media (max-width: 640px) { .jah-nav-link { font-size: .78rem; } .jah-header-right { gap: 10px !important; } .jah-header-phone span { display: none; } .jah-header-phone { padding: 9px; } }
+  @media (max-width: 380px) { .jah-nav-link:nth-of-type(2) { display: none; } }
 
   @media (max-width: 640px) {
     .jah-study-btn { display: none; }
@@ -203,11 +207,6 @@
 </style>
 
 <!-- Bandeau téléphone : défile avec la page, l'en-tête reste collé en haut -->
-<a href="study/" class="jah-study-bar" aria-label="Nouveau : étudier à l'étranger, découvrir les destinations">
-  <span class="jah-study-seal" aria-hidden="true"><i>UK</i><i>CN</i><i>US</i></span>
-  <span><b>Nouveau</b> · Étudier à l'étranger</span>
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-</a>
 
 <header class="jah-header" id="jahHeader">
   <a href="#jah-contact" class="jah-header-logo" aria-label="Juniors Academy, nous contacter">
@@ -215,12 +214,8 @@
     <span class="jah-logo-text" style="display:none">Juniors Academy</span>
   </a>
   <div class="jah-header-right">
-    <a href="study/" class="jah-study-btn">
-      <span class="jah-study-seal" aria-hidden="true"><i>UK</i><i>CN</i><i>US</i></span>
-      Étudier à l'étranger
-      <span class="jah-study-new">Nouveau</span>
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+    <a href="/study/" class="jah-nav-link">Étudier à l'étranger</a>
+    <a href="/language/" class="jah-nav-link">Anglais en ligne</a>
     <a href="tel:+213550527722" class="jah-header-phone" aria-label="Appeler Juniors Academy">
       <span>+213 550 52 77 22</span>
       <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
