@@ -733,7 +733,7 @@
   .jah-marquee-track {
     display: flex;
     width: max-content;
-    animation: jah-marquee-scroll 34s linear infinite;
+    animation: jah-marquee-scroll 68s linear infinite;
     will-change: transform;
     backface-visibility: hidden;
   }
@@ -741,8 +741,8 @@
     display: flex;
     align-items: center;
     flex: none;
-    gap: clamp(56px, 8vw, 100px);
-    padding: 0 clamp(28px, 4vw, 50px);
+    gap: clamp(48px, 6vw, 80px);
+    padding: 0 clamp(24px, 3vw, 40px);
   }
   .jah-marquee-group img {
     /* Boîte fixe : la taille ne dépend pas du chargement de l'image,
@@ -854,7 +854,7 @@
     /* Bandeau partenaires : logos plus petits, défilement plus rapide */
     .jah-partners { padding: 14px 14px 4px; }
     .jah-partners-title { font-size: .66rem; letter-spacing: .14em; margin-bottom: 12px; }
-    .jah-marquee-track { animation-duration: 22s; }
+    .jah-marquee-track { animation-duration: 44s; }
     .jah-marquee-group { gap: 40px; padding: 0 16px; }
     .jah-marquee-group img { height: 26px; width: 68px; }
   }
@@ -876,18 +876,32 @@
   <div class="jah-marquee">
     <div class="jah-marquee-track">
       <div class="jah-marquee-group">
-        <img src="china.webp" alt="Partenaire Chine" onerror="this.style.display='none'">
-        <img src="British.png" alt="British Embassy" onerror="this.style.display='none'">
-        <img src="Polish.png" alt="Partenaire polonais" onerror="this.style.display='none'">
-        <img src="BritishCouncil.png" alt="British Council" onerror="this.style.display='none'">
-        <img src="cervantes.png" alt="Instituto Cervantes" onerror="this.style.display='none'">
+        <img src="china.webp" alt="Partenaire Chine" onerror="this.remove()">
+        <img src="British.png" alt="British Embassy" onerror="this.remove()">
+        <img src="Polish.png" alt="Partenaire polonais" onerror="this.remove()">
+        <img src="BritishCouncil.png" alt="British Council" onerror="this.remove()">
+        <img src="cervantes.png" alt="Instituto Cervantes" onerror="this.remove()">
       </div>
       <div class="jah-marquee-group" aria-hidden="true">
-        <img src="china.webp" alt="" onerror="this.style.display='none'">
-        <img src="British.png" alt="" onerror="this.style.display='none'">
-        <img src="Polish.png" alt="" onerror="this.style.display='none'">
-        <img src="BritishCouncil.png" alt="" onerror="this.style.display='none'">
-        <img src="cervantes.png" alt="" onerror="this.style.display='none'">
+        <img src="china.webp" alt="" onerror="this.remove()">
+        <img src="British.png" alt="" onerror="this.remove()">
+        <img src="Polish.png" alt="" onerror="this.remove()">
+        <img src="BritishCouncil.png" alt="" onerror="this.remove()">
+        <img src="cervantes.png" alt="" onerror="this.remove()">
+      </div>
+      <div class="jah-marquee-group" aria-hidden="true">
+        <img src="china.webp" alt="" onerror="this.remove()">
+        <img src="British.png" alt="" onerror="this.remove()">
+        <img src="Polish.png" alt="" onerror="this.remove()">
+        <img src="BritishCouncil.png" alt="" onerror="this.remove()">
+        <img src="cervantes.png" alt="" onerror="this.remove()">
+      </div>
+      <div class="jah-marquee-group" aria-hidden="true">
+        <img src="china.webp" alt="" onerror="this.remove()">
+        <img src="British.png" alt="" onerror="this.remove()">
+        <img src="Polish.png" alt="" onerror="this.remove()">
+        <img src="BritishCouncil.png" alt="" onerror="this.remove()">
+        <img src="cervantes.png" alt="" onerror="this.remove()">
       </div>
     </div>
   </div>
