@@ -137,6 +137,15 @@
     .btn:disabled{opacity:.6;cursor:default;transform:none}
     .status{font-size:.86rem;color:var(--err);min-height:1.2em;margin:6px 0 0}
     .success{background:var(--b);color:#fff;border-radius:22px;padding:clamp(24px,4vw,36px)}
+    /* après envoi : la carte « Une question » s'efface, le bloc merci s'aligne sur les étapes */
+    .side .card.dark{max-height:420px;transition:opacity .9s ease,transform .9s ease,max-height .9s ease .2s,padding .9s ease .2s,margin .9s ease .2s}
+    body.sent .side .card.dark{opacity:0;transform:translateY(10px);max-height:0;padding-top:0;padding-bottom:0;margin:0;overflow:hidden;pointer-events:none;border-width:0}
+    body.sent .side{gap:0}
+    body.sent .main .wrap{align-items:stretch}
+    body.sent .main .wrap>div:first-child{display:flex;flex-direction:column}
+    body.sent .success{flex:1;display:flex;flex-direction:column;justify-content:center}
+    @media(max-width:960px){body.sent .success{flex:none}}
+
     .success h2{font-size:1.5rem;margin-bottom:10px;color:#fff}
     .success p{margin:0 0 10px;color:rgba(255,255,255,.9)}
     .success .ref{display:inline-block;background:rgba(255,255,255,.14);border-radius:10px;padding:6px 12px;font-weight:600;letter-spacing:.04em;margin:6px 0 12px}
@@ -521,7 +530,7 @@
     /* 2 · the email to admin@juniors.academy (Formspree) */
     try { const fd = new FormData(form); fd.append('_replyto', data.email); const r = await fetch(FORMSPREE, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }); mailed = r.ok; } catch (err) { console.warn('formspree', err); }
     if (saved || mailed) {
-      form.hidden = true; $('refOut').textContent = data.reference; $('success').hidden = false; $('success').classList.add('in'); $('success').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      form.hidden = true; document.body.classList.add('sent'); $('refOut').textContent = data.reference; $('success').hidden = false; $('success').classList.add('in'); $('success').scrollIntoView({ behavior: 'smooth', block: 'start' });
       if (!mailed && saved) { /* the record exists; the e-mail will be read from the database */ }
     } else {
       btn.disabled = false; btn.textContent = 'Envoyer ma préinscription';
