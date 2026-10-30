@@ -79,12 +79,12 @@
     .hero{padding:clamp(24px,4vw,44px) 0 clamp(28px,4vw,52px);overflow:hidden}
     .hero .wrap{max-width:1280px}
     .hero-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,4vw,48px);align-items:center}
-    .hero h1{font-size:clamp(2.2rem,5vw,3.6rem);margin:14px 0 14px;line-height:1.05}
+    .hero h1{font-size:clamp(2.1rem,4.4vw,3.3rem);margin:14px 0 14px;line-height:1.08}
     .hero h1 em{font-style:normal;color:var(--b)}
     .hero h1 .w{display:inline-block;white-space:nowrap}
     .hero h1 .l{display:inline-block;transition:transform .35s cubic-bezier(.2,.9,.3,1.4),color .3s;cursor:default}
     .hero h1 .l:hover{transform:translateY(-8px) rotate(-4deg);color:var(--b)}
-    .hero h1 .rot{display:inline-block;min-height:1.05em;vertical-align:top}
+    .hero h1 .rot{display:inline-block;min-height:1.05em;vertical-align:top;white-space:nowrap}
     .hero h1 .rot::after{content:"";display:inline-block;width:3px;height:.85em;margin-left:4px;background:var(--gold);vertical-align:-.08em;animation:lg-caret 1s steps(2,start) infinite}
     @keyframes lg-caret{to{visibility:hidden}}
     @media(prefers-reduced-motion:reduce){.hero h1 .l{transition:none}.hero h1 .rot::after{animation:none}}
@@ -396,7 +396,7 @@
     <div class="wrap">
     <div class="hero-txt">
     <span class="eyebrow">Anglais en ligne · Juniors Academy</span>
-    <h1><span class="w" data-split>Parlez</span> <span class="w" data-split>anglais.</span><br><em class="rot" data-rot='["Vraiment.","Avec confiance.","Avec un prof natif.","Depuis chez vous."]'>Vraiment.</em></h1>
+    <h1><span class="w" data-split>Parlez</span> <span class="w" data-split>anglais.</span><br><em class="rot" data-rot='["Vraiment.","Avec confiance.","Avec un natif.","De chez vous."]'>Vraiment.</em></h1>
     <p>Cours individuels en direct avec des professeurs natifs du Royaume-Uni et des États-Unis. Enfants, ados et adultes, depuis chez vous.</p>
     <div class="ctas">
       <a class="btn btn-main" href="#services">Commencer<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
