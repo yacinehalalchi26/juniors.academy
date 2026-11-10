@@ -439,6 +439,44 @@ body.jam-open{overflow:hidden}
 }
 @media(max-width:360px){.nav .phone svg{display:none}}
 </style>
+
+<style id="ja-theme">
+/* ============ Style ja.dz : héros photo pleine largeur, typographie éditoriale ============ */
+.hero{position:relative!important;isolation:isolate;overflow:hidden!important;background:#25252A!important;min-height:calc(100svh - 78px)!important;display:flex!important;flex-direction:column;justify-content:flex-end;padding:0 0 clamp(28px,5vh,56px)!important;color:#fff}
+.hero .wrap{display:block!important;grid-template-columns:none!important;max-width:1120px!important;width:100%;position:static!important;padding-top:clamp(24px,4vh,48px)}
+.hero-bg{position:absolute!important;inset:0;margin:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;overflow:hidden;z-index:-2;order:0!important}
+.hero-bg img{width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:center 30%}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(37,37,42,.35) 0%,rgba(37,37,42,0) 25%),linear-gradient(180deg,rgba(37,37,42,0) 32%,rgba(37,37,42,.55) 60%,rgba(37,37,42,.9) 100%)}
+.hero::before{display:none!important}
+.hero-txt{max-width:720px;position:relative;z-index:1}
+.hero .eyebrow{color:rgba(255,255,255,.85)!important;font-weight:500!important;letter-spacing:.26em!important;font-size:.68rem!important;text-shadow:0 1px 3px rgba(0,0,0,.45);gap:12px}
+.hero .eyebrow::before{width:34px!important;height:1px!important;background:rgba(255,255,255,.7)!important}
+.hero h1{font-weight:600!important;letter-spacing:-.04em!important;line-height:1.07!important;font-size:clamp(2.2rem,5.2vw,4.6rem)!important;margin:14px 0 14px!important;color:#fff!important;text-shadow:0 2px 4px rgba(0,0,0,.35),0 6px 28px rgba(0,0,0,.35)}
+.hero h1 .l{color:#fff!important}
+.hero h1 .l:hover{color:rgba(255,255,255,.75)!important}
+.hero h1 em,.hero h1 .rot{color:#fff!important;font-style:italic!important;font-weight:300!important}
+.hero h1 .rot::after{background:rgba(255,255,255,.8)!important}
+.hero p{color:rgba(255,255,255,.9)!important;font-size:clamp(.95rem,1.15vw,1.05rem)!important;max-width:50ch!important;margin:0 0 22px!important;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.hero .btn{font-weight:600;padding:16px 28px}
+.hero .btn-main{background:var(--b)!important;color:#fff!important;box-shadow:0 18px 44px rgba(0,0,0,.35)!important}
+.hero .btn-main:hover{background:#fff!important;color:var(--b)!important}
+.hero .btn-light{background:transparent!important;color:#fff!important;border:1.5px solid rgba(255,255,255,.6)!important;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.hero .btn-light:hover{background:#fff!important;color:var(--ink)!important;border-color:#fff!important;text-shadow:none}
+/* sections : même graisse de titres */
+h2{font-weight:600!important;letter-spacing:-.03em!important}
+.ch-num,.eyebrow{font-weight:500!important;letter-spacing:.24em!important;font-size:.68rem!important}
+@media(min-width:1000px){.hero-bg img{object-position:center 25%}}
+@media(max-width:860px){.hero .wrap{display:block!important}.hero-bg{position:absolute!important}}
+@media(max-width:640px){
+  .hero{min-height:calc(100svh - 64px)!important;padding-bottom:26px!important}
+  .hero h1{font-size:clamp(1.9rem,8.6vw,2.5rem)!important}
+  .hero p{font-size:.92rem!important;margin-bottom:18px!important}
+  .hero .ctas{flex-direction:column}
+  .hero .btn{width:100%;justify-content:center}
+  .hero-bg img{object-position:62% 25%}
+}
+@media(max-width:640px) and (max-height:700px){.hero p{display:none!important}}
+</style>
 </head>
 <body>
 <div class="lg-progress" aria-hidden="true"><i id="lgBar"></i></div>
@@ -459,7 +497,7 @@ body.jam-open{overflow:hidden}
     <div class="wrap">
     <div class="hero-txt">
     <span class="eyebrow">Anglais en ligne · Juniors Academy</span>
-    <h1><span class="w" data-split>Parlez</span> <span class="w" data-split>anglais.</span><br><em class="rot" data-rot='["Vraiment.","Avec confiance.","Avec un natif.","De chez vous."]'>Vraiment.</em></h1>
+    <h1><span class="w" data-split>Parlez</span> <span class="w" data-split>anglais.</span><br><em class="rot" data-rot='["Avec confiance.","Avec un natif.","De chez vous.","Dès aujourd\u2019hui."]'>Avec confiance.</em></h1>
     <p>Cours individuels en direct avec des professeurs natifs du Royaume-Uni et des États-Unis. Enfants, ados et adultes, depuis chez vous.</p>
     <div class="ctas">
       <a class="btn btn-main" href="#services">Commencer<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
