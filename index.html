@@ -165,6 +165,54 @@ body.jam-open{overflow:hidden}
 }
 @media(max-width:360px){.jah-header-phone svg{display:none}}
 </style>
+
+<style id="ja-theme">
+/* ============ Style ja.dz (clair) : héros photo pleine largeur, typographie éditoriale, bordeaux en accent ============ */
+:root{--ink:#25252A;--b:#76142E;--ease:cubic-bezier(.16,1,.3,1)}
+.jah-header-logo img{filter:none}
+
+/* héros : occupe l'écran sous l'en-tête, tout visible sans défiler */
+.jah-hero{padding:0!important}
+.jah-frame{border-radius:0!important;min-height:calc(100svh - var(--ja-nav-h,78px))!important;max-height:none!important;display:flex!important;align-items:flex-end!important}
+.jah-frame::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(37,37,42,.35) 0%,rgba(37,37,42,0) 24%),linear-gradient(180deg,rgba(37,37,42,0) 40%,rgba(37,37,42,.6) 74%,rgba(37,37,42,.9) 100%)}
+.jah-content{max-width:820px!important;padding:clamp(22px,4vw,48px) clamp(18px,5vw,64px)!important}
+.jah-eyebrow{font-size:.68rem!important;font-weight:500!important;letter-spacing:.26em!important;color:rgba(255,255,255,.85)!important;text-shadow:0 1px 3px rgba(0,0,0,.45);gap:12px!important;margin-bottom:12px!important}
+.jah-eyebrow::before{width:34px!important;height:1px!important;background:rgba(255,255,255,.7)!important}
+.jah-title{font-weight:600!important;letter-spacing:-.04em!important;line-height:1.05!important;font-size:clamp(2.2rem,5vw,4.4rem)!important;margin:0 0 14px!important;text-shadow:0 2px 4px rgba(0,0,0,.35),0 6px 28px rgba(0,0,0,.35)}
+.jah-title .jah-mark{background:none!important;color:#fff!important;padding:0!important;transform:none!important;animation:none!important;font-style:italic;font-weight:300}
+.jah-sub{color:rgba(255,255,255,.9)!important;font-size:clamp(.95rem,1.15vw,1.05rem)!important;line-height:1.55!important;max-width:52ch!important;margin:0 0 22px!important;text-shadow:0 1px 3px rgba(0,0,0,.45),0 2px 18px rgba(0,0,0,.35)}
+.jah-badge,.jah-strip{display:none!important}
+
+/* boutons façon ja.dz */
+.jah-btn{font-weight:600!important;padding:16px 28px!important}
+.jah-btn--primary{background:var(--b)!important;color:#fff!important;box-shadow:0 18px 44px rgba(0,0,0,.3)!important}
+.jah-btn--primary:hover{background:#fff!important;color:var(--b)!important}
+.jah-btn--pulse{animation:none!important}
+.jah-hero .jah-btn--ghost{background:transparent!important;border:1.5px solid rgba(255,255,255,.6)!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.4);backdrop-filter:none!important}
+.jah-hero .jah-btn--ghost:hover{background:#fff!important;color:var(--ink)!important;border-color:#fff!important;text-shadow:none}
+
+/* titres : même graisse/tracking que ja.dz */
+.jah-section-title,.jah-why-heading,.jah-video-title,.jah-contact-title{font-weight:600!important;letter-spacing:-.03em!important}
+
+/* partenaires : sous le héros, discret */
+.jah-partners{padding:clamp(22px,3vw,36px) clamp(14px,3vw,40px) 0!important}
+.jah-partners-title{font-weight:500!important;letter-spacing:.26em!important;font-size:.68rem!important}
+
+@media(max-width:640px){
+  .jah-hero{padding:0!important}
+  .jah-frame{min-height:calc(100svh - var(--ja-nav-h,64px))!important;flex-direction:column!important;justify-content:flex-end!important;overflow:hidden!important}
+  .jah-frame::after{display:block!important}
+  .jah-slideshow{position:absolute!important;inset:0!important;width:auto!important;aspect-ratio:auto!important;border-radius:0!important;z-index:-2!important;animation:none!important}
+  .jah-content{color:#fff!important;text-align:left!important;padding:20px 18px 26px!important}
+  .jah-eyebrow{display:inline-flex!important;justify-content:flex-start!important;color:rgba(255,255,255,.85)!important}
+  .jah-eyebrow::before{display:block!important}
+  .jah-title{color:#fff!important;font-size:clamp(1.9rem,8.6vw,2.5rem)!important;line-height:1.08!important}
+  .jah-sub{color:rgba(255,255,255,.9)!important;font-size:.92rem!important;margin:0 0 18px!important}
+  .jah-ctas{flex-direction:column;align-items:stretch;gap:10px!important}
+  .jah-btn{padding:14px 22px!important}
+}
+@media(max-width:640px) and (max-height:700px){.jah-sub{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -934,6 +982,35 @@ body.jam-open{overflow:hidden}
 </style>
 
 <!-- ==================== 0. PARTENAIRES ==================== -->
+
+<!-- ==================== 1. HERO ==================== -->
+<section class="jah-hero" id="hero">
+  <div class="jah-frame">
+    <div class="jah-slideshow" id="jahSlideshow">
+      <img class="jah-slide jah-slide--active" src="GroupPicture.jpeg" alt="Jeunes de Juniors Academy en immersion à l'étranger" fetchpriority="high" onerror="this.style.display='none'">
+      <img class="jah-slide" src="universal.jpeg" alt="Sortie à Universal Studios" onerror="this.style.display='none'">
+      <img class="jah-slide" src="london.HEIC" alt="Découverte de Londres" onerror="this.style.display='none'">
+      <img class="jah-slide" src="oundle.HEIC" alt="Campus de Oundle School" onerror="this.style.display='none'">
+      <img class="jah-slide" src="chinaembassyalgiers.jpeg" alt="Ambassade de Chine à Alger" onerror="this.style.display='none'">
+      <img class="jah-slide" src="greatwall.jpeg" alt="Grande Muraille de Chine" onerror="this.style.display='none'">
+    </div>
+    <div class="jah-badge" aria-hidden="true">
+      <span>6 à 18 ans</span><span>8 destinations</span><span>Encadrement 24/7</span>
+    </div>
+    <div class="jah-content">
+      <p class="jah-eyebrow">Étudier · Voyager · Grandir</p>
+      <h1 class="jah-title">Le <span class="jah-mark">monde</span> est leur salle de classe.</h1>
+      <p class="jah-sub">Cet hiver, la science et l'innovation à Shanghai ; ce printemps, l'anglais à Oxford. Des séjours encadrés du premier au dernier jour, qui font grandir en confiance, en ouverture et en anglais.</p>
+      <div class="jah-ctas">
+        <a href="/registration/" class="jah-btn jah-btn--primary jah-btn--pulse">Préinscrire mon enfant
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#jah-destinations" class="jah-btn jah-btn--ghost">Explorer les programmes</a>
+      </div>
+    </div>
+  </div>
+  <p class="jah-strip"><b>Londres</b> <span>Oxford</span> <b>Barcelone</b> <span>Madrid</span> <b>New York</b> <span>Montréal</span> <b>Shanghai</b> <span>Pékin</span></p>
+</section>
 <section class="jah-partners jah-reveal" id="jah-partners" aria-label="Nos partenaires">
   <p class="jah-partners-title">Ils nous font confiance</p>
   <div class="jah-marquee">
@@ -968,35 +1045,6 @@ body.jam-open{overflow:hidden}
       </div>
     </div>
   </div>
-</section>
-
-<!-- ==================== 1. HERO ==================== -->
-<section class="jah-hero" id="hero">
-  <div class="jah-frame">
-    <div class="jah-slideshow" id="jahSlideshow">
-      <img class="jah-slide jah-slide--active" src="GroupPicture.jpeg" alt="Jeunes de Juniors Academy en immersion à l'étranger" fetchpriority="high" onerror="this.style.display='none'">
-      <img class="jah-slide" src="universal.jpeg" alt="Sortie à Universal Studios" onerror="this.style.display='none'">
-      <img class="jah-slide" src="london.HEIC" alt="Découverte de Londres" onerror="this.style.display='none'">
-      <img class="jah-slide" src="oundle.HEIC" alt="Campus de Oundle School" onerror="this.style.display='none'">
-      <img class="jah-slide" src="chinaembassyalgiers.jpeg" alt="Ambassade de Chine à Alger" onerror="this.style.display='none'">
-      <img class="jah-slide" src="greatwall.jpeg" alt="Grande Muraille de Chine" onerror="this.style.display='none'">
-    </div>
-    <div class="jah-badge" aria-hidden="true">
-      <span>6 à 18 ans</span><span>8 destinations</span><span>Encadrement 24/7</span>
-    </div>
-    <div class="jah-content">
-      <p class="jah-eyebrow">Étudier · Voyager · Grandir</p>
-      <h1 class="jah-title">Le <span class="jah-mark">monde</span> est leur salle de classe.</h1>
-      <p class="jah-sub">Cet hiver, la science et l'innovation à Shanghai ; ce printemps, l'anglais à Oxford. Des séjours encadrés du premier au dernier jour, qui font grandir en confiance, en ouverture et en anglais.</p>
-      <div class="jah-ctas">
-        <a href="/registration/" class="jah-btn jah-btn--primary jah-btn--pulse">Préinscrire mon enfant
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#jah-destinations" class="jah-btn jah-btn--ghost">Explorer les programmes</a>
-      </div>
-    </div>
-  </div>
-  <p class="jah-strip"><b>Londres</b> <span>Oxford</span> <b>Barcelone</b> <span>Madrid</span> <b>New York</b> <span>Montréal</span> <b>Shanghai</b> <span>Pékin</span></p>
 </section>
 
 <!-- ==================== 2. GRILLE DESTINATIONS ==================== -->
